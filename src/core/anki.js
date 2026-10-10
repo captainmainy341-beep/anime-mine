@@ -49,6 +49,10 @@ function modelDefinition(modelName) {
   }
 }
 
+// Escapes Anki search metacharacters so a deck or model name stays a literal term.
+const escapeSearch = (text) => String(text).replace(/[\\"*_]/g, '\\$&')
+const quoted = (text) => `"${escapeSearch(text)}"`
+
 class AnkiClient {
   constructor(url = 'http://127.0.0.1:8765') {
     this.url = url
@@ -100,6 +104,52 @@ class AnkiClient {
 
   storeMedia({filename, data}) {
     return this.invoke('storeMediaFile', {filename, data: data.toString('base64')})
+  }
+
+  async deckStats(deck) {
+    const stats = await this.invoke('getDeckStats', {decks: [deck]})
+    const entry = Object.values(stats ?? {}).find(stat => stat.name === deck)
+    if (!entry) return null
+    return {
+      new: entry.new_count,
+      learn: entry.learn_count,
+      due: entry.review_count,
+      total: entry.total_in_deck,
+    }
+  }
+
+  async countAddedToday(deck) {
+    const ids = (await this.invoke('findNotes', {query: `deck:${quoted(deck)} added:1`})) ?? []
+    return ids.length
+  }
+
+  async recentNotes(deck, model, limit) {
+    const ids = (await this.invoke('findNotes', {query: `deck:${quoted(deck)} note:${quoted(model)}`})) ?? []
+    const newest = [...ids].sort((a, b) => b - a).slice(0, limit)
+    if (!newest.length) return []
+    return this.invoke('notesInfo', {notes: newest})
+  }
+
+  async noteModel(noteId) {
+    const [info] = (await this.invoke('notesInfo', {notes: [noteId]})) ?? []
+    return info?.modelName ?? null
+  }
+
+  async retrieveMedia(filename) {
+    const data = await this.invoke('retrieveMediaFile', {filename})
+    return data || null
+  }
+
+  async updateNoteFields(noteId, fields) {
+    return this.invoke('updateNoteFields', {note: {id: noteId, fields}})
+  }
+
+  async deleteNotes(ids) {
+    return this.invoke('deleteNotes', {notes: ids})
+  }
+
+  async guiBrowse(query) {
+    return this.invoke('guiBrowse', {query})
   }
 }
 

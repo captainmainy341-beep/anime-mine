@@ -1,3 +1,4 @@
+import { mountAnki } from './anki.mjs';
 import { mountLibrary } from './library.mjs';
 import { mountPlayer } from './player.mjs';
 import { mountSettings } from './settings.mjs';
@@ -10,7 +11,12 @@ let unmountView = null;
 const routes = {
   library: (container) => mountLibrary(container, { onPlay: (episode) => go('player', episode) }),
   player: (container, episode) =>
-    mountPlayer(container, episode, { onBack: () => go('library'), onOpenSettings: () => go('settings') }),
+    mountPlayer(container, episode, {
+      onBack: () => go('library'),
+      onOpenSettings: () => go('settings'),
+      onPlayEpisode: (next) => go('player', next),
+    }),
+  anki: mountAnki,
   settings: mountSettings,
 };
 

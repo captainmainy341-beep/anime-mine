@@ -2,16 +2,21 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; media-src 'self' file:; style-src 'self' 'unsafe-inline'; script-src 'self'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; media-src 'self' file: data:; style-src 'self' 'unsafe-inline'; script-src 'self'">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>anime-mine</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="css/player.css">
+  <link rel="stylesheet" href="css/popup.css">
+  <link rel="stylesheet" href="css/library.css">
+  <link rel="stylesheet" href="css/settings.css">
 </head>
 <body>
   <header class="topbar">
     <div class="brand">anime<span>-mine</span></div>
     <nav id="nav">
       <button data-route="library">Library</button>
+      <button data-route="anki">Anki</button>
       <button data-route="settings">Settings</button>
     </nav>
   </header>

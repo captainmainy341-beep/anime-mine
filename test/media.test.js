@@ -92,3 +92,57 @@ test('extractAudio and screenshot produce real MP3 and JPEG data from a generate
 test('extractAudio rejects a range whose end is not after start', async () => {
   await assert.rejects(extractAudio({video: 'missing.mkv', start: 2, end: 2}), /end must be after start/)
 })
+
+test('extractAudio rejects an audioStream that is not a non-negative integer', async () => {
+  for (const audioStream of [1.5, -1, '1', NaN, Infinity]) {
+    await assert.rejects(
+      extractAudio({video: '/v/ep.mkv', start: 1, end: 2, audioStream}),
+      /audioStream must be a non-negative integer/,
+    )
+  }
+})
+
+function zeroCrossings(mp3) {
+  const pcm = spawnSync(ffmpegStatic, [
+    '-hide_banner', '-loglevel', 'error',
+    '-i', 'pipe:0', '-f', 's16le', '-ac', '1', '-ar', '8000', 'pipe:1',
+  ], {input: mp3}).stdout
+  let count = 0
+  for (let i = 2; i < pcm.length; i += 2) {
+    const prev = pcm.readInt16LE(i - 2)
+    const cur = pcm.readInt16LE(i)
+    if ((prev < 0) !== (cur < 0)) count++
+  }
+  return count
+}
+
+test('extractAudio with audioStream picks that exact ffmpeg stream from a two-track file', async t => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'anime-mine-media-'))
+  t.after(() => fs.rmSync(dir, {recursive: true, force: true}))
+  const video = path.join(dir, 'two-tracks.mkv')
+
+  const gen = spawnSync(ffmpegStatic, [
+    '-hide_banner', '-loglevel', 'error',
+    '-f', 'lavfi', '-i', 'sine=frequency=440:duration=3',
+    '-f', 'lavfi', '-i', 'sine=frequency=880:duration=3',
+    '-f', 'lavfi', '-i', 'color=c=blue:s=320x180:d=3',
+    '-map', '2:v', '-map', '0:a', '-map', '1:a',
+    '-metadata:s:a:0', 'language=jpn',
+    '-metadata:s:a:1', 'language=eng',
+    video,
+  ])
+  assert.equal(gen.status, 0, gen.stderr.toString())
+
+  const jpn = await extractAudio({video, start: 0.5, end: 2.5, audioStream: 1})
+  const eng = await extractAudio({video, start: 0.5, end: 2.5, audioStream: 2})
+  assert.ok(startsLikeMp3(jpn), `unexpected MP3 header: ${jpn.subarray(0, 4).toString('hex')}`)
+  assert.ok(startsLikeMp3(eng), `unexpected MP3 header: ${eng.subarray(0, 4).toString('hex')}`)
+  assert.ok(!jpn.equals(eng), 'audioStream 1 and 2 produced identical audio')
+
+  const jpnHz = zeroCrossings(jpn)
+  const engHz = zeroCrossings(eng)
+  assert.ok(engHz > jpnHz * 1.5, `expected ~880 Hz (eng) to cross zero far more often than ~440 Hz (jpn): ${engHz} vs ${jpnHz}`)
+
+  const defaulted = await extractAudio({video, start: 0.5, end: 2.5})
+  assert.ok(defaulted.equals(jpn), 'default jpn lookup should select the same stream as audioStream 1')
+})
