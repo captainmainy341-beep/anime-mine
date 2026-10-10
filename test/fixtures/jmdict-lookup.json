@@ -1,70 +1,40 @@
 {
   "words": [
-    {
-      "id": "9000001",
-      "kanji": [{ "common": true, "text": "勉強する", "tags": [] }],
-      "kana": [{ "common": true, "text": "べんきょうする", "tags": [] }],
-      "sense": [{ "partOfSpeech": ["vs", "vt"], "gloss": [{ "lang": "eng", "text": "to study" }] }]
-    },
-    {
-      "id": "1398020",
-      "kanji": [{ "common": true, "text": "勉強", "tags": [] }],
-      "kana": [{ "common": true, "text": "べんきょう", "tags": [] }],
-      "sense": [{ "partOfSpeech": ["noun or participle which takes the aux. verb suru"], "gloss": [{ "lang": "eng", "text": "study" }] }]
-    },
-    {
-      "id": "1358280",
-      "kanji": [{ "common": true, "text": "食べる", "tags": [] }],
-      "kana": [{ "common": true, "text": "たべる", "tags": [] }],
-      "sense": [{ "partOfSpeech": ["v1", "vt"], "gloss": [{ "lang": "eng", "text": "to eat" }] }]
-    },
-    {
-      "id": "9000002",
-      "kanji": [{ "common": true, "text": "見る", "tags": [] }],
-      "kana": [{ "common": true, "text": "みる", "tags": [] }],
-      "sense": [{ "partOfSpeech": ["v1", "vt"], "gloss": [{ "lang": "eng", "text": "to see" }] }]
-    },
-    {
-      "id": "1027050",
-      "kanji": [{ "common": true, "text": "日本語", "tags": [] }],
-      "kana": [{ "common": true, "text": "にほんご", "tags": [] }],
-      "sense": [{ "partOfSpeech": ["n"], "gloss": [{ "lang": "eng", "text": "Japanese (language)" }] }]
-    },
-    {
-      "id": "1557930",
-      "kanji": [{ "common": true, "text": "学校", "tags": [] }],
-      "kana": [{ "common": true, "text": "がっこう", "tags": [] }],
-      "sense": [{ "partOfSpeech": ["n"], "gloss": [{ "lang": "eng", "text": "school" }] }]
-    },
-    {
-      "id": "1577890",
-      "kanji": [{ "common": true, "text": "行く", "tags": [] }],
-      "kana": [{ "common": true, "text": "いく", "tags": [] }],
-      "sense": [{ "partOfSpeech": ["v5k-s", "vi"], "gloss": [{ "lang": "eng", "text": "to go" }] }]
-    },
-    {
-      "id": "9000003",
-      "kanji": [{ "common": true, "text": "高い", "tags": [] }],
-      "kana": [{ "common": true, "text": "たかい", "tags": [] }],
-      "sense": [{ "partOfSpeech": ["adj-i"], "gloss": [{ "lang": "eng", "text": "high; expensive" }] }]
-    },
-    {
-      "id": "9000004",
-      "kanji": [{ "common": true, "text": "私", "tags": [] }],
-      "kana": [{ "common": true, "text": "わたし", "tags": [] }],
-      "sense": [{ "partOfSpeech": ["pn"], "gloss": [{ "lang": "eng", "text": "I; me" }] }]
-    },
-    {
-      "id": "9000005",
-      "kanji": [{ "common": true, "text": "毎日", "tags": [] }],
-      "kana": [{ "common": true, "text": "まいにち", "tags": [] }],
-      "sense": [{ "partOfSpeech": ["n", "adv"], "gloss": [{ "lang": "eng", "text": "every day" }] }]
-    },
-    {
-      "id": "9000006",
-      "kanji": [],
-      "kana": [{ "common": true, "text": "アニメ", "tags": [] }],
-      "sense": [{ "partOfSpeech": ["n"], "gloss": [{ "lang": "eng", "text": "anime" }] }]
-    }
+    { "id": "1398020", "kanji": [{ "common": true, "text": "勉強", "tags": [] }], "kana": [{ "common": true, "text": "べんきょう", "tags": [] }], "sense": [{ "partOfSpeech": ["n", "vs", "vt"], "gloss": [{ "lang": "eng", "text": "study" }, { "lang": "eng", "text": "diligence" }] }] },
+    { "id": "1337270", "kanji": [{ "common": true, "text": "宿題", "tags": [] }], "kana": [{ "common": true, "text": "しゅくだい", "tags": [] }], "sense": [{ "partOfSpeech": ["n"], "gloss": [{ "lang": "eng", "text": "homework" }] }] },
+    { "id": "1358280", "kanji": [{ "common": true, "text": "食べる", "tags": [] }], "kana": [{ "common": true, "text": "たべる", "tags": [] }], "sense": [{ "partOfSpeech": ["v1", "vt"], "gloss": [{ "lang": "eng", "text": "to eat" }] }] },
+    { "id": "9000002", "kanji": [{ "common": true, "text": "見る", "tags": [] }], "kana": [{ "common": true, "text": "みる", "tags": [] }], "sense": [{ "partOfSpeech": ["v1", "vt"], "gloss": [{ "lang": "eng", "text": "to see" }] }] },
+    { "id": "1157170", "kanji": [{ "common": true, "text": "為る", "tags": [] }], "kana": [{ "common": true, "text": "する", "tags": [] }], "sense": [{ "partOfSpeech": ["vs-i"], "gloss": [{ "lang": "eng", "text": "to do" }] }] },
+    { "id": "1282790", "kanji": [{ "common": true, "text": "降る", "tags": [] }], "kana": [{ "common": true, "text": "ふる", "tags": [] }], "sense": [{ "partOfSpeech": ["v5r", "vi"], "gloss": [{ "lang": "eng", "text": "to fall (rain, snow)" }] }] },
+    { "id": "1184450", "kanji": [{ "common": true, "text": "下る", "tags": [] }, { "common": true, "text": "降る", "tags": [] }], "kana": [{ "common": true, "text": "くだる", "tags": [] }], "sense": [{ "partOfSpeech": ["v5r", "vi"], "gloss": [{ "lang": "eng", "text": "to descend" }] }] },
+    { "id": "1578850", "kanji": [{ "common": true, "text": "行く", "tags": [] }, { "common": false, "text": "往く", "tags": [] }], "kana": [{ "common": true, "text": "いく", "tags": [] }, { "common": false, "text": "ゆく", "tags": [] }], "sense": [{ "partOfSpeech": ["v5k-s", "vi"], "gloss": [{ "lang": "eng", "text": "to go" }] }] },
+    { "id": "1343560", "kanji": [{ "common": false, "text": "逝く", "tags": [] }], "kana": [{ "common": false, "text": "いく", "tags": [] }], "sense": [{ "partOfSpeech": ["v5k", "vi"], "gloss": [{ "lang": "eng", "text": "to pass away" }] }] },
+    { "id": "1000001", "kanji": [{ "common": true, "text": "出かける", "tags": [] }], "kana": [{ "common": true, "text": "でかける", "tags": [] }], "sense": [{ "partOfSpeech": ["v1", "vi"], "gloss": [{ "lang": "eng", "text": "to go out" }] }] },
+    { "id": "1000002", "kanji": [{ "common": true, "text": "褒める", "tags": [] }], "kana": [{ "common": true, "text": "ほめる", "tags": [] }], "sense": [{ "partOfSpeech": ["v1", "vt"], "gloss": [{ "lang": "eng", "text": "to praise" }] }] },
+    { "id": "1000003", "kanji": [], "kana": [{ "common": true, "text": "られる", "tags": [] }], "sense": [{ "partOfSpeech": ["suf"], "gloss": [{ "lang": "eng", "text": "passive/potential suffix" }] }] },
+    { "id": "1000004", "kanji": [{ "common": true, "text": "面白い", "tags": [] }], "kana": [{ "common": true, "text": "おもしろい", "tags": [] }], "sense": [{ "partOfSpeech": ["adj-i"], "gloss": [{ "lang": "eng", "text": "interesting; funny" }] }] },
+    { "id": "1000005", "kanji": [{ "common": true, "text": "嬉しい", "tags": [] }], "kana": [{ "common": true, "text": "うれしい", "tags": [] }], "sense": [{ "partOfSpeech": ["adj-i"], "gloss": [{ "lang": "eng", "text": "happy; glad" }] }] },
+    { "id": "1000006", "kanji": [{ "common": true, "text": "高い", "tags": [] }], "kana": [{ "common": true, "text": "たかい", "tags": [] }], "sense": [{ "partOfSpeech": ["adj-i"], "gloss": [{ "lang": "eng", "text": "high; expensive" }] }] },
+    { "id": "1027050", "kanji": [{ "common": true, "text": "日本語", "tags": [] }], "kana": [{ "common": true, "text": "にほんご", "tags": [] }], "sense": [{ "partOfSpeech": ["n"], "gloss": [{ "lang": "eng", "text": "Japanese (language)" }] }] },
+    { "id": "1557930", "kanji": [{ "common": true, "text": "学校", "tags": [] }], "kana": [{ "common": true, "text": "がっこう", "tags": [] }], "sense": [{ "partOfSpeech": ["n"], "gloss": [{ "lang": "eng", "text": "school" }] }] },
+    { "id": "1000007", "kanji": [{ "common": true, "text": "友達", "tags": [] }], "kana": [{ "common": true, "text": "ともだち", "tags": [] }], "sense": [{ "partOfSpeech": ["n"], "gloss": [{ "lang": "eng", "text": "friend" }] }] },
+    { "id": "1000008", "kanji": [{ "common": true, "text": "映画", "tags": [] }], "kana": [{ "common": true, "text": "えいが", "tags": [] }], "sense": [{ "partOfSpeech": ["n"], "gloss": [{ "lang": "eng", "text": "movie" }] }] },
+    { "id": "1000009", "kanji": [{ "common": true, "text": "昨日", "tags": [] }], "kana": [{ "common": true, "text": "きのう", "tags": [] }], "sense": [{ "partOfSpeech": ["n", "adv"], "gloss": [{ "lang": "eng", "text": "yesterday" }] }] },
+    { "id": "1000010", "kanji": [{ "common": true, "text": "先生", "tags": [] }], "kana": [{ "common": true, "text": "せんせい", "tags": [] }], "sense": [{ "partOfSpeech": ["n"], "gloss": [{ "lang": "eng", "text": "teacher" }] }] },
+    { "id": "1000011", "kanji": [], "kana": [{ "common": true, "text": "もっと", "tags": [] }], "sense": [{ "partOfSpeech": ["adv"], "gloss": [{ "lang": "eng", "text": "more" }] }] },
+    { "id": "1000012", "kanji": [], "kana": [{ "common": true, "text": "ので", "tags": [] }], "sense": [{ "partOfSpeech": ["prt"], "gloss": [{ "lang": "eng", "text": "because" }] }] },
+    { "id": "1000013", "kanji": [], "kana": [{ "common": true, "text": "は", "tags": [] }], "sense": [{ "partOfSpeech": ["prt"], "gloss": [{ "lang": "eng", "text": "topic marker" }] }] },
+    { "id": "1000014", "kanji": [], "kana": [{ "common": true, "text": "に", "tags": [] }], "sense": [{ "partOfSpeech": ["prt"], "gloss": [{ "lang": "eng", "text": "indicates direction or target" }] }] },
+    { "id": "1000015", "kanji": [], "kana": [{ "common": true, "text": "が", "tags": [] }], "sense": [{ "partOfSpeech": ["prt"], "gloss": [{ "lang": "eng", "text": "subject marker" }] }] },
+    { "id": "1000016", "kanji": [], "kana": [{ "common": true, "text": "を", "tags": [] }], "sense": [{ "partOfSpeech": ["prt"], "gloss": [{ "lang": "eng", "text": "object marker" }] }] },
+    { "id": "1000017", "kanji": [], "kana": [{ "common": true, "text": "と", "tags": [] }], "sense": [{ "partOfSpeech": ["prt"], "gloss": [{ "lang": "eng", "text": "and; with" }] }] },
+    { "id": "1171680", "kanji": [{ "common": true, "text": "羽", "tags": [] }, { "common": false, "text": "羽根", "tags": [] }], "kana": [{ "common": true, "text": "はね", "tags": [] }, { "common": true, "text": "は", "tags": [] }], "sense": [{ "partOfSpeech": ["n"], "gloss": [{ "lang": "eng", "text": "feather; wing" }] }] },
+    { "id": "1195250", "kanji": [{ "common": true, "text": "荷", "tags": [] }], "kana": [{ "common": true, "text": "に", "tags": [] }], "sense": [{ "partOfSpeech": ["n"], "gloss": [{ "lang": "eng", "text": "load; cargo" }] }] },
+    { "id": "1202270", "kanji": [{ "common": true, "text": "絵", "tags": [] }, { "common": true, "text": "画", "tags": [] }], "kana": [{ "common": true, "text": "え", "tags": [] }, { "common": true, "text": "が", "tags": [] }], "sense": [{ "partOfSpeech": ["n"], "gloss": [{ "lang": "eng", "text": "picture; painting" }] }] },
+    { "id": "1578150", "kanji": [{ "common": true, "text": "九", "tags": [] }, { "common": true, "text": "９", "tags": [] }], "kana": [{ "common": true, "text": "きゅう", "tags": [] }, { "common": true, "text": "く", "tags": [] }, { "common": true, "text": "ここの", "tags": [] }, { "common": true, "text": "この", "tags": [] }], "sense": [{ "partOfSpeech": ["num"], "gloss": [{ "lang": "eng", "text": "nine" }] }] },
+    { "id": "1582920", "kanji": [{ "common": true, "text": "此の", "tags": [] }], "kana": [{ "common": true, "text": "この", "tags": [] }], "sense": [{ "partOfSpeech": ["adj-pn"], "gloss": [{ "lang": "eng", "text": "this" }] }] },
+    { "id": "1260670", "kanji": [{ "common": true, "text": "元", "tags": [] }, { "common": true, "text": "本", "tags": [] }, { "common": true, "text": "素", "tags": [] }], "kana": [{ "common": true, "text": "もと", "tags": [] }], "sense": [{ "partOfSpeech": ["n"], "gloss": [{ "lang": "eng", "text": "origin; source" }] }] },
+    { "id": "1522150", "kanji": [{ "common": true, "text": "本", "tags": [] }], "kana": [{ "common": true, "text": "ほん", "tags": [] }], "sense": [{ "partOfSpeech": ["n"], "gloss": [{ "lang": "eng", "text": "book" }] }] },
+    { "id": "9000006", "kanji": [], "kana": [{ "common": true, "text": "アニメ", "tags": [] }], "sense": [{ "partOfSpeech": ["n"], "gloss": [{ "lang": "eng", "text": "anime" }] }] }
   ]
 }

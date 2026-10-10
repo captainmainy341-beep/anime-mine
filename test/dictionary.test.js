@@ -137,3 +137,43 @@ test('pickAsset throws when only common archives exist', () => {
   };
   assert.throws(() => pickAsset(release), /No JMdict English asset/);
 });
+
+function word(id, kanji, kana, pos, gloss) {
+  return {
+    id,
+    kanji: kanji.map((text) => ({ common: true, text, tags: [] })),
+    kana: kana.map((text) => ({ common: true, text, tags: [] })),
+    sense: [{ partOfSpeech: [pos], gloss: [{ lang: 'eng', text: gloss }] }],
+  };
+}
+
+const HOMOPHONES = {
+  words: [
+    word('1', [], ['は'], 'prt', 'topic marker'),
+    word('2', ['羽'], ['は'], 'n', 'feather'),
+    word('3', [], ['この'], 'adj-pn', 'this'),
+    word('4', ['九'], ['この'], 'num', 'nine'),
+    word('5', ['本'], ['ほん'], 'n', 'book'),
+    word('6', ['元', '本'], ['もと'], 'n', 'origin'),
+  ],
+};
+
+test('token pos boosts the matching part of speech ahead of other homophones', async () => {
+  const dict = await loadedDictionary(HOMOPHONES);
+  const particle = { surface: 'は', base: 'は', reading: 'は', pos: '助詞' };
+  assert.deepEqual(dict.lookup(particle).map((e) => e.id), ['1', '2']);
+  const noun = { surface: 'は', base: 'は', reading: 'は', pos: '名詞' };
+  assert.deepEqual(dict.lookup(noun).map((e) => e.id), ['2', '1']);
+  const determiner = { surface: 'この', base: 'この', reading: 'この', pos: '連体詞' };
+  assert.equal(dict.lookup(determiner)[0].id, '3');
+});
+
+test('string query prefers entries without kanji forms when it equals a kana form', async () => {
+  const dict = await loadedDictionary(HOMOPHONES);
+  assert.deepEqual(dict.lookup('は').map((e) => e.id), ['1', '2']);
+});
+
+test('exact primary kanji form ranks ahead of a word that merely contains it', async () => {
+  const dict = await loadedDictionary(HOMOPHONES);
+  assert.deepEqual(dict.lookup('本').map((e) => e.id), ['5', '6']);
+});
