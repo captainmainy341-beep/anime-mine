@@ -37,8 +37,40 @@ function buildIndex(json) {
   return index;
 }
 
-function rank(entry, query) {
-  return (entry.common ? 0 : 2) + (entry.kanji.includes(query) ? 0 : 1);
+const POS_CODES = [
+  ['助詞', /^prt$/],
+  ['連体詞', /^adj-pn$/],
+  ['副詞', /^adv/],
+  ['接続詞', /^conj$/],
+  ['感動詞', /^int$/],
+  ['助動詞', /^aux/],
+  ['代名詞', /^(n|pn)/],
+  ['名詞', /^(n|pn)/],
+  ['動詞', /^v/],
+  ['形容詞', /^adj-/],
+];
+
+function posMatches(entry, pos) {
+  const match = POS_CODES.find(([prefix]) => pos.startsWith(prefix));
+  if (!match) return false;
+  return entry.senses.some((sense) => sense.pos.some((code) => match[1].test(code)));
+}
+
+function rank(entry, query, pos) {
+  const usuallyKana = typeof query === 'string' && entry.kanji.length > 0 && !entry.kanji.includes(query) && entry.kana.includes(query);
+  return [
+    pos && !posMatches(entry, pos) ? 1 : 0,
+    usuallyKana ? 1 : 0,
+    entry.common ? 0 : 2,
+    (entry.kanji[0] ?? entry.kana[0]) === query ? 0 : 1,
+  ];
+}
+
+function compareRanks(a, b) {
+  for (let i = 0; i < a.length; i++) {
+    if (a[i] !== b[i]) return a[i] - b[i];
+  }
+  return 0;
 }
 
 function queryCandidates(query) {
@@ -97,10 +129,13 @@ class Dictionary {
 
   lookup(query) {
     if (!this.index) throw new Error('Dictionary not loaded');
+    const pos = typeof query === 'string' ? null : query.pos;
     for (const candidate of queryCandidates(query)) {
       const entries = candidate ? this.index.get(candidate) : undefined;
       if (entries) {
-        return [...entries].sort((a, b) => rank(a, candidate) - rank(b, candidate)).slice(0, MAX_RESULTS);
+        return [...entries]
+          .sort((a, b) => compareRanks(rank(a, candidate, pos), rank(b, candidate, pos)))
+          .slice(0, MAX_RESULTS);
       }
     }
     return [];
