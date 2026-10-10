@@ -4,7 +4,7 @@ const fs = require('fs/promises')
 const path = require('path')
 const {probe, isDirectPlayable, ffmpegPath} = require('./probe')
 
-const CACHE_FILE = /^[0-9a-f]{40}(\.tmp)?\.mp4$/
+const CACHE_FILE = /^[0-9a-f]{40}(\.[0-9a-f]{12})?(\.tmp)?\.mp4$/
 const VIDEO_ENCODERS = [
   ['-c:v', 'h264_videotoolbox', '-b:v', '6M', '-pix_fmt', 'yuv420p'],
   ['-c:v', 'libx264', '-preset', 'veryfast', '-crf', '21', '-pix_fmt', 'yuv420p'],
@@ -108,32 +108,37 @@ class Converter {
 
   plan(info, ext, audioStreamIndex) {
     if (isDirectPlayable(info, ext, audioStreamIndex)) return {mode: 'direct', reason: 'container, video and audio are playable as-is'}
+    return this.#encodePlan(info)
+  }
+
+  #encodePlan(info) {
     const video = info.streams.find(stream => stream.type === 'video')
     if (video?.codec === 'h264' && video.bitDepth === 8) return {mode: 'remux', reason: 'h264 8-bit video is copied; audio is converted to AAC'}
     return {mode: 'transcode', reason: 'video must be re-encoded to 8-bit H.264 for Chromium'}
   }
 
-  async prepare(video, {audioStreamIndex, onProgress = () => {}, signal} = {}) {
+  async prepare(video, {audioStreamIndex, onProgress = () => {}, signal, force = false} = {}) {
     throwIfAborted(signal)
     const info = await probe(video)
     if (!info.streams.some(stream => stream.type === 'audio' && stream.index === audioStreamIndex)) {
       throw new Error(`no audio stream ${audioStreamIndex} in ${path.basename(video)}`)
     }
-    const {mode} = this.plan(info, path.extname(video).toLowerCase(), audioStreamIndex)
+    const {mode} = force ? this.#encodePlan(info) : this.plan(info, path.extname(video).toLowerCase(), audioStreamIndex)
     if (mode === 'direct') return {path: video, mode}
 
     const stat = await fs.stat(video)
     throwIfAborted(signal)
-    const key = crypto.createHash('sha1').update(`${video}|${stat.mtimeMs}|${stat.size}|${audioStreamIndex}`).digest('hex')
+    const forcedKey = force ? '|force' : ''
+    const key = crypto.createHash('sha1').update(`${video}|${stat.mtimeMs}|${stat.size}|${audioStreamIndex}${forcedKey}`).digest('hex')
     const output = path.join(this.cacheDir, `${key}.mp4`)
-    const job = this.#join(output, ({signal: jobSignal, emit}) => this.#encode({video, output, info, audioStreamIndex, mode}, jobSignal, emit))
+    const job = await this.#join(output, ({signal: jobSignal, emit}) => this.#encode({video, output, info, audioStreamIndex, mode}, jobSignal, emit))
     job.listeners.add(onProgress)
     job.refs += 1
     await waitFor(job.promise, signal, () => {
       job.listeners.delete(onProgress)
       job.refs -= 1
       if (job.refs > 0) return false
-      this.#cancel(output, job)
+      job.controller.abort()
       return true
     })
     return {path: output, mode}
@@ -157,8 +162,12 @@ class Converter {
     }
   }
 
-  #join(output, run) {
-    const existing = this.jobs.get(output)
+  async #join(output, run) {
+    let existing = this.jobs.get(output)
+    while (existing?.controller.signal.aborted) {
+      await existing.promise.catch(() => {})
+      existing = this.jobs.get(output)
+    }
     if (existing) return existing
     const job = {controller: new AbortController(), listeners: new Set(), refs: 0}
     job.emit = fraction => {
@@ -171,18 +180,13 @@ class Converter {
     return job
   }
 
-  #cancel(output, job) {
-    if (this.jobs.get(output) === job) this.jobs.delete(output)
-    job.controller.abort()
-  }
-
   async #encode({video, output, info, audioStreamIndex, mode}, signal, emit) {
     await fs.mkdir(this.cacheDir, {recursive: true})
     if (await exists(output)) {
       emit(1)
       return output
     }
-    const temp = output.replace(/\.mp4$/, '.tmp.mp4')
+    const temp = output.replace(/\.mp4$/, `.${crypto.randomBytes(6).toString('hex')}.tmp.mp4`)
     const onTime = micros => {
       if (info.duration > 0) emit(Math.min(1, micros / 1e6 / info.duration))
     }

@@ -145,3 +145,44 @@ test('abort kills ffmpeg and removes the temp file', async t => {
   await assert.rejects(pending, {name: 'AbortError'})
   assert.deepEqual(fs.readdirSync(cacheDir), [])
 })
+
+test('re-preparing a key right after abort waits for the cancelled job and yields a valid output', async t => {
+  const dir = tempDir(t)
+  const video = sourceClip(dir, 'restart.mkv', [
+    '-f', 'lavfi', '-i', 'testsrc=size=320x180:duration=30',
+    '-f', 'lavfi', '-i', 'sine=duration=30',
+    '-c:v', 'libx264', '-pix_fmt', 'yuv420p10le', '-profile:v', 'high10', '-c:a', 'aac',
+  ])
+  const cacheDir = path.join(dir, 'cache')
+  const converter = new Converter({cacheDir})
+  const controller = new AbortController()
+  const pending = converter.prepare(video, {audioStreamIndex: 1, signal: controller.signal})
+  pending.catch(() => {})
+  await waitForFile(cacheDir, name => name.includes('.tmp'))
+  controller.abort()
+  const second = await converter.prepare(video, {audioStreamIndex: 1})
+  await assert.rejects(pending, {name: 'AbortError'})
+  assert.deepEqual(fs.readdirSync(cacheDir), [path.basename(second.path)])
+  const out = await probe(second.path)
+  assert.deepEqual(out.streams.filter(item => item.type === 'video').map(item => [item.codec, item.bitDepth]), [['h264', 8]])
+  assert.deepEqual(out.streams.filter(item => item.type === 'audio').map(item => item.codec), ['aac'])
+})
+
+test('force re-encodes a direct-playable mp4 into a cached remux copy', async t => {
+  const dir = tempDir(t)
+  const video = sourceClip(dir, 'forced.mp4', [
+    '-f', 'lavfi', '-i', 'testsrc=size=320x180:duration=2',
+    '-f', 'lavfi', '-i', 'sine=duration=2',
+    '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-c:a', 'aac',
+  ])
+  const cacheDir = path.join(dir, 'cache')
+  const converter = new Converter({cacheDir})
+  const out = await converter.prepare(video, {audioStreamIndex: 1, force: true})
+  assert.equal(out.mode, 'remux')
+  assert.equal(path.dirname(out.path), cacheDir)
+  assert.deepEqual(fs.readdirSync(cacheDir), [path.basename(out.path)])
+  const result = await probe(out.path)
+  assert.deepEqual(result.streams.filter(item => item.type === 'video').map(item => item.codec), ['h264'])
+  assert.deepEqual(result.streams.filter(item => item.type === 'audio').map(item => item.codec), ['aac'])
+  assert.deepEqual(await converter.prepare(video, {audioStreamIndex: 1}), {path: video, mode: 'direct'})
+})

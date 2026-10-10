@@ -1,1 +1,132 @@
 /* popup styles */
+
+.chip.inflection {
+  color: var(--accent-2);
+  background: rgba(143, 184, 255, 0.12);
+}
+
+.chip.known-known {
+  color: var(--ok);
+}
+
+.chip.known-learning {
+  color: var(--warn);
+}
+
+.chip.known-new {
+  color: var(--muted);
+}
+
+.known-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin: 8px 0;
+}
+
+.pitch {
+  display: grid;
+  gap: 6px;
+  margin: 8px 0;
+}
+
+.pitch-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pitch-label {
+  min-width: 80px;
+  font-size: 12px;
+}
+
+.pitch-morae {
+  display: inline-flex;
+  gap: 2px;
+}
+
+.mora {
+  display: inline-block;
+  padding: 2px 4px;
+  border-bottom: 2px solid var(--line-strong);
+  color: var(--muted);
+}
+
+.mora.high {
+  color: var(--text);
+  border-top: 2px solid var(--accent);
+  border-bottom: none;
+  margin-top: -2px;
+}
+
+.pitch-download {
+  margin: 8px 0;
+}
+
+.mine-preview {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  margin-top: 8px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel-2);
+}
+
+.mine-media {
+  display: grid;
+  gap: 8px;
+}
+
+.mine-media img {
+  width: 100%;
+  max-height: 180px;
+  object-fit: contain;
+  border-radius: var(--radius);
+}
+
+.mine-media audio {
+  width: 100%;
+}
+
+.mine-timing {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.nudge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.mine-field {
+  display: grid;
+  gap: 4px;
+}
+
+.mine-field input,
+.mine-field textarea {
+  width: 100%;
+  box-sizing: border-box;
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 6px 8px;
+  font: inherit;
+}
+
+.mine-field textarea {
+  resize: vertical;
+}
+
+.mine-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
