@@ -1,1 +1,76 @@
 /* library styles */
+
+.continue {
+  margin-bottom: 22px;
+}
+
+.continue[hidden] {
+  display: none;
+}
+
+.continue h2 {
+  margin: 0 0 8px;
+}
+
+.continue-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.continue-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px 14px;
+  border-radius: var(--radius);
+  background: var(--panel);
+  text-align: left;
+}
+
+.continue-card:hover {
+  background: var(--panel-2);
+}
+
+.continue-show {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.continue-ep {
+  color: var(--accent-2);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.continue-card .progress {
+  height: 4px;
+}
+
+.continue-card .progress-fill,
+.ep-bar .progress-fill {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+}
+
+.ep-main {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.ep-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.ep-bar {
+  flex: 0 1 140px;
+  height: 3px;
+}

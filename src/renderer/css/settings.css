@@ -1,1 +1,50 @@
 /* settings styles */
+
+.settings-form .full {
+  grid-column: 1 / -1;
+}
+
+.settings-form .row-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.settings-form .toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.settings-form textarea {
+  padding: 7px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--bg);
+  color: inherit;
+  font: inherit;
+  resize: vertical;
+}
+
+.settings-form textarea:focus {
+  outline: none;
+  border-color: var(--accent-2);
+}
+
+.settings-form .progress {
+  display: block;
+}
+
+.settings-form .progress[hidden] {
+  display: none;
+}
+
+.settings-form .progress-fill {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.2s;
+}

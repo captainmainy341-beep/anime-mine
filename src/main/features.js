@@ -6,13 +6,26 @@ const MAX_CUE_SECONDS = 120;
 const MAX_PAD_SECONDS = 5;
 const MAX_CONTEXT_LINES = 2;
 const MAX_COVERAGE_ENTRIES = 500;
-const PROGRESS_FIELDS = ['position', 'duration', 'subOffset', 'audioStreamIndex', 'subtitle'];
+const MAX_SUB_OFFSET_SECONDS = 600;
 
 const isPlainObject = (value) => value !== null && typeof value === 'object' && !Array.isArray(value);
 const isUnset = (value) => value === undefined || value === null;
 const hasText = (value) => typeof value === 'string' && value.trim() !== '';
 const sha1 = (text) => crypto.createHash('sha1').update(text).digest('hex');
 const emptyLookup = () => ({ span: null, entries: [], dictForm: null, inflection: [], pitch: null });
+const isIndex = (value) => Number.isInteger(value) && value >= 0;
+const isSeconds = (value) => Number.isFinite(value) && value >= 0;
+// The player persists 'off', 'external' or an embedded stream index.
+const isSubtitleChoice = (value) =>
+  value === null || value === 'off' || value === 'external' || isIndex(value) ||
+  (isPlainObject(value) && ['external', 'embedded'].includes(value.kind) && (value.index === null || isIndex(value.index)));
+const PROGRESS_VALIDATORS = {
+  position: isSeconds,
+  duration: isSeconds,
+  subOffset: (value) => Number.isFinite(value) && Math.abs(value) <= MAX_SUB_OFFSET_SECONDS,
+  audioStreamIndex: (value) => value === null || isIndex(value),
+  subtitle: isSubtitleChoice,
+};
 
 function assertVideoPath(videoPath) {
   if (!hasText(videoPath)) throw new Error('videoPath must be a non-empty string');
@@ -60,9 +73,23 @@ async function readJson(file) {
 
 async function writeJson(file, value) {
   await fs.mkdir(path.dirname(file), { recursive: true });
-  const tmp = `${file}.tmp`;
-  await fs.writeFile(tmp, JSON.stringify(value));
-  await fs.rename(tmp, file);
+  const tmp = `${file}.${crypto.randomBytes(6).toString('hex')}.tmp`;
+  try {
+    await fs.writeFile(tmp, JSON.stringify(value));
+    await fs.rename(tmp, file);
+  } catch (error) {
+    await fs.rm(tmp, { force: true });
+    throw error;
+  }
+}
+
+async function subtitleFingerprint(videoPath, subtitle) {
+  if (subtitle.source === 'external') {
+    const stat = await fs.stat(subtitle.subtitlePath);
+    return `${subtitle.subtitlePath}|${stat.mtimeMs}|${stat.size}`;
+  }
+  const stat = await fs.stat(videoPath);
+  return `${videoPath}|${stat.mtimeMs}|${stat.size}|${subtitle.embeddedIndex}`;
 }
 
 // Object keys keep insertion order, so the newest entries are the last ones.
@@ -92,6 +119,7 @@ function createFeatureHandlers({ dataDir, getSettings, library, dictionary, toke
   const watch = new WatchProgress(dataDir);
   const pitchAccent = new PitchAccent(dataDir);
   const coverageFile = path.join(dataDir, 'coverage.json');
+  let coverageWrites = Promise.resolve();
   const activePrepares = new Map();
   let knownStore = null;
   const knownWords = () => (knownStore ??= new KnownWords(dataDir).load());
@@ -123,20 +151,23 @@ function createFeatureHandlers({ dataDir, getSettings, library, dictionary, toke
     };
   }
 
-  // One running job per video: a different audio track aborts the previous one; the same track shares it.
+  // One running job per video: a different audio track or mode aborts the previous one; an identical request shares it.
   async function prepareMedia(req) {
-    const { videoPath, audioStreamIndex } = req ?? {};
+    const { videoPath, audioStreamIndex, force } = req ?? {};
     assertVideoPath(videoPath);
     if (!Number.isInteger(audioStreamIndex) || audioStreamIndex < 0) {
       throw new Error('audioStreamIndex must be a non-negative integer');
     }
+    if (!isUnset(force) && typeof force !== 'boolean') throw new Error('force must be a boolean');
+    const forced = force === true;
     const current = activePrepares.get(videoPath);
-    if (current?.audioStreamIndex === audioStreamIndex) return current.promise;
+    if (current?.audioStreamIndex === audioStreamIndex && current.force === forced) return current.promise;
     current?.controller.abort();
     const controller = new AbortController();
-    const job = { audioStreamIndex, controller };
+    const job = { audioStreamIndex, force: forced, controller };
     job.promise = converter.prepare(videoPath, {
       audioStreamIndex,
+      force: forced,
       signal: controller.signal,
       onProgress: (fraction) => notify('media:progress', { videoPath, fraction }),
     });
@@ -189,7 +220,7 @@ function createFeatureHandlers({ dataDir, getSettings, library, dictionary, toke
       cues = await extractSubtitles({ video: videoPath, streamIndex });
       await writeJson(file, cues);
     }
-    return { source: 'embedded', subtitlePath: null, embeddedIndex: streamIndex, cues, identity: `embedded:${key}` };
+    return { source: 'embedded', subtitlePath: null, embeddedIndex: streamIndex, cues };
   }
 
   // Explicit embedded track > external link > (auto) probe's default Japanese track > none.
@@ -202,14 +233,13 @@ function createFeatureHandlers({ dataDir, getSettings, library, dictionary, toke
         subtitlePath: linked,
         embeddedIndex: null,
         cues: await parseSubtitleFile(linked),
-        identity: `file:${linked}`,
       };
     }
     if (auto) {
       const stream = probeModule.pickDefaultSubtitle((await probe(videoPath)).streams);
       if (stream) return embeddedCues(videoPath, stream.index);
     }
-    return { source: 'none', subtitlePath: null, embeddedIndex: null, cues: [], identity: null };
+    return { source: 'none', subtitlePath: null, embeddedIndex: null, cues: [] };
   }
 
   async function loadCues(videoPath, opts) {
@@ -276,19 +306,27 @@ function createFeatureHandlers({ dataDir, getSettings, library, dictionary, toke
     };
   }
 
-  // Cached per subtitle and known/learning counts; any vocabulary change yields a new key.
+  function storeCoverage(key, result) {
+    const write = coverageWrites.then(async () => {
+      const cache = (await readJson(coverageFile)) ?? {};
+      await writeJson(coverageFile, keepLatest({ ...cache, [key]: result }, MAX_COVERAGE_ENTRIES));
+    });
+    coverageWrites = write.catch(() => {});
+    return write;
+  }
+
+  // Cached per subtitle fingerprint and vocabulary revision, so any vocabulary change yields a new key.
   async function coverage(req) {
     const { videoPath, embeddedIndex } = req ?? {};
     assertVideoPath(videoPath);
     const subtitle = await resolveSubtitle(videoPath, { embeddedIndex: optionalIndex(embeddedIndex, 'embeddedIndex') ?? null });
     if (subtitle.source === 'none') return null;
     const store = knownWords();
-    const { known: knownCount, learning } = store.stats();
-    const key = `${subtitle.identity}|${knownCount}|${learning}`;
+    const key = `${await subtitleFingerprint(videoPath, subtitle)}|${store.revision}`;
     const cache = (await readJson(coverageFile)) ?? {};
     if (Object.hasOwn(cache, key)) return cache[key];
     const result = await known.episodeCoverage(subtitle.cues, tokenize, store);
-    await writeJson(coverageFile, keepLatest({ ...cache, [key]: result }, MAX_COVERAGE_ENTRIES));
+    await storeCoverage(key, result);
     return result;
   }
 
@@ -343,8 +381,11 @@ function createFeatureHandlers({ dataDir, getSettings, library, dictionary, toke
     const { videoPath, patch } = req ?? {};
     assertVideoPath(videoPath);
     if (!isPlainObject(patch)) throw new Error('patch must be an object');
-    const unknown = Object.keys(patch).filter((key) => !PROGRESS_FIELDS.includes(key));
+    const unknown = Object.keys(patch).filter((key) => !Object.hasOwn(PROGRESS_VALIDATORS, key));
     if (unknown.length) throw new Error(`Cannot update progress field(s): ${unknown.join(', ')}`);
+    for (const [key, value] of Object.entries(patch)) {
+      if (!PROGRESS_VALIDATORS[key](value)) throw new Error(`Invalid progress value: ${key}`);
+    }
     return watch.update(videoPath, patch);
   }
 

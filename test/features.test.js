@@ -24,6 +24,12 @@ const INFO = {
 
 const abortError = () => Object.assign(new Error('aborted'), { name: 'AbortError' });
 
+async function subtitleFile(dir, name, text) {
+  const file = path.join(dir, name);
+  await fs.writeFile(file, text);
+  return file;
+}
+
 // Every dependency is a fake that records what it was asked to do.
 function harness() {
   const dir = fsSync.mkdtempSync(path.join(root, 'case-'));
@@ -58,6 +64,7 @@ function harness() {
     pitchLookups: [],
     translateCalls: [],
     media: [],
+    revision: 0,
   };
 
   class FakeConverter {
@@ -78,14 +85,14 @@ function harness() {
       log.cleared += 1;
     }
 
-    prepare(video, { audioStreamIndex, onProgress, signal }) {
-      log.prepares.push({ video, audioStreamIndex, signal });
+    prepare(video, { audioStreamIndex, onProgress, signal, force }) {
+      log.prepares.push({ video, audioStreamIndex, signal, force });
       onProgress(0.5);
       return new Promise((resolve, reject) => {
         if (signal.aborted) return reject(abortError());
         const abort = () => reject(abortError());
         signal.addEventListener('abort', abort, { once: true });
-        if (log.held.has(audioStreamIndex)) return;
+        if (log.held.has(audioStreamIndex) && !force) return;
         signal.removeEventListener('abort', abort);
         resolve({ path: `/cache/${audioStreamIndex}.mp4`, mode: 'remux' });
       });
@@ -107,9 +114,14 @@ function harness() {
       return counts;
     }
 
+    get revision() {
+      return log.revision;
+    }
+
     mark(word, status) {
       if (status === 'new') log.words.delete(word);
       else log.words.set(word, status);
+      log.revision += 1;
       return true;
     }
 
@@ -309,10 +321,10 @@ test('media:probe reports streams, plan and defaults; saved progress picks the a
 
   await call('progress:update', {
     videoPath: '/v/a.mkv',
-    patch: { audioStreamIndex: 1, position: 600, subOffset: 0.3, subtitle: { embeddedIndex: 3 } },
+    patch: { audioStreamIndex: 1, position: 600, subOffset: 0.3, subtitle: 3 },
   });
   const second = await call('media:probe', '/v/a.mkv');
-  assert.deepEqual(second.saved, { audioStreamIndex: 1, subtitle: { embeddedIndex: 3 }, position: 600, subOffset: 0.3 });
+  assert.deepEqual(second.saved, { audioStreamIndex: 1, subtitle: 3, position: 600, subOffset: 0.3 });
   assert.equal(log.planCalls.at(-1).audio, 1);
   await assert.rejects(call('media:probe', ''), /videoPath must be a non-empty string/);
 });
@@ -327,6 +339,27 @@ test('media:prepare returns the converted file, emits progress and uses dataDir/
   assert.deepEqual(log.converters, [{ cacheDir: path.join(dir, 'converted') }]);
   assert.deepEqual(notified, [{ channel: 'media:progress', payload: { videoPath: '/v/a.mkv', fraction: 0.5 } }]);
   await assert.rejects(call('media:prepare', { videoPath: '/v/a.mkv', audioStreamIndex: -1 }), /audioStreamIndex must be a non-negative integer/);
+});
+
+test('media:prepare passes force through and rejects a non-boolean force', async () => {
+  const { log, call } = harness();
+
+  await call('media:prepare', { videoPath: '/v/a.mkv', audioStreamIndex: 1, force: true });
+  await call('media:prepare', { videoPath: '/v/a.mkv', audioStreamIndex: 1 });
+
+  assert.deepEqual(log.prepares.map((item) => item.force), [true, false]);
+  await assert.rejects(call('media:prepare', { videoPath: '/v/a.mkv', audioStreamIndex: 1, force: 'yes' }), /force must be a boolean/);
+});
+
+test('a forced prepare does not share a running job for the same track', async () => {
+  const { log, call } = harness();
+  log.held.add(1);
+
+  const plain = call('media:prepare', { videoPath: '/v/a.mkv', audioStreamIndex: 1 }).catch((err) => err);
+  const forced = await call('media:prepare', { videoPath: '/v/a.mkv', audioStreamIndex: 1, force: true });
+
+  assert.deepEqual(forced, { path: '/cache/1.mp4', mode: 'remux' });
+  assert.equal((await plain).name, 'AbortError');
 });
 
 test('a new prepare for the same video with another audio track aborts the previous job', async () => {
@@ -478,9 +511,9 @@ test('known:classify returns per-token statuses and the sentence summary with on
   await assert.rejects(call('known:classify', 'x'), /tokens must be an array/);
 });
 
-test('known:coverage is null without subtitles and caches results until the known counts change', async () => {
-  const { log, call } = harness();
-  log.subs['/v/ep1.mkv'] = '/subs/ep1.srt';
+test('known:coverage is null without subtitles and caches results until the vocabulary changes', async () => {
+  const { dir, log, call } = harness();
+  log.subs['/v/ep1.mkv'] = await subtitleFile(dir, 'ep1.srt', 'ep1');
   log.externalCues = [
     { start: 0, end: 1, text: '雨 降る' },
     { start: 1, end: 2, text: '雨 猫 猫' },
@@ -512,6 +545,49 @@ test('known:coverage is null without subtitles and caches results until the know
   assert.equal(log.tokenized, 4, 'changed known counts must recompute');
   assert.equal(after.knownWords, 3);
   assert.deepEqual(after.topNew, [{ word: '猫', count: 2 }]);
+});
+
+test('known:coverage recomputes when a vocabulary change keeps the known and learning counts', async () => {
+  const { dir, log, call } = harness();
+  log.subs['/v/ep2.mkv'] = await subtitleFile(dir, 'ep2.srt', 'two');
+  log.externalCues = [{ start: 0, end: 1, text: '雨 雨 猫' }];
+  log.words.set('雨', 'known');
+  log.words.set('猫', 'learning');
+
+  const before = await call('known:coverage', { videoPath: '/v/ep2.mkv' });
+  await call('known:mark', { word: '雨', status: 'learning' });
+  await call('known:mark', { word: '猫', status: 'known' });
+  const after = await call('known:coverage', { videoPath: '/v/ep2.mkv' });
+
+  assert.deepEqual([before.knownWords, before.learningWords], [2, 1]);
+  assert.deepEqual([after.knownWords, after.learningWords], [1, 2]);
+});
+
+test('known:coverage recomputes when the linked subtitle file changes', async () => {
+  const { dir, log, call } = harness();
+  const file = await subtitleFile(dir, 'ep3.srt', 'one');
+  log.subs['/v/ep3.mkv'] = file;
+  log.externalCues = [{ start: 0, end: 1, text: '雨' }];
+
+  const first = await call('known:coverage', { videoPath: '/v/ep3.mkv' });
+  await fs.writeFile(file, 'two two');
+  log.externalCues = [{ start: 0, end: 1, text: '雨 猫' }];
+  const second = await call('known:coverage', { videoPath: '/v/ep3.mkv' });
+
+  assert.equal(first.totalWords, 1);
+  assert.equal(second.totalWords, 2);
+});
+
+test('concurrent known:coverage calls persist every entry to coverage.json', async () => {
+  const { dir, log, call } = harness();
+  log.subs['/v/x.mkv'] = await subtitleFile(dir, 'x.srt', 'x');
+  log.subs['/v/y.mkv'] = await subtitleFile(dir, 'y.srt', 'yy');
+
+  await Promise.all([call('known:coverage', { videoPath: '/v/x.mkv' }), call('known:coverage', { videoPath: '/v/y.mkv' })]);
+
+  const cache = JSON.parse(await fs.readFile(path.join(dir, 'coverage.json'), 'utf8'));
+  assert.equal(Object.keys(cache).length, 2);
+  assert.deepEqual((await fs.readdir(dir)).filter((name) => name.endsWith('.tmp')), []);
 });
 
 test('lookup:at without a downloaded dictionary returns the empty shape and never looks up', async () => {
@@ -591,6 +667,31 @@ test('progress:update merges a whitelisted patch and rejects derived fields', as
   assert.equal(entry.subOffset, 0.5);
   assert.deepEqual(await call('progress:get', '/v/a.mkv'), entry);
   await assert.rejects(call('progress:update', { videoPath: '/v/a.mkv', patch: { finished: true } }), /Cannot update progress field\(s\): finished/);
+});
+
+test('progress:update rejects out-of-range values and accepts the values the player persists', async () => {
+  const { log, call } = harness();
+  const invalid = [
+    ['position', -1], ['position', NaN], ['duration', Infinity], ['duration', '12'],
+    ['subOffset', 601], ['subOffset', -600.5], ['subOffset', NaN],
+    ['audioStreamIndex', -1], ['audioStreamIndex', 1.5], ['audioStreamIndex', '1'],
+    ['subtitle', 'on'], ['subtitle', -1], ['subtitle', { kind: 'bogus', index: 1 }], ['subtitle', { kind: 'embedded', index: -2 }],
+  ];
+  for (const [key, value] of invalid) {
+    await assert.rejects(call('progress:update', { videoPath: '/v/a.mkv', patch: { [key]: value } }), new RegExp(`Invalid progress value: ${key}$`));
+  }
+  assert.deepEqual(log.progress, {});
+
+  for (const patch of [
+    { position: 0, duration: 1320, subOffset: 600, audioStreamIndex: null, subtitle: null },
+    { subtitle: 'off' },
+    { subtitle: 4 },
+    { subtitle: { kind: 'embedded', index: null } },
+    { subtitle: { kind: 'external', index: 0 } },
+  ]) {
+    await call('progress:update', { videoPath: '/v/a.mkv', patch });
+  }
+  assert.deepEqual((await call('progress:get', '/v/a.mkv')).subtitle, { kind: 'external', index: 0 });
 });
 
 test('progress:continue uses the library scan and progress:next follows episode order', async () => {

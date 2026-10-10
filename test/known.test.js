@@ -75,6 +75,24 @@ test('store round-trips through known.json and tolerates a missing file', () => 
   assert.deepEqual(reloaded.stats(), { known: 3, learning: 1 });
 });
 
+test('revision counts vocabulary changes, persists them and loads old files as 0', () => {
+  const { dir, store } = tempStore();
+  store.mark('猫', 'known');
+  store.mark('猫', 'known');
+  assert.equal(store.revision, 1);
+  store.mark('猫', 'learning');
+  store.addMany(['犬', '犬', '鳥'], 'known', 'text');
+  assert.equal(store.revision, 4);
+  store.mark('鳥', 'new');
+  assert.equal(store.revision, 5);
+  store.save();
+
+  assert.equal(JSON.parse(fs.readFileSync(path.join(dir, 'known.json'), 'utf8')).revision, 5);
+  assert.equal(new KnownWords(dir).load().revision, 5);
+  fs.writeFileSync(path.join(dir, 'known.json'), JSON.stringify({ words: { 猫: { status: 'known', source: 'manual', added: 1 } } }));
+  assert.equal(new KnownWords(dir).load().revision, 0);
+});
+
 test('mark with new removes the word and invalid statuses throw', () => {
   const { store } = tempStore();
   store.mark('猫', 'known');

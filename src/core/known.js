@@ -75,26 +75,34 @@ function wordsFromNote(fields, field) {
 }
 
 class KnownWords {
+  #revision = 0;
+
   constructor(dataDir) {
     this.dataDir = dataDir;
     this.file = path.join(dataDir, 'known.json');
     this.words = {};
   }
 
+  get revision() {
+    return this.#revision;
+  }
+
   load() {
     if (!fs.existsSync(this.file)) {
       this.words = {};
+      this.#revision = 0;
       return this;
     }
     const parsed = JSON.parse(fs.readFileSync(this.file, 'utf8'));
     this.words = parsed && typeof parsed.words === 'object' && parsed.words !== null ? parsed.words : {};
+    this.#revision = Number.isSafeInteger(parsed?.revision) ? parsed.revision : 0;
     return this;
   }
 
   save() {
     fs.mkdirSync(this.dataDir, { recursive: true });
     const tmp = `${this.file}.${process.pid}.tmp`;
-    fs.writeFileSync(tmp, JSON.stringify({ words: this.words }, null, 2));
+    fs.writeFileSync(tmp, JSON.stringify({ words: this.words, revision: this.#revision }, null, 2));
     try {
       fs.renameSync(tmp, this.file);
     } catch (err) {
@@ -122,12 +130,14 @@ class KnownWords {
     if (status === 'new') {
       if (!this.has(key)) return false;
       delete this.words[key];
+      this.#revision += 1;
       return true;
     }
     assertStatus(status);
     const existing = this.entry(key);
     if (existing?.status === status) return false;
     this.words[key] = { status, source, added: existing ? existing.added : Date.now() };
+    this.#revision += 1;
     return true;
   }
 

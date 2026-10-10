@@ -1,27 +1,103 @@
 import { tokenizeCached } from './lib/nlp.mjs';
 import { fill, h, toast } from './lib/ui.mjs';
+import {
+  NUDGE_SECONDS,
+  buildMineRequest,
+  extendRange,
+  glossesOf,
+  initialRange,
+  nudge,
+  prefillFields,
+  previewRequest,
+  rangeCue,
+} from './lib/mineForm.mjs';
 
 const api = window.api;
+const MEDIA_DEBOUNCE_MS = 300;
+const KNOWN_ACTIONS = [
+  ['known', 'Know it'],
+  ['learning', 'Learning'],
+  ['new', 'Reset'],
+];
+const KNOWN_LABELS = { known: 'Known', learning: 'Learning', new: 'New' };
+const FIELD_ROWS = [
+  ['Word', 'Word', false],
+  ['Reading', 'Reading', false],
+  ['Meaning', 'Meaning', true],
+  ['SentenceTranslation', 'Sentence translation', true],
+  ['Notes', 'Notes', true],
+];
+
 let onDictProgress = null;
 api.dict.onProgress((fraction) => onDictProgress?.(fraction));
 
-async function lookupWords({ mode, cues, index, token }) {
-  const tokens =
-    mode === 'word' ? [token] : (await tokenizeCached(cues[index].text)).filter((t) => t.isWord);
-  return Promise.all(tokens.map(async (t) => ({ token: t, entries: await api.dict.lookup(t) })));
+async function lookupTarget({ mode, cues, index, tokenIndex }) {
+  const text = cues[index].text;
+  if (mode === 'word') return [await api.lookup.at({ text, index: tokenIndex })];
+  const tokens = await tokenizeCached(text);
+  const hits = await Promise.all(tokens.map((t, i) => (t.isWord ? api.lookup.at({ text, index: i }) : null)));
+  const seen = new Set();
+  return hits.filter((hit) => {
+    if (!hit?.span) return false;
+    const key = `${hit.span.start}:${hit.span.end}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
 }
 
 function aiRequest({ mode, cues, index, token }) {
   const req = {
     sentence: cues[index].text,
-    context: cues.slice(Math.max(0, index - 2), index).map((cue) => cue.text),
+    context: contextFor(cues, index),
   };
   if (mode === 'word') req.word = token.surface;
   return req;
 }
 
-function glossesOf(entry) {
-  return entry ? entry.senses.flatMap((sense) => sense.glosses).join('; ') : '';
+function contextFor(cues, from) {
+  return cues.slice(Math.max(0, from - 2), from).map((cue) => cue.text);
+}
+
+function wordOf(target, result) {
+  const { token } = target;
+  return {
+    surface: result?.span?.text ?? token.surface,
+    base: result?.dictForm ?? token.base ?? token.surface,
+    reading: result?.entries?.[0]?.kana?.[0] ?? token.reading ?? '',
+  };
+}
+
+function draftFor(target, mode, lookups, entryIndex) {
+  const range = initialRange(target.cues, target.index);
+  const cue = rangeCue(range);
+  const result = mode === 'word' ? lookups?.[0] : null;
+  const word = mode === 'word' ? wordOf(target, result) : null;
+  const entry = result?.entries[entryIndex];
+  return {
+    mode,
+    range,
+    word,
+    timing: { start: cue.start, end: cue.end },
+    fields: prefillFields({ mode, cueText: cue.text, word: word?.base, reading: word?.reading, entry }),
+  };
+}
+
+function mineRequestFor(draft, audioStreamIndex, videoPath) {
+  return buildMineRequest({
+    videoPath,
+    mode: draft.mode,
+    cue: rangeCue(draft.range),
+    timing: draft.timing,
+    word: draft.word,
+    fields: { ...draft.fields },
+    context: contextFor(draft.range.cues, draft.range.from),
+    audioStreamIndex,
+  });
+}
+
+function friendlyMineError(message) {
+  return /already in your deck/i.test(message) ? 'This note is already in your Anki deck.' : message;
 }
 
 function firstGloss(entries) {
@@ -34,45 +110,69 @@ function progressBar(fraction) {
   return h('div', { class: 'progress' }, bar);
 }
 
-export function createPopup(slot, { videoPath, onOpenSettings, onMined }) {
+export function createPopup(slot, { videoPath, getAudioStreamIndex, onOpenSettings, onMined, onKnownChanged }) {
   let target = null;
   let tab = 'dictionary';
   let lookups = null;
   let selected = 0;
-  let mining = false;
+  let knownStatus = 'new';
   let ai = { status: 'idle' };
+  let preview = null;
+  let wantPreview = false;
+  let mediaSeq = 0;
+  let mediaTimer = null;
   const dict = { ready: true, downloading: false, progress: 0 };
+  const pitch = { ready: true, downloading: false, progress: 0 };
+
+  const streamIndex = () => getAudioStreamIndex?.() ?? null;
 
   onDictProgress = (fraction) => {
     dict.progress = fraction;
     render();
   };
 
-  function open(next) {
+  function open(next, { withPreview = false } = {}) {
+    clearTimeout(mediaTimer);
     target = next;
     tab = 'dictionary';
     lookups = null;
     selected = 0;
+    knownStatus = 'new';
     ai = { status: 'idle' };
+    preview = null;
+    wantPreview = withPreview;
     slot.hidden = false;
     render();
     load();
   }
 
   function close() {
+    clearTimeout(mediaTimer);
     target = null;
+    preview = null;
     slot.hidden = true;
     slot.replaceChildren();
   }
 
   async function load() {
     const current = target;
-    const { ready } = await api.dict.status();
+    const [dictStatus, pitchStatus] = await Promise.all([api.dict.status(), api.pitch.status()]);
     if (target !== current) return;
-    dict.ready = ready;
-    lookups = ready ? await lookupWords(current) : [];
+    dict.ready = dictStatus.ready;
+    pitch.ready = pitchStatus.ready;
+    lookups = dict.ready ? await lookupTarget(current) : [];
     if (target !== current) return;
+    const base = current.mode === 'word' ? lookups[0]?.dictForm : null;
+    if (base) {
+      const [status] = (await api.known.classify([{ surface: base, base, isWord: true }])).statuses;
+      if (target !== current) return;
+      knownStatus = status;
+    }
     render();
+    if (wantPreview) {
+      wantPreview = false;
+      openPreview(current.mode);
+    }
   }
 
   function render() {
@@ -83,32 +183,45 @@ export function createPopup(slot, { videoPath, onOpenSettings, onMined }) {
       dict.ready ? null : dictBanner(),
       tabs(),
       h('div', { class: 'popup-body' }, tab === 'dictionary' ? dictionaryPanel() : aiPanel()),
+      preview ? previewPanel(preview) : null,
       footer(),
     );
   }
 
   function head() {
     const { mode, cues, index, token } = target;
-    const title =
-      mode === 'word'
-        ? h(
-            'div',
-            { class: 'popup-title' },
-            h('span', { class: 'surface' }, token.surface),
-            token.reading ? h('span', { class: 'reading' }, token.reading) : null,
-          )
-        : h(
-            'div',
-            { class: 'popup-title' },
-            h('span', { class: 'label muted' }, 'Sentence'),
-            h('p', { class: 'sentence-head' }, cues[index].text),
-          );
+    if (mode === 'sentence') {
+      return h(
+        'div',
+        { class: 'popup-head' },
+        h(
+          'div',
+          { class: 'popup-title' },
+          h('span', { class: 'label muted' }, 'Sentence'),
+          h('p', { class: 'sentence-head' }, cues[index].text),
+        ),
+        closeButton(),
+      );
+    }
+    const result = lookups?.[0];
+    const dictForm = result?.dictForm;
     return h(
       'div',
       { class: 'popup-head' },
-      title,
-      h('button', { class: 'ghost small', title: 'Close (Esc)', onclick: close }, '×'),
+      h(
+        'div',
+        { class: 'popup-title' },
+        h('span', { class: 'surface' }, result?.span?.text ?? token.surface),
+        token.reading ? h('span', { class: 'reading' }, token.reading) : null,
+        dictForm && dictForm !== token.surface ? h('span', { class: 'chip' }, dictForm) : null,
+        ...(result?.inflection ?? []).map((label) => h('span', { class: 'chip inflection' }, label)),
+      ),
+      closeButton(),
     );
+  }
+
+  function closeButton() {
+    return h('button', { class: 'ghost small', title: 'Close (Esc)', onclick: close }, '×');
   }
 
   function dictBanner() {
@@ -168,15 +281,95 @@ export function createPopup(slot, { videoPath, onOpenSettings, onMined }) {
   function dictionaryPanel() {
     if (!dict.ready) return h('p', { class: 'muted' }, 'Download the dictionary to look words up.');
     if (!lookups) return h('p', { class: 'muted' }, 'Looking up…');
-    return target.mode === 'word' ? wordEntries() : sentenceWords();
+    return target.mode === 'word' ? wordPanel() : sentenceWords();
   }
 
-  function wordEntries() {
-    const entries = lookups[0].entries;
-    if (!entries.length) {
-      return h('p', { class: 'muted' }, `No dictionary entry for “${target.token.surface}”.`);
+  function wordPanel() {
+    const result = lookups[0];
+    return h(
+      'div',
+      {},
+      pitchBlock(result),
+      knownBlock(result),
+      result.entries.length
+        ? result.entries.map(entryCard)
+        : h('p', { class: 'muted' }, `No dictionary entry for “${target.token.surface}”.`),
+    );
+  }
+
+  function pitchBlock(result) {
+    if (result.pitch) {
+      return h(
+        'div',
+        { class: 'pitch' },
+        result.pitch.accents.map(({ label, mora }) =>
+          h(
+            'div',
+            { class: 'pitch-row' },
+            h('span', { class: 'pitch-label muted' }, label),
+            h(
+              'span',
+              { class: 'pitch-morae' },
+              mora.map(({ mora: text, high }) => h('span', { class: high ? 'mora high' : 'mora' }, text)),
+            ),
+          ),
+        ),
+      );
     }
-    return entries.map(entryCard);
+    if (pitch.ready) return null;
+    return pitch.downloading
+      ? h('div', { class: 'pitch-download' }, progressBar(pitch.progress))
+      : h('button', { class: 'small pitch-download', onclick: downloadPitch }, 'Download pitch accent data');
+  }
+
+  async function downloadPitch() {
+    const current = target;
+    pitch.downloading = true;
+    pitch.progress = 0;
+    render();
+    const off = api.pitch.onProgress((fraction) => {
+      pitch.progress = fraction;
+      render();
+    });
+    try {
+      await api.pitch.download();
+      toast('Pitch accent data ready', 'success');
+    } catch (err) {
+      toast(err.message, 'error');
+    } finally {
+      off();
+      pitch.downloading = false;
+    }
+    if (target === current) load();
+  }
+
+  function knownBlock(result) {
+    if (!result.dictForm) return null;
+    const base = result.dictForm;
+    return h(
+      'div',
+      { class: 'known-row' },
+      h('span', { class: `chip known-${knownStatus}` }, KNOWN_LABELS[knownStatus]),
+      ...KNOWN_ACTIONS.map(([status, label]) =>
+        h(
+          'button',
+          { class: 'small', disabled: knownStatus === status, onclick: () => markKnown(base, status) },
+          label,
+        ),
+      ),
+    );
+  }
+
+  async function markKnown(word, status) {
+    try {
+      await api.known.mark({ word, status });
+    } catch (err) {
+      toast(err.message, 'error');
+      return;
+    }
+    knownStatus = status;
+    onKnownChanged?.();
+    render();
   }
 
   function entryCard(entry, i) {
@@ -186,6 +379,7 @@ export function createPopup(slot, { videoPath, onOpenSettings, onMined }) {
         class: `entry${i === selected ? ' selected' : ''}`,
         onclick: () => {
           selected = i;
+          if (preview) preview.fields.Meaning = glossesOf(entry);
           render();
         },
       },
@@ -211,12 +405,12 @@ export function createPopup(slot, { videoPath, onOpenSettings, onMined }) {
 
   function sentenceWords() {
     if (!lookups.length) return h('p', { class: 'muted' }, 'No dictionary words in this line.');
-    return lookups.map(({ token, entries }) =>
+    return lookups.map(({ span, entries }) =>
       h(
         'div',
         { class: 'word-row' },
-        h('span', { class: 'w' }, token.surface),
-        h('span', { class: 'r' }, token.reading),
+        h('span', { class: 'w' }, span.text),
+        h('span', { class: 'r' }, entries[0]?.kana[0] ?? ''),
         h('span', { class: 'g' }, firstGloss(entries)),
       ),
     );
@@ -265,49 +459,195 @@ export function createPopup(slot, { videoPath, onOpenSettings, onMined }) {
   }
 
   function footer() {
+    const busy = !lookups || preview?.mining;
     return h(
       'div',
       { class: 'popup-foot' },
-      target.mode === 'word' ? h('button', { class: 'primary', disabled: mining, onclick: () => mine('word') }, 'Mine word') : null,
-      h('button', { disabled: mining, onclick: () => mine('sentence') }, 'Mine sentence'),
+      target.mode === 'word'
+        ? h('button', { class: 'primary', disabled: busy, onclick: () => openPreview('word') }, 'Mine word')
+        : null,
+      h('button', { disabled: busy, onclick: () => openPreview('sentence') }, 'Mine sentence'),
     );
   }
 
-  function selectedEntry() {
-    return lookups?.[0]?.entries[selected];
+  function openPreview(mode) {
+    if (!target) return;
+    preview = {
+      ...draftFor(target, mode, lookups, selected),
+      audio: null,
+      picture: null,
+      mediaError: null,
+      translating: false,
+      mining: false,
+      error: null,
+    };
+    render();
+    loadMedia();
+    translateIfNeeded(preview);
   }
 
-  function mineRequest(mode) {
-    const { cues, index, token } = target;
-    const cue = cues[index];
-    const req = { videoPath, cue: { start: cue.start, end: cue.end, text: cue.text }, mode };
-    if (mode === 'word') {
-      req.word = { surface: token.surface, base: token.base, reading: token.reading };
-      const meaning = glossesOf(selectedEntry());
-      if (meaning) req.meaning = meaning;
-    }
-    if (ai.status === 'done') req.translation = ai.text;
-    return req;
-  }
-
-  async function mine(mode) {
-    mining = true;
+  async function translateIfNeeded(p) {
+    const { autoTranslate } = await api.settings.get();
+    if (!autoTranslate || preview !== p || p.fields.SentenceTranslation.trim()) return;
+    p.translating = true;
     render();
     try {
-      await api.anki.mine(mineRequest(mode));
-      toast('Added to Anki', 'success');
-      onMined?.();
+      const translation = await api.ai.translate({
+        sentence: rangeCue(p.range).text,
+        context: contextFor(p.range.cues, p.range.from),
+      });
+      if (preview === p && !p.fields.SentenceTranslation.trim()) p.fields.SentenceTranslation = translation;
+    } catch {}
+    p.translating = false;
+    render();
+  }
+
+  async function loadMedia() {
+    const p = preview;
+    if (!p) return;
+    const seq = ++mediaSeq;
+    try {
+      const { audio, picture } = await api.anki.preview(
+        previewRequest({ videoPath, timing: p.timing, audioStreamIndex: streamIndex() }),
+      );
+      if (seq !== mediaSeq || preview !== p) return;
+      Object.assign(p, { audio, picture, mediaError: null });
     } catch (err) {
-      toast(err.message, 'error');
-    } finally {
-      mining = false;
-      render();
+      if (seq !== mediaSeq || preview !== p) return;
+      Object.assign(p, { audio: null, picture: null, mediaError: err.message });
     }
+    render();
+  }
+
+  function scheduleMedia() {
+    clearTimeout(mediaTimer);
+    mediaTimer = setTimeout(loadMedia, MEDIA_DEBOUNCE_MS);
+  }
+
+  function nudgeTiming(edge, delta) {
+    if (!preview) return;
+    preview.timing = nudge(preview.timing, edge, delta);
+    render();
+    scheduleMedia();
+  }
+
+  function extendPreview(direction) {
+    if (!preview) return;
+    preview.range = extendRange(preview.range, direction);
+    const cue = rangeCue(preview.range);
+    preview.timing = { start: cue.start, end: cue.end };
+    if (preview.mode === 'sentence') preview.fields.Word = cue.text;
+    render();
+    scheduleMedia();
+  }
+
+  async function confirmMine() {
+    const p = preview;
+    if (!p || p.mining) return;
+    p.mining = true;
+    p.error = null;
+    render();
+    try {
+      await api.anki.mine(mineRequestFor(p, streamIndex(), videoPath));
+    } catch (err) {
+      p.mining = false;
+      p.error = friendlyMineError(err.message);
+      render();
+      return;
+    }
+    toast('Added to Anki', 'success');
+    if (preview === p) preview = null;
+    onMined?.();
+    render();
+  }
+
+  function previewPanel(p) {
+    const cue = rangeCue(p.range);
+    return h(
+      'div',
+      {
+        class: 'mine-preview',
+        onkeydown: (event) => {
+          if (event.key === 'Enter' && event.target.tagName === 'INPUT') {
+            event.preventDefault();
+            confirmMine();
+          }
+        },
+      },
+      h('p', { class: 'sentence-head' }, cue.text),
+      mediaBlock(p),
+      h(
+        'div',
+        { class: 'mine-timing' },
+        nudgeGroup('Start', 'start', p.timing.start),
+        nudgeGroup('End', 'end', p.timing.end),
+        h('button', { class: 'small ghost', disabled: p.range.from === 0, onclick: () => extendPreview('previous') }, 'Add previous line'),
+        h('button', { class: 'small ghost', disabled: p.range.to === p.range.cues.length - 1, onclick: () => extendPreview('next') }, 'Add next line'),
+      ),
+      ...FIELD_ROWS.map(([key, label, multiline]) => fieldRow(p, key, label, multiline)),
+      p.error ? h('div', { class: 'banner' }, p.error) : null,
+      h(
+        'div',
+        { class: 'mine-actions' },
+        h('button', { class: 'primary', disabled: p.mining, onclick: confirmMine }, p.mining ? 'Adding…' : 'Confirm'),
+        h('button', { class: 'ghost', disabled: p.mining, onclick: () => { preview = null; render(); } }, 'Cancel'),
+      ),
+    );
+  }
+
+  function mediaBlock(p) {
+    if (p.mediaError) return h('p', { class: 'muted' }, `No media preview: ${p.mediaError}`);
+    if (!p.audio) return h('p', { class: 'muted' }, 'Loading preview…');
+    return h(
+      'div',
+      { class: 'mine-media' },
+      h('img', { src: p.picture, alt: 'Screenshot' }),
+      h('audio', { controls: true, src: p.audio }),
+    );
+  }
+
+  function nudgeGroup(label, edge, value) {
+    return h(
+      'div',
+      { class: 'nudge' },
+      h('span', { class: 'label muted' }, `${label} ${value.toFixed(2)}s`),
+      h('button', { class: 'small ghost', onclick: () => nudgeTiming(edge, -NUDGE_SECONDS) }, '−0.2'),
+      h('button', { class: 'small ghost', onclick: () => nudgeTiming(edge, NUDGE_SECONDS) }, '+0.2'),
+    );
+  }
+
+  function fieldRow(p, key, label, multiline) {
+    const onInput = (event) => {
+      p.fields[key] = event.target.value;
+    };
+    const shared = { value: p.fields[key], oninput: onInput, disabled: p.mining };
+    const control = multiline ? h('textarea', { rows: 2, ...shared }) : h('input', { type: 'text', ...shared });
+    return h(
+      'label',
+      { class: 'mine-field' },
+      h('span', { class: 'label muted' }, key === 'SentenceTranslation' && p.translating ? 'Translating…' : label),
+      control,
+    );
   }
 
   return {
-    open,
+    open: (next) => open(next),
     close,
     index: () => target?.index ?? -1,
+    quickMine: async (next, { direct }) => {
+      if (!direct) {
+        open(next, { withPreview: true });
+        return;
+      }
+      const lookups = next.mode === 'word' ? await lookupTarget(next) : null;
+      try {
+        await api.anki.mine(mineRequestFor(draftFor(next, next.mode, lookups, 0), streamIndex(), videoPath));
+      } catch (err) {
+        toast(friendlyMineError(err.message), 'error');
+        return;
+      }
+      toast('Added to Anki', 'success');
+      onMined?.();
+    },
   };
 }
