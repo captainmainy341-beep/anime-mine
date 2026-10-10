@@ -64,9 +64,13 @@ function screenshotArgs({video, time, maxWidth}) {
   ]
 }
 
-async function extractAudio({video, start, end, padStart = 0.15, padEnd = 0.25}) {
+async function extractAudio({video, start, end, padStart = 0.15, padEnd = 0.25, audioStream}) {
   if (!(end > start)) throw new Error('end must be after start')
   const opts = {video, start, end, padStart, padEnd}
+  if (audioStream !== undefined) {
+    if (!Number.isInteger(audioStream) || audioStream < 0) throw new Error(`audioStream must be a non-negative integer: ${audioStream}`)
+    return runFfmpeg(audioArgs({...opts, map: `0:${audioStream}`}))
+  }
   try {
     return await runFfmpeg(audioArgs({...opts, map: JAPANESE_AUDIO}))
   } catch {

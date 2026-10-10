@@ -157,3 +157,87 @@ test('addCard surfaces the AnkiConnect error, e.g. for duplicates', async t => {
     /cannot create note because it is a duplicate/,
   )
 })
+
+test('deckStats picks the named deck from getDeckStats and maps its counts', async t => {
+  const calls = stubAnki(t, {
+    getDeckStats: () => ok({
+      1: {name: 'Other', new_count: 9, learn_count: 9, review_count: 9, total_in_deck: 9},
+      2: {name: 'Anime Mining', new_count: 3, learn_count: 1, review_count: 4, total_in_deck: 20},
+    }),
+  })
+
+  assert.deepEqual(await new AnkiClient().deckStats('Anime Mining'), {new: 3, learn: 1, due: 4, total: 20})
+  assert.deepEqual(calls[0].req.params, {decks: ['Anime Mining']})
+})
+
+test('deckStats returns null when the deck is absent from the result', async t => {
+  stubAnki(t, {getDeckStats: () => ok({})})
+  assert.equal(await new AnkiClient().deckStats('Missing'), null)
+})
+
+test('deck and model names are escaped and quoted in every search query', async t => {
+  const calls = stubAnki(t, {findNotes: () => ok([1])})
+  const client = new AnkiClient()
+  const deck = 'Anime "Mining" *_ \\ 50%'
+  const model = 'Anime_"Mine"'
+
+  await client.countAddedToday(deck)
+  await client.recentNotes(deck, model, 5)
+
+  assert.deepEqual(calls[0].req.params, {query: String.raw`deck:"Anime \"Mining\" \*\_ \\ 50%" added:1`})
+  assert.deepEqual(calls[1].req.params, {query: String.raw`deck:"Anime \"Mining\" \*\_ \\ 50%" note:"Anime\_\"Mine\""`})
+})
+
+test('countAddedToday counts the notes returned for today', async t => {
+  stubAnki(t, {findNotes: () => ok([3, 4, 5])})
+  assert.equal(await new AnkiClient().countAddedToday('Anime Mining'), 3)
+})
+
+test('recentNotes sorts ids numerically, newest first, and fetches notesInfo for the slice only', async t => {
+  const calls = stubAnki(t, {
+    findNotes: () => ok([5, 100, 20, 7]),
+    notesInfo: ({notes}) => ok(notes.map(noteId => ({noteId}))),
+  })
+  const infos = await new AnkiClient().recentNotes('Anime Mining', 'AnimeMine', 2)
+
+  assert.deepEqual(actions(calls), ['findNotes', 'notesInfo'])
+  assert.deepEqual(calls[1].req.params, {notes: [100, 20]})
+  assert.deepEqual(infos, [{noteId: 100}, {noteId: 20}])
+})
+
+test('recentNotes skips notesInfo when nothing matches', async t => {
+  const calls = stubAnki(t, {findNotes: () => ok([])})
+  assert.deepEqual(await new AnkiClient().recentNotes('Anime Mining', 'AnimeMine', 30), [])
+  assert.deepEqual(actions(calls), ['findNotes'])
+})
+
+test('noteModel is the model name for a real note and null for a missing one', async t => {
+  stubAnki(t, {notesInfo: ({notes}) => ok(notes[0] === 1 ? [{noteId: 1, modelName: 'AnimeMine'}] : [{}])})
+  const client = new AnkiClient()
+  assert.equal(await client.noteModel(1), 'AnimeMine')
+  assert.equal(await client.noteModel(2), null)
+})
+
+test('note write helpers send the documented AnkiConnect params', async t => {
+  const calls = stubAnki(t, {
+    updateNoteFields: () => ok(null),
+    deleteNotes: () => ok(null),
+    guiBrowse: () => ok([]),
+  })
+  const client = new AnkiClient()
+  await client.updateNoteFields(7, {Meaning: 'x'})
+  await client.deleteNotes([7])
+  await client.guiBrowse('nid:7')
+
+  assert.deepEqual(actions(calls), ['updateNoteFields', 'deleteNotes', 'guiBrowse'])
+  assert.deepEqual(calls[0].req.params, {note: {id: 7, fields: {Meaning: 'x'}}})
+  assert.deepEqual(calls[1].req.params, {notes: [7]})
+  assert.deepEqual(calls[2].req.params, {query: 'nid:7'})
+})
+
+test('retrieveMedia returns base64 data, or null when AnkiConnect reports the file missing', async t => {
+  stubAnki(t, {retrieveMediaFile: ({filename}) => ok(filename === 'clip.mp3' ? 'AAEC' : false)})
+  const client = new AnkiClient()
+  assert.equal(await client.retrieveMedia('clip.mp3'), 'AAEC')
+  assert.equal(await client.retrieveMedia('gone.mp3'), null)
+})

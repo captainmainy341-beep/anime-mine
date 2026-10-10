@@ -1,6 +1,6 @@
 const test = require('node:test')
 const assert = require('node:assert/strict')
-const {explain, buildPrompt} = require('../src/core/ai')
+const {explain, translate, buildPrompt, buildTranslatePrompt} = require('../src/core/ai')
 
 const anthropicSettings = {provider: 'anthropic', apiKey: 'sk-test', model: 'claude-haiku-4-5-20251001'}
 const openaiSettings = {provider: 'openai', apiKey: 'sk-openai', model: 'gpt-4o-mini'}
@@ -121,4 +121,99 @@ test('unknown provider is rejected', async t => {
 test('an empty reply is rejected', async t => {
   stubFetch(t, 200, {content: []})
   await assert.rejects(explain(anthropicSettings, {sentence: 'x'}), /empty reply/)
+})
+
+test('buildTranslatePrompt asks for only the English translation, one line, no quotes', () => {
+  const {system, user} = buildTranslatePrompt({sentence: '彼は行った。'})
+  assert.match(system, /ONLY the English translation/)
+  assert.match(system, /on one line/)
+  assert.match(system, /No quotes/)
+  assert.equal(user, 'Sentence: 彼は行った。')
+})
+
+test('buildTranslatePrompt includes at most two non-empty context lines, marked as not to translate', () => {
+  const {user} = buildTranslatePrompt({sentence: '行った。', context: 'A: どこ行くの？\n\nB: 学校。\nC: 早く。'})
+  assert.match(user, /never translate it/)
+  assert.match(user, /A: どこ行くの？\nB: 学校。/)
+  assert.doesNotMatch(user, /早く/)
+})
+
+test('buildTranslatePrompt omits the context section when none is given', () => {
+  const {user} = buildTranslatePrompt({sentence: 'おはよう。', context: '  \n '})
+  assert.doesNotMatch(user, /Context/)
+})
+
+test('translate: anthropic posts the translate prompt with a 200 token cap', async t => {
+  const calls = stubFetch(t, 200, {content: [{type: 'text', text: 'He went.'}]})
+  const reply = await translate(anthropicSettings, {sentence: '彼は行った。', context: 'A: どこ?'})
+
+  assert.equal(reply, 'He went.')
+  const prompt = buildTranslatePrompt({sentence: '彼は行った。', context: 'A: どこ?'})
+  const {url, init, body} = calls[0]
+  assert.equal(url, 'https://api.anthropic.com/v1/messages')
+  assert.equal(init.headers['x-api-key'], 'sk-test')
+  assert.equal(init.headers['anthropic-version'], '2023-06-01')
+  assert.deepEqual(body, {
+    model: 'claude-haiku-4-5-20251001',
+    max_tokens: 200,
+    system: prompt.system,
+    messages: [{role: 'user', content: prompt.user}],
+  })
+})
+
+test('translate: openai posts the translate prompt with a 200 token cap', async t => {
+  const calls = stubFetch(t, 200, {choices: [{message: {role: 'assistant', content: 'Good morning.'}}]})
+  const reply = await translate(openaiSettings, {sentence: 'おはよう。'})
+
+  assert.equal(reply, 'Good morning.')
+  const prompt = buildTranslatePrompt({sentence: 'おはよう。'})
+  const {url, init, body} = calls[0]
+  assert.equal(url, 'https://api.openai.com/v1/chat/completions')
+  assert.equal(init.headers.authorization, 'Bearer sk-openai')
+  assert.deepEqual(body, {
+    model: 'gpt-4o-mini',
+    max_tokens: 200,
+    messages: [
+      {role: 'system', content: prompt.system},
+      {role: 'user', content: prompt.user},
+    ],
+  })
+})
+
+test('translate trims whitespace and surrounding quotes from the reply', async t => {
+  stubFetch(t, 200, {content: [{type: 'text', text: '\n  "It was breakfast."  \n'}]})
+  assert.equal(await translate(anthropicSettings, {sentence: 'x'}), 'It was breakfast.')
+})
+
+test('translate strips Japanese and curly quotes', async t => {
+  stubFetch(t, 200, {choices: [{message: {content: '「Let’s go.」'}}]})
+  assert.equal(await translate(openaiSettings, {sentence: 'x'}), 'Let’s go.')
+})
+
+test('translate rejects a reply that is only quotes or whitespace', async t => {
+  stubFetch(t, 200, {content: [{type: 'text', text: ' "" '}]})
+  await assert.rejects(translate(anthropicSettings, {sentence: 'x'}), /empty reply/)
+})
+
+test('translate throws the same readable errors as explain', async t => {
+  const calls = stubFetch(t, 200, {})
+  await assert.rejects(translate({...anthropicSettings, apiKey: ''}, {sentence: 'x'}), /No API key set for anthropic/)
+  await assert.rejects(translate({provider: 'gemini', apiKey: 'k'}, {sentence: 'x'}), /Unknown AI provider: gemini/)
+  assert.equal(calls.length, 0)
+})
+
+test('translate surfaces non-2xx status and API error message', async t => {
+  stubFetch(t, 429, {error: {message: 'rate limited'}})
+  await assert.rejects(translate(openaiSettings, {sentence: 'x'}), /AI request failed \(429\): rate limited/)
+})
+
+test('translate rejects an empty reply', async t => {
+  stubFetch(t, 200, {choices: [{message: {content: '   '}}]})
+  await assert.rejects(translate(openaiSettings, {sentence: 'x'}), /empty reply/)
+})
+
+test('explain still uses the 700 token cap', async t => {
+  const calls = stubFetch(t, 200, {choices: [{message: {content: 'ok'}}]})
+  await explain(openaiSettings, {sentence: 'x'})
+  assert.equal(calls[0].body.max_tokens, 700)
 })

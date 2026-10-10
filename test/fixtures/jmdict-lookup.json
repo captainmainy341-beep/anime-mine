@@ -1,0 +1,70 @@
+{
+  "words": [
+    {
+      "id": "9000001",
+      "kanji": [{ "common": true, "text": "勉強する", "tags": [] }],
+      "kana": [{ "common": true, "text": "べんきょうする", "tags": [] }],
+      "sense": [{ "partOfSpeech": ["vs", "vt"], "gloss": [{ "lang": "eng", "text": "to study" }] }]
+    },
+    {
+      "id": "1398020",
+      "kanji": [{ "common": true, "text": "勉強", "tags": [] }],
+      "kana": [{ "common": true, "text": "べんきょう", "tags": [] }],
+      "sense": [{ "partOfSpeech": ["noun or participle which takes the aux. verb suru"], "gloss": [{ "lang": "eng", "text": "study" }] }]
+    },
+    {
+      "id": "1358280",
+      "kanji": [{ "common": true, "text": "食べる", "tags": [] }],
+      "kana": [{ "common": true, "text": "たべる", "tags": [] }],
+      "sense": [{ "partOfSpeech": ["v1", "vt"], "gloss": [{ "lang": "eng", "text": "to eat" }] }]
+    },
+    {
+      "id": "9000002",
+      "kanji": [{ "common": true, "text": "見る", "tags": [] }],
+      "kana": [{ "common": true, "text": "みる", "tags": [] }],
+      "sense": [{ "partOfSpeech": ["v1", "vt"], "gloss": [{ "lang": "eng", "text": "to see" }] }]
+    },
+    {
+      "id": "1027050",
+      "kanji": [{ "common": true, "text": "日本語", "tags": [] }],
+      "kana": [{ "common": true, "text": "にほんご", "tags": [] }],
+      "sense": [{ "partOfSpeech": ["n"], "gloss": [{ "lang": "eng", "text": "Japanese (language)" }] }]
+    },
+    {
+      "id": "1557930",
+      "kanji": [{ "common": true, "text": "学校", "tags": [] }],
+      "kana": [{ "common": true, "text": "がっこう", "tags": [] }],
+      "sense": [{ "partOfSpeech": ["n"], "gloss": [{ "lang": "eng", "text": "school" }] }]
+    },
+    {
+      "id": "1577890",
+      "kanji": [{ "common": true, "text": "行く", "tags": [] }],
+      "kana": [{ "common": true, "text": "いく", "tags": [] }],
+      "sense": [{ "partOfSpeech": ["v5k-s", "vi"], "gloss": [{ "lang": "eng", "text": "to go" }] }]
+    },
+    {
+      "id": "9000003",
+      "kanji": [{ "common": true, "text": "高い", "tags": [] }],
+      "kana": [{ "common": true, "text": "たかい", "tags": [] }],
+      "sense": [{ "partOfSpeech": ["adj-i"], "gloss": [{ "lang": "eng", "text": "high; expensive" }] }]
+    },
+    {
+      "id": "9000004",
+      "kanji": [{ "common": true, "text": "私", "tags": [] }],
+      "kana": [{ "common": true, "text": "わたし", "tags": [] }],
+      "sense": [{ "partOfSpeech": ["pn"], "gloss": [{ "lang": "eng", "text": "I; me" }] }]
+    },
+    {
+      "id": "9000005",
+      "kanji": [{ "common": true, "text": "毎日", "tags": [] }],
+      "kana": [{ "common": true, "text": "まいにち", "tags": [] }],
+      "sense": [{ "partOfSpeech": ["n", "adv"], "gloss": [{ "lang": "eng", "text": "every day" }] }]
+    },
+    {
+      "id": "9000006",
+      "kanji": [],
+      "kana": [{ "common": true, "text": "アニメ", "tags": [] }],
+      "sense": [{ "partOfSpeech": ["n"], "gloss": [{ "lang": "eng", "text": "anime" }] }]
+    }
+  ]
+}

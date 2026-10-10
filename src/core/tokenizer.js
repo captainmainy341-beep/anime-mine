@@ -37,6 +37,7 @@ function toToken(raw, start, end) {
     base: hasValue(raw.basic_form) ? raw.basic_form : surface,
     reading: toHiragana(hasValue(raw.reading) ? raw.reading : surface),
     pos: raw.pos,
+    pos2: hasValue(raw.pos_detail_1) ? raw.pos_detail_1 : '',
     start,
     end,
     isWord: raw.pos !== PUNCTUATION_POS && surface.trim() !== '',

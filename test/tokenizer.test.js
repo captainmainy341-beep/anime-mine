@@ -31,6 +31,13 @@ test('converts readings to hiragana', async () => {
   assert.equal(find(tokens, '日本語').reading, 'にほんご');
 });
 
+test('exposes the second part-of-speech field', async () => {
+  const tokens = await tokenize(TEXT);
+  assert.equal(find(tokens, '勉強').pos2, 'サ変接続');
+  assert.equal(find(tokens, 'い').pos2, '非自立');
+  assert.equal(find(tokens, 'て').pos2, '接続助詞');
+});
+
 test('marks punctuation as non-words', async () => {
   const tokens = await tokenize(TEXT);
   const punctuation = find(tokens, '。');
