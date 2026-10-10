@@ -1,0 +1,89 @@
+{
+  "version": "3.5.0",
+  "words": [
+    {
+      "id": "1358280",
+      "kanji": [{ "common": true, "text": "食べる", "tags": [] }],
+      "kana": [{ "common": true, "text": "たべる", "tags": [], "appliesToKanji": ["*"] }],
+      "sense": [
+        {
+          "partOfSpeech": ["Ichidan verb", "transitive verb"],
+          "appliesToKanji": ["*"],
+          "appliesToKana": ["*"],
+          "gloss": [{ "lang": "eng", "text": "to eat" }]
+        }
+      ]
+    },
+    {
+      "id": "1398020",
+      "kanji": [{ "common": true, "text": "勉強", "tags": [] }],
+      "kana": [{ "common": true, "text": "べんきょう", "tags": [], "appliesToKanji": ["*"] }],
+      "sense": [
+        {
+          "partOfSpeech": ["noun or participle which takes the aux. verb suru"],
+          "appliesToKanji": ["*"],
+          "appliesToKana": ["*"],
+          "gloss": [
+            { "lang": "eng", "text": "study" },
+            { "lang": "eng", "text": "diligence" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "1557930",
+      "kanji": [{ "common": true, "text": "学校", "tags": [] }],
+      "kana": [{ "common": true, "text": "がっこう", "tags": [], "appliesToKanji": ["*"] }],
+      "sense": [
+        {
+          "partOfSpeech": ["noun"],
+          "appliesToKanji": ["*"],
+          "appliesToKana": ["*"],
+          "gloss": [{ "lang": "eng", "text": "school" }]
+        }
+      ]
+    },
+    {
+      "id": "1027050",
+      "kanji": [{ "common": true, "text": "日本語", "tags": [] }],
+      "kana": [{ "common": true, "text": "にほんご", "tags": [], "appliesToKanji": ["*"] }],
+      "sense": [
+        {
+          "partOfSpeech": ["noun"],
+          "appliesToKanji": ["*"],
+          "appliesToKana": ["*"],
+          "gloss": [{ "lang": "eng", "text": "Japanese (language)" }]
+        }
+      ]
+    },
+    {
+      "id": "1343560",
+      "kanji": [{ "common": false, "text": "逝く", "tags": [] }],
+      "kana": [{ "common": false, "text": "いく", "tags": [], "appliesToKanji": ["*"] }],
+      "sense": [
+        {
+          "partOfSpeech": ["Godan verb with 'ku' ending", "intransitive verb"],
+          "appliesToKanji": ["*"],
+          "appliesToKana": ["*"],
+          "gloss": [
+            { "lang": "eng", "text": "to pass away" },
+            { "lang": "eng", "text": "to die" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "1577890",
+      "kanji": [{ "common": true, "text": "行く", "tags": [] }],
+      "kana": [{ "common": true, "text": "いく", "tags": [], "appliesToKanji": ["*"] }],
+      "sense": [
+        {
+          "partOfSpeech": ["Godan verb with 'ku' ending", "intransitive verb"],
+          "appliesToKanji": ["*"],
+          "appliesToKana": ["*"],
+          "gloss": [{ "lang": "eng", "text": "to go" }]
+        }
+      ]
+    }
+  ]
+}
