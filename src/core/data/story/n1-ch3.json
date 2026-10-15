@@ -1,0 +1,74 @@
+{
+  "schema": 1,
+  "id": "n1-ch3",
+  "order": 27,
+  "title": "Chapter 27: 同窓会の スピーチ",
+  "summary": "Alumni gathering and speeches. Ignoring worries, brushing aside objections, when it comes to an anniversary, beyond one country, and in a crisis.",
+  "jlpt": "N1",
+  "source": "authored",
+  "bg": "classroom-morning",
+  "characters": {
+    "mio": { "name": "みお", "color": "#f3a0b6" },
+    "sora": { "name": "そら", "color": "#a2befa" },
+    "okada": { "name": "岡田さん", "color": "#8e7cc3" }
+  },
+  "glossary": {
+    "g:n1-wo-yoso-ni": { "label": "〜をよそに", "meaning": "paying no heed to", "note": "Noun + をよそに: carrying on regardless of others' worries or expectations." },
+    "g:n1-wo-mono-to-semezu": { "label": "〜をものともせず", "meaning": "brushing aside", "note": "Noun + をものともせず: undaunted by an obstacle or opposition." },
+    "g:n1-tomo-nareba": { "label": "〜ともなれば", "meaning": "when it comes to (such a stage)", "note": "Noun + ともなれば: at such a level, naturally ...." },
+    "g:n1-ni-todomarazu": { "label": "〜にとどまらず", "meaning": "not limited to", "note": "Noun + にとどまらず: it goes beyond." },
+    "g:n1-ni-atte": { "label": "〜にあって", "meaning": "in (a special situation)", "note": "Noun + にあって: in a particular position or circumstance." },
+    "k:周": { "label": "周", "reading": "しゅう / まわ(り)", "meaning": "circumference, around" },
+    "k:歓": { "label": "歓", "reading": "かん", "meaning": "joy, welcome" }
+  },
+  "beats": [
+    { "type": "bg", "bg": "classroom-morning" },
+    { "type": "say", "who": null, "text": "創立百周年 記念の 同窓会。懐かしい 教室に、卒業生たちが 集まった。", "en": "The alumni gathering for the centennial. Graduates gather in the nostalgic classroom." },
+    { "type": "show", "char": "okada", "expr": "smile", "pos": "center" },
+    { "type": "show", "char": "mio", "expr": "smile", "pos": "left" },
+    { "type": "intro", "item": "k:周" },
+    { "type": "reading", "item": "k:周", "display": "三十周年", "target": "周", "prompt": "Okada's banner says 三十周年. Read the whole word.", "answers": ["さんじゅっしゅうねん"] },
+    { "type": "say", "who": "okada", "text": "町内会長の 岡田です。かわぞい珈琲は、開店三十周年を むかえました。", "en": "I'm Okada, the neighbourhood chief. Kawazoi Coffee has reached its thirtieth anniversary." },
+    { "type": "intro", "item": "g:n1-tomo-nareba" },
+    { "type": "choice", "item": "g:n1-tomo-nareba", "who": "okada", "prompt": "Okada says: \"When it comes to a thirtieth anniversary, the celebrations grow big.\"", "options": [
+      { "text": "開店三十周年ともなれば、お祝いも 大きく なります。", "correct": true },
+      { "text": "開店三十周年に ともなれば、お祝いも 大きく なります。", "awkward": { "who": "mio", "text": "「ともなれば」の まえに 「に」は いらないよ。", "en": "No \"ni\" before \"tomo nareba\"." } },
+      { "text": "開店三十周年ともなりば、お祝いも 大きく なります。", "awkward": { "who": "okada", "text": "「なれば」ですよ。「なりば」じゃなくて。", "en": "It's \"nareba\", not \"nariba\"." } }
+    ] },
+    { "type": "say", "who": "okada", "text": "ここまで 来られたのは、ミオさんが 周りの 反対を ものともせず、店を 守り 続けたからです。", "en": "We got this far because Mio kept protecting the shop, brushing aside the opposition around her." },
+    { "type": "intro", "item": "g:n1-wo-mono-to-semezu" },
+    { "type": "choice", "item": "g:n1-wo-mono-to-semezu", "who": "okada", "prompt": "Praise her: \"Brushing aside the opposition around her, she kept the shop going.\"", "options": [
+      { "text": "周りの 反対を ものともせず、彼女は 店を 続けました。", "correct": true },
+      { "text": "周りの 反対を ものともしず、彼女は 店を 続けました。", "awkward": { "who": "mio", "text": "「ものともせず」。「する」の 古い 形 「せず」だよ。", "en": "\"Mono to mo sezu\" -- the old negative form of suru." } },
+      { "text": "周りの 反対を ものともに せず、彼女は 店を 続けました。", "awkward": { "who": "okada", "text": "「ものともせず」で ひとつの 表現ですよ。", "en": "\"Mono to mo sezu\" is one expression." } }
+    ] },
+    { "type": "show", "char": "sora", "expr": "neutral", "pos": "right" },
+    { "type": "say", "who": "sora", "text": "ぼくも 一言。あの ころ、みんなの 心配を よそに、ぼくは 川の そばで 歌って ばかり いた。", "en": "A word from me too. Back then, ignoring everyone's worries, I did nothing but sing by the river." },
+    { "type": "intro", "item": "g:n1-wo-yoso-ni" },
+    { "type": "choice", "item": "g:n1-wo-yoso-ni", "who": "sora", "prompt": "Say: \"Paying no heed to everyone's worries, Sora looked unconcerned.\"", "options": [
+      { "text": "みんなの 心配を よそに、そらは 平気な 顔を して いた。", "correct": true },
+      { "text": "みんなの 心配に よそに、そらは 平気な 顔を して いた。", "awkward": { "who": "mio", "text": "「を よそに」だよ。「に」じゃなくて。", "en": "\"Wo yoso ni\", not \"ni\"." } },
+      { "text": "みんなの 心配を よそで、そらは 平気な 顔を して いた。", "awkward": { "who": "okada", "text": "「よそに」ですよ。「よそで」は 「よその 場所で」に なります。", "en": "\"Yoso de\" would mean \"somewhere else\"." } }
+    ] },
+    { "type": "intro", "item": "k:歓" },
+    { "type": "reading", "item": "k:歓", "display": "歓迎", "target": "歓", "prompt": "The welcome sign says 歓迎. Read it.", "answers": ["かんげい"] },
+    { "type": "say", "who": "mio", "text": "そらの 歌は、いまや 国内に とどまらず、海外にも 響いて いるそうです。", "en": "I hear Sora's songs now ring out not only in Japan but overseas too." },
+    { "type": "intro", "item": "g:n1-ni-todomarazu" },
+    { "type": "choice", "item": "g:n1-ni-todomarazu", "who": "mio", "prompt": "Say: \"His popularity went beyond Japan and spread overseas.\"", "options": [
+      { "text": "彼の 人気は 国内に とどまらず、海外にも 広がりました。", "correct": true },
+      { "text": "彼の 人気は 国内を とどまらず、海外にも 広がりました。", "awkward": { "who": "okada", "text": "「に とどまらず」。助詞は 「に」ですよ。", "en": "\"Ni todomarazu\" -- the particle is \"ni\"." } },
+      { "text": "彼の 人気は 国内に とどまなく、海外にも 広がりました。", "awkward": { "who": "sora", "text": "「とどまらず」。「ず」で 否定を 表す。", "en": "\"Todomarazu\" -- \"zu\" makes it negative." } }
+    ] },
+    { "type": "say", "who": "okada", "text": "町の 危機に あって、皆が 立ち上がった あの 日の ことを 忘れません。", "en": "I will never forget the day the whole town stood up in a crisis." },
+    { "type": "intro", "item": "g:n1-ni-atte" },
+    { "type": "choice", "item": "g:n1-ni-atte", "who": "okada", "prompt": "Say: \"In an emergency, keeping calm is difficult.\"", "options": [
+      { "text": "非常時に あって、冷静さを 保つ ことは 難しい。", "correct": true },
+      { "text": "非常時が あって、冷静さを 保つ ことは 難しい。", "awkward": { "who": "mio", "text": "「に あって」。「が」じゃなくて。", "en": "\"Ni atte\", not \"ga\"." } },
+      { "text": "非常時に ある、冷静さを 保つ ことは 難しい。", "awkward": { "who": "okada", "text": "つなげるには 「あって」ですね。", "en": "To connect it, use \"atte\"." } }
+    ] },
+    { "type": "affection", "char": "mio", "delta": 3 },
+    { "type": "affection", "char": "sora", "delta": 2 },
+    { "type": "cg", "id": "anniversary-speech", "title": "The anniversary speeches" },
+    { "type": "say", "who": "okada", "text": "さあ、あすは 記念式典です。天気が くずれなければ いいのですが…。", "en": "Now, tomorrow is the commemorative ceremony. I only hope it doesn't turn into a storm..." }
+  ]
+}

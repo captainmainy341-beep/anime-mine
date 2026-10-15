@@ -200,6 +200,24 @@ const cloud = (x, y, s = 1) => `<g class="story-drift" opacity=".85"><ellipse cx
 const tree = (x, y, s, leaf, trunk = '#7a5638') => `<rect x="${x - 8 * s}" y="${y}" width="${16 * s}" height="${110 * s}" fill="${trunk}"/><circle cx="${x}" cy="${y - 10 * s}" r="${62 * s}" fill="${leaf}"/><circle cx="${x - 40 * s}" cy="${y + 18 * s}" r="${40 * s}" fill="${leaf}"/><circle cx="${x + 42 * s}" cy="${y + 14 * s}" r="${44 * s}" fill="${leaf}"/><circle cx="${x - 18 * s}" cy="${y - 34 * s}" r="${24 * s}" fill="#fff" opacity=".12"/>`;
 const lantern = (x, color) => `<g class="story-sway"><path d="M${x} 52v18" stroke="#2a2140" stroke-width="2"/><ellipse cx="${x}" cy="88" rx="16" ry="20" fill="${color}"/><ellipse cx="${x}" cy="88" rx="9" ry="13" fill="#fff" opacity=".35"/><rect x="${x - 8}" y="66" width="16" height="4" fill="#2a2140"/><rect x="${x - 8}" y="106" width="16" height="4" fill="#2a2140"/></g>`;
 
+// Deterministic little shapes for the newer backgrounds.
+const BOOK_COLORS = ['#c9577a', '#6f8fd8', '#7cc6b4', '#f0a35e', '#8e7cc3', '#e9e1cf', '#c97b5a', '#4f8f78'];
+const books = (x, y, n, h = 44) => Array.from({ length: n }, (_, i) => {
+  const bh = h - ((i * 7) % 13);
+  return `<rect x="${x + i * 12}" y="${y + (h - bh)}" width="10" height="${bh}" rx="1.5" fill="${BOOK_COLORS[(i * 5 + n) % BOOK_COLORS.length]}"/>`;
+}).join('');
+const windowsLit = (x, y, cols, rows, lit = '#ffd98a') => Array.from({ length: cols * rows }, (_, i) => {
+  const on = (i * 7 + cols) % 5 < 3;
+  return `<rect x="${x + (i % cols) * 14}" y="${y + Math.floor(i / cols) * 16}" width="9" height="10" fill="${on ? lit : '#2c3157'}" opacity="${on ? 0.95 : 0.7}"/>`;
+}).join('');
+const petals = (n, seed = 0) => Array.from({ length: n }, (_, i) => `<ellipse class="story-drift" cx="${(i * 97 + seed * 41) % 940 + 10}" cy="${(i * 53 + seed * 17) % 380 + 20}" rx="5" ry="3" fill="#f9c6d4" opacity=".85" transform="rotate(${(i * 37) % 90} ${(i * 97 + seed * 41) % 940 + 10} ${(i * 53 + seed * 17) % 380 + 20})"/>`).join('');
+const snowfall = (n) => Array.from({ length: n }, (_, i) => `<circle class="story-drift" cx="${(i * 83) % 950 + 5}" cy="${(i * 47) % 400 + 10}" r="${1.5 + (i % 3)}" fill="#fff" opacity=".85"/>`).join('');
+const skyline = (y, color, seed = 0) => Array.from({ length: 16 }, (_, i) => {
+  const w = 40 + ((i * 17 + seed) % 30);
+  const h = 60 + ((i * 41 + seed * 7) % 110);
+  return `<rect x="${i * 62 - 10}" y="${y - h}" width="${w}" height="${h + 200}" fill="${color}"/>`;
+}).join('');
+
 const BACKGROUNDS = {
   'classroom-morning': {
     css: 'linear-gradient(#cfe4f7 0%, #f6efe0 58%, #b79a78 58%, #8d6f52 100%)',
@@ -326,6 +344,103 @@ const BACKGROUNDS = {
       '<path d="M0 262q120-14 240 0t240 0 240 0 240 0" fill="none" stroke="#fff" stroke-width="5" opacity=".7"/>',
       '<path d="M120 330l60-120" stroke="#8a5a3c" stroke-width="6"/><path d="M90 220q90-60 180 0z" fill="#e8566e"/><path d="M120 220q60-40 120 0z" fill="#fff" opacity=".6"/>',
       '<g fill="#f3a0b6"><circle cx="760" cy="350" r="6"/><circle cx="800" cy="370" r="4"/></g>',
+    ].join(''),
+  },
+  library: {
+    css: 'linear-gradient(#3a2d26 0%, #5b4538 60%, #3a2a20 60%, #2a1d16 100%)',
+    shapes: [
+      '<rect x="40" y="36" width="330" height="236" rx="4" fill="#6b4a35"/><g fill="#4a3022"><rect x="48" y="86" width="314" height="6"/><rect x="48" y="146" width="314" height="6"/><rect x="48" y="206" width="314" height="6"/></g>',
+      books(56, 42, 24), books(56, 102, 25, 40), books(56, 162, 22, 42), books(56, 222, 25, 44),
+      '<rect x="600" y="40" width="270" height="180" rx="6" fill="#f7e2b0" opacity=".85"/><path d="M735 40v180M600 130h270" stroke="#6b4a35" stroke-width="6"/><path d="M640 40l160 380h-120L520 40z" fill="#fff8d8" opacity=".12"/>',
+      '<g class="story-drift" fill="#fff" opacity=".35"><circle cx="680" cy="120" r="2"/><circle cx="760" cy="90" r="2"/><circle cx="820" cy="160" r="2"/><circle cx="700" cy="190" r="2"/></g>',
+      '<rect x="400" y="290" width="280" height="16" rx="3" fill="#8a5f44"/><rect x="420" y="306" width="10" height="70" fill="#5e412a"/><rect x="650" y="306" width="10" height="70" fill="#5e412a"/>',
+      '<g><rect x="470" y="268" width="60" height="22" rx="2" fill="#e9e1cf"/><rect x="540" y="272" width="46" height="18" rx="2" fill="#c9577a"/></g>',
+      '<g class="story-shimmer"><path d="M610 290h30l-6-34h-18z" fill="#f3d27a"/><circle cx="625" cy="262" r="44" fill="#ffe7a8" opacity=".22"/></g>',
+    ].join(''),
+  },
+  'night-street': {
+    css: 'linear-gradient(#10162e 0%, #2a2f5a 55%, #1b1d33 55%, #0f1020 100%)',
+    shapes: [
+      '<circle cx="820" cy="60" r="28" fill="#fff6d0" opacity=".9"/><g fill="#fff" opacity=".7"><circle cx="120" cy="30" r="1.4"/><circle cx="380" cy="50" r="1.2"/><circle cx="600" cy="26" r="1.4"/></g>',
+      '<rect x="40" y="90" width="150" height="190" fill="#1d2142"/>', windowsLit(52, 106, 8, 10),
+      '<rect x="230" y="60" width="120" height="220" fill="#232853"/>', windowsLit(242, 76, 7, 12),
+      '<rect x="640" y="110" width="150" height="170" fill="#1d2142"/>', windowsLit(652, 124, 9, 9),
+      '<rect x="820" y="80" width="110" height="200" fill="#232853"/>', windowsLit(832, 94, 6, 11),
+      '<g class="story-shimmer"><rect x="400" y="150" width="150" height="46" rx="6" fill="#ff5d8f" opacity=".85"/><path d="M420 173h110" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity=".8"/></g>',
+      '<rect x="582" y="120" width="8" height="160" fill="#2a2140"/><circle cx="586" cy="116" r="12" fill="#ffd98a"/><circle cx="586" cy="116" r="44" fill="#ffd98a" opacity=".18"/>',
+      '<g class="story-shimmer" fill="#ffd98a" opacity=".3"><rect x="560" y="300" width="50" height="4" rx="2"/><rect x="552" y="326" width="68" height="4" rx="2"/><rect x="420" y="312" width="80" height="4" rx="2"/></g>',
+    ].join(''),
+  },
+  office: {
+    css: 'linear-gradient(#dfe6ee 0%, #eef2f6 55%, #8b97a6 55%, #6b7686 100%)',
+    shapes: [
+      '<rect x="60" y="30" width="460" height="200" rx="4" fill="#b8d6ee"/>', skyline(230, '#8aa3bd', 3), '<rect x="60" y="30" width="460" height="200" rx="4" fill="none" stroke="#7f8fa2" stroke-width="8"/><path d="M290 30v200M60 130h460" stroke="#7f8fa2" stroke-width="4"/>',
+      '<circle cx="720" cy="80" r="40" fill="#fff" stroke="#7f8fa2" stroke-width="5"/><path d="M720 80v-24M720 80l18 10" stroke="#3a4656" stroke-width="4" stroke-linecap="round"/>',
+      '<g fill="#a8855f"><rect x="120" y="290" width="300" height="14" rx="3"/><rect x="560" y="300" width="300" height="14" rx="3"/></g>',
+      '<g fill="#5a6678"><rect x="150" y="304" width="10" height="70"/><rect x="380" y="304" width="10" height="70"/><rect x="590" y="314" width="10" height="60"/><rect x="820" y="314" width="10" height="60"/></g>',
+      '<g><rect x="200" y="236" width="90" height="54" rx="3" fill="#2c3550"/><rect x="206" y="242" width="78" height="42" fill="#7fb8e8"/><rect x="238" y="290" width="14" height="8" fill="#2c3550"/><rect x="650" y="246" width="90" height="54" rx="3" fill="#2c3550"/><rect x="656" y="252" width="78" height="42" fill="#9de3c4"/></g>',
+      '<g><rect x="310" y="268" width="50" height="22" fill="#fff"/><rect x="316" y="260" width="50" height="22" fill="#f3e3c3"/><rect x="770" y="278" width="46" height="22" fill="#fff"/></g>',
+    ].join(''),
+  },
+  studio: {
+    css: 'linear-gradient(#241a33 0%, #3b2850 58%, #1d1428 58%, #130c1c 100%)',
+    shapes: [
+      '<g fill="#4a3366">' + Array.from({ length: 6 }, (_, i) => `<rect x="${40 + i * 66}" y="40" width="56" height="150" rx="3"/>`).join('') + '</g>',
+      '<g stroke="#2a1d3e" stroke-width="2">' + Array.from({ length: 6 }, (_, i) => `<path d="M${40 + i * 66} 90h56M${40 + i * 66} 140h56"/>`).join('') + '</g>',
+      '<rect x="520" y="60" width="400" height="170" rx="6" fill="#1a2a44" opacity=".9"/><path d="M720 60v170" stroke="#0f1830" stroke-width="5"/><path d="M520 60h400v170H520z" fill="none" stroke="#6f8fd8" stroke-width="4"/>',
+      '<g class="story-shimmer"><circle cx="880" cy="36" r="9" fill="#ff4a5a"/><circle cx="880" cy="36" r="22" fill="#ff4a5a" opacity=".25"/></g>',
+      '<path d="M620 340v-160" stroke="#cfd5e3" stroke-width="5"/><ellipse cx="620" cy="168" rx="20" ry="26" fill="#2a2140" stroke="#cfd5e3" stroke-width="4"/><path d="M590 340h60" stroke="#cfd5e3" stroke-width="6" stroke-linecap="round"/><circle cx="620" cy="168" r="48" fill="none" stroke="#f3a0b6" stroke-width="2" opacity=".5"/>',
+      '<g><rect x="120" y="250" width="300" height="60" rx="4" fill="#2a2140"/><g fill="#9de3c4"><rect x="140" y="264" width="10" height="30"/><rect x="170" y="270" width="10" height="24"/><rect x="200" y="260" width="10" height="34"/></g><g fill="#ffd36e"><rect x="250" y="262" width="12" height="12" rx="6"/><rect x="280" y="262" width="12" height="12" rx="6"/><rect x="310" y="262" width="12" height="12" rx="6"/></g></g>',
+    ].join(''),
+  },
+  'tokyo-skyline': {
+    css: 'linear-gradient(#f6a97a 0%, #f5d1a0 40%, #7a7fa8 40%, #444a73 100%)',
+    shapes: [
+      '<circle cx="740" cy="130" r="64" fill="#fff0c4" opacity=".85"/>', cloud(200, 70, 0.9), cloud(500, 50, 0.6),
+      skyline(300, '#5b5f8a', 1), skyline(330, '#3f4370', 5),
+      '<path d="M470 40l36 260h-72z" fill="#e0524b"/><path d="M450 120h56M440 190h76M434 250h88" stroke="#fff" stroke-width="5" opacity=".7"/>',
+      '<g class="story-shimmer" fill="#ffd98a" opacity=".6"><rect x="110" y="270" width="6" height="8"/><rect x="190" y="250" width="6" height="8"/><rect x="620" y="262" width="6" height="8"/><rect x="800" y="240" width="6" height="8"/></g>',
+    ].join(''),
+  },
+  'rooftop-sunset': {
+    css: 'linear-gradient(#ef7f7a 0%, #f7c08a 42%, #6a5a7a 42%, #3d3454 100%)',
+    shapes: [
+      '<circle cx="480" cy="170" r="84" fill="#fff0c4" opacity=".9"/><circle cx="480" cy="170" r="130" fill="#fff0c4" opacity=".16"/>', cloud(160, 80, 0.9), cloud(760, 60, 0.7),
+      skyline(250, '#4a3f66', 2),
+      '<rect x="0" y="262" width="960" height="30" fill="#5d5373"/><g stroke="#2a2140" stroke-width="3" fill="none"><path d="M0 270h960"/>' + Array.from({ length: 24 }, (_, i) => `<path d="M${i * 42 + 10} 270v-96"/>`).join('') + '</g>',
+      '<path d="M0 174h960" stroke="#2a2140" stroke-width="4"/>',
+      '<g><rect x="760" y="140" width="100" height="90" fill="#6b5a7a"/><path d="M750 140h120l-20-24h-80z" fill="#4a3f66"/></g>',
+      '<g class="story-drift" fill="#2a2140" opacity=".7"><path d="M300 90q10-10 20 0q10-10 20 0"/><path d="M360 60q8-8 16 0q8-8 16 0"/></g>',
+    ].join(''),
+  },
+  'sakura-road': {
+    css: 'linear-gradient(#bfe3f8 0%, #fbe8ee 50%, #e7c9c2 50%, #c9a79d 100%)',
+    shapes: [
+      cloud(200, 60, 0.8), cloud(700, 44, 0.6),
+      '<path d="M360 420q90-150 170-230h20q60 90 120 230z" fill="#e8d2c6" opacity=".9"/>',
+      tree(90, 150, 1.25, '#f6b6c8', '#6d4a3a'), tree(870, 150, 1.25, '#f6b6c8', '#6d4a3a'), tree(260, 180, 0.8, '#f9c6d4', '#6d4a3a'), tree(700, 180, 0.8, '#f9c6d4', '#6d4a3a'),
+      petals(34, 1),
+    ].join(''),
+  },
+  'lantern-night': {
+    css: 'linear-gradient(#0e1330 0%, #2a2a5a 52%, #14182e 52%, #0a0d1e 100%)',
+    shapes: [
+      '<circle cx="760" cy="76" r="40" fill="#fff6d0"/><circle cx="760" cy="76" r="76" fill="#fff6d0" opacity=".14"/><g fill="#fff" opacity=".8"><circle cx="100" cy="30" r="1.4"/><circle cx="300" cy="60" r="1.2"/><circle cx="540" cy="24" r="1.4"/><circle cx="900" cy="130" r="1.2"/></g>',
+      '<path d="M0 200q240-26 480 0t480 0v8H0z" fill="#241f4a"/>',
+      lantern(80, '#ff8a6b'), lantern(260, '#ffd36e'), lantern(440, '#f3a0b6'), lantern(620, '#9de3c4'), lantern(800, '#ff8a6b'),
+      '<g class="story-shimmer" fill="#ffd36e" opacity=".55"><rect x="120" y="230" width="60" height="4" rx="2"/><rect x="330" y="252" width="90" height="4" rx="2"/><rect x="560" y="236" width="70" height="4" rx="2"/><rect x="740" y="262" width="100" height="4" rx="2"/></g>',
+      '<g class="story-drift"><ellipse cx="220" cy="300" rx="16" ry="10" fill="#ff8a6b"/><ellipse cx="220" cy="300" rx="8" ry="5" fill="#fff" opacity=".5"/><ellipse cx="520" cy="330" rx="16" ry="10" fill="#ffd36e"/><ellipse cx="520" cy="330" rx="8" ry="5" fill="#fff" opacity=".5"/><ellipse cx="780" cy="310" rx="16" ry="10" fill="#f3a0b6"/></g>',
+    ].join(''),
+  },
+  'snow-town': {
+    css: 'linear-gradient(#b9c9e0 0%, #e8eff7 52%, #f7fafd 52%, #dfe8f2 100%)',
+    shapes: [
+      cloud(220, 60, 0.9), cloud(640, 40, 0.7),
+      '<g><rect x="80" y="170" width="150" height="110" fill="#a8856a"/><path d="M60 172l95-60 95 60z" fill="#f7fafd"/><rect x="130" y="210" width="34" height="46" fill="#ffe7a8"/></g>',
+      '<g><rect x="380" y="150" width="190" height="130" fill="#9a7a62"/><path d="M360 154l115-72 115 72z" fill="#f7fafd"/><rect x="430" y="196" width="40" height="52" fill="#ffe7a8"/><rect x="496" y="196" width="40" height="52" fill="#ffe7a8"/></g>',
+      '<g><rect x="720" y="180" width="150" height="100" fill="#a8856a"/><path d="M700 182l95-56 95 56z" fill="#f7fafd"/><rect x="772" y="216" width="30" height="42" fill="#ffe7a8"/></g>',
+      '<path d="M0 290q300-40 600-8t360 6v130H0z" fill="#f7fafd"/>',
+      snowfall(46),
     ].join(''),
   },
   'anime-default': {

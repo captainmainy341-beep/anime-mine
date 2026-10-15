@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "id": "n4-ch2",
+  "order": 8,
+  "title": "Chapter 8: ステージの まえの よる",
+  "summary": "The night before the festival stage, Sora vanishes. Search the school and the river with guesses, expectations and a little preparation.",
+  "jlpt": "N4",
+  "source": "authored",
+  "bg": "school-gate-evening",
+  "characters": {
+    "mio": { "name": "みお", "color": "#f3a0b6" },
+    "sora": { "name": "そら", "color": "#a2befa" }
+  },
+  "glossary": {
+    "g:n4-kamo-shirenai": { "label": "〜かもしれない", "meaning": "might / may", "note": "Plain form + かもしれない expresses a possibility the speaker is not sure about." },
+    "g:n4-hazu-da": { "label": "〜はずだ", "meaning": "should be / is expected to", "note": "Plain form + はずだ: you expect it from reasoning. (Noun: の + はずだ.)" },
+    "g:n4-te-aru": { "label": "〜てある", "meaning": "has been done (and stays that way)", "note": "Transitive verb て-form + ある: someone did it on purpose and the result remains." },
+    "g:n4-te-oku": { "label": "〜ておく", "meaning": "do in advance", "note": "て-form + おく: do something ahead of time, or leave it in a state." },
+    "k:歌": { "label": "歌", "reading": "か / うた", "meaning": "song, sing" },
+    "k:夜": { "label": "夜", "reading": "や / よる", "meaning": "night" }
+  },
+  "beats": [
+    { "type": "bg", "bg": "school-gate-evening" },
+    { "type": "say", "who": null, "text": "文化祭の 前の 夜。もう くらいのに、そらの スマホに つながらない。", "en": "The night before the festival. It's already dark, and you can't reach Sora's phone." },
+    { "type": "show", "char": "mio", "expr": "surprised", "pos": "left" },
+    { "type": "say", "who": "mio", "text": "そら、どこに いるんだろう…。あしたの ステージ、そらが 主役なのに！", "en": "Where could Sora be...? He's the lead in tomorrow's stage show!" },
+    { "type": "intro", "item": "g:n4-kamo-shirenai" },
+    { "type": "choice", "item": "g:n4-kamo-shirenai", "who": "mio", "prompt": "You aren't sure, but you have a guess: \"Sora might be at the river.\"", "options": [
+      { "text": "そらは 川に いるかもしれない。", "correct": true },
+      { "text": "そらは 川に いるはずが ない。", "awkward": { "who": "mio", "text": "「はずがない」は 「いる わけが ない」だよ！", "en": "\"Hazu ga nai\" means he can't possibly be there!" } },
+      { "text": "そらは 川に いるに ちがいない。", "awkward": { "who": "mio", "text": "そこまで 言いきれる？ 「かも」くらいかな。", "en": "Can you be that sure? More like \"maybe\"." } }
+    ] },
+    { "type": "say", "who": "mio", "text": "まず、部室を 見て みよう。ギターは そこに あるはず。", "en": "Let's check the club room first. The guitar should be there." },
+    { "type": "bg", "bg": "classroom-morning" },
+    { "type": "say", "who": null, "text": "部室は くらい。かべに ポスターが はって ある。", "en": "The club room is dark. A poster is stuck on the wall." },
+    { "type": "intro", "item": "g:n4-hazu-da" },
+    { "type": "choice", "item": "g:n4-hazu-da", "who": "mio", "prompt": "Say: \"The guitar should be in the club room.\"", "options": [
+      { "text": "ギターは 部室に あるはずです。", "correct": true },
+      { "text": "ギターは 部室に あるはずだです。", "awkward": { "who": "mio", "text": "「はずです」の「だ」は いらないよ。", "en": "You don't need \"da\" with \"hazu desu\"." } },
+      { "text": "ギターは 部室に あるのはずです。", "awkward": { "who": "mio", "text": "「の」は いらないかな。", "en": "No need for \"no\" here." } }
+    ] },
+    { "type": "intro", "item": "g:n4-te-aru" },
+    { "type": "choice", "item": "g:n4-te-aru", "who": "mio", "prompt": "Point at the wall: \"A poster has been put up on the wall.\"", "options": [
+      { "text": "かべに ポスターが はってあります。", "correct": true },
+      { "text": "かべに ポスターが はるてあります。", "awkward": { "who": "mio", "text": "「はるて」…？ 「はって」だよ。", "en": "\"Haru te\"...? It's \"hatte\"." } },
+      { "text": "かべに ポスターが はってあるます。", "awkward": { "who": "mio", "text": "「あります」で おわるよ。", "en": "It ends with \"arimasu\"." } }
+    ] },
+    { "type": "say", "who": "mio", "text": "ギターは ない…。そらは ギターを もって 出たんだ！", "en": "The guitar's gone... Sora took it with him!" },
+    { "type": "bg", "bg": "riverside-evening" },
+    { "type": "say", "who": null, "text": "川の 方から、ギターの 音が きこえる。", "en": "From the direction of the river, you hear a guitar." },
+    { "type": "show", "char": "sora", "expr": "tired", "pos": "right" },
+    { "type": "intro", "item": "k:歌" },
+    { "type": "reading", "item": "k:歌", "display": "歌", "prompt": "Sora's notebook is open. The title says 歌. Read it.", "answers": ["うた"] },
+    { "type": "say", "who": "sora", "text": "…ごめん。あしたの 歌、やっぱり こわくて。", "en": "...Sorry. I'm scared of tomorrow's song after all." },
+    { "type": "intro", "item": "k:夜" },
+    { "type": "reading", "item": "k:夜", "display": "夜", "prompt": "Mio says \"こんな 夜に…\". What is 夜?", "answers": ["よる"] },
+    { "type": "say", "who": "mio", "text": "こんな 夜に 一人で…。でも、よく 練習したんでしょ？", "en": "Alone on a night like this... But you practiced a lot, right?" },
+    { "type": "intro", "item": "g:n4-te-oku" },
+    { "type": "choice", "item": "g:n4-te-oku", "who": "sora", "prompt": "Reassure Sora: \"I'll prepare the tickets in advance.\" (Offer to help beforehand.)", "options": [
+      { "text": "チケットを よういして おきます。", "correct": true },
+      { "text": "チケットを よういして きます。", "awkward": { "who": "sora", "text": "「てきます」は よういしてから 来る、だよ。じゅんびだけなら 「ておきます」。", "en": "\"Te kimasu\" means prepare and then come. For preparing ahead, it's \"te okimasu\"." } },
+      { "text": "チケットを よういして おくます。", "awkward": { "who": "sora", "text": "「おきます」だよ。ふつうの かたち。", "en": "It's \"okimasu\"." } }
+    ] },
+    { "type": "affection", "char": "sora", "delta": 3 },
+    { "type": "cg", "id": "river-guitar", "title": "Guitar by the river" },
+    { "type": "say", "who": "sora", "text": "…ありがとう。きいて くれる？ 一回だけ、ここで 歌う。", "en": "...Thanks. Will you listen? I'll sing once, right here." }
+  ]
+}

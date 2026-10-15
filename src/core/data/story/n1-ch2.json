@@ -1,0 +1,65 @@
+{
+  "schema": 1,
+  "id": "n1-ch2",
+  "order": 26,
+  "title": "Chapter 26: 図書館の 手紙",
+  "summary": "A letter from the past in the old library. No sooner than, contrary to what you thought, once you start, and a letter never shown.",
+  "jlpt": "N1",
+  "source": "authored",
+  "bg": "library",
+  "characters": {
+    "mio": { "name": "みお", "color": "#f3a0b6" },
+    "sora": { "name": "そら", "color": "#a2befa" },
+    "tanaka": { "name": "田中先生", "color": "#9de3c4" }
+  },
+  "glossary": {
+    "g:n1-ga-hayai-ka": { "label": "〜が早いか", "meaning": "no sooner than", "note": "Dictionary form + が早いか: the second event follows instantly." },
+    "g:n1-to-omoikiya": { "label": "〜と思いきや", "meaning": "I thought ... but", "note": "Plain form + と思いきや: the result turns out contrary to what you expected." },
+    "g:n1-ta-ga-saigo": { "label": "〜たが最後", "meaning": "once ... (no way back)", "note": "た-form + が最後: once it starts, it can't be stopped or undone." },
+    "g:n1-zujimai": { "label": "〜ずじまい", "meaning": "ended up never ...", "note": "ない-stem + ずじまい: the chance passed and it was never done." },
+    "k:封": { "label": "封", "reading": "ふう / ほう", "meaning": "seal" },
+    "k:伝": { "label": "伝", "reading": "でん / つた(える)", "meaning": "convey" }
+  },
+  "beats": [
+    { "type": "bg", "bg": "library" },
+    { "type": "say", "who": null, "text": "旧校舎の 図書室。創立百周年の ために、古い 箱を 整理して いる。", "en": "The old building's library. For the centennial, you're sorting old boxes." },
+    { "type": "show", "char": "mio", "expr": "neutral", "pos": "left" },
+    { "type": "show", "char": "sora", "expr": "neutral", "pos": "right" },
+    { "type": "say", "who": "mio", "text": "この 箱、十年前の タイムカプセルじゃ ない？", "en": "Isn't this box the time capsule from ten years ago?" },
+    { "type": "intro", "item": "g:n1-ga-hayai-ka" },
+    { "type": "choice", "item": "g:n1-ga-hayai-ka", "who": "sora", "prompt": "Describe: \"No sooner had she opened the box than an old letter fluttered up.\"", "options": [
+      { "text": "箱を 開けるが 早いか、古い 手紙が 舞い上がりました。", "correct": true },
+      { "text": "箱を 開けたが 早いか、古い 手紙が 舞い上がりました。", "awkward": { "who": "tanaka", "text": "「が早いか」の 前は 辞書形ですよ。", "en": "Before \"ga hayai ka\" is the dictionary form." } },
+      { "text": "箱を 開けるが 早いに、古い 手紙が 舞い上がりました。", "awkward": { "who": "mio", "text": "「早いか」だよ。「早いに」じゃなくて。", "en": "\"Hayai ka\", not \"hayai ni\"." } }
+    ] },
+    { "type": "intro", "item": "k:封" },
+    { "type": "reading", "item": "k:封", "display": "封筒", "target": "封", "prompt": "The old letter is in a 封筒. Read it.", "answers": ["ふうとう"] },
+    { "type": "say", "who": "sora", "text": "空っぽだと 思いきや、中に 手紙が 入って いた。", "en": "I thought it was empty, but there was a letter inside." },
+    { "type": "intro", "item": "g:n1-to-omoikiya" },
+    { "type": "choice", "item": "g:n1-to-omoikiya", "who": "sora", "prompt": "Say: \"I thought the box was empty, but a letter was inside.\"", "options": [
+      { "text": "空っぽだと 思いきや、中に 手紙が 入って いました。", "correct": true },
+      { "text": "空っぽだと 思い切って、中に 手紙が 入って いました。", "awkward": { "who": "mio", "text": "「思い切って」は 「思い切って やる」。「思いきや」は 「〜と 思ったら」だよ。", "en": "\"Omoikitte\" means \"to take the plunge\". \"Omoikiya\" means \"I thought...\"." } },
+      { "text": "空っぽだと 思いきやに、中に 手紙が 入って いました。", "awkward": { "who": "sora", "text": "「思いきや」で 終わる。「に」は いらない。", "en": "It ends at \"omoikiya\" -- no \"ni\"." } }
+    ] },
+    { "type": "say", "who": "mio", "text": "宛名は…「十年後の わたしたちへ」。そらの 字だ！", "en": "The addressee is... \"To us, ten years from now.\" It's Sora's handwriting!" },
+    { "type": "intro", "item": "g:n1-ta-ga-saigo" },
+    { "type": "choice", "item": "g:n1-ta-ga-saigo", "who": "mio", "prompt": "Say: \"Once you start reading this letter, you can't stop.\"", "options": [
+      { "text": "この 手紙は、読みはじめたが 最後、やめられない。", "correct": true },
+      { "text": "この 手紙は、読みはじめるが 最後、やめられない。", "awkward": { "who": "tanaka", "text": "「たが最後」は 過去形ですよ。", "en": "\"Ta ga saigo\" uses the past form." } },
+      { "text": "この 手紙は、読みはじめたが さいごに、やめられない。", "awkward": { "who": "sora", "text": "「が 最後」で 切れる。「に」は つけない。", "en": "It ends at \"ga saigo\" -- no \"ni\"." } }
+    ] },
+    { "type": "intro", "item": "k:伝" },
+    { "type": "reading", "item": "k:伝", "display": "伝える", "target": "伝", "prompt": "The letter says: 伝えたい ことが ある. Read 伝える.", "answers": ["つたえる"] },
+    { "type": "say", "who": "sora", "text": "…あの ころ、書いたのに、結局 だれにも 見せずじまいだった。", "en": "...I wrote it back then, but in the end I never showed it to anyone." },
+    { "type": "intro", "item": "g:n1-zujimai" },
+    { "type": "choice", "item": "g:n1-zujimai", "who": "sora", "prompt": "Say: \"That letter, in the end, I never showed to anyone.\"", "options": [
+      { "text": "あの 手紙は、結局 だれにも 見せずじまいでした。", "correct": true },
+      { "text": "あの 手紙は、結局 だれにも 見せないずじまいでした。", "awkward": { "who": "mio", "text": "「ず」が 「ない」の 意味。「ない」は いらないよ。", "en": "\"Zu\" already means \"not\" -- no \"nai\"." } },
+      { "text": "あの 手紙は、結局 だれにも 見せずしまいでした。", "awkward": { "who": "tanaka", "text": "「ずじまい」ですよ。「じ」に 気を つけて。", "en": "It's \"zujimai\" -- watch the \"ji\"." } }
+    ] },
+    { "type": "affection", "char": "sora", "delta": 3 },
+    { "type": "cg", "id": "time-capsule-letter", "title": "The time capsule letter" },
+    { "type": "show", "char": "tanaka", "expr": "smile", "pos": "center" },
+    { "type": "say", "who": "tanaka", "text": "その 手紙の つづきは、百周年の 日に 読みましょう。みなさんの 歌と ともに。", "en": "Let's read the rest of that letter on the hundredth anniversary day. Together with your song." }
+  ]
+}

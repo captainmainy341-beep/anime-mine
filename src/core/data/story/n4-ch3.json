@@ -1,0 +1,69 @@
+{
+  "schema": 1,
+  "id": "n4-ch3",
+  "order": 9,
+  "title": "Chapter 9: ぶたいの うえで",
+  "summary": "Festival day. Sora freezes on stage. Encourage him with conditionals, \"let's try\", and a shared goal.",
+  "jlpt": "N4",
+  "source": "authored",
+  "bg": "festival-hall",
+  "characters": {
+    "mio": { "name": "みお", "color": "#f3a0b6" },
+    "sora": { "name": "そら", "color": "#a2befa" }
+  },
+  "glossary": {
+    "g:n4-ba-conditional": { "label": "〜ば", "meaning": "if (conditional)", "note": "Verbs: e-row + ば (すれば, 行けば). い-adjectives: ければ." },
+    "g:n4-tara-conditional": { "label": "〜たら", "meaning": "when / if", "note": "Past plain form + ら: 終わったら (when it's over)." },
+    "g:n4-te-miru": { "label": "〜てみる", "meaning": "try doing", "note": "て-form + みる: do something to see how it goes." },
+    "g:n4-volitional": { "label": "〜よう", "meaning": "let's / I will", "note": "う-verbs: o-row + う (行こう). る-verbs: drop る + よう (食べよう)." },
+    "k:声": { "label": "声", "reading": "せい / こえ", "meaning": "voice" },
+    "k:心": { "label": "心", "reading": "しん / こころ", "meaning": "heart, mind" }
+  },
+  "beats": [
+    { "type": "bg", "bg": "festival-hall" },
+    { "type": "say", "who": null, "text": "文化祭、当日。ステージの そでで、そらの 手が ふるえている。", "en": "Festival day. In the wings, Sora's hands are trembling." },
+    { "type": "show", "char": "sora", "expr": "sad", "pos": "right" },
+    { "type": "show", "char": "mio", "expr": "neutral", "pos": "left" },
+    { "type": "say", "who": "sora", "text": "声が でない…。どう しよう。", "en": "My voice won't come out... What do I do?" },
+    { "type": "intro", "item": "k:声" },
+    { "type": "reading", "item": "k:声", "display": "声", "prompt": "Sora whispers about his 声. Read it.", "answers": ["こえ"] },
+    { "type": "intro", "item": "g:n4-ba-conditional" },
+    { "type": "choice", "item": "g:n4-ba-conditional", "who": "sora", "prompt": "Encourage Sora: \"If you practice, you can do it.\"", "options": [
+      { "text": "練習すれば、できるよ。", "correct": true },
+      { "text": "練習するば、できるよ。", "awkward": { "who": "mio", "text": "「するば」じゃなくて 「すれば」だよ。", "en": "Not \"suru ba\" -- \"sureba\"." } },
+      { "text": "練習すれが、できるよ。", "awkward": { "who": "mio", "text": "「が」じゃなくて 「ば」…！", "en": "Not \"ga\" -- \"ba\"...!" } }
+    ] },
+    { "type": "say", "who": "mio", "text": "昨日の 夜、川で ちゃんと 歌えたでしょ。あの 声で いいんだよ。", "en": "Last night at the river you sang just fine. That voice is all you need." },
+    { "type": "intro", "item": "g:n4-te-miru" },
+    { "type": "choice", "item": "g:n4-te-miru", "who": "mio", "prompt": "Suggest: \"Let's try singing once (quietly).\"", "options": [
+      { "text": "一度、歌ってみよう。", "correct": true },
+      { "text": "一度、歌いてみよう。", "awkward": { "who": "mio", "text": "「歌いて」じゃなくて 「歌って」だよ。", "en": "Not \"utaite\" -- \"utatte\"." } },
+      { "text": "一度、歌ってみるよう。", "awkward": { "who": "sora", "text": "…「みよう」で いいと 思う。", "en": "...I think \"miyou\" is right." } }
+    ] },
+    { "type": "intro", "item": "k:心" },
+    { "type": "reading", "item": "k:心", "display": "心", "prompt": "Mio taps Sora's wristband, which has 心 stitched on it. Read it.", "answers": ["こころ"] },
+    { "type": "say", "who": "sora", "text": "…心が ちょっと かるく なった。", "en": "...My heart feels a little lighter." },
+    { "type": "intro", "item": "g:n4-tara-conditional" },
+    { "type": "choice", "item": "g:n4-tara-conditional", "who": "mio", "prompt": "Promise a reward: \"When the song is over, let's all eat cake.\"", "options": [
+      { "text": "歌が 終わったら、みんなで ケーキを 食べよう。", "correct": true },
+      { "text": "歌が 終わるたら、みんなで ケーキを 食べよう。", "awkward": { "who": "sora", "text": "「終わるたら」…？ 「終わったら」だ。", "en": "\"Owaru tara\"...? It's \"owattara\"." } },
+      { "text": "歌が 終わったり、みんなで ケーキを 食べよう。", "awkward": { "who": "mio", "text": "「たり」は ふたつ ならべる ときだよ。", "en": "\"Tari\" is for listing two things." } }
+    ] },
+    { "type": "say", "who": null, "text": "『つぎは、そらくんの 歌です』。アナウンスが ひびく。", "en": "\"Next is Sora's song.\" The announcement rings out." },
+    { "type": "intro", "item": "g:n4-volitional" },
+    { "type": "choice", "item": "g:n4-volitional", "who": "sora", "prompt": "Sora takes a breath. Say with him: \"Alright, let's go!\"", "options": [
+      { "text": "よし、行こう！", "correct": true },
+      { "text": "よし、行くよう！", "awkward": { "who": "mio", "text": "「行こう」だよ。「く」を「こ」に 変えて、「う」を つけるの！", "en": "It's \"ikou\" -- change ku to ko and add u!" } },
+      { "text": "よし、行きよう！", "awkward": { "who": "sora", "text": "…「行こう」で いいよ。", "en": "...\"Ikou\" is fine." } }
+    ] },
+    { "type": "bg", "bg": "festival-hall" },
+    { "type": "hide", "char": "mio" },
+    { "type": "say", "who": "sora", "text": "…きいて ください。「かわの おと」。", "en": "...Please listen. \"The Sound of the River.\"" },
+    { "type": "say", "who": null, "text": "ギターの 音が、しずかな 体育館に ひろがっていく。", "en": "The guitar spreads through the quiet gym." },
+    { "type": "affection", "char": "sora", "delta": 4 },
+    { "type": "affection", "char": "mio", "delta": 2 },
+    { "type": "cg", "id": "festival-stage", "title": "On the festival stage" },
+    { "type": "show", "char": "mio", "expr": "smile", "pos": "left" },
+    { "type": "say", "who": "mio", "text": "…すごかった。ほんとうに、すごかったよ、そら！", "en": "...That was amazing. Truly amazing, Sora!" }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "schema": 1,
+  "id": "n1-ch6",
+  "order": 30,
+  "title": "Chapter 30: ふたたび、桜",
+  "summary": "The finale at the cherry-blossom gate. Only by trying, based on experience, no need to say it, in my own way, and nobody but you.",
+  "jlpt": "N1",
+  "source": "authored",
+  "bg": "sakura-road",
+  "characters": {
+    "mio": { "name": "みお", "color": "#f3a0b6" },
+    "sora": { "name": "そら", "color": "#a2befa" },
+    "tanaka": { "name": "田中先生", "color": "#9de3c4" }
+  },
+  "glossary": {
+    "g:n1-te-koso": { "label": "〜てこそ", "meaning": "only by doing", "note": "て-form + こそ: only through the action does the result arrive." },
+    "g:n1-wo-fumaete": { "label": "〜を踏まえて", "meaning": "based on / taking into account", "note": "Noun + を踏まえて: building on facts, experience or earlier discussion." },
+    "g:n1-made-mo-nai": { "label": "〜までもない", "meaning": "no need to", "note": "Dictionary form + までもない: it's obvious, so there's no need to say or do it." },
+    "g:n1-nari-ni": { "label": "〜なりに", "meaning": "in one's own way", "note": "Noun + なりに: within the limits of one's own ability or position." },
+    "g:n1-wo-oite": { "label": "〜をおいて", "meaning": "other than / nobody but", "note": "Noun + をおいて(ほかに): used with a negative to say only that person fits." },
+    "k:桜": { "label": "桜", "reading": "おう / さくら", "meaning": "cherry blossom" },
+    "k:未": { "label": "未", "reading": "み", "meaning": "not yet" }
+  },
+  "beats": [
+    { "type": "bg", "bg": "sakura-road" },
+    { "type": "intro", "item": "k:桜" },
+    { "type": "reading", "item": "k:桜", "display": "桜", "prompt": "The petals are falling. The banner at the gate says 桜. Read it.", "answers": ["さくら"] },
+    { "type": "say", "who": null, "text": "式典が おわった 夕方、桜の 花びらが ふる 校門の 前で、四人は 向かい あった。", "en": "In the evening after the ceremony, in front of the gate under falling petals, the four of you faced each other." },
+    { "type": "show", "char": "mio", "expr": "smile", "pos": "left" },
+    { "type": "show", "char": "sora", "expr": "smile", "pos": "right" },
+    { "type": "show", "char": "tanaka", "expr": "smile", "pos": "center" },
+    { "type": "intro", "item": "k:未" },
+    { "type": "reading", "item": "k:未", "display": "未来", "target": "未", "prompt": "Sora's new album is titled 未来. Read it.", "answers": ["みらい"] },
+    { "type": "say", "who": "sora", "text": "新しい アルバムの 名前は「未来」にした。…十年前の ぼくには、考えられなかった。", "en": "I named the new album \"Future\". ...Ten years ago I couldn't have imagined it." },
+    { "type": "intro", "item": "g:n1-te-koso" },
+    { "type": "choice", "item": "g:n1-te-koso", "who": "sora", "prompt": "Say: \"I believe the path opens only by taking on challenges.\"", "options": [
+      { "text": "挑戦して こそ、道は 開けると 思います。", "correct": true },
+      { "text": "挑戦したこそ、道は 開けると 思います。", "awkward": { "who": "tanaka", "text": "「挑戦して こそ」。て形に つながりますよ。", "en": "\"Chousen shite koso\" -- it follows the te-form." } },
+      { "text": "挑戦して こそは、道は 開けると 思います。", "awkward": { "who": "mio", "text": "「こそ」で 十分。「は」は いらないよ。", "en": "\"Koso\" is enough -- no \"wa\"." } }
+    ] },
+    { "type": "say", "who": "mio", "text": "わたしも、これまでの 経験を 踏まえて、店を 少し 変えようと 思う。", "en": "I too am thinking of changing the shop a little, based on my experience so far." },
+    { "type": "intro", "item": "g:n1-wo-fumaete" },
+    { "type": "choice", "item": "g:n1-wo-fumaete", "who": "mio", "prompt": "Say: \"Based on my past experience, I made a new plan.\"", "options": [
+      { "text": "これまでの 経験を 踏まえて、新しい 計画を 立てました。", "correct": true },
+      { "text": "これまでの 経験に 踏まえて、新しい 計画を 立てました。", "awkward": { "who": "tanaka", "text": "「を 踏まえて」ですよ。", "en": "\"Wo fumaete\"." } },
+      { "text": "これまでの 経験を 踏まえる、新しい 計画を 立てました。", "awkward": { "who": "sora", "text": "つなげるには 「踏まえて」だよ。", "en": "To connect, use \"fumaete\"." } }
+    ] },
+    { "type": "say", "who": "tanaka", "text": "ふたりが どれほど 大切な 仲間か、言うまでも ありませんね。", "en": "How precious you two are to each other — there's no need to say it, is there?" },
+    { "type": "intro", "item": "g:n1-made-mo-nai" },
+    { "type": "choice", "item": "g:n1-made-mo-nai", "who": "tanaka", "prompt": "Say: \"How important you all are — there's no need to say it.\"", "options": [
+      { "text": "みんなが どれほど 大切か、言うまでも ありません。", "correct": true },
+      { "text": "みんなが どれほど 大切か、言ったまでも ありません。", "awkward": { "who": "mio", "text": "「言うまでも」。辞書形だよ。", "en": "\"Iu made mo\" -- the dictionary form." } },
+      { "text": "みんなが どれほど 大切か、言うまでも あります。", "awkward": { "who": "sora", "text": "「ありません」。否定の 形で 使うよ。", "en": "\"Arimasen\" -- it's used negatively." } }
+    ] },
+    { "type": "say", "who": "mio", "text": "十年、いろいろ あったけど、わたしは わたしなりに がんばって きたよ。", "en": "A lot has happened over ten years, but I've done my best in my own way." },
+    { "type": "intro", "item": "g:n1-nari-ni" },
+    { "type": "choice", "item": "g:n1-nari-ni", "who": "mio", "prompt": "Say: \"I did my best in my own way.\"", "options": [
+      { "text": "わたしは わたしなりに、精いっぱい やりました。", "correct": true },
+      { "text": "わたしは わたしなりで、精いっぱい やりました。", "awkward": { "who": "sora", "text": "「なりに」。「で」じゃなくて。", "en": "\"Nari ni\", not \"de\"." } },
+      { "text": "わたしは わたしの なりに、精いっぱい やりました。", "awkward": { "who": "tanaka", "text": "「わたしなりに」。「の」は いりませんよ。", "en": "\"Watashi nari ni\" -- no \"no\"." } }
+    ] },
+    { "type": "say", "who": "tanaka", "text": "さて、この 学校を 引きつぐ 人を さがして います。", "en": "Now, I'm looking for someone to carry this school on." },
+    { "type": "intro", "item": "g:n1-wo-oite" },
+    { "type": "choice", "item": "g:n1-wo-oite", "who": "tanaka", "prompt": "Say: \"There is nobody but you who could be entrusted with this role.\"", "options": [
+      { "text": "この 役を 任せられるのは、あなたを おいて ほかに いません。", "correct": true },
+      { "text": "この 役を 任せられるのは、あなたに おいて ほかに いません。", "awkward": { "who": "mio", "text": "「あなたを おいて」。「に おいて」は 「〜で」の 意味に なるよ。", "en": "\"Ni oite\" would mean \"at/in\". It's \"wo oite\"." } },
+      { "text": "この 役を 任せられるのは、あなたを おいて ほかに います。", "awkward": { "who": "sora", "text": "「いません」。否定と いっしょに 使う。", "en": "\"Imasen\" -- it goes with the negative." } }
+    ] },
+    { "type": "affection", "char": "mio", "delta": 5 },
+    { "type": "affection", "char": "sora", "delta": 5 },
+    { "type": "cg", "id": "sakura-finale", "title": "Under the cherry blossoms, again" },
+    { "type": "say", "who": "mio", "text": "…また、十年後に ここで 会おうね。約束。", "en": "...Let's meet here again in ten years. Promise." },
+    { "type": "say", "who": null, "text": "桜の 花びらが、みんなの かたに そっと 落ちた。物語は、ここから また 始まる。", "en": "Cherry petals softly fell on the three of your shoulders. From here, the story begins again." }
+  ]
+}
