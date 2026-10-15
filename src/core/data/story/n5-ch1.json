@@ -1,0 +1,284 @@
+{
+  "schema": 1,
+  "id": "n5-ch1",
+  "order": 1,
+  "title": "Chapter 1: はじめまして",
+  "summary": "Your first morning at Sakuragaoka High. Introduce yourself, meet Mio and your homeroom teacher.",
+  "jlpt": "N5",
+  "source": "authored",
+  "bg": "classroom-morning",
+  "characters": {
+    "mio": {
+      "name": "みお",
+      "color": "#f3a0b6"
+    },
+    "tanaka": {
+      "name": "田中先生",
+      "color": "#9de3c4"
+    }
+  },
+  "glossary": {
+    "g:n5-wa-desu": {
+      "label": "〜は〜です",
+      "meaning": "X is Y (polite)",
+      "note": "は (read \"wa\") marks the topic; です makes the sentence polite."
+    },
+    "g:n5-ka": {
+      "label": "〜か",
+      "meaning": "question marker",
+      "note": "Add か at the end of a sentence to turn it into a yes/no question."
+    },
+    "g:n5-no": {
+      "label": "〜の",
+      "meaning": "of / 's",
+      "note": "AのB means \"B of A\" or \"A's B\"."
+    },
+    "k:学": {
+      "label": "学",
+      "reading": "がく",
+      "meaning": "study, learning"
+    },
+    "k:先": {
+      "label": "先",
+      "reading": "せん",
+      "meaning": "previous, ahead"
+    },
+    "k:日": {
+      "label": "日",
+      "reading": "にち / ひ",
+      "meaning": "day, sun"
+    },
+    "k:本": {
+      "label": "本",
+      "reading": "ほん",
+      "meaning": "book, origin"
+    }
+  },
+  "beats": [
+    {
+      "type": "say",
+      "who": null,
+      "text": "春の朝。新しい学校の、新しい教室。",
+      "en": "A spring morning. A new school, a new classroom."
+    },
+    {
+      "type": "show",
+      "char": "mio",
+      "expr": "smile",
+      "pos": "left"
+    },
+    {
+      "type": "say",
+      "who": "mio",
+      "text": "はじめまして！ わたしは みお です。",
+      "en": "Nice to meet you! I'm Mio."
+    },
+    {
+      "type": "intro",
+      "item": "g:n5-wa-desu"
+    },
+    {
+      "type": "choice",
+      "item": "g:n5-wa-desu",
+      "who": "mio",
+      "prompt": "Introduce yourself. Your name is Yuuki.",
+      "options": [
+        {
+          "text": "わたしは ゆうき です。",
+          "correct": true
+        },
+        {
+          "text": "わたしを ゆうき です。",
+          "awkward": {
+            "who": "mio",
+            "text": "え？ …「を」？ ゆうきさん、もう いちど おねがい。",
+            "en": "Huh? ...\"wo\"? Yuuki, one more time please."
+          }
+        },
+        {
+          "text": "わたしは ゆうき です です。",
+          "awkward": {
+            "who": "mio",
+            "text": "「です」が ふたつ…？ ふふっ、もう いちど！",
+            "en": "Two \"desu\"...? Hehe, try again!"
+          }
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "mio",
+      "text": "ゆうきさん、よろしくね！ …ゆうきさんは 日本人？",
+      "en": "Nice to meet you, Yuuki! ...Are you Japanese?"
+    },
+    {
+      "type": "intro",
+      "item": "k:日"
+    },
+    {
+      "type": "reading",
+      "item": "k:日",
+      "display": "日本人",
+      "target": "日",
+      "prompt": "Mio's question uses the word 日本人. Read it in kana.",
+      "answers": [
+        "にほんじん",
+        "にっぽんじん"
+      ]
+    },
+    {
+      "type": "intro",
+      "item": "g:n5-ka"
+    },
+    {
+      "type": "choice",
+      "item": "g:n5-ka",
+      "who": "mio",
+      "prompt": "Ask Mio: \"Are you a student?\"",
+      "options": [
+        {
+          "text": "みおさんは 学生 ですか。",
+          "correct": true
+        },
+        {
+          "text": "みおさんは か 学生 です。",
+          "awkward": {
+            "who": "mio",
+            "text": "「か」が まえに きてる…！ おかしいよ。",
+            "en": "\"ka\" came first...! That's odd."
+          }
+        },
+        {
+          "text": "みおさんは 学生か です。",
+          "awkward": {
+            "who": "mio",
+            "text": "んー、「か」は さいごに つけるんだよ。",
+            "en": "Hmm, \"ka\" goes at the very end."
+          }
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "mio",
+      "text": "うん、学生 だよ。あ、見て。ノートに なにか かいてある。",
+      "en": "Yep, I'm a student. Oh, look. Something is written in the notebook."
+    },
+    {
+      "type": "intro",
+      "item": "k:学"
+    },
+    {
+      "type": "reading",
+      "item": "k:学",
+      "display": "学生",
+      "target": "学",
+      "prompt": "The notebook says something. Read it in kana.",
+      "answers": [
+        "がくせい"
+      ]
+    },
+    {
+      "type": "affection",
+      "char": "mio",
+      "delta": 2
+    },
+    {
+      "type": "show",
+      "char": "tanaka",
+      "expr": "neutral",
+      "pos": "right"
+    },
+    {
+      "type": "say",
+      "who": "tanaka",
+      "text": "みなさん、おはようございます。わたしは 担任の たなか です。",
+      "en": "Good morning, everyone. I am Tanaka, your homeroom teacher."
+    },
+    {
+      "type": "intro",
+      "item": "k:先"
+    },
+    {
+      "type": "reading",
+      "item": "k:先",
+      "display": "先生",
+      "target": "先",
+      "prompt": "The blackboard shows the teacher's title. Read it.",
+      "answers": [
+        "せんせい"
+      ]
+    },
+    {
+      "type": "intro",
+      "item": "g:n5-no"
+    },
+    {
+      "type": "choice",
+      "item": "g:n5-no",
+      "who": "tanaka",
+      "prompt": "Tanaka-sensei asks who Mio is. Answer: \"Mio is my friend.\"",
+      "options": [
+        {
+          "text": "みおさんは わたしの ともだち です。",
+          "correct": true
+        },
+        {
+          "text": "みおさんは わたしを ともだち です。",
+          "awkward": {
+            "who": "tanaka",
+            "text": "「わたしを ともだち」…？ もういちど。",
+            "en": "\"wo friend\"...? Once more."
+          }
+        },
+        {
+          "text": "みおさんは わたしに ともだち です。",
+          "awkward": {
+            "who": "tanaka",
+            "text": "ふむ、「の」を つかって みましょう。",
+            "en": "Hm, try using \"no\"."
+          }
+        }
+      ]
+    },
+    {
+      "type": "intro",
+      "item": "k:本"
+    },
+    {
+      "type": "meaning",
+      "item": "k:本",
+      "display": "日本",
+      "prompt": "The teacher writes 日本 on the board. What does 本 mean?",
+      "options": [
+        "book / origin",
+        "water",
+        "mountain",
+        "to eat"
+      ],
+      "correct": 0
+    },
+    {
+      "type": "say",
+      "who": "tanaka",
+      "text": "日本の 学生は…まず じこしょうかいから はじめましょう。",
+      "en": "Students in Japan... let's begin with self-introductions."
+    },
+    {
+      "type": "cg",
+      "id": "first-day",
+      "title": "The first day"
+    },
+    {
+      "type": "affection",
+      "char": "mio",
+      "delta": 1
+    },
+    {
+      "type": "say",
+      "who": "mio",
+      "text": "これから よろしくね、ゆうきさん！",
+      "en": "I'm looking forward to it, Yuuki!"
+    }
+  ]
+}

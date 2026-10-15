@@ -3,6 +3,7 @@ import { mountLevels } from './learn/browse.mjs';
 import { mountItem } from './learn/item.mjs';
 import { mountSession } from './learn/session.mjs';
 import { mountGrammar, mountPoint } from './learn/grammar.mjs';
+import { mountStory } from './learn/story.mjs';
 import { mountStats } from './learn/stats.mjs';
 import { mountLearnSettings } from './learn/settings.mjs';
 import { speak } from './learn/speak.mjs';
@@ -14,6 +15,7 @@ const VIEWS = {
   item: mountItem,
   session: mountSession,
   grammar: mountGrammar,
+  story: mountStory,
   point: mountPoint,
   stats: mountStats,
   settings: mountLearnSettings,
@@ -23,6 +25,7 @@ const TABS = [
   ['home', 'Home'],
   ['levels', 'Kanji'],
   ['grammar', 'Grammar'],
+  ['story', 'Story'],
   ['stats', 'Stats'],
   ['settings', 'Settings'],
 ];

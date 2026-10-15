@@ -2,6 +2,7 @@ const path = require('path');
 const { fileURLToPath } = require('url');
 const { app, BrowserWindow, dialog, ipcMain } = require('electron');
 const { createServices } = require('./services');
+const { createStoryHandlers } = require('./storyHandlers');
 
 const APP_FILE = path.join(__dirname, '..', 'renderer', 'index.html');
 let services = null;
@@ -49,6 +50,12 @@ app.whenReady()
   .then(async () => {
     services = createServices({ dataDir: app.getPath('userData'), dialog, notify: send });
     registerHandlers(services.handlers);
+    const story = createStoryHandlers({
+      dataDir: app.getPath('userData'),
+      learn: services.handlers,
+      getSettings: () => services.handlers['settings:get'](),
+    });
+    registerHandlers(story.handlers);
     await services.start();
     createWindow();
   })

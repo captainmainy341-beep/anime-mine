@@ -1,0 +1,70 @@
+{
+  "schema": 1,
+  "id": "n5-ch3",
+  "order": 3,
+  "title": "Chapter 3: しゅうまつ",
+  "summary": "Plans for the weekend: the days of the week, what you want to do, and a small request.",
+  "jlpt": "N5",
+  "source": "authored",
+  "bg": "park-day",
+  "characters": {
+    "mio": { "name": "みお", "color": "#f3a0b6" },
+    "sora": { "name": "そら", "color": "#a2befa" }
+  },
+  "glossary": {
+    "g:n5-ni": { "label": "〜に", "meaning": "at / on (time)", "note": "に marks a specific time such as a day of the week: 土曜日に." },
+    "g:n5-tai": { "label": "〜たい", "meaning": "want to (do)", "note": "Verb stem + たい: 食べたい, 行きたい." },
+    "g:n5-te-iru": { "label": "〜ています", "meaning": "is doing", "note": "て-form + います describes something in progress." },
+    "g:n5-te-kudasai": { "label": "〜てください", "meaning": "please (do)", "note": "て-form + ください is a polite request." },
+    "k:月": { "label": "月", "reading": "げつ / つき", "meaning": "moon, month" },
+    "k:火": { "label": "火", "reading": "か / ひ", "meaning": "fire" },
+    "k:木": { "label": "木", "reading": "もく / き", "meaning": "tree, wood" },
+    "k:金": { "label": "金", "reading": "きん", "meaning": "gold, money" },
+    "k:土": { "label": "土", "reading": "ど / つち", "meaning": "soil, earth" }
+  },
+  "beats": [
+    { "type": "say", "who": null, "text": "金曜日の夜。スマホが なった。", "en": "Friday night. Your phone buzzed." },
+    { "type": "show", "char": "mio", "expr": "smile", "pos": "left" },
+    { "type": "intro", "item": "k:金" },
+    { "type": "reading", "item": "k:金", "display": "金曜日", "target": "金", "prompt": "Mio's message begins with 金曜日. Read the day.", "answers": ["きんようび"] },
+    { "type": "say", "who": "mio", "text": "あしたは 土曜日だね。どこかに 行きたいな。", "en": "Tomorrow is Saturday. I want to go somewhere." },
+    { "type": "intro", "item": "k:土" },
+    { "type": "reading", "item": "k:土", "display": "土曜日", "target": "土", "prompt": "Read the day Mio means.", "answers": ["どようび"] },
+    { "type": "intro", "item": "g:n5-ni" },
+    { "type": "choice", "item": "g:n5-ni", "who": "mio", "prompt": "Reply: \"Let's meet on Saturday.\"", "options": [
+      { "text": "土曜日に あいましょう。", "correct": true },
+      { "text": "土曜日を あいましょう。", "awkward": { "who": "mio", "text": "「を」…？ 土曜日を あう…？", "en": "\"wo\"...? Meet Saturday-object...?" } },
+      { "text": "土曜日の あいましょう。", "awkward": { "who": "mio", "text": "「の」は なまえの あいだに つかうよ。", "en": "\"No\" goes between nouns." } }
+    ] },
+    { "type": "bg", "bg": "park-day" },
+    { "type": "show", "char": "sora", "expr": "neutral", "pos": "right" },
+    { "type": "say", "who": "sora", "text": "公園で 木の したに すわって いたよ。", "en": "I was sitting under a tree in the park." },
+    { "type": "intro", "item": "k:木" },
+    { "type": "meaning", "item": "k:木", "display": "木", "prompt": "Sora points at a 木. What is it?", "options": ["tree", "fire", "gold", "moon"], "correct": 0 },
+    { "type": "intro", "item": "g:n5-te-iru" },
+    { "type": "choice", "item": "g:n5-te-iru", "who": "sora", "prompt": "Tell Sora: \"Mio is reading a book now.\"", "options": [
+      { "text": "みおさんは いま 本を 読んでいます。", "correct": true },
+      { "text": "みおさんは いま 本を 読んで ます います。", "awkward": { "who": "sora", "text": "…「います」が ちょっと おおい。", "en": "...A bit too many \"imasu\"." } },
+      { "text": "みおさんは いま 本を 読みています。", "awkward": { "who": "sora", "text": "「読みて」…？ ちがう かたちだよ。", "en": "\"Yomite\"...? That's the wrong form." } }
+    ] },
+    { "type": "intro", "item": "g:n5-tai" },
+    { "type": "choice", "item": "g:n5-tai", "who": "mio", "prompt": "Say: \"I want to eat ice cream.\"", "options": [
+      { "text": "アイスを 食べたいです。", "correct": true },
+      { "text": "アイスを 食べるたいです。", "awkward": { "who": "mio", "text": "「食べる」じゃなくて 「食べ」だよ。", "en": "Not \"taberu\", just \"tabe\"." } },
+      { "text": "アイスを 食べたい です ます。", "awkward": { "who": "mio", "text": "ふふっ、ことばが おおすぎ！", "en": "Hehe, way too many words!" } }
+    ] },
+    { "type": "intro", "item": "k:月" },
+    { "type": "reading", "item": "k:月", "display": "月曜日", "target": "月", "prompt": "Sora groans about the day after the weekend. Read it.", "answers": ["げつようび"] },
+    { "type": "intro", "item": "g:n5-te-kudasai" },
+    { "type": "choice", "item": "g:n5-te-kudasai", "who": "sora", "prompt": "Ask Sora: \"Please wait a moment.\"", "options": [
+      { "text": "ちょっと 待ってください。", "correct": true },
+      { "text": "ちょっと 待つください。", "awkward": { "who": "sora", "text": "「待つ」の まま じゃ ないよ。", "en": "You can't leave it as \"matsu\"." } },
+      { "text": "ちょっと 待って ですか。", "awkward": { "who": "sora", "text": "…？ たのんで いるの、きいてるの？", "en": "...? Are you asking a favour or a question?" } }
+    ] },
+    { "type": "intro", "item": "k:火" },
+    { "type": "meaning", "item": "k:火", "display": "火", "prompt": "Fireworks! Which meaning belongs to 火?", "options": ["fire", "water", "soil", "river"], "correct": 0 },
+    { "type": "affection", "char": "mio", "delta": 2 },
+    { "type": "cg", "id": "weekend-fireworks", "title": "Weekend fireworks" },
+    { "type": "say", "who": "mio", "text": "来週も いっしょに 行こうね！", "en": "Let's go together next week too!" }
+  ]
+}
