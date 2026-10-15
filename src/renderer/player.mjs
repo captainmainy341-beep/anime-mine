@@ -1,3 +1,4 @@
+import { coverToPixels, expandCover, pictureRect, rectFromDrag, sourceBand } from './lib/coverRect.mjs';
 import { findCueIndex, neighborIndex } from './lib/cues.mjs';
 import { furigana } from './lib/furigana.mjs';
 import { tokenizeCached } from './lib/nlp.mjs';
@@ -9,6 +10,7 @@ import {
   loopSeekTarget,
   nextOffset,
   resumeTarget,
+  shiftCues,
   shouldAutoPause,
   subtitleLabel,
   videoTimeForCue,
@@ -81,9 +83,17 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
   let nextEpisode = null;
   let lastWord = null;
   const toggleControls = [];
+  let cover = null;
+  let editing = false;
+  let coverSuppressed = false;
+  let dragStart = null;
+  let frameRequest = null;
 
   const video = h('video', { controls: true, preload: 'metadata' });
   const overlay = h('div', { class: 'subtitle-overlay' });
+  const coverCanvas = h('canvas', { class: 'cover-canvas', hidden: true });
+  const coverDraft = h('div', { class: 'cover-draft', hidden: true });
+  const coverLayer = h('div', { class: 'cover-layer' }, coverCanvas, coverDraft);
   const codecError = h(
     'div',
     { class: 'video-error', hidden: true },
@@ -106,7 +116,10 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
   const cueList = h('ol', { class: 'cue-list' });
   const ankiChip = h('span', { class: 'chip' }, 'Anki…');
   const subsButton = h('button', { class: 'ghost small', onclick: toggleSubs }, 'Subtitles on');
+  const coverButton = h('button', { class: 'ghost small toggle', onclick: toggleCoverEdit }, 'Cover subs');
+  const clearCoverButton = h('button', { class: 'ghost small', hidden: true, onclick: clearCover }, 'Clear cover');
   const offsetChip = h('button', { class: 'chip', hidden: true, onclick: () => setSubOffset(0) }, '');
+  const syncedChip = h('span', { class: 'chip', hidden: true }, 'Auto-synced');
   const audioSelect = h('select', { class: 'track-select', hidden: true, onchange: (e) => changeAudio(Number(e.target.value)) });
   const subSelect = h('select', { class: 'track-select', onchange: (e) => changeSubtitle(e.target.value) });
   const highlightToggle = toggleControl('highlightUnknown', 'Highlight', 'ghost small toggle');
@@ -139,6 +152,11 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
   function onKey(e) {
     if (isTypingTarget(e.target) || e.ctrlKey || e.metaKey || e.altKey) return;
     const name = e.key.toLowerCase();
+    if (editing && name === 'escape') {
+      e.preventDefault();
+      setEditing(false);
+      return;
+    }
     const action = name === 'm' && e.shiftKey ? () => mineSentence(true) : keyActions[name];
     if (!action) return;
     e.preventDefault();
@@ -154,13 +172,20 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
         { class: 'player-head' },
         h('button', { class: 'ghost small', onclick: onBack }, '← Library'),
         h('h2', { class: 'player-title', title: episode.name }, episode.name),
-        ankiChip,
-        highlightToggle,
-        furiganaToggle,
-        autoPauseToggle,
-        loopChip,
-        offsetChip,
-        subsButton,
+        h(
+          'div',
+          { class: 'player-tools' },
+          ankiChip,
+          highlightToggle,
+          furiganaToggle,
+          autoPauseToggle,
+          loopChip,
+          offsetChip,
+          syncedChip,
+          subsButton,
+          coverButton,
+          clearCoverButton,
+        ),
       ),
       h(
         'div',
@@ -168,11 +193,11 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
         h(
           'div',
           { class: 'stage' },
-          h('div', { class: 'video-wrap' }, video, overlay, prepareCard, codecError),
+          h('div', { class: 'video-wrap' }, video, coverLayer, overlay, prepareCard, codecError),
           h('div', { class: 'tracks' }, audioSelect, subSelect),
           noSubs,
           nextButton,
-          h('p', { class: 'keys' }, KEYS_HELP),
+          h('p', { class: 'keys', title: KEYS_HELP }, KEYS_HELP),
         ),
         h('aside', { class: 'sidebar' }, popupSlot, cueList),
       ),
@@ -181,14 +206,24 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
 
   const listeners = new AbortController();
   const { signal } = listeners;
+  const frameApi = typeof video.requestVideoFrameCallback === 'function';
+  const coverObserver = new ResizeObserver(drawCover);
+  coverObserver.observe(coverLayer);
   video.addEventListener('loadedmetadata', onMetadata, { signal });
+  video.addEventListener('loadeddata', drawCover, { signal });
   video.addEventListener('timeupdate', onTimeUpdate, { signal });
   video.addEventListener('seeked', syncActive, { signal });
+  video.addEventListener('seeked', drawCover, { signal });
+  if (!frameApi) video.addEventListener('timeupdate', drawCover, { signal });
   video.addEventListener('play', onPlay, { signal });
   video.addEventListener('pause', onPause, { signal });
   video.addEventListener('ended', onEnded, { signal });
   video.addEventListener('error', onVideoError, { signal });
   document.addEventListener('keydown', onKey, { signal });
+  coverLayer.addEventListener('pointerdown', onCoverDown, { signal });
+  coverLayer.addEventListener('pointermove', onCoverMove, { signal });
+  coverLayer.addEventListener('pointerup', onCoverUp, { signal });
+  coverLayer.addEventListener('pointercancel', cancelDrag, { signal });
   const offMediaProgress = api.media.onProgress(onPrepareProgress);
 
   attempt(init);
@@ -197,6 +232,8 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
   return () => {
     alive = false;
     listeners.abort();
+    coverObserver.disconnect();
+    stopFrames();
     offMediaProgress();
     stopSaving();
     saveProgress();
@@ -224,10 +261,124 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
     attempt(() => api.settings.set({ [key]: settings[key] }));
   }
 
+  function syncCoverUi() {
+    clearCoverButton.hidden = !cover;
+    coverButton.classList.toggle('on', editing);
+  }
+
+  function toggleCoverEdit() {
+    setEditing(!editing);
+  }
+
+  function setEditing(on) {
+    editing = on;
+    cancelDrag();
+    coverLayer.classList.toggle('editing', on);
+    syncCoverUi();
+  }
+
+  function clearCover() {
+    attempt(() => saveCover(null));
+  }
+
+  async function saveCover(next) {
+    await api.settings.set({ subtitleCover: next });
+    cover = next;
+    syncCoverUi();
+    drawCover();
+  }
+
+  function currentPicture() {
+    return pictureRect(coverLayer.clientWidth, coverLayer.clientHeight, video.videoWidth, video.videoHeight);
+  }
+
+  function coverPoint(e) {
+    const box = coverLayer.getBoundingClientRect();
+    return { x: e.clientX - box.left, y: e.clientY - box.top };
+  }
+
+  function onCoverDown(e) {
+    if (!editing || e.button !== 0 || !video.videoWidth) return;
+    dragStart = coverPoint(e);
+    coverLayer.setPointerCapture(e.pointerId);
+  }
+
+  function onCoverMove(e) {
+    if (dragStart) showDraft(dragStart, coverPoint(e));
+  }
+
+  function onCoverUp(e) {
+    if (!dragStart) return;
+    const next = rectFromDrag(dragStart, coverPoint(e), currentPicture());
+    cancelDrag();
+    if (next) attempt(() => saveCover(next));
+  }
+
+  function cancelDrag() {
+    dragStart = null;
+    coverDraft.hidden = true;
+  }
+
+  function showDraft(a, b) {
+    const pic = currentPicture();
+    const rect = rectFromDrag(a, b, pic);
+    coverDraft.hidden = !rect;
+    if (rect) placeAt(coverDraft, coverToPixels(rect, pic));
+  }
+
+  function placeAt(el, box) {
+    Object.assign(el.style, {
+      left: `${box.left}px`,
+      top: `${box.top}px`,
+      width: `${box.width}px`,
+      height: `${box.height}px`,
+    });
+  }
+
+  function drawCover() {
+    const show = alive && cover && !coverSuppressed && video.readyState >= 2 && video.videoWidth > 0;
+    coverCanvas.hidden = !show;
+    if (!show) return;
+    const area = expandCover(cover);
+    const box = coverToPixels(area, currentPicture());
+    placeAt(coverCanvas, box);
+    const width = Math.max(1, Math.round(box.width));
+    const height = Math.max(1, Math.round(box.height));
+    if (coverCanvas.width !== width) coverCanvas.width = width;
+    if (coverCanvas.height !== height) coverCanvas.height = height;
+    const band = sourceBand(area, video.videoWidth, video.videoHeight);
+    const ctx = coverCanvas.getContext('2d');
+    ctx.clearRect(0, 0, width, height);
+    ctx.save();
+    ctx.filter = 'blur(14px)';
+    ctx.translate(0, height);
+    ctx.scale(1, -1);
+    const pad = 28;
+    ctx.drawImage(video, band.sx, band.sy, band.sw, band.sh, -pad, -pad, width + pad * 2, height + pad * 2);
+    ctx.restore();
+  }
+
+  function startFrames() {
+    if (frameApi && frameRequest === null) frameRequest = video.requestVideoFrameCallback(onFrame);
+  }
+
+  function stopFrames() {
+    if (frameRequest !== null) video.cancelVideoFrameCallback(frameRequest);
+    frameRequest = null;
+  }
+
+  function onFrame() {
+    frameRequest = null;
+    drawCover();
+    if (!video.paused) startFrames();
+  }
+
   async function init() {
     settings = await api.settings.get();
     if (!alive) return;
     syncToggles();
+    cover = settings.subtitleCover ?? null;
+    syncCoverUi();
     const probe = await api.media.probe(episode.path);
     if (!alive) return;
     const saved = probe.saved;
@@ -268,6 +419,7 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
     ready = false;
     codecError.hidden = true;
     usingDirect = planMode === 'direct' && audioStreamIndex === planAudio;
+    coverSuppressed = false;
     if (usingDirect) {
       cancelPreparation();
       prepareCard.hidden = true;
@@ -283,8 +435,9 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
     preparing = true;
     prepareCard.hidden = false;
     try {
-      const { path } = await api.media.prepare({ videoPath: episode.path, audioStreamIndex, force });
+      const { path, cleaned } = await api.media.prepare({ videoPath: episode.path, audioStreamIndex, force });
       if (!current()) return;
+      coverSuppressed = cleaned === true;
       preparing = false;
       prepareCard.hidden = true;
       video.src = fileUrl(path);
@@ -357,13 +510,16 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
     if (choice === 'off') {
       cues = [];
       noSubs.hidden = true;
+      syncedChip.hidden = true;
       renderCues();
       return;
     }
+    fill(cueList, h('li', { class: 'cue-status' }, 'Loading subtitles… (first open of a re-timed file can take a few seconds)'));
     const loaded = await api.player.loadCues(episode.path, choice === 'external' ? {} : { embeddedIndex: choice });
     if (!alive || !subGen.isCurrent(token)) return;
     cues = loaded.cues;
     noSubs.hidden = loaded.source !== 'none';
+    syncedChip.hidden = loaded.synced !== true;
     renderCues();
   }
 
@@ -402,10 +558,12 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
     popup.close();
     nextButton.hidden = true;
     startSaving();
+    startFrames();
   }
 
   function onPause() {
     stopSaving();
+    stopFrames();
     saveProgress();
   }
 
@@ -541,13 +699,13 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
   function openWord(index, tokens, tokenIndex) {
     lastWord = { index, tokens, tokenIndex };
     video.pause();
-    popup.open({ mode: 'word', cues, index, tokens, tokenIndex, token: tokens[tokenIndex] });
+    popup.open({ mode: 'word', cues: shiftCues(cues, subOffset), index, tokens, tokenIndex, token: tokens[tokenIndex] });
   }
 
   function openSentence(index) {
     video.pause();
     seekTo(index);
-    popup.open({ mode: 'sentence', cues, index });
+    popup.open({ mode: 'sentence', cues: shiftCues(cues, subOffset), index });
   }
 
   function mineWordOrSentence(direct) {
@@ -556,19 +714,19 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
       popup.index() !== -1 && lastWord
         ? {
             mode: 'word',
-            cues,
+            cues: shiftCues(cues, subOffset),
             index: lastWord.index,
             tokens: lastWord.tokens,
             tokenIndex: lastWord.tokenIndex,
             token: lastWord.tokens[lastWord.tokenIndex],
           }
-        : { mode: 'sentence', cues, index: activeIndex };
+        : { mode: 'sentence', cues: shiftCues(cues, subOffset), index: activeIndex };
     attempt(() => popup.quickMine(target, { direct }));
   }
 
   function mineSentence(direct) {
     if (activeIndex < 0) return;
-    attempt(() => popup.quickMine({ mode: 'sentence', cues, index: activeIndex }, { direct }));
+    attempt(() => popup.quickMine({ mode: 'sentence', cues: shiftCues(cues, subOffset), index: activeIndex }, { direct }));
   }
 
   function toggleSubs() {
@@ -588,6 +746,13 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
         { class: 'cue', onclick: () => openSentence(i) },
         h('span', { class: 'cue-time' }, formatTime(cue.start)),
         h('span', { class: 'cue-text' }, cue.text),
+        cue.jlpt
+          ? h(
+            'span',
+            { class: ['N1', 'N2'].includes(cue.jlpt) ? 'jlpt-badge strong' : 'jlpt-badge', title: cue.words.join('、') },
+            cue.jlpt,
+          )
+          : null,
         badge,
         h(
           'button',

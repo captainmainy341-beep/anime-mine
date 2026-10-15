@@ -1,6 +1,6 @@
 const test = require('node:test')
 const assert = require('node:assert/strict')
-const {AnkiBrowser} = require('../src/core/ankiBrowse')
+const {AnkiBrowser, toBrowseCard} = require('../src/core/ankiBrowse')
 const {SampleBrowser} = require('../src/core/ankiSample')
 
 // Fake AnkiClient: records every invoke and answers from a replies table.
@@ -16,6 +16,9 @@ function fakeClient(replies = {}) {
     },
   }
 }
+
+const NEW_FIELDS = ['noteId', 'deck', 'noteType', 'fields', 'fieldsTruncated', 'tags', 'flag', 'marked', 'suspended', 'buried', 'easePct', 'dueText', 'dueDay', 'createdTs', 'modifiedTs']
+const legacy = card => Object.fromEntries(Object.entries(card).filter(([key]) => !NEW_FIELDS.includes(key)))
 
 const queriesOf = calls => calls.flatMap(({action, params}) =>
   action === 'multi' ? params.actions.map(a => a.params.query) : [params.query]).filter(q => typeof q === 'string')
@@ -50,12 +53,13 @@ test('browse scopes to the exact deck, escapes free text and maps card fields', 
   const client = fakeClient({
     multi: ({actions}) => actions.map(a => (a.params.query.endsWith('is:due') ? [1] : [1, 2, 3])),
     cardsInfo: ({cards}) => cards.map(id => INFO[id]),
+    notesInfo: ({notes}) => notes.map(noteId => ({noteId, tags: noteId === 10 ? ['marked', 'leech'] : []})),
   })
   const {cards} = await new AnkiBrowser(client).browse({deck: 'Anime Mining', query: 'a"b*c_d:e\\f', limit: 10})
 
   const [find] = client.calls[0].params.actions
   assert.equal(find.params.query, '(deck:"Anime Mining" -deck:"Anime Mining::*") "a\\"b\\*c\\_d\\:e\\\\f"')
-  assert.deepEqual(cards, [
+  assert.deepEqual(cards.map(legacy), [
     {
       id: 1, word: '降る', reading: 'ふる', meaning: 'to fall\n(rain)', sentence: '雨が降ってる',
       source: 'Show S01E05', state: 'review', due: true, interval: 12, ease: 2.5, reps: 5, lapses: 1,
@@ -77,25 +81,25 @@ test('browse cannot be widened by a query that tries to name another deck', asyn
   await new AnkiBrowser(client).browse({deck: 'Visible', query: 'x" OR deck:"Hidden'})
   const query = client.calls[0].params.actions[0].params.query
   assert.equal(query, '(deck:"Visible" -deck:"Visible::*") "x\\" OR deck\\:\\"Hidden"')
-  assert.equal(client.calls.length, 1)
+  assert.deepEqual(client.calls.map(c => c.action), ['multi', 'animeMineToday'])
 })
 
 test('browse applies the state filter and clamps the limit to 1..500 (default 200)', async () => {
   const many = Array.from({length: 600}, (_, i) => i + 1)
   const infoFor = ({cards}) => cards.map(id => ({cardId: id, deckName: 'D', fields: {}, type: 0, queue: 0}))
 
-  const low = fakeClient({multi: () => [[1, 2, 3], []], cardsInfo: infoFor})
+  const low = fakeClient({multi: () => [[1, 2, 3], []], cardsInfo: infoFor, notesInfo: () => []})
   await new AnkiBrowser(low).browse({deck: 'D', state: 'learn', limit: 0})
   assert.equal(low.calls[0].params.actions[0].params.query, '(deck:"D" -deck:"D::*") is:learn')
-  assert.deepEqual(low.calls[1].params.cards, [1])
+  assert.deepEqual(low.calls.find(c => c.action === 'cardsInfo').params.cards, [1])
 
-  const high = fakeClient({multi: () => [many, []], cardsInfo: infoFor})
+  const high = fakeClient({multi: () => [many, []], cardsInfo: infoFor, notesInfo: () => []})
   await new AnkiBrowser(high).browse({deck: 'D', limit: 9999})
-  assert.equal(high.calls[1].params.cards.length, 500)
+  assert.equal(high.calls.find(c => c.action === 'cardsInfo').params.cards.length, 500)
 
-  const dflt = fakeClient({multi: () => [many.slice(0, 250), []], cardsInfo: infoFor})
+  const dflt = fakeClient({multi: () => [many.slice(0, 250), []], cardsInfo: infoFor, notesInfo: () => []})
   await new AnkiBrowser(dflt).browse({deck: 'D'})
-  assert.equal(dflt.calls[1].params.cards.length, 200)
+  assert.equal(dflt.calls.find(c => c.action === 'cardsInfo').params.cards.length, 200)
 })
 
 test('browse rejects unknown states and a missing deck without calling AnkiConnect', async () => {
@@ -192,8 +196,8 @@ test('sample browser needs no client and returns deterministic data in the brows
   assert.equal(first.forecast.length, 22)
   assert.ok(first.mined.length > 0 && first.mined.length <= 24)
   assert.deepEqual(Object.keys(first.mined[0]).sort(), [
-    'audio', 'deck', 'due', 'ease', 'id', 'interval', 'lapses', 'meaning', 'picture',
-    'reading', 'reps', 'sentence', 'source', 'state', 'word',
+    'audio', 'buried', 'createdTs', 'deck', 'due', 'dueText', 'ease', 'easePct', 'fields', 'flag', 'id', 'interval', 'lapses', 'marked', 'meaning',
+    'modifiedTs', 'noteId', 'noteType', 'picture', 'reading', 'reps', 'sentence', 'source', 'state', 'suspended', 'tags', 'word',
   ])
 
   const decks = await sample.listDecks()
@@ -220,4 +224,152 @@ test('forecast queries leave out suspended cards', async () => {
   const forecast = queries.filter((q) => q.includes('prop:due'))
   assert.equal(forecast.length, 22)
   assert.ok(forecast.every((q) => q.includes('-is:suspended')))
+})
+
+test('a raw query cannot return cards outside the allow-list, even with an or-clause naming them', async () => {
+  const infos = {1: {cardId: 1, note: 1, ord: 0, deckName: 'A', fields: {}, type: 0, queue: 0}, 2: {cardId: 2, note: 2, ord: 0, deckName: 'Other', fields: {}, type: 0, queue: 0}}
+  const client = fakeClient({
+    multi: () => [[1, 2], []],
+    cardsInfo: ({cards}) => cards.map(id => infos[id]),
+    notesInfo: ({notes}) => notes.map(noteId => ({noteId, tags: []})),
+  })
+  const {cards, total} = await new AnkiBrowser(client).browse({decks: ['A', 'B'], query: 'deck:Other or tag:x'})
+  const scope = '((deck:"A" -deck:"A::*") OR (deck:"B" -deck:"B::*"))'
+  assert.equal(client.calls[0].params.actions[0].params.query, `${scope} (deck:Other or tag:x)`)
+  assert.equal(total, 1)
+  assert.deepEqual(cards.map(c => c.id), [1])
+})
+
+test('raw operators pass through while plain words and malformed text stay quoted', async () => {
+  const queryFor = async (query) => {
+    const client = fakeClient({multi: () => [[], []]})
+    await new AnkiBrowser(client).browse({deck: 'D', query})
+    return client.calls[0].params.actions[0].params.query
+  }
+  const scope = '(deck:"D" -deck:"D::*")'
+  assert.equal(await queryFor('tag:leech is:due'), `${scope} (tag:leech is:due)`)
+  assert.equal(await queryFor('prop:ivl>10 -tag:x'), `${scope} (prop:ivl>10 -tag:x)`)
+  assert.equal(await queryFor('"exact phrase"'), `${scope} ("exact phrase")`)
+  assert.equal(await queryFor('added:7'), `${scope} (added:7)`)
+  assert.equal(await queryFor('hello world'), `${scope} "hello world"`)
+  assert.equal(await queryFor(') or (tag:x'), `${scope} ") or (tag\\:x"`)
+  assert.equal(await queryFor('deck:"Hidden'), `${scope} "deck\\:\\"Hidden"`)
+})
+
+test('sort, offset and total page the full match set in the requested order', async () => {
+  const infos = {
+    1: {cardId: 1, note: 1, ord: 0, deckName: 'A', fields: {Word: {value: 'b', order: 0}}, interval: 5, factor: 2000, lapses: 1, reps: 3, mod: 100, type: 2, queue: 2, due: 4},
+    2: {cardId: 2, note: 2, ord: 0, deckName: 'A', fields: {Word: {value: 'a', order: 0}}, interval: 20, factor: 2500, lapses: 0, reps: 9, mod: 300, type: 2, queue: 2, due: 1},
+    3: {cardId: 3, note: 3, ord: 0, deckName: 'A', fields: {Word: {value: 'c', order: 0}}, interval: 1, factor: 2300, lapses: 4, reps: 1, mod: 200, type: 2, queue: 2, due: 9},
+    4: {cardId: 4, note: 4, ord: 0, deckName: 'A', fields: {Word: {value: 'd', order: 0}}, interval: 12, factor: 2100, lapses: 2, reps: 5, mod: 400, type: 2, queue: 2, due: 2},
+  }
+  const make = () => fakeClient({
+    multi: () => [[1, 2, 3, 4], []],
+    cardsInfo: ({cards}) => cards.map(id => infos[id]),
+    notesInfo: ({notes}) => notes.map(noteId => ({noteId, tags: []})),
+  })
+  const page = (args) => new AnkiBrowser(make()).browse({decks: ['A'], ...args}).then(r => [r.total, r.cards.map(c => c.id)])
+
+  assert.deepEqual(await page({sort: 'created', offset: 1, limit: 2}), [4, [2, 3]])
+  assert.deepEqual(await page({sort: 'created', desc: true, limit: 1}), [4, [4]])
+  assert.deepEqual(await page({sort: 'interval', desc: true, offset: 1, limit: 2}), [4, [4, 1]])
+  assert.deepEqual(await page({sort: 'word', limit: 10}), [4, [2, 1, 3, 4]])
+  assert.deepEqual(await page({sort: 'lapses', desc: true, limit: 2}), [4, [3, 4]])
+  assert.deepEqual(await page({sort: 'modified', desc: true, limit: 2}), [4, [4, 2]])
+  assert.deepEqual(await page({sort: 'due', limit: 2}), [4, [2, 4]])
+  await assert.rejects(new AnkiBrowser(make()).browse({decks: ['A'], sort: 'color'}), /sort must be one of/)
+})
+
+test('browse with an empty allow-list or several decks never names a hidden deck', async () => {
+  const empty = fakeClient()
+  assert.deepEqual(await new AnkiBrowser(empty).browse({decks: []}), {cards: [], total: 0})
+  assert.equal(empty.calls.length, 0)
+
+  const client = fakeClient({multi: () => [[], []]})
+  await new AnkiBrowser(client).browse({decks: ['One', 'One', 'Two']})
+  assert.equal(client.calls[0].params.actions[0].params.query, '((deck:"One" -deck:"One::*") OR (deck:"Two" -deck:"Two::*"))')
+})
+
+const review = (due, extra = {}) => ({cardId: 1, note: 10, deckName: 'A', fields: {}, type: 2, queue: 2, due, ...extra})
+
+test('review due days read as today, tomorrow, in Nd, in Nmo and overdue once the collection day is known', () => {
+  const cases = [[100, 'today', 0], [101, 'tomorrow', 1], [105, 'in 5d', 5], [160, 'in 2mo', 60], [97, 'overdue 3d', -3], [99, 'overdue 1d', -1]]
+  for (const [due, text, dueDay] of cases) {
+    const card = toBrowseCard(review(due), new Set(), [], 100)
+    assert.equal(card.dueText, text)
+    assert.equal(card.dueDay, dueDay)
+  }
+})
+
+test('review cards keep due/scheduled wording and a null dueDay when the collection day is unknown', () => {
+  assert.equal(toBrowseCard(review(105), new Set([1])).dueText, 'due')
+  assert.equal(toBrowseCard(review(105), new Set()).dueText, 'scheduled')
+  assert.equal(toBrowseCard(review(105), new Set(), [], null).dueDay, null)
+})
+
+test('new, learning, suspended and buried cards keep their wording and have no review dueDay', () => {
+  const card = (info) => toBrowseCard({cardId: 1, note: 10, deckName: 'A', fields: {}, ...info}, new Set(), [], 100)
+  assert.equal(card({type: 0, queue: 0, due: 3}).dueText, 'new #3')
+  assert.equal(card({type: 0, queue: 0, due: 3}).dueDay, null)
+  assert.equal(card({type: 1, queue: 1, due: 1700000000}).dueText, 'learning')
+  assert.equal(card({type: 1, queue: 1, due: 1700000000}).dueDay, null)
+  assert.equal(card({type: 2, queue: -1, due: 105}).dueText, 'suspended')
+  assert.equal(card({type: 2, queue: -2, due: 105}).dueText, 'buried')
+})
+
+test('browse sorts due by new position, learning, then review day, and labels days from the add-on', async () => {
+  const infos = {
+    1: {cardId: 1, note: 1, deckName: 'A', fields: {Word: {value: 'r5', order: 0}}, type: 2, queue: 2, due: 105},
+    2: {cardId: 2, note: 2, deckName: 'A', fields: {Word: {value: 'r1', order: 0}}, type: 2, queue: 2, due: 101},
+    3: {cardId: 3, note: 3, deckName: 'A', fields: {Word: {value: 'n', order: 0}}, type: 0, queue: 0, due: 7},
+    4: {cardId: 4, note: 4, deckName: 'A', fields: {Word: {value: 'l', order: 0}}, type: 1, queue: 1, due: 1700000000},
+    5: {cardId: 5, note: 5, deckName: 'A', fields: {Word: {value: 'o', order: 0}}, type: 2, queue: 2, due: 97},
+  }
+  const make = (replies = {}) => fakeClient({
+    multi: () => [[1, 2, 3, 4, 5], []],
+    cardsInfo: ({cards}) => cards.map(id => infos[id]),
+    notesInfo: () => [],
+    ...replies,
+  })
+  const browse = (client) => new AnkiBrowser(client).browse({decks: ['A'], sort: 'due'})
+
+  const known = make({animeMineToday: () => ({today: 100, cutoff: 0})})
+  const {cards} = await browse(known)
+  assert.deepEqual(cards.map(c => c.id), [3, 4, 5, 2, 1])
+  assert.deepEqual(cards.map(c => c.dueText), ['new #7', 'learning', 'overdue 3d', 'tomorrow', 'in 5d'])
+  assert.equal(known.calls.filter(c => c.action === 'animeMineToday').length, 1)
+
+  assert.deepEqual((await browse(make())).cards.map(c => c.id), [3, 5, 2, 1, 4])
+  const failing = make({animeMineToday: () => { throw new Error('unsupported action animeMineToday') }})
+  const fallback = (await browse(failing)).cards
+  assert.deepEqual(fallback.map(c => c.dueDay), [null, null, null, null, null])
+  assert.deepEqual(fallback.map(c => c.dueText), ['new #7', 'scheduled', 'scheduled', 'scheduled', 'learning'])
+})
+
+test('fields cut at 2000 characters are named in fieldsTruncated so they cannot be saved back short', () => {
+  const info = {cardId: 1, note: 1, ord: 0, deckName: 'A', type: 0, queue: 0, fields: {
+    Word: {value: 'w', order: 0},
+    Meaning: {value: 'x'.repeat(2001), order: 1},
+    Sentence: {value: 'y'.repeat(2000), order: 2},
+  }}
+  const card = toBrowseCard(info, new Set())
+  assert.deepEqual(card.fieldsTruncated, ['Meaning'])
+  assert.equal(card.fields.Meaning.length, 2000)
+  assert.equal(card.fields.Sentence.length, 2000)
+})
+
+test('browse total counts only the cards kept by the deck allow-list', async () => {
+  const infos = {
+    1: {cardId: 1, note: 1, ord: 0, deckName: 'A', fields: {}, type: 0, queue: 0},
+    2: {cardId: 2, note: 2, ord: 0, deckName: 'Other', fields: {}, type: 0, queue: 0},
+    3: {cardId: 3, note: 3, ord: 0, deckName: 'A', fields: {}, type: 0, queue: 0},
+  }
+  const client = fakeClient({
+    multi: () => [[1, 2, 3], []],
+    cardsInfo: ({cards}) => cards.map(id => infos[id]),
+    notesInfo: ({notes}) => notes.map(noteId => ({noteId, tags: []})),
+  })
+  const {cards, total} = await new AnkiBrowser(client).browse({decks: ['A'], limit: 2})
+  assert.equal(total, 2)
+  assert.deepEqual(cards.map(c => c.id), [1])
 })

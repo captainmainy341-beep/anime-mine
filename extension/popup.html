@@ -1,0 +1,124 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Anime Mine</title>
+  <style>
+    :root {
+      --bg: #f5f5f7;
+      --card: #ffffff;
+      --text: #1d1d1f;
+      --muted: #6e6e73;
+      --border: #d2d2d7;
+      --accent: #0a84ff;
+      --ok: #1a7f37;
+      --bad: #b42318;
+      --dot-idle: #9a9a9f;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #1c1c1e;
+        --card: #2c2c2e;
+        --text: #f2f2f7;
+        --muted: #aeaeb2;
+        --border: #3a3a3c;
+        --accent: #0a84ff;
+        --ok: #32d74b;
+        --bad: #ff8a80;
+        --dot-idle: #636366;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      width: 320px;
+      margin: 0;
+      padding: 14px;
+      background: var(--bg);
+      color: var(--text);
+      font: 13px/1.4 system-ui, sans-serif;
+    }
+    header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    h1 { margin: 0; font-size: 16px; font-weight: 650; }
+    #conn { display: flex; align-items: center; gap: 6px; color: var(--muted); font-size: 12px; }
+    #conn::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--dot-idle); }
+    #conn.ok { color: var(--ok); }
+    #conn.ok::before { background: var(--ok); }
+    #conn.bad { color: var(--bad); }
+    #conn.bad::before { background: var(--bad); }
+    section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 10px;
+    }
+    h2 { margin: 0 0 8px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+    label { display: block; margin: 8px 0 4px; font-weight: 600; }
+    label:first-of-type { margin-top: 0; }
+    input[type=number], input[type=password] {
+      width: 100%;
+      padding: 6px 8px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--bg);
+      color: var(--text);
+      font: inherit;
+    }
+    input:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+    .buttons { display: flex; gap: 8px; margin-top: 10px; }
+    button {
+      flex: 1;
+      padding: 6px 8px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--bg);
+      color: var(--text);
+      font: inherit;
+      cursor: pointer;
+    }
+    button:hover { border-color: var(--accent); }
+    button:disabled { opacity: 0.5; cursor: default; }
+    #enable { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
+    #enable:hover { filter: brightness(1.08); }
+    .hint { margin: 0 0 4px; color: var(--muted); font-size: 12px; }
+    #frames:empty { display: none; }
+    #frames > div { margin-bottom: 4px; color: var(--muted); font-size: 12px; }
+    .frame { display: block; font-weight: 400; margin-top: 4px; }
+    .frame input { width: auto; margin: 0 6px 0 0; }
+    #status { min-height: 1.2em; margin-top: 4px; font-size: 12px; color: var(--muted); }
+    #status.ok { color: var(--ok); }
+    #status.bad { color: var(--bad); }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Anime Mine</h1>
+    <span id="conn" role="status">Checking...</span>
+  </header>
+
+  <section>
+    <h2>Connection</h2>
+    <label for="port">Port</label>
+    <input id="port" type="number" min="1" max="65535" placeholder="8767">
+    <label for="token">Token</label>
+    <input id="token" type="password" autocomplete="off">
+    <div class="buttons">
+      <button id="save" type="button">Save</button>
+      <button id="test" type="button">Test connection</button>
+    </div>
+    <div id="status" role="status"></div>
+  </section>
+
+  <section>
+    <h2>This site</h2>
+    <p class="hint">Open a video, then use the Subtitles button at the top-right of the player (or drag a .srt/.vtt/.ass file onto the page).</p>
+    <div id="frames"></div>
+    <div class="buttons">
+      <button id="enable" type="button">Enable on this site</button>
+    </div>
+  </section>
+
+  <script src="lib/sites.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

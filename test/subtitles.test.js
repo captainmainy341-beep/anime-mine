@@ -3,7 +3,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs/promises');
 const os = require('node:os');
 const path = require('node:path');
-const { parseSubtitles, parseSubtitleFile } = require('../src/core/subtitles');
+const { parseSubtitles, parseSubtitleFile, toSrt } = require('../src/core/subtitles');
 
 const FIXTURES = path.join(__dirname, 'fixtures');
 
@@ -76,4 +76,77 @@ test('parseSubtitleFile strips a UTF-8 BOM', async t => {
   const file = path.join(dir, 'bom.srt');
   await fs.writeFile(file, '\uFEFF1\n00:00:01,000 --> 00:00:02,000\nBOM line\n', 'utf8');
   assert.deepEqual(await parseSubtitleFile(file), [{ start: 1, end: 2, text: 'BOM line' }]);
+});
+
+test('drops a leading credit banner that starts early and lasts 8s or more', () => {
+  const ass = [
+    '[Script Info]',
+    '[Events]',
+    'Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text',
+    'Dialogue: 0,0:00:00.00,0:00:10.00,Default,,0,0,0,,編集・同期：IG/@arekitofun　修正：AT-X字幕版少々',
+    'Dialogue: 0,0:00:10.50,0:00:12.00,Default,,0,0,0,,こんにちは',
+  ].join('\n');
+  assert.deepEqual(parseSubtitles(ass, '.ass'), [{ start: 10.5, end: 12, text: 'こんにちは' }]);
+});
+
+test('ASS keeps only Japanese-styled cues when a JP style is present', () => {
+  const ass = [
+    '[Events]',
+    'Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text',
+    'Dialogue: 0,0:00:01.00,0:00:02.00,Text - JP,,0,0,0,,日本語',
+    'Dialogue: 0,0:00:01.00,0:00:02.00,Text - CN,,0,0,0,,中文',
+    'Dialogue: 0,0:00:03.00,0:00:04.00,Text - JP - top,,0,0,0,,上の日本語',
+    'Dialogue: 0,0:00:03.00,0:00:04.00,Text - CN - top,,0,0,0,,上の中文',
+    'Dialogue: 0,0:00:05.00,0:00:06.00,Sign,,0,0,0,,看板',
+    'Dialogue: 0,0:00:05.00,0:00:06.00,Ruby,,0,0,0,,るび',
+  ].join('\n');
+  assert.deepEqual(parseSubtitles(ass, '.ass'), [
+    { start: 1, end: 2, text: '日本語' },
+    { start: 3, end: 4, text: '上の日本語' },
+  ]);
+});
+
+test('ASS keeps all cues when no style is Japanese-named', () => {
+  const ass = [
+    '[Events]',
+    'Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text',
+    'Dialogue: 0,0:00:01.00,0:00:02.00,Default,,0,0,0,,One',
+    'Dialogue: 0,0:00:03.00,0:00:04.00,Sign,,0,0,0,,Two',
+  ].join('\n');
+  assert.deepEqual(parseSubtitles(ass, '.ass'), [
+    { start: 1, end: 2, text: 'One' },
+    { start: 3, end: 4, text: 'Two' },
+  ]);
+});
+
+test('toSrt writes numbered cues with rounded SRT timestamps', () => {
+  const cues = [
+    { start: 59.999999, end: 3600, text: 'First\nline' },
+    { start: 3723.0044, end: 3725.9996, text: 'Second' },
+  ];
+  assert.equal(toSrt(cues), '1\n00:01:00,000 --> 01:00:00,000\nFirst\nline\n\n2\n01:02:03,004 --> 01:02:06,000\nSecond\n');
+});
+
+test('keeps a credit-like line that is not an early long banner', () => {
+  const srt = '1\n00:00:00,500 --> 00:00:03,000\n字幕\n\n2\n00:00:20,000 --> 00:00:30,000\n制作会社\n';
+  assert.deepEqual(parseSubtitles(srt, '.srt').map(cue => cue.text), ['字幕', '制作会社']);
+});
+
+test('an empty Japanese-styled cue does not discard valid non-Japanese cues', () => {
+  const ass = [
+    '[Events]',
+    'Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text',
+    'Dialogue: 0,0:00:01.00,0:00:02.00,Text - JP,,0,0,0,,{\\an8}',
+    'Dialogue: 0,0:00:03.00,0:00:04.00,Default,,0,0,0,,Hello',
+  ].join('\n');
+  assert.deepEqual(parseSubtitles(ass, '.ass'), [{ start: 3, end: 4, text: 'Hello' }]);
+});
+
+test('ASS \\h hard spaces become spaces', () => {
+  const ass = [
+    '[Events]',
+    'Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text',
+    'Dialogue: 0,0:00:01.00,0:00:02.00,Default,,0,0,0,,Hello\\hthere',
+  ].join('\n');
+  assert.deepEqual(parseSubtitles(ass, '.ass'), [{ start: 1, end: 2, text: 'Hello there' }]);
 });

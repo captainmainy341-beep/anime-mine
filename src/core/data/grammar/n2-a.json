@@ -1,0 +1,986 @@
+[
+  {
+    "id": "g:n2-ni-saishite",
+    "jlpt": "N2",
+    "title": "〜に際して",
+    "meaning": "on the occasion of ~ / when ~ (formal)",
+    "structure": "Noun + に際して / Verb (dictionary) + に際して",
+    "formality": "formal",
+    "notes": "Means at the time of an important event, such as a move, a ceremony, or a change in rules. It is used in formal writing and announcements. Do not use it for ordinary times like meals or daily routines; use 〜ときに instead.",
+    "similar": [
+      "〜に当たって",
+      "〜に先立って"
+    ],
+    "detect": [
+      "に際して"
+    ],
+    "examples": [
+      {
+        "ja": "引っ越し{{に際して}}、古い家具をすべて処分した。",
+        "en": "When we moved, we got rid of all the old furniture.",
+        "hint": "際する + に際して"
+      },
+      {
+        "ja": "留学{{に際して}}、奨学金の申請書を提出した。",
+        "en": "On the occasion of studying abroad, I submitted a scholarship application.",
+        "hint": "際する + に際して"
+      },
+      {
+        "ja": "式典の開催{{に際して}}、市長から挨拶があった。",
+        "en": "The mayor gave a greeting when the ceremony was held.",
+        "hint": "際する + に際して"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-ni-atatte",
+    "jlpt": "N2",
+    "title": "〜に当たって",
+    "meaning": "at the time of ~ / upon ~ (formal)",
+    "structure": "Noun + に当たって / Verb (dictionary) + に当たって",
+    "formality": "formal",
+    "notes": "Means when starting something or facing an important stage, often with a note of preparation or caution. It sounds like a business or public statement. For a casual 'when', use 〜ときに instead.",
+    "similar": [
+      "〜に際して",
+      "〜に先立って"
+    ],
+    "detect": [
+      "に当たって",
+      "に当って"
+    ],
+    "examples": [
+      {
+        "ja": "新しいプロジェクトを始める{{に当たって}}、まず目標を確認しましょう。",
+        "en": "When starting the new project, let's first confirm the goals.",
+        "hint": "当たる + に当たって"
+      },
+      {
+        "ja": "入社{{に当たって}}、社長から激励の言葉をいただいた。",
+        "en": "On joining the company, I received words of encouragement from the president.",
+        "hint": "当たる + に当たって"
+      },
+      {
+        "ja": "会議を開く{{に当たって}}、資料を用意してください。",
+        "en": "Before holding the meeting, please prepare the materials.",
+        "hint": "当たる + に当たって"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-ni-sakidatte",
+    "jlpt": "N2",
+    "title": "〜に先立って",
+    "meaning": "prior to ~ / ahead of ~",
+    "structure": "Noun + に先立って / Verb (dictionary) + に先立って",
+    "formality": "formal",
+    "notes": "Means something is done before a main event, such as a meeting, an announcement, or an opening. It is used in formal speech and writing. For a simple 'before', use 〜前に instead.",
+    "similar": [
+      "〜に際して",
+      "〜前に"
+    ],
+    "detect": [
+      "に先立って",
+      "に先立ち"
+    ],
+    "examples": [
+      {
+        "ja": "会議{{に先立って}}、資料を配布した。",
+        "en": "Prior to the meeting, we distributed the documents.",
+        "hint": "先立つ + に先立って"
+      },
+      {
+        "ja": "正式な発表{{に先立って}}、関係者に説明が行われた。",
+        "en": "Before the official announcement, an explanation was given to those involved.",
+        "hint": "先立つ + に先立って"
+      },
+      {
+        "ja": "開会{{に先立って}}、参加者全員で黙祷をささげた。",
+        "en": "Before the opening, all participants observed a moment of silence.",
+        "hint": "先立つ + に先立って"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-wo-keiki-ni",
+    "jlpt": "N2",
+    "title": "〜を契機に",
+    "meaning": "triggered by ~ / using ~ as an opportunity",
+    "structure": "Noun + を契機に(して)",
+    "formality": "formal",
+    "notes": "Means something started or changed because of a particular event, and the change that follows is usually significant. It appears in written and formal speech. Do not use it for small, everyday triggers; use 〜をきっかけに in casual contexts.",
+    "similar": [
+      "〜をきっかけに"
+    ],
+    "detect": [
+      "を契機(に|として)"
+    ],
+    "examples": [
+      {
+        "ja": "病気{{を契機に}}、食生活を見直すことにした。",
+        "en": "Triggered by an illness, I decided to review my diet.",
+        "hint": "契機 + を契機に"
+      },
+      {
+        "ja": "あの事件{{を契機に}}、法律が改正された。",
+        "en": "Triggered by that incident, the law was revised.",
+        "hint": "契機 + を契機に"
+      },
+      {
+        "ja": "転職{{を契機に}}、新しい趣味を始めた。",
+        "en": "Taking my job change as an opportunity, I started a new hobby.",
+        "hint": "契機 + を契機に"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-ni-kagitte",
+    "jlpt": "N2",
+    "title": "〜に限って",
+    "meaning": "of all ~, precisely when ~ / only in the case of ~ (usually unexpected or unlucky)",
+    "structure": "Noun + に限って",
+    "formality": "neutral",
+    "notes": "Usually expresses surprise or frustration that something bad happened exactly in a case where it would not be expected, such as 'of all days, today'. The second clause is typically negative or unexpected. It is not used for simple limits; use 〜に限り for 'only'.",
+    "similar": [
+      "〜ばかりに",
+      "〜に限り"
+    ],
+    "detect": [
+      "に限って"
+    ],
+    "examples": [
+      {
+        "ja": "今日{{に限って}}、傘を忘れてしまった。",
+        "en": "Of all days, I forgot my umbrella today.",
+        "hint": "限る + に限って"
+      },
+      {
+        "ja": "いつも遅刻しない彼{{に限って}}、今日は来なかった。",
+        "en": "Of all people, he, who is never late, didn't come today.",
+        "hint": "限る + に限って"
+      },
+      {
+        "ja": "試験の日{{に限って}}、寝坊してしまった。",
+        "en": "Of all days, I overslept on the day of the exam.",
+        "hint": "限る + に限って"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-ni-kagiri",
+    "jlpt": "N2",
+    "title": "〜に限り",
+    "meaning": "only for ~ / limited to ~",
+    "structure": "Noun + に限り",
+    "formality": "neutral",
+    "notes": "Means an offer, permission, or condition applies only to the stated case. It is common in announcements, sales, and rules, and often appears as 今回に限り ('this time only'). Do not confuse it with 〜に限って, which expresses an unexpected event at a particular time.",
+    "similar": [
+      "〜に限らず",
+      "〜に限って"
+    ],
+    "detect": [
+      "に限り"
+    ],
+    "examples": [
+      {
+        "ja": "今回{{に限り}}、送料は無料とします。",
+        "en": "Shipping is free this time only.",
+        "hint": "限る + に限り"
+      },
+      {
+        "ja": "会員{{に限り}}、この部屋を予約できます。",
+        "en": "Only members can reserve this room.",
+        "hint": "限る + に限り"
+      },
+      {
+        "ja": "雨の日{{に限り}}、入口を変更させていただきます。",
+        "en": "The entrance will be changed only on rainy days.",
+        "hint": "限る + に限り"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-ni-kagirazu",
+    "jlpt": "N2",
+    "title": "〜に限らず",
+    "meaning": "not limited to ~ / not only ~ but also ~",
+    "structure": "Noun + に限らず",
+    "formality": "neutral",
+    "notes": "Means the statement applies more widely than the example given. It is common in written and formal speech and often pairs with 〜も or 〜など. Use it to widen the scope, not to narrow it.",
+    "similar": [
+      "〜を問わず",
+      "〜のみならず"
+    ],
+    "detect": [
+      "に限らず"
+    ],
+    "examples": [
+      {
+        "ja": "この講座は学生{{に限らず}}、社会人も参加できる。",
+        "en": "This course is open not only to students but also to working adults.",
+        "hint": "限る + に限らず"
+      },
+      {
+        "ja": "春{{に限らず}}、夏も冷房の使用に注意が必要だ。",
+        "en": "Care with air conditioning is needed not only in spring but also in summer.",
+        "hint": "限る + に限らず"
+      },
+      {
+        "ja": "このルールは日本人{{に限らず}}、すべての社員に適用される。",
+        "en": "This rule applies to all employees, not only Japanese people.",
+        "hint": "限る + に限らず"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-wo-towazu",
+    "jlpt": "N2",
+    "title": "〜を問わず",
+    "meaning": "regardless of ~ / irrespective of ~",
+    "structure": "Noun + を問わず",
+    "formality": "formal",
+    "notes": "Means a difference does not matter, so the same outcome applies to everyone in that category. It is common in job ads, event notices, and rules. Use it with a noun that names a category of difference, such as age or nationality.",
+    "similar": [
+      "〜にかかわらず",
+      "〜に限らず"
+    ],
+    "detect": [
+      "を問わず"
+    ],
+    "examples": [
+      {
+        "ja": "年齢{{を問わず}}、どなたでも参加できます。",
+        "en": "Anyone can take part, regardless of age.",
+        "hint": "問う + を問わず"
+      },
+      {
+        "ja": "天候{{を問わず}}、イベントは行われます。",
+        "en": "The event will be held regardless of the weather.",
+        "hint": "問う + を問わず"
+      },
+      {
+        "ja": "国籍{{を問わず}}、優秀な人材を募集しています。",
+        "en": "We are recruiting talented people regardless of nationality.",
+        "hint": "問う + を問わず"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-wa-motoyori",
+    "jlpt": "N2",
+    "title": "〜はもとより",
+    "meaning": "not to mention ~ / needless to say ~ (and also ~)",
+    "structure": "Noun + はもとより",
+    "formality": "neutral",
+    "notes": "Means the first item is obvious, so the second and more surprising item is added as a stronger point. The clause after it gives the extra or bigger thing. It is more formal than 〜はもちろん and appears in polished speech and writing.",
+    "similar": [
+      "〜はもちろん",
+      "〜のみならず"
+    ],
+    "detect": [
+      "はもとより"
+    ],
+    "examples": [
+      {
+        "ja": "この店は味{{はもとより}}、サービスも素晴らしい。",
+        "en": "Not to mention the taste, the service at this shop is also wonderful.",
+        "hint": "味 + はもとより"
+      },
+      {
+        "ja": "彼は英語{{はもとより}}、中国語も話せる。",
+        "en": "He can speak Chinese, not to mention English.",
+        "hint": "英語 + はもとより"
+      },
+      {
+        "ja": "このアニメは海外{{はもとより}}、国内でも人気だ。",
+        "en": "This anime is popular not only overseas but also at home.",
+        "hint": "海外 + はもとより"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-no-mi-narazu",
+    "jlpt": "N2",
+    "title": "〜のみならず",
+    "meaning": "not only ~ but also ~",
+    "structure": "Noun + のみならず",
+    "formality": "formal",
+    "notes": "Means not only the first thing but also the second, which is often larger or more surprising. It is more formal than 〜だけでなく and common in news, writing, and speeches. Use it when the second point builds on the first.",
+    "similar": [
+      "〜だけでなく",
+      "〜ばかりでなく"
+    ],
+    "detect": [
+      "のみならず"
+    ],
+    "examples": [
+      {
+        "ja": "この薬は痛み{{のみならず}}、熱にも効く。",
+        "en": "This medicine works not only for pain but also for fever.",
+        "hint": "痛み + のみならず"
+      },
+      {
+        "ja": "彼女は日本{{のみならず}}、世界中で活躍している。",
+        "en": "She is active not only in Japan but all over the world.",
+        "hint": "日本 + のみならず"
+      },
+      {
+        "ja": "この問題は経済{{のみならず}}、社会全体に影響を与える。",
+        "en": "This problem affects not only the economy but all of society.",
+        "hint": "経済 + のみならず"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-bakari-denaku",
+    "jlpt": "N2",
+    "title": "〜ばかりでなく",
+    "meaning": "not only ~ but also ~",
+    "structure": "Noun / Verb (plain) + ばかりでなく",
+    "formality": "neutral",
+    "notes": "Means not only the first thing but also the second, which is usually added to strengthen the point. It is slightly less formal than 〜のみならず and appears in both speech and writing. The second clause is often the more notable or surprising one.",
+    "similar": [
+      "〜のみならず",
+      "〜だけでなく"
+    ],
+    "detect": [
+      "ばかりでなく"
+    ],
+    "examples": [
+      {
+        "ja": "この料理は見た目{{ばかりでなく}}、味もいい。",
+        "en": "This dish is not only good-looking but also tastes good.",
+        "hint": "見た目 + ばかりでなく"
+      },
+      {
+        "ja": "昨日は雨{{ばかりでなく}}、風も強かった。",
+        "en": "Yesterday it was not only raining but the wind was also strong.",
+        "hint": "雨 + ばかりでなく"
+      },
+      {
+        "ja": "彼女は勉強{{ばかりでなく}}、スポーツも得意だ。",
+        "en": "She is good not only at studying but also at sports.",
+        "hint": "勉強 + ばかりでなく"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-kara-ni-wa",
+    "jlpt": "N2",
+    "title": "〜からには",
+    "meaning": "since ~ / now that ~ (therefore one must ~)",
+    "structure": "Verb (plain) + からには",
+    "formality": "neutral",
+    "notes": "Means that once a decision, promise, or duty exists, one must act accordingly. It shows resolve or a sense of responsibility. It is not a plain reason marker; for simple cause use 〜から.",
+    "similar": [
+      "〜上は",
+      "〜ことだし"
+    ],
+    "detect": [
+      "からには"
+    ],
+    "examples": [
+      {
+        "ja": "{{やるからには}}、全力で取り組みたい。",
+        "en": "Since I'm going to do it, I want to give it my full effort.",
+        "hint": "やる + からには"
+      },
+      {
+        "ja": "{{引き受けたからには}}、最後までやり遂げよう。",
+        "en": "Now that I've taken it on, let's see it through to the end.",
+        "hint": "引き受ける + からには"
+      },
+      {
+        "ja": "{{約束したからには}}、守らなければならない。",
+        "en": "Now that we've made a promise, we must keep it.",
+        "hint": "約束する + からには"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-ue-wa",
+    "jlpt": "N2",
+    "title": "〜上は",
+    "meaning": "now that ~ / since ~ (therefore one must ~)",
+    "structure": "Verb (た-form) + 上は / Noun + の上は",
+    "formality": "formal",
+    "notes": "Means that once a situation has been established, such as a decision or a commitment, one must act accordingly. It is used for responsibility or resolve and is more formal than 〜からには. Do not use it with 以上 (as far as), which is a different word.",
+    "similar": [
+      "〜からには"
+    ],
+    "detect": [
+      "(?<!以)上は"
+    ],
+    "examples": [
+      {
+        "ja": "{{決めた上は}}、もう後戻りはできない。",
+        "en": "Now that I've decided, there is no turning back.",
+        "hint": "決める + 上は"
+      },
+      {
+        "ja": "{{引き受けた上は}}、責任を持って取り組みたい。",
+        "en": "Now that I have taken it on, I want to take responsibility for it.",
+        "hint": "引き受ける + 上は"
+      },
+      {
+        "ja": "{{入社した上は}}、会社のために頑張りたい。",
+        "en": "Now that I've joined the company, I want to work hard for it.",
+        "hint": "入社する + 上は"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-mono-nara",
+    "jlpt": "N2",
+    "title": "〜ものなら",
+    "meaning": "if only it were possible to ~ (wish that is unlikely)",
+    "structure": "Verb (potential or passive) + ものなら",
+    "formality": "neutral",
+    "notes": "Expresses a wish that is difficult or impossible to achieve, often with regret. It is used in hypothetical conditions the speaker cannot fully realize. For an ordinary condition, use 〜たら or 〜なら.",
+    "similar": [
+      "〜ようものなら"
+    ],
+    "detect": [
+      "ものなら"
+    ],
+    "examples": [
+      {
+        "ja": "{{できるものなら}}、もう一度やり直したい。",
+        "en": "If I could, I would like to start over once more.",
+        "hint": "できる + ものなら"
+      },
+      {
+        "ja": "{{行けるものなら}}、ぜひ行きたい。",
+        "en": "If I could go, I would really like to.",
+        "hint": "行ける + ものなら"
+      },
+      {
+        "ja": "{{許されるものなら}}、彼に直接謝りたい。",
+        "en": "If I were allowed to, I would like to apologize to him in person.",
+        "hint": "許される + ものなら"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-you-mono-nara",
+    "jlpt": "N2",
+    "title": "〜ようものなら",
+    "meaning": "if one were to ~ (a serious consequence would follow)",
+    "structure": "Verb (volitional) + ようものなら",
+    "formality": "neutral",
+    "notes": "Warns that if someone did a particular action, which is usually unwise or unacceptable, a serious result would follow. It is used for negative actions and their consequences. It is not used for neutral or ordinary conditions.",
+    "similar": [
+      "〜ものなら"
+    ],
+    "detect": [
+      "ようものなら"
+    ],
+    "examples": [
+      {
+        "ja": "そんなことを{{言おうものなら}}、大変なことになる。",
+        "en": "If you were to say such a thing, it would become a serious problem.",
+        "hint": "言う + ようものなら"
+      },
+      {
+        "ja": "遅刻{{しようものなら}}、先生に叱られる。",
+        "en": "If you were to be late, the teacher would scold you.",
+        "hint": "する + ようものなら"
+      },
+      {
+        "ja": "あんな高い車を{{買おうものなら}}、家計は破綻する。",
+        "en": "If we were to buy such an expensive car, our household finances would collapse.",
+        "hint": "買う + ようものなら"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-naimade-mo",
+    "jlpt": "N2",
+    "title": "〜ないまでも",
+    "meaning": "even if not ~ / even if one cannot go as far as ~",
+    "structure": "Verb (ない-form) + までも",
+    "formality": "neutral",
+    "notes": "Means that although the full version is not reached, at least a lesser level is achieved or expected. It is used to show a reduced goal and a realistic result. It is different from 〜ないで, which simply means 'without doing'.",
+    "similar": [
+      "〜どころか"
+    ],
+    "detect": [
+      "ないまでも"
+    ],
+    "examples": [
+      {
+        "ja": "完璧に{{できないまでも}}、ある程度は理解できた。",
+        "en": "Although I could not do it perfectly, I understood it to some extent.",
+        "hint": "できる + ないまでも"
+      },
+      {
+        "ja": "大金持ちに{{なれないまでも}}、生活には困らない。",
+        "en": "Although we may not become rich, we are not short of money for living.",
+        "hint": "なる + ないまでも"
+      },
+      {
+        "ja": "全部は{{読めないまでも}}、重要な部分には目を通した。",
+        "en": "Although I could not read everything, I went over the important parts.",
+        "hint": "読む + ないまでも"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-to-wa-ieba",
+    "jlpt": "N2",
+    "title": "〜とはいえ",
+    "meaning": "even so / that said / although",
+    "structure": "Plain form + とはいえ",
+    "formality": "neutral",
+    "notes": "Used to admit a point and then add a counter point, like 'that said' or 'even so'. The second half is usually a qualification or a reservation. It is a connecting expression, so it begins a new sentence or clause.",
+    "similar": [
+      "〜といっても",
+      "〜にもかかわらず"
+    ],
+    "detect": [
+      "とは(い|言)え"
+    ],
+    "examples": [
+      {
+        "ja": "彼は親切だ。{{とはいえ}}、時々は厳しいこともある。",
+        "en": "He is kind. That said, he can be strict at times.",
+        "hint": "言う + とはいえ"
+      },
+      {
+        "ja": "練習は楽ではなかった。{{とはいえ}}、結果には満足している。",
+        "en": "Practice was not easy. Even so, I am satisfied with the results.",
+        "hint": "言う + とはいえ"
+      },
+      {
+        "ja": "値段は高い。{{とはいえ}}、品質を考えれば妥当だろう。",
+        "en": "The price is high. Even so, it is probably reasonable considering the quality.",
+        "hint": "言う + とはいえ"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-to-iittemo",
+    "jlpt": "N2",
+    "title": "〜といっても",
+    "meaning": "although ~ / even though one says ~",
+    "structure": "Plain form + といっても",
+    "formality": "neutral",
+    "notes": "Used to qualify a statement that might be misunderstood, by pointing out a limit or a more modest reality. The clause after it corrects an impression the first part could give. It is not used for simple contrast; use 〜が for that.",
+    "similar": [
+      "〜とはいえ"
+    ],
+    "detect": [
+      "といっても",
+      "と言っても"
+    ],
+    "examples": [
+      {
+        "ja": "簡単な料理だ{{といっても}}、手間はかかる。",
+        "en": "Although it is a simple dish, it still takes effort.",
+        "hint": "言う + といっても"
+      },
+      {
+        "ja": "日本に住んでいる{{といっても}}、まだ一年だ。",
+        "en": "Although I live in Japan, it has only been a year.",
+        "hint": "言う + といっても"
+      },
+      {
+        "ja": "暇だ{{といっても}}、毎日は無理だ。",
+        "en": "Although I have some free time, I can't do it every day.",
+        "hint": "言う + といっても"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-ni-mo-kakawarazu",
+    "jlpt": "N2",
+    "title": "〜にもかかわらず",
+    "meaning": "despite ~ / in spite of ~",
+    "structure": "Noun + にもかかわらず / Verb or adjective (plain) + にもかかわらず",
+    "formality": "formal",
+    "notes": "Means the result was not what the first part would lead one to expect. It is used in formal writing and speech, and the second clause is often surprising or unfavourable. For everyday contrast use 〜のに.",
+    "similar": [
+      "〜のに",
+      "〜とはいえ"
+    ],
+    "detect": [
+      "にもかかわらず",
+      "にも関わらず"
+    ],
+    "examples": [
+      {
+        "ja": "雨{{にもかかわらず}}、大勢の人が集まった。",
+        "en": "Despite the rain, a large crowd gathered.",
+        "hint": "かかわる + にもかかわらず"
+      },
+      {
+        "ja": "努力した{{にもかかわらず}}、試験に落ちた。",
+        "en": "Despite my efforts, I failed the exam.",
+        "hint": "努力する + にもかかわらず"
+      },
+      {
+        "ja": "約束した{{にもかかわらず}}、彼は来なかった。",
+        "en": "Despite the promise, he didn't come.",
+        "hint": "約束する + にもかかわらず"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-tsutsu-mo",
+    "jlpt": "N2",
+    "title": "〜つつも",
+    "meaning": "although ~ / while ~ (but still)",
+    "structure": "Verb (ます-stem) + つつも",
+    "formality": "formal",
+    "notes": "Means that the speaker does one thing while feeling the opposite, such as wanting to do something but not doing it. It expresses mixed feelings or a reluctant decision. It is used in written and formal speech and is close to 〜ながらも.",
+    "similar": [
+      "〜ながらも",
+      "〜にもかかわらず"
+    ],
+    "detect": [
+      "つつも"
+    ],
+    "examples": [
+      {
+        "ja": "{{分かりつつも}}、なかなか行動できない。",
+        "en": "Although I understand, I cannot easily take action.",
+        "hint": "分かる + つつも"
+      },
+      {
+        "ja": "{{反対されつつも}}、計画を進めた。",
+        "en": "Although opposed, they went ahead with the plan.",
+        "hint": "反対する + つつも"
+      },
+      {
+        "ja": "申し訳ないと{{思いつつも}}、断ってしまった。",
+        "en": "Although I felt sorry, I ended up refusing.",
+        "hint": "思う + つつも"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-ni-shitemo",
+    "jlpt": "N2",
+    "title": "〜にしても",
+    "meaning": "even if ~ / even so / even assuming ~",
+    "structure": "Noun + にしても / Plain adjective or verb + にしても",
+    "formality": "neutral",
+    "notes": "Concedes a point and then says it does not change the conclusion. The second clause usually gives a judgement or criticism that still stands. It is different from 〜にしては, which means 'considering that'.",
+    "similar": [
+      "〜にせよ",
+      "〜としても"
+    ],
+    "detect": [
+      "にしても"
+    ],
+    "examples": [
+      {
+        "ja": "急いでいた{{にしても}}、信号無視はいけない。",
+        "en": "Even if you were in a hurry, ignoring the traffic light is not acceptable.",
+        "hint": "急ぐ + にしても"
+      },
+      {
+        "ja": "彼が悪い{{にしても}}、言い方が強すぎた。",
+        "en": "Even if it was his fault, the way it was said was too harsh.",
+        "hint": "悪い + にしても"
+      },
+      {
+        "ja": "子供{{にしても}}、もう少し礼儀を知るべきだ。",
+        "en": "Even for a child, they should learn a bit more manners.",
+        "hint": "子供 + にしても"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-ni-seyo",
+    "jlpt": "N2",
+    "title": "〜にせよ",
+    "meaning": "whether ~ or ~ / even if ~ (the conclusion stays the same)",
+    "structure": "Noun + にせよ / Plain verb or adjective + にせよ",
+    "formality": "formal",
+    "notes": "Means that whichever case applies, the conclusion does not change. It is common in formal writing and speech and is more formal than 〜にしろ. It often appears with 〜ても or with a second alternative in the same sentence.",
+    "similar": [
+      "〜にしろ",
+      "〜にしても"
+    ],
+    "detect": [
+      "にせよ"
+    ],
+    "examples": [
+      {
+        "ja": "理由{{にせよ}}、許されることではない。",
+        "en": "Whatever the reason, it is not something that can be forgiven.",
+        "hint": "理由 + にせよ"
+      },
+      {
+        "ja": "失敗した{{にせよ}}、何かは学べるはずだ。",
+        "en": "Even if one fails, one should still be able to learn something.",
+        "hint": "失敗する + にせよ"
+      },
+      {
+        "ja": "どんな結果{{になるにせよ}}、最後まで見届けたい。",
+        "en": "Whatever the result turns out to be, I want to see it through to the end.",
+        "hint": "なる + にせよ"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-ni-shiro",
+    "jlpt": "N2",
+    "title": "〜にしろ",
+    "meaning": "whether ~ or ~ / even if ~ (casual form of 〜にせよ)",
+    "structure": "Noun + にしろ / Plain verb or adjective + にしろ",
+    "formality": "casual",
+    "notes": "The spoken and casual version of 〜にせよ, with the same meaning that the conclusion stays the same. It is used mainly in conversation. In formal writing, use 〜にせよ instead.",
+    "similar": [
+      "〜にせよ",
+      "〜にしても"
+    ],
+    "detect": [
+      "にしろ"
+    ],
+    "examples": [
+      {
+        "ja": "誰{{にしろ}}、ミスはするものだ。",
+        "en": "Whoever it is, everyone makes mistakes.",
+        "hint": "誰 + にしろ"
+      },
+      {
+        "ja": "嫌だ{{にしろ}}、やるしかない。",
+        "en": "Whether you like it or not, there is no choice but to do it.",
+        "hint": "嫌だ + にしろ"
+      },
+      {
+        "ja": "寝坊した{{にしろ}}、連絡ぐらいはすべきだった。",
+        "en": "Even if you overslept, you should at least have contacted us.",
+        "hint": "寝坊する + にしろ"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-to-shitemo",
+    "jlpt": "N2",
+    "title": "〜としても",
+    "meaning": "even if ~ / even assuming ~",
+    "structure": "Plain form + としても / Noun + だとしても",
+    "formality": "neutral",
+    "notes": "Accepts a hypothetical for the sake of argument, then gives the conclusion that still holds. It is used in both speech and writing. It is not a simple 'also'; use 〜も for that.",
+    "similar": [
+      "〜にせよ",
+      "〜にしても"
+    ],
+    "detect": [
+      "としても"
+    ],
+    "examples": [
+      {
+        "ja": "{{そうだとしても}}、責任はあなたにある。",
+        "en": "Even if that is the case, the responsibility lies with you.",
+        "hint": "そうだ + としても"
+      },
+      {
+        "ja": "{{来ないとしても}}、会議は予定どおり行う。",
+        "en": "Even if he does not come, the meeting will go ahead as planned.",
+        "hint": "来る + としても"
+      },
+      {
+        "ja": "{{失敗したとしても}}、次のチャンスがある。",
+        "en": "Even if you fail, there will be another chance.",
+        "hint": "失敗する + としても"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-tokoro-de",
+    "jlpt": "N2",
+    "title": "〜ところで",
+    "meaning": "even if ~ (it would make no difference)",
+    "structure": "Verb (plain) + ところで",
+    "formality": "neutral",
+    "notes": "Means that even if an action were taken, it would not change the outcome, so it is pointless. It is almost always used with いくら or どんなに and a negative conclusion. The past form 〜たところで is the more common version for an action already done.",
+    "similar": [
+      "〜たところで",
+      "〜ても"
+    ],
+    "detect": [],
+    "examples": [
+      {
+        "ja": "いくら{{頼むところで}}、彼は聞き入れないだろう。",
+        "en": "No matter how much I ask, he probably won't listen.",
+        "hint": "頼む + ところで"
+      },
+      {
+        "ja": "いくら{{言うところで}}、誰も信じないだろう。",
+        "en": "No matter what I say, probably no one would believe me.",
+        "hint": "言う + ところで"
+      },
+      {
+        "ja": "いくら{{考えるところで}}、答えは出ない。",
+        "en": "No matter how much you think about it, you won't find an answer.",
+        "hint": "考える + ところで"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-ta-tokoro-de",
+    "jlpt": "N2",
+    "title": "〜たところで",
+    "meaning": "even if ~ (it would not change anything)",
+    "structure": "Verb (た-form) + ところで",
+    "formality": "neutral",
+    "notes": "Means that even after taking an action, the result would not change, so there is no point. It often expresses resignation or futility and appears with 今さら or いくら. Do not use it for a simple 'after doing', which is 〜たあとで.",
+    "similar": [
+      "〜ところで",
+      "〜ても"
+    ],
+    "detect": [
+      "たところで"
+    ],
+    "examples": [
+      {
+        "ja": "今さら{{謝ったところで}}、許してもらえないだろう。",
+        "en": "Even if I apologize now, they probably won't forgive me.",
+        "hint": "謝る + たところで"
+      },
+      {
+        "ja": "お金を{{払ったところで}}、問題は解決しないだろう。",
+        "en": "Even if I paid the money, the problem probably would not be solved.",
+        "hint": "払う + たところで"
+      },
+      {
+        "ja": "先生に{{相談したところで}}、答えは変わらないと思う。",
+        "en": "I think that even if I consulted the teacher, the answer would not change.",
+        "hint": "相談する + たところで"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-to-iu-mono-da",
+    "jlpt": "N2",
+    "title": "〜というものだ",
+    "meaning": "that is exactly what ~ is / that is what ~ should be",
+    "structure": "Plain form + というものだ",
+    "formality": "neutral",
+    "notes": "Expresses the speaker's view that something is the proper or natural thing, often used when commenting on manners or duty. It sounds judgemental, so it fits statements about proper behaviour. It is not a plain definition; for that, use 〜とは.",
+    "similar": [
+      "〜ものだ",
+      "〜というものではない"
+    ],
+    "detect": [
+      "というものだ"
+    ],
+    "examples": [
+      {
+        "ja": "助けてもらったら、お礼を言うのが礼儀{{というものだ}}。",
+        "en": "When someone helps you, saying thank you is simply good manners.",
+        "hint": "言う + というものだ"
+      },
+      {
+        "ja": "約束を守るのは、大人の義務{{というものだ}}。",
+        "en": "Keeping a promise is exactly what a grown-up's duty is.",
+        "hint": "守る + というものだ"
+      },
+      {
+        "ja": "家族を大切にするのは、人として当然{{というものだ}}。",
+        "en": "Cherishing one's family is only natural for a person.",
+        "hint": "大切にする + というものだ"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-to-iu-mono-dewa-nai",
+    "jlpt": "N2",
+    "title": "〜というものではない",
+    "meaning": "it is not that ~ / not necessarily ~",
+    "structure": "Plain form + というものではない",
+    "formality": "neutral",
+    "notes": "Means something is not necessarily true or not always the case, used to correct a simple assumption. It softens a strong statement and often leads into a fuller explanation. It differs from 〜わけではない in nuance, being more about the general nature of something.",
+    "similar": [
+      "〜わけではない",
+      "〜というものだ"
+    ],
+    "detect": [
+      "というものではない"
+    ],
+    "examples": [
+      {
+        "ja": "お金があれば幸せ{{というものではない}}。",
+        "en": "Having money does not necessarily mean being happy.",
+        "hint": "幸せ + というものではない"
+      },
+      {
+        "ja": "安い{{というものではない}}。品質も大事だ。",
+        "en": "It is not that cheap is everything; quality matters too.",
+        "hint": "安い + というものではない"
+      },
+      {
+        "ja": "勉強{{というものではない}}が、経験も大切だ。",
+        "en": "Studying is not all there is, but experience is important too.",
+        "hint": "勉強 + というものではない"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-koto-da",
+    "jlpt": "N2",
+    "title": "〜ことだ",
+    "meaning": "you should ~ / the best thing is to ~ (advice)",
+    "structure": "Verb (dictionary) + ことだ",
+    "formality": "neutral",
+    "notes": "Gives advice or a firm recommendation, often sounding authoritative. It is used by teachers, seniors, or in general advice to someone's situation. For a softer suggestion, use 〜ほうがいい.",
+    "similar": [
+      "〜ほうがいい",
+      "〜べきだ"
+    ],
+    "detect": [],
+    "examples": [
+      {
+        "ja": "体を{{大切にすることだ}}。",
+        "en": "You should take good care of your health.",
+        "hint": "大切にする + ことだ"
+      },
+      {
+        "ja": "困ったら、先生に{{相談することだ}}。",
+        "en": "If you are in trouble, you should consult the teacher.",
+        "hint": "相談する + ことだ"
+      },
+      {
+        "ja": "焦らず、ゆっくり{{待つことだ}}。",
+        "en": "Don't rush; the best thing is to wait patiently.",
+        "hint": "待つ + ことだ"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-beki-da",
+    "jlpt": "N2",
+    "title": "〜べきだ",
+    "meaning": "should / ought to",
+    "structure": "Verb (dictionary) + べきだ",
+    "formality": "neutral",
+    "notes": "Expresses a moral or logical obligation, a judgement that something is the right thing to do. It sounds firm and can come across as lecturing, so it is less suited to casual requests. For a softer suggestion, use 〜たほうがいい.",
+    "similar": [
+      "〜ことだ",
+      "〜べきではない"
+    ],
+    "detect": [
+      "べきだ"
+    ],
+    "examples": [
+      {
+        "ja": "もっと{{話し合うべきだ}}。",
+        "en": "We ought to discuss it more.",
+        "hint": "話し合う + べきだ"
+      },
+      {
+        "ja": "過ちは素直に{{認めるべきだ}}。",
+        "en": "One should admit one's mistakes honestly.",
+        "hint": "認める + べきだ"
+      },
+      {
+        "ja": "ルールは{{守るべきだ}}。",
+        "en": "Rules should be followed.",
+        "hint": "守る + べきだ"
+      }
+    ]
+  }
+]

@@ -1,5 +1,6 @@
 const path = require('node:path');
 const kuromoji = require('kuromoji');
+const { toHiragana } = require('./kana');
 
 const DIC_PATH = path.join(path.dirname(require.resolve('kuromoji/package.json')), 'dict');
 const PUNCTUATION_POS = '記号';
@@ -22,10 +23,6 @@ function getTokenizer() {
   return tokenizerPromise;
 }
 
-function toHiragana(text) {
-  return text.replace(/[\u30a1-\u30f6]/g, (ch) => String.fromCharCode(ch.charCodeAt(0) - 0x60));
-}
-
 function hasValue(field) {
   return Boolean(field) && field !== '*';
 }
@@ -38,6 +35,8 @@ function toToken(raw, start, end) {
     reading: toHiragana(hasValue(raw.reading) ? raw.reading : surface),
     pos: raw.pos,
     pos2: hasValue(raw.pos_detail_1) ? raw.pos_detail_1 : '',
+    conjugatedType: hasValue(raw.conjugated_type) ? raw.conjugated_type : '',
+    conjugatedForm: hasValue(raw.conjugated_form) ? raw.conjugated_form : '',
     start,
     end,
     isWord: raw.pos !== PUNCTUATION_POS && surface.trim() !== '',

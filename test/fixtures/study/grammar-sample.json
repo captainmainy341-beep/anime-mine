@@ -1,0 +1,49 @@
+[
+  {
+    "id": "g:n5-te-mo-ii",
+    "jlpt": "N5",
+    "title": "〜てもいい",
+    "meaning": "may / it is okay to ...",
+    "structure": "Verb て-form + もいい",
+    "formality": "neutral",
+    "notes": "Gives or asks for permission. Adding ですか makes the request polite. It does not forbid anything; for prohibition use 〜てはいけない.",
+    "similar": ["〜てはいけない"],
+    "detect": ["て(も|は)?\\s*いい"],
+    "examples": [
+      { "ja": "ここで写真を{{撮ってもいい|撮ってもよい}}ですか。", "en": "Is it okay to take photos here?", "hint": "撮る + てもいい" },
+      { "ja": "今日は早く{{帰ってもいい}}よ。", "en": "You can go home early today.", "hint": "帰る + てもいい" },
+      { "ja": "このペン、{{使ってもいい}}？", "en": "Can I use this pen?", "hint": "使う + てもいい" }
+    ]
+  },
+  {
+    "id": "g:n5-te-wa-ikenai",
+    "jlpt": "N5",
+    "title": "〜てはいけない",
+    "meaning": "must not ... / it is forbidden to ...",
+    "structure": "Verb て-form + はいけない",
+    "formality": "neutral",
+    "notes": "States a prohibition. The casual form is 〜てはだめ. Use 〜なければならない for obligations, not this.",
+    "similar": ["〜てもいい"],
+    "detect": ["ては(いけ|だめ)"],
+    "examples": [
+      { "ja": "ここで大きい声を{{出してはいけない}}。", "en": "You must not raise your voice here.", "hint": "出す + てはいけない" },
+      { "ja": "授業中に{{スマホを見てはだめ}}だよ。", "en": "You're not allowed to look at your phone during class.", "hint": "見る + てはだめ" },
+      { "ja": "夜中に{{食べてはいけません}}。", "en": "You must not eat in the middle of the night.", "hint": "食べる + てはいけない" }
+    ]
+  },
+  {
+    "id": "g:n5-tai",
+    "jlpt": "N5",
+    "title": "〜たい",
+    "meaning": "want to ...",
+    "structure": "Verb stem + たい",
+    "formality": "neutral",
+    "notes": "Expresses the speaker's own desire. Asking about someone else's desire is awkward without a form like 〜たがっている. Only applies to verbs, not to nouns.",
+    "similar": [],
+    "detect": [],
+    "examples": [
+      { "ja": "明日、海に{{行きたい}}です。", "en": "I want to go to the sea tomorrow.", "hint": "行く → 行きたい" },
+      { "ja": "何か{{食べたい}}なあ。", "en": "I want to eat something, huh.", "hint": "食べる + たい" }
+    ]
+  }
+]

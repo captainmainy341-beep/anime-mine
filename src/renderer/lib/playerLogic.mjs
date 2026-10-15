@@ -16,6 +16,11 @@ export function videoTimeForCue(cue, subOffset) {
   return cue.start + subOffset;
 }
 
+export function shiftCues(cues, offset) {
+  if (!offset) return cues;
+  return cues.map((cue) => ({ ...cue, start: cue.start + offset, end: cue.end + offset }));
+}
+
 export function resumeTarget(saved, duration) {
   if (!saved || saved.finished) return null;
   const position = Number(saved.position) || 0;

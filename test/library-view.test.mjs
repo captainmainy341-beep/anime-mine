@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
+  cleanupLabel,
   coverageLabel,
   createLimiter,
   formatBytes,
@@ -12,6 +13,17 @@ import {
 
 const MB = 1024 ** 2;
 const GB = 1024 ** 3;
+
+test('cleanupLabel describes each cleanup state', () => {
+  assert.equal(cleanupLabel({ kind: 'cleaning', fraction: 0.42 }), 'Cleaning 42%');
+  assert.equal(cleanupLabel({ kind: 'cleaning', fraction: 1.7 }), 'Cleaning 100%');
+  assert.equal(cleanupLabel({ kind: 'cleaning', fraction: -1 }), 'Cleaning 0%');
+  assert.equal(cleanupLabel({ kind: 'queued' }), 'Queued');
+  assert.equal(cleanupLabel({ kind: 'ready' }), 'Clean copy ready');
+  assert.equal(cleanupLabel({ kind: 'error' }), 'Cleanup failed');
+  assert.equal(cleanupLabel({ kind: 'idle' }), null);
+  assert.equal(cleanupLabel(null), null);
+});
 
 test('formatBytes uses MB below a gigabyte and GB from there', () => {
   assert.equal(formatBytes(0), '0.0 MB');

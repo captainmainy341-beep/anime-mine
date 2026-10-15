@@ -1,7 +1,10 @@
 import { mountAnki } from './anki.mjs';
+import { mountLearn } from './learn.mjs';
 import { mountLibrary } from './library.mjs';
+import { mountManga } from './manga.mjs';
 import { mountPlayer } from './player.mjs';
 import { mountSettings } from './settings.mjs';
+import { mountVocab } from './vocab.mjs';
 
 const view = document.getElementById('view');
 const nav = document.getElementById('nav');
@@ -17,8 +20,18 @@ const routes = {
       onPlayEpisode: (next) => go('player', next),
     }),
   anki: mountAnki,
+  learn: (container) => mountLearn(container, { onWatch: watchScene }),
+  manga: mountManga,
+  vocab: mountVocab,
   settings: mountSettings,
 };
+
+async function watchScene({ videoPath, start }) {
+  await window.api.progress.update({ videoPath, patch: { position: Math.max(0, start - 2) } });
+  const shows = await window.api.library.getShows();
+  const episode = shows.flatMap((show) => show.episodes).find((candidate) => candidate.path === videoPath);
+  go('player', episode ?? { path: videoPath, name: videoPath.split(/[\\/]/).pop() });
+}
 
 function go(name, arg) {
   unmountView?.();

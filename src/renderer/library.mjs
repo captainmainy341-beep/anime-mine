@@ -1,5 +1,6 @@
 import { attempt, fill, h, toast } from './lib/ui.mjs';
-import { coverageLabel, createLimiter, progressFraction } from './lib/libraryView.mjs';
+import { cleanupLabel, coverageLabel, createLimiter, progressFraction } from './lib/libraryView.mjs';
+import { openPrep } from './learn/prep.mjs';
 
 const api = window.api;
 let reloadLibrary = null;
@@ -10,6 +11,8 @@ api.library.onUpdated((event) => {
   toast(event?.message ?? 'Subtitle linked automatically', 'success');
   reloadLibrary?.();
 });
+
+api.desub.onDone(() => toast('Subtitle-free copy ready', 'success'));
 
 const pad = (n) => String(n).padStart(2, '0');
 
@@ -24,6 +27,14 @@ export function mountLibrary(container, { onPlay }) {
   const showList = h('div', { class: 'shows' }, h('p', { class: 'muted' }, 'Scanning…'));
   let loadSeq = 0;
   let continueSeq = 0;
+  let closePrep = null;
+  const rowsByPath = new Map();
+  const cleanupStates = new Map();
+  const offDesub = [
+    api.desub.onProgress(({ videoPath, fraction }) => updateRow(videoPath, { kind: 'cleaning', fraction })),
+    api.desub.onDone(({ videoPath }) => updateRow(videoPath, { kind: 'ready' })),
+    api.desub.onError(({ videoPath }) => updateRow(videoPath, { kind: 'error' })),
+  ];
 
   container.append(
     h(
@@ -66,6 +77,11 @@ export function mountLibrary(container, { onPlay }) {
       renderShows(await task());
       renderFolders(await api.library.getFolders());
     });
+  }
+
+  function openPrepFor(episode) {
+    closePrep?.();
+    closePrep = openPrep({ videoPath: episode.path, title: episode.name });
   }
 
   function linkSubtitle(episode) {
@@ -129,8 +145,10 @@ export function mountLibrary(container, { onPlay }) {
       return;
     }
     const rows = [];
+    rowsByPath.clear();
     fill(showList, shows.map((show) => showSection(show, rows)));
-    for (const { row, episode } of rows) hydrateRow(row, episode);
+    const desub = api.desub.status().catch(() => null);
+    for (const { row, episode } of rows) hydrateRow(row, episode, desub);
   }
 
   function showSection(show, rows) {
@@ -143,6 +161,7 @@ export function mountLibrary(container, { onPlay }) {
         { class: 'episodes' },
         show.episodes.map((episode) => {
           const row = episodeRow(episode);
+          rowsByPath.set(episode.path, row);
           rows.push({ row, episode });
           return row;
         }),
@@ -164,10 +183,29 @@ export function mountLibrary(container, { onPlay }) {
           'span',
           { class: 'ep-meta' },
           h('span', { class: 'progress ep-bar', hidden: true }, h('span', { class: 'progress-fill' })),
+          h(
+            'span',
+            { class: 'ep-clean', hidden: true },
+            h('span', { class: 'ep-clean-label' }),
+            h('span', { class: 'progress ep-clean-bar', hidden: true }, h('span', { class: 'progress-fill' })),
+          ),
           h('span', { class: 'badge ok ep-watched', hidden: true }, 'Watched'),
           h('span', { class: 'chip ep-chip', hidden: true }),
         ),
       ),
+      linked
+        ? h(
+            'button',
+            {
+              class: 'ghost small',
+              onclick: (e) => {
+                e.stopPropagation();
+                openPrepFor(episode);
+              },
+            },
+            'Prep',
+          )
+        : null,
       h('span', { class: `badge ${linked ? 'ok' : 'warn'}` }, linked ? 'Linked' : 'Missing'),
       linked
         ? null
@@ -185,10 +223,26 @@ export function mountLibrary(container, { onPlay }) {
     );
   }
 
-  function hydrateRow(row, episode) {
+  function hydrateRow(row, episode, desub) {
     progressLoad(async () => {
       if (!row.isConnected) return;
       showProgress(row, await api.progress.get(episode.path));
+    }).catch(() => {});
+
+    if (cleanupStates.has(episode.path)) setCleanup(row, cleanupStates.get(episode.path));
+
+    progressLoad(async () => {
+      if (!row.isConnected) return;
+      const status = await desub;
+      let state = null;
+      if (status?.current?.video === episode.path) state = { kind: 'cleaning', fraction: status.current.fraction };
+      else if (status?.queued?.includes(episode.path)) state = { kind: 'queued' };
+      else if (await api.desub.isClean(episode.path)) state = { kind: 'ready' };
+      // A live event that arrived while this snapshot was loading is newer than the snapshot.
+      if (state && !cleanupStates.has(episode.path) && row.isConnected) {
+        cleanupStates.set(episode.path, state);
+        setCleanup(row, state);
+      }
     }).catch(() => {});
 
     if (!episode.subtitlePath) return;
@@ -208,6 +262,24 @@ export function mountLibrary(container, { onPlay }) {
     row.querySelector('.ep-watched').hidden = !finished;
   }
 
+  function updateRow(videoPath, state) {
+    cleanupStates.set(videoPath, state);
+    const row = rowsByPath.get(videoPath);
+    if (row?.isConnected) setCleanup(row, state);
+  }
+
+  function setCleanup(row, state) {
+    const label = cleanupLabel(state);
+    const box = row.querySelector('.ep-clean');
+    box.hidden = label === null;
+    box.classList.toggle('ready', state?.kind === 'ready');
+    box.classList.toggle('failed', state?.kind === 'error');
+    row.querySelector('.ep-clean-label').textContent = label ?? '';
+    const bar = row.querySelector('.ep-clean-bar');
+    bar.hidden = state?.kind !== 'cleaning';
+    if (state?.kind === 'cleaning') bar.firstElementChild.style.width = `${Math.round(state.fraction * 100)}%`;
+  }
+
   function setChip(row, { text }) {
     const chip = row.querySelector('.ep-chip');
     chip.hidden = !text;
@@ -218,5 +290,8 @@ export function mountLibrary(container, { onPlay }) {
   loadAll();
   return () => {
     reloadLibrary = null;
+    closePrep?.();
+    closePrep = null;
+    for (const off of offDesub) off();
   };
 }

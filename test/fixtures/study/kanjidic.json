@@ -1,0 +1,239 @@
+{
+  "version": "fixture",
+  "characters": [
+    {
+      "literal": "日",
+      "misc": { "grade": 1, "strokeCounts": [4], "frequency": 1, "jlptLevel": 5 },
+      "readingMeaning": {
+        "groups": [
+          {
+            "readings": [
+              { "type": "ja_on", "value": "ニチ" },
+              { "type": "ja_on", "value": "ジツ" },
+              { "type": "ja_kun", "value": "ひ" },
+              { "type": "ja_kun", "value": "-び" }
+            ],
+            "meanings": [{ "lang": "en", "value": "day" }, { "lang": "en", "value": "sun" }]
+          }
+        ],
+        "nanori": ["か"]
+      }
+    },
+    {
+      "literal": "月",
+      "misc": { "grade": 1, "strokeCounts": [4], "frequency": 2, "jlptLevel": 5 },
+      "readingMeaning": {
+        "groups": [
+          {
+            "readings": [
+              { "type": "ja_on", "value": "ゲツ" },
+              { "type": "ja_on", "value": "ガツ" },
+              { "type": "ja_kun", "value": "つき" }
+            ],
+            "meanings": [{ "lang": "en", "value": "moon" }, { "lang": "en", "value": "month" }]
+          }
+        ],
+        "nanori": []
+      }
+    },
+    {
+      "literal": "木",
+      "misc": { "grade": 1, "strokeCounts": [4], "frequency": 3, "jlptLevel": 5 },
+      "readingMeaning": {
+        "groups": [
+          {
+            "readings": [
+              { "type": "ja_on", "value": "ボク" },
+              { "type": "ja_on", "value": "モク" },
+              { "type": "ja_kun", "value": "き" },
+              { "type": "ja_kun", "value": "こ" }
+            ],
+            "meanings": [{ "lang": "en", "value": "tree" }, { "lang": "en", "value": "wood" }]
+          }
+        ],
+        "nanori": []
+      }
+    },
+    {
+      "literal": "女",
+      "misc": { "grade": 1, "strokeCounts": [3], "frequency": 4, "jlptLevel": 5 },
+      "readingMeaning": {
+        "groups": [
+          {
+            "readings": [
+              { "type": "ja_on", "value": "ジョ" },
+              { "type": "ja_on", "value": "ニョ" },
+              { "type": "ja_kun", "value": "おんな" },
+              { "type": "ja_kun", "value": "め" }
+            ],
+            "meanings": [{ "lang": "en", "value": "woman" }, { "lang": "en", "value": "female" }]
+          }
+        ],
+        "nanori": []
+      }
+    },
+    {
+      "literal": "子",
+      "misc": { "grade": 1, "strokeCounts": [3], "frequency": 5, "jlptLevel": 5 },
+      "readingMeaning": {
+        "groups": [
+          {
+            "readings": [
+              { "type": "ja_on", "value": "シ" },
+              { "type": "ja_on", "value": "ス" },
+              { "type": "ja_kun", "value": "こ" },
+              { "type": "ja_kun", "value": "ね" }
+            ],
+            "meanings": [{ "lang": "en", "value": "child" }]
+          }
+        ],
+        "nanori": []
+      }
+    },
+    {
+      "literal": "休",
+      "misc": { "grade": 1, "strokeCounts": [6], "frequency": 50, "jlptLevel": 5 },
+      "readingMeaning": {
+        "groups": [
+          {
+            "readings": [
+              { "type": "ja_on", "value": "キュウ" },
+              { "type": "ja_kun", "value": "やす.む" }
+            ],
+            "meanings": [{ "lang": "en", "value": "rest" }]
+          }
+        ],
+        "nanori": []
+      }
+    },
+    {
+      "literal": "田",
+      "misc": { "grade": 1, "strokeCounts": [5], "frequency": 70, "jlptLevel": 5 },
+      "readingMeaning": {
+        "groups": [
+          {
+            "readings": [
+              { "type": "ja_on", "value": "デン" },
+              { "type": "ja_kun", "value": "た" }
+            ],
+            "meanings": [{ "lang": "en", "value": "rice field" }]
+          }
+        ],
+        "nanori": []
+      }
+    },
+    {
+      "literal": "明",
+      "misc": { "grade": 2, "strokeCounts": [8], "frequency": 10, "jlptLevel": 4 },
+      "readingMeaning": {
+        "groups": [
+          {
+            "readings": [
+              { "type": "ja_on", "value": "メイ" },
+              { "type": "ja_on", "value": "ミョウ" },
+              { "type": "ja_kun", "value": "あか.るい" },
+              { "type": "ja_kun", "value": "あ.ける" }
+            ],
+            "meanings": [{ "lang": "en", "value": "bright" }]
+          }
+        ],
+        "nanori": ["あき"]
+      }
+    },
+    {
+      "literal": "林",
+      "misc": { "grade": 2, "strokeCounts": [8], "frequency": 20, "jlptLevel": 3 },
+      "readingMeaning": {
+        "groups": [
+          {
+            "readings": [
+              { "type": "ja_on", "value": "リン" },
+              { "type": "ja_kun", "value": "はやし" }
+            ],
+            "meanings": [{ "lang": "en", "value": "grove" }]
+          }
+        ],
+        "nanori": []
+      }
+    },
+    {
+      "literal": "男",
+      "misc": { "grade": 2, "strokeCounts": [7], "frequency": 30, "jlptLevel": 4 },
+      "readingMeaning": {
+        "groups": [
+          {
+            "readings": [
+              { "type": "ja_on", "value": "ダン" },
+              { "type": "ja_on", "value": "ナン" },
+              { "type": "ja_kun", "value": "おとこ" }
+            ],
+            "meanings": [{ "lang": "en", "value": "man" }]
+          }
+        ],
+        "nanori": []
+      }
+    },
+    {
+      "literal": "森",
+      "misc": { "grade": 2, "strokeCounts": [12], "frequency": 60, "jlptLevel": 3 },
+      "readingMeaning": {
+        "groups": [
+          {
+            "readings": [
+              { "type": "ja_on", "value": "シン" },
+              { "type": "ja_kun", "value": "もり" }
+            ],
+            "meanings": [{ "lang": "en", "value": "forest" }]
+          }
+        ],
+        "nanori": []
+      }
+    },
+    {
+      "literal": "好",
+      "misc": { "grade": 4, "strokeCounts": [6], "frequency": 40, "jlptLevel": 3 },
+      "readingMeaning": {
+        "groups": [
+          {
+            "readings": [
+              { "type": "ja_on", "value": "コウ" },
+              { "type": "ja_kun", "value": "この.む" },
+              { "type": "ja_kun", "value": "す.く" }
+            ],
+            "meanings": [{ "lang": "en", "value": "like" }, { "lang": "en", "value": "fond" }]
+          }
+        ],
+        "nanori": ["こ", "よし"]
+      }
+    },
+    {
+      "literal": "蛍",
+      "misc": { "strokeCounts": [11], "frequency": 15, "jlptLevel": 1 },
+      "readingMeaning": {
+        "groups": [
+          {
+            "readings": [
+              { "type": "ja_on", "value": "ケイ" },
+              { "type": "ja_kun", "value": "ほたる" }
+            ],
+            "meanings": [{ "lang": "en", "value": "firefly" }]
+          }
+        ],
+        "nanori": []
+      }
+    },
+    {
+      "literal": "猫",
+      "misc": { "grade": 2, "strokeCounts": [11] },
+      "readingMeaning": {
+        "groups": [
+          {
+            "readings": [{ "type": "ja_on", "value": "ビョウ" }, { "type": "ja_kun", "value": "ねこ" }],
+            "meanings": [{ "lang": "en", "value": "cat" }]
+          }
+        ],
+        "nanori": []
+      }
+    }
+  ]
+}

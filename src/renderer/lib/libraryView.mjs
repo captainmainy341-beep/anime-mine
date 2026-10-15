@@ -19,6 +19,21 @@ export function progressFraction(position, duration) {
   return Math.min(1, Math.max(0, position / duration));
 }
 
+export function cleanupLabel(state) {
+  switch (state?.kind) {
+    case 'cleaning':
+      return `Cleaning ${Math.round(Math.min(1, Math.max(0, state.fraction)) * 100)}%`;
+    case 'queued':
+      return 'Queued';
+    case 'ready':
+      return 'Clean copy ready';
+    case 'error':
+      return 'Cleanup failed';
+    default:
+      return null;
+  }
+}
+
 // coverage: the object returned by known:coverage, or null when the episode has no subtitle.
 export function coverageLabel(coverage) {
   if (!coverage || !(coverage.totalWords > 0)) return null;

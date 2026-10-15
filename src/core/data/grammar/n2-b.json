@@ -1,0 +1,956 @@
+[
+  {
+    "id": "g:n2-beki-dewa-nai",
+    "jlpt": "N2",
+    "title": "〜べきではない",
+    "meaning": "should not / ought not to ...",
+    "structure": "Verb dictionary form + べきではない",
+    "formality": "neutral",
+    "notes": "Advises against an action on the grounds of what is right or proper. It is stronger than 〜ないほうがいい and sounds like a judgement about morality or social norms. The question form 〜べきではないか is used to press a point. Do not attach it to nouns without する.",
+    "similar": [
+      "〜べきだ"
+    ],
+    "detect": [
+      "べき(では|じゃ)ない"
+    ],
+    "examples": [
+      {
+        "ja": "そんなことを人に{{言うべきではない}}。",
+        "en": "You should not say such a thing to people.",
+        "hint": "言う + べきではない"
+      },
+      {
+        "ja": "彼の失敗を{{笑うべきではない}}と思う。",
+        "en": "I think we should not laugh at his failure.",
+        "hint": "笑う + べきではない"
+      },
+      {
+        "ja": "こんな高い服は{{買うべきではない}}よ。",
+        "en": "You shouldn't buy such expensive clothes.",
+        "hint": "買う + べきではない"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-zu-ni-wa-irarenai",
+    "jlpt": "N2",
+    "title": "〜ずにはいられない",
+    "meaning": "cannot help but ...",
+    "structure": "Verb ない-form (drop ない) + ずにはいられない",
+    "formality": "neutral",
+    "notes": "Expresses an emotion or impulse that is too strong to suppress. It is used for feelings such as laughing, crying, or wanting to touch something. It is most often used with する-verbs as せずにはいられない. It is not used for simple choices.",
+    "similar": [
+      "〜ずにはおかない"
+    ],
+    "detect": [
+      "ずにはいられ"
+    ],
+    "examples": [
+      {
+        "ja": "あの映画のラストには{{泣かずにはいられなかった}}。",
+        "en": "I couldn't help crying at the ending of that movie.",
+        "hint": "泣く + ずにはいられない"
+      },
+      {
+        "ja": "彼女の話を聞いて、{{笑わずにはいられなかった}}。",
+        "en": "Hearing her story, I couldn't help laughing.",
+        "hint": "笑う + ずにはいられない"
+      },
+      {
+        "ja": "こんな可愛い子猫を見たら、{{触らずにはいられないよ}}。",
+        "en": "If you see such a cute kitten, you just can't help touching it.",
+        "hint": "触る + ずにはいられない"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-nai-de-wa-okanai",
+    "jlpt": "N2",
+    "title": "〜ないではおかない",
+    "meaning": "is bound to / will certainly ... (causing a reaction)",
+    "structure": "Verb ない-form + ではおかない",
+    "formality": "neutral",
+    "notes": "Says that something will inevitably cause a reaction or result in others, or that someone will certainly do something. It is often used for effects on people, such as surprising, moving, or angering them. It is a more emphatic way of saying 〜ずにはおかない with the same nuance.",
+    "similar": [
+      "〜ずにはおかない"
+    ],
+    "detect": [
+      "ないではおか(ない|な)"
+    ],
+    "examples": [
+      {
+        "ja": "この作品は、多くの人の心を{{動かさないではおかないだろう}}。",
+        "en": "This work is bound to move many people's hearts.",
+        "hint": "動かす + ないではおかない"
+      },
+      {
+        "ja": "あの子の将来が心配で、先生は{{注意しないではおかなかった}}。",
+        "en": "The teacher could not help but warn that child, worried about their future.",
+        "hint": "注意する + ないではおかない"
+      },
+      {
+        "ja": "そんなに遅れたら、部長は{{怒らないではおかない}}よ。",
+        "en": "If you're that late, the manager is sure to get angry.",
+        "hint": "怒る + ないではおかない"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-zu-ni-wa-okanai",
+    "jlpt": "N2",
+    "title": "〜ずにはおかない",
+    "meaning": "will certainly / is bound to ... (cause someone to ...)",
+    "structure": "Verb ない-form (drop ない) + ずにはおかない",
+    "formality": "neutral",
+    "notes": "Means that the speaker or a situation will definitely bring about a result, often a strong emotional one. The subject is usually a thing or a person whose action will affect others. It is not a request and is not used for the speaker's own reluctant decisions. Written and spoken forms are both common in serious contexts.",
+    "similar": [
+      "〜ずにはいられない"
+    ],
+    "detect": [
+      "ずにはおか(ない|な)"
+    ],
+    "examples": [
+      {
+        "ja": "この事件は、必ず真相を{{明らかにせずにはおかない}}。",
+        "en": "This incident will surely bring the truth to light.",
+        "hint": "明らかにする + ずにはおかない"
+      },
+      {
+        "ja": "彼の演説は聴衆を{{感動させずにはおかなかった}}。",
+        "en": "His speech was bound to move the audience.",
+        "hint": "感動させる + ずにはおかない"
+      },
+      {
+        "ja": "そんな失礼なことを言ったら、彼は{{怒らずにはおかないよ}}。",
+        "en": "If you say such rude things, he's sure to get angry.",
+        "hint": "怒る + ずにはおかない"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-gatai",
+    "jlpt": "N2",
+    "title": "〜がたい",
+    "meaning": "hard to ... / difficult to ... (cannot easily be done)",
+    "structure": "Verb stem + がたい",
+    "formality": "neutral",
+    "notes": "Describes something that is difficult to do or to accept, usually because of feelings or logic. It is commonly used with verbs of understanding, believing, or accepting, such as 理解しがたい and 信じがたい. It is written in kana in many contexts. Do not confuse it with ありがたい, which is a different word.",
+    "similar": [
+      "〜にくい"
+    ],
+    "detect": [
+      "(?<!あり)がたい"
+    ],
+    "examples": [
+      {
+        "ja": "この話は、にわかには{{信じがたい}}。",
+        "en": "This story is hard to believe all at once.",
+        "hint": "信じる + がたい"
+      },
+      {
+        "ja": "彼の気持ちは{{理解しがたい}}ものがある。",
+        "en": "His feelings are hard to understand.",
+        "hint": "理解する + がたい"
+      },
+      {
+        "ja": "あの人の言うことは、どうも{{納得しがたい}}。",
+        "en": "Somehow, what that person says is hard for me to accept.",
+        "hint": "納得する + がたい"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-uru-enai",
+    "jlpt": "N2",
+    "title": "〜得る / 〜得ない",
+    "meaning": "may possibly ... / cannot possibly ...",
+    "structure": "Verb stem + 得る (possible) / 得ない (impossible)",
+    "formality": "neutral",
+    "notes": "得る means it is possible or conceivable that something happens; 得ない means it is impossible or unthinkable. It is more formal and objective than 〜かもしれない. It is usually written with kanji 得 and often read as うる or えない. Use it for abstract possibilities rather than personal guesses.",
+    "similar": [
+      "〜かねない"
+    ],
+    "detect": [
+      "[ぁ-ん]得(る|ない)"
+    ],
+    "examples": [
+      {
+        "ja": "事故が{{起こり得る}}ことを考えておくべきだ。",
+        "en": "We should keep in mind that an accident may happen.",
+        "hint": "起こる + 得る"
+      },
+      {
+        "ja": "その計画は、{{成功し得ない}}と思う。",
+        "en": "I don't think the plan can possibly succeed.",
+        "hint": "成功する + 得ない"
+      },
+      {
+        "ja": "この問題は、誰にも{{解決し得ない}}。",
+        "en": "This problem cannot be solved by anyone.",
+        "hint": "解決する + 得ない"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-kiru",
+    "jlpt": "N2",
+    "title": "〜きる",
+    "meaning": "to do completely / to the end (or: cannot finish)",
+    "structure": "Verb stem + きる (きれない for negative)",
+    "formality": "neutral",
+    "notes": "Attached to a verb stem to show that an action is carried out fully or to the end. In the negative form 〜きれない it means the action cannot be completed. As a standalone verb 切る means to cut, so distinguish by context. The past form 〜きった often shows a sense of accomplishment.",
+    "similar": [
+      "〜てしまう"
+    ],
+    "detect": [
+      "[ぁ-ん]きっ(た|て)",
+      "[ぁ-ん]きれ(ない|なかった)"
+    ],
+    "examples": [
+      {
+        "ja": "夏休みの宿題を、ついに全部{{やりきった}}。",
+        "en": "I finally finished all of my summer homework.",
+        "hint": "やる + きる"
+      },
+      {
+        "ja": "彼は最後まで{{走りきった}}。",
+        "en": "He ran all the way to the end.",
+        "hint": "走る + きる"
+      },
+      {
+        "ja": "この量は一人では{{食べきれない}}。",
+        "en": "I can't finish eating this amount by myself.",
+        "hint": "食べる + きる"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-kakeru",
+    "jlpt": "N2",
+    "title": "〜かける",
+    "meaning": "to be about to ... / to have started but not finished ...",
+    "structure": "Verb stem + かける",
+    "formality": "neutral",
+    "notes": "Means that an action has started but was not completed, or was almost done. It is often followed by an interruption or a change of plan. It is different from the verb かける meaning to hang or to call. The form is typically used in past or て-form contexts.",
+    "similar": [],
+    "detect": [
+      "[いきしちひみりぎじび]かけ(た|て|る|ない|ます)"
+    ],
+    "examples": [
+      {
+        "ja": "本を{{読みかけた}}ところで、電話が鳴った。",
+        "en": "I had just started reading the book when the phone rang.",
+        "hint": "読む + かける"
+      },
+      {
+        "ja": "料理を{{作りかけて}}、材料が足りないことに気づいた。",
+        "en": "I had started cooking when I noticed we were missing ingredients.",
+        "hint": "作る + かける"
+      },
+      {
+        "ja": "彼は何か{{言いかけて}}、やめた。",
+        "en": "He started to say something, then stopped.",
+        "hint": "言う + かける"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-mamire",
+    "jlpt": "N2",
+    "title": "〜まみれ",
+    "meaning": "covered in ... / smeared with ...",
+    "structure": "Noun + まみれ",
+    "formality": "neutral",
+    "notes": "Describes being completely covered in a substance, usually dirt, sweat, or blood. It is used for physical coverage and has a slightly negative or messy tone. It can also describe being surrounded by something unpleasant, such as 借金まみれ. It is not used for pleasant things.",
+    "similar": [
+      "〜だらけ"
+    ],
+    "detect": [
+      "まみれ"
+    ],
+    "examples": [
+      {
+        "ja": "子どもたちは{{泥まみれ}}になって遊んだ。",
+        "en": "The children played until they were covered in mud.",
+        "hint": "泥 + まみれ"
+      },
+      {
+        "ja": "彼は{{汗まみれ}}で帰ってきた。",
+        "en": "He came home covered in sweat.",
+        "hint": "汗 + まみれ"
+      },
+      {
+        "ja": "部屋は{{埃まみれ}}だった。",
+        "en": "The room was covered in dust.",
+        "hint": "埃 + まみれ"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-zukume",
+    "jlpt": "N2",
+    "title": "〜ずくめ",
+    "meaning": "nothing but ... / all ... (in one kind)",
+    "structure": "Noun + ずくめ",
+    "formality": "neutral",
+    "notes": "Describes a situation or appearance where everything is of one kind, good or bad. It can be used for a series of bad events or for a uniform look like 黒ずくめ. The nuance can be positive or negative depending on the noun. Do not use it for a single object.",
+    "similar": [
+      "〜まみれ"
+    ],
+    "detect": [
+      "ずくめ"
+    ],
+    "examples": [
+      {
+        "ja": "今日は{{失敗ずくめ}}の一日だった。",
+        "en": "Today was a day full of failures.",
+        "hint": "失敗 + ずくめ"
+      },
+      {
+        "ja": "彼のパーティーは{{豪華ずくめ}}だった。",
+        "en": "His party was all luxury.",
+        "hint": "豪華 + ずくめ"
+      },
+      {
+        "ja": "{{黒ずくめ}}の男が店に入ってきた。",
+        "en": "A man dressed entirely in black walked into the shop.",
+        "hint": "黒 + ずくめ"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-meku",
+    "jlpt": "N2",
+    "title": "〜めく",
+    "meaning": "to take on the feel of ... / to show signs of ...",
+    "structure": "Noun + めく (verb: めく / 〜めいた, 〜めいて)",
+    "formality": "neutral",
+    "notes": "Attaches to a noun to describe something that begins to show the qualities of that noun, such as 春めく (taking on a spring feel). It often describes an impression rather than a fact. Expressions like 〜めいた and 〜めいて are used when modifying nouns or linking clauses.",
+    "similar": [],
+    "detect": [
+      "めい(た|て)"
+    ],
+    "examples": [
+      {
+        "ja": "最近は日差しが{{春めいて}}きた。",
+        "en": "Lately the sunlight has taken on a springlike feel.",
+        "hint": "春 + めく"
+      },
+      {
+        "ja": "あの店は、どこか{{高級めいた}}雰囲気がある。",
+        "en": "That shop has a somewhat upscale atmosphere.",
+        "hint": "高級 + めく"
+      },
+      {
+        "ja": "彼の言い訳は、{{ごまかしめいて}}聞こえた。",
+        "en": "His excuse sounded like an evasion.",
+        "hint": "ごまかし + めく"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-gatera",
+    "jlpt": "N2",
+    "title": "〜がてら",
+    "meaning": "while also doing ... / on the way to ...",
+    "structure": "Noun / Verb stem + がてら",
+    "formality": "neutral",
+    "notes": "Means doing one thing and taking the opportunity to do another, usually a minor errand or a pleasant activity. The second action is secondary to the first. It is often used with 散歩, 買い物, or 行く. It is not used for two equally important actions.",
+    "similar": [
+      "〜ついでに"
+    ],
+    "detect": [
+      "がてら"
+    ],
+    "examples": [
+      {
+        "ja": "{{散歩がてら}}、コンビニに寄った。",
+        "en": "On my walk, I stopped by the convenience store.",
+        "hint": "散歩 + がてら"
+      },
+      {
+        "ja": "{{買い物がてら}}、駅前の本屋にも行ってきた。",
+        "en": "While I was out shopping, I also went to the bookshop by the station.",
+        "hint": "買い物 + がてら"
+      },
+      {
+        "ja": "祖母の家に{{行くがてら}}、友達にも会ってきた。",
+        "en": "On the way to my grandmother's house, I also met a friend.",
+        "hint": "行く + がてら"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-katawara",
+    "jlpt": "N2",
+    "title": "〜かたわら",
+    "meaning": "alongside ... / in addition to (one's main job) ...",
+    "structure": "Noun の / Verb dictionary form + かたわら",
+    "formality": "neutral",
+    "notes": "Means carrying on a secondary activity alongside a main job or role. It is often used for hobbies, side jobs, or creative work done beside a regular occupation. It sounds slightly formal and is common in biographies and newspaper writing.",
+    "similar": [],
+    "detect": [
+      "かたわら"
+    ],
+    "examples": [
+      {
+        "ja": "彼は{{会社員のかたわら}}、小説を書いている。",
+        "en": "Alongside his job as an office worker, he writes novels.",
+        "hint": "会社員 + かたわら"
+      },
+      {
+        "ja": "母は{{仕事をするかたわら}}、子どもの世話もしている。",
+        "en": "While working, my mother also takes care of the children.",
+        "hint": "仕事をする + かたわら"
+      },
+      {
+        "ja": "彼女は大学で{{教えるかたわら}}、研究を続けている。",
+        "en": "Alongside teaching at the university, she continues her research.",
+        "hint": "教える + かたわら"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-koto-naku",
+    "jlpt": "N2",
+    "title": "〜ことなく",
+    "meaning": "without ... (doing something) / without ever ...",
+    "structure": "Verb dictionary form + ことなく",
+    "formality": "neutral",
+    "notes": "Means that an action was completed without a particular thing happening or without doing an expected action. It is a written-style equivalent of 〜ないで or 〜ずに. The verb is usually a dictionary form or する-verb. It is most common in formal writing and speech.",
+    "similar": [
+      "〜ずに"
+    ],
+    "detect": [
+      "ことなく"
+    ],
+    "examples": [
+      {
+        "ja": "彼は一度も弱音を{{吐くことなく}}、最後まで戦った。",
+        "en": "He fought to the end without ever once complaining.",
+        "hint": "吐く + ことなく"
+      },
+      {
+        "ja": "何の連絡を{{することなく}}、彼は帰ってしまった。",
+        "en": "He went home without contacting anyone.",
+        "hint": "する + ことなく"
+      },
+      {
+        "ja": "時間を{{無駄にすることなく}}、準備を進めた。",
+        "en": "I moved on with the preparations without wasting any time.",
+        "hint": "無駄にする + ことなく"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-koto-dashi",
+    "jlpt": "N2",
+    "title": "〜ことだし",
+    "meaning": "since ... (and so) / given that ...",
+    "structure": "Plain form + ことだし",
+    "formality": "neutral",
+    "notes": "Gives a reason for a decision or suggestion by pointing to circumstances that make it reasonable. It is used when the speaker lists one or two conditions, such as the weather or the time, to justify an action. It is not used for strong causal links; use から or ので for plain reasons.",
+    "similar": [
+      "〜ので"
+    ],
+    "detect": [
+      "ことだし"
+    ],
+    "examples": [
+      {
+        "ja": "雨も{{降っていることだし}}、今日は家で休もう。",
+        "en": "It's raining, so let's rest at home today.",
+        "hint": "降る + ことだし"
+      },
+      {
+        "ja": "もう{{遅いことだし}}、そろそろ帰ろうか。",
+        "en": "It's already late, so shall we head home?",
+        "hint": "遅い + ことだし"
+      },
+      {
+        "ja": "彼も{{来ることだし}}、始めましょう。",
+        "en": "Since he's coming too, let's begin.",
+        "hint": "来る + ことだし"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-koto-kara",
+    "jlpt": "N2",
+    "title": "〜ことから",
+    "meaning": "since ... (as seen from ...) / judging from the fact that ...",
+    "structure": "Plain form + ことから",
+    "formality": "neutral",
+    "notes": "Gives a basis for a conclusion or judgement drawn from an observed fact. It is used in explanations and analysis, such as 〜ことから、〜と考えられる. It is more formal than ので and is often followed by a statement of what can be inferred.",
+    "similar": [
+      "〜ことだし"
+    ],
+    "detect": [
+      "ことから"
+    ],
+    "examples": [
+      {
+        "ja": "その店は行列が{{できることから}}、人気があるとわかる。",
+        "en": "Since a line forms there, we can tell the shop is popular.",
+        "hint": "できる + ことから"
+      },
+      {
+        "ja": "この薬は効果が{{高いことから}}、医師もよく勧めている。",
+        "en": "Because it works well, doctors often recommend this medicine.",
+        "hint": "高い + ことから"
+      },
+      {
+        "ja": "彼は日本語が{{上手なことから}}、通訳を頼まれた。",
+        "en": "Because he is good at Japanese, he was asked to interpret.",
+        "hint": "上手だ + ことから"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-ageku",
+    "jlpt": "N2",
+    "title": "〜あげく",
+    "meaning": "after (a long process) ... / in the end (usually a bad result)",
+    "structure": "Verb た-form / Noun の + あげく",
+    "formality": "neutral",
+    "notes": "Describes an outcome that came after a long struggle or repeated effort, and that outcome is usually negative or disappointing. It implies the speaker feels the result was unfortunate. Use it for arguments, hesitation, or long processes ending badly. Do not use it for simple successes.",
+    "similar": [
+      "〜末に"
+    ],
+    "detect": [
+      "あげく"
+    ],
+    "examples": [
+      {
+        "ja": "散々{{迷ったあげく}}、結局何も買わなかった。",
+        "en": "After much hesitation, I ended up buying nothing.",
+        "hint": "迷う + あげく"
+      },
+      {
+        "ja": "{{言い争いのあげく}}、二人は別れてしまった。",
+        "en": "After a long argument, the two of them ended up breaking up.",
+        "hint": "言い争い + あげく"
+      },
+      {
+        "ja": "{{考えたあげく}}の結論がこれだ。",
+        "en": "This is the conclusion I reached after all that thinking.",
+        "hint": "考える + あげく"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-sue-ni",
+    "jlpt": "N2",
+    "title": "〜末に",
+    "meaning": "after (long effort) ... / at last ...",
+    "structure": "Noun の / Verb た-form + 末に",
+    "formality": "neutral",
+    "notes": "Means that after a long process, a final result was reached, usually a good or significant one. It is used with words like 苦労 or 話し合い and emphasises the effort involved. Unlike あげく, it does not imply a bad outcome.",
+    "similar": [
+      "〜あげく"
+    ],
+    "detect": [
+      "(?<!年|週|月)末に"
+    ],
+    "examples": [
+      {
+        "ja": "長い{{話し合いの末に}}、ようやく結論が出た。",
+        "en": "After a long discussion, a conclusion was finally reached.",
+        "hint": "話し合い + の末に"
+      },
+      {
+        "ja": "{{苦労の末に}}、ついに夢を叶えた。",
+        "en": "After much hardship, he finally realized his dream.",
+        "hint": "苦労 + の末に"
+      },
+      {
+        "ja": "何度も{{失敗した末に}}、彼は成功を手にした。",
+        "en": "After failing many times, he finally achieved success.",
+        "hint": "失敗する + 末に"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-shidai",
+    "jlpt": "N2",
+    "title": "〜次第",
+    "meaning": "as soon as ... / immediately after ...",
+    "structure": "Verb stem + 次第",
+    "formality": "formal",
+    "notes": "A formal way to say that something will happen immediately after another event. It is common in business letters and announcements, such as 届き次第 or 決まり次第. It is used with verbs that describe a result becoming available or complete. Do not confuse it with 次第に (gradually).",
+    "similar": [
+      "〜次第だ",
+      "〜次第で"
+    ],
+    "detect": [
+      "次第(?!に|だ|で)"
+    ],
+    "examples": [
+      {
+        "ja": "準備が{{整い次第}}、出発します。",
+        "en": "We will depart as soon as preparations are complete.",
+        "hint": "整う + 次第"
+      },
+      {
+        "ja": "詳しいことが{{分かり次第}}、ご連絡いたします。",
+        "en": "I will contact you as soon as I have the details.",
+        "hint": "分かる + 次第"
+      },
+      {
+        "ja": "結果が{{出次第}}、掲示されます。",
+        "en": "The results will be posted as soon as they are available.",
+        "hint": "出る + 次第"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-shidai-da",
+    "jlpt": "N2",
+    "title": "〜次第だ",
+    "meaning": "depends on ... / it is up to ...",
+    "structure": "Noun + 次第だ",
+    "formality": "neutral",
+    "notes": "Says that an outcome or decision is determined by a particular factor. It is often followed by a clause about what will happen as a result. The noun is usually a condition such as 体調 or 努力. It is related to 〜次第で, which is used more often in ordinary statements.",
+    "similar": [
+      "〜次第で"
+    ],
+    "detect": [
+      "次第だ"
+    ],
+    "examples": [
+      {
+        "ja": "参加できるかどうかは、{{体調次第だ}}。",
+        "en": "Whether I can attend depends on my physical condition.",
+        "hint": "体調 + 次第だ"
+      },
+      {
+        "ja": "出来は、{{努力次第だ}}。",
+        "en": "The result depends on your effort.",
+        "hint": "努力 + 次第だ"
+      },
+      {
+        "ja": "{{事情次第だ}}が、行けたら行こうと思う。",
+        "en": "It depends on the circumstances, but I plan to go if I can.",
+        "hint": "事情 + 次第だ"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-shidai-de",
+    "jlpt": "N2",
+    "title": "〜次第で",
+    "meaning": "depending on ... / according to ...",
+    "structure": "Noun + 次第で",
+    "formality": "neutral",
+    "notes": "Means the result or outcome varies with the factor named. It is used to show that a result is not fixed and will change depending on the condition. It is common in everyday explanations, such as 天気次第で or 値段次第で. Unlike 〜次第だ, it is usually followed by a statement of what varies.",
+    "similar": [
+      "〜次第だ"
+    ],
+    "detect": [
+      "次第で"
+    ],
+    "examples": [
+      {
+        "ja": "{{成績次第で}}、奨学金がもらえる。",
+        "en": "Depending on your grades, you may receive a scholarship.",
+        "hint": "成績 + 次第で"
+      },
+      {
+        "ja": "結果は{{天気次第で}}変わるかもしれない。",
+        "en": "The result may change depending on the weather.",
+        "hint": "天気 + 次第で"
+      },
+      {
+        "ja": "旅行先は、{{お金次第で}}決めよう。",
+        "en": "Let's decide where to go on the trip depending on our budget.",
+        "hint": "お金 + 次第で"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-bakari-ni",
+    "jlpt": "N2",
+    "title": "〜ばかりに",
+    "meaning": "just because ... (and so, unfortunately ...)",
+    "structure": "Verb た-form / Adjective stem + ばかりに",
+    "formality": "neutral",
+    "notes": "Gives a single trivial or unlucky cause that led to a regrettable result. The result is always negative and the speaker feels the cause should not have mattered so much. It is not used for neutral reasons or for positive outcomes.",
+    "similar": [
+      "〜だけに"
+    ],
+    "detect": [
+      "ばかりに"
+    ],
+    "examples": [
+      {
+        "ja": "一言多かった{{ばかりに}}、友達を怒らせてしまった。",
+        "en": "Just because I said one word too many, I ended up upsetting my friend.",
+        "hint": "多い + ばかりに"
+      },
+      {
+        "ja": "{{寝坊したばかりに}}、試験に遅れてしまった。",
+        "en": "Simply because I overslept, I was late for the exam.",
+        "hint": "寝坊する + ばかりに"
+      },
+      {
+        "ja": "電車が{{止まったばかりに}}、会議に間に合わなかった。",
+        "en": "Just because the train stopped, I missed the meeting.",
+        "hint": "止まる + ばかりに"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-dake-ni",
+    "jlpt": "N2",
+    "title": "〜だけに",
+    "meaning": "precisely because ... / as one would expect from ...",
+    "structure": "Plain form (noun + だ) + だけに",
+    "formality": "neutral",
+    "notes": "States that a fact is natural or understandable because of the condition mentioned. The outcome is often a strong feeling, such as disappointment or admiration. The sentence is usually a reason plus a reaction. It is not used for a simple cause with no emotion.",
+    "similar": [
+      "〜だけあって"
+    ],
+    "detect": [
+      "だけに"
+    ],
+    "examples": [
+      {
+        "ja": "彼は練習を{{積んでいただけに}}、悔しさも大きかった。",
+        "en": "Precisely because he had practiced so much, his frustration was great.",
+        "hint": "積む + だけに"
+      },
+      {
+        "ja": "{{ベテランだけに}}、判断が早い。",
+        "en": "Being a veteran, he makes decisions quickly.",
+        "hint": "ベテラン + だけに"
+      },
+      {
+        "ja": "期待して{{いただけに}}、結果にがっかりした。",
+        "en": "Because I had expected so much, I was disappointed with the result.",
+        "hint": "期待する + だけに"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-dake-atte",
+    "jlpt": "N2",
+    "title": "〜だけあって",
+    "meaning": "as expected from ... / no wonder ... (given its quality or effort)",
+    "structure": "Plain form (noun + だ) + だけあって",
+    "formality": "neutral",
+    "notes": "Says that a result or quality matches the reputation or effort behind it. It is used positively to praise something that lives up to expectations. It usually follows a noun or a verb that describes the background. Do not use it for negative results.",
+    "similar": [
+      "〜だけに"
+    ],
+    "detect": [
+      "だけあって"
+    ],
+    "examples": [
+      {
+        "ja": "さすが{{一流ホテルだけあって}}、サービスが素晴らしい。",
+        "en": "As you'd expect from a top-class hotel, the service is excellent.",
+        "hint": "一流ホテル + だけあって"
+      },
+      {
+        "ja": "彼は毎日{{練習しているだけあって}}、上手だ。",
+        "en": "He is good, as you'd expect from someone who practices every day.",
+        "hint": "練習する + だけあって"
+      },
+      {
+        "ja": "長年{{住んでいただけあって}}、この辺りに詳しい。",
+        "en": "As you'd expect from someone who has lived here for years, he knows the area well.",
+        "hint": "住む + だけあって"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-tomo-naruto",
+    "jlpt": "N2",
+    "title": "〜ともなると",
+    "meaning": "when it comes to ... / once one reaches the level of ...",
+    "structure": "Noun + ともなると",
+    "formality": "neutral",
+    "notes": "Introduces a person or situation at a certain level or stage and says that it brings its own particular circumstances. It is used to describe what is expected or typical at that level. It is often followed by a statement about what happens or what is required.",
+    "similar": [
+      "〜ともなれば"
+    ],
+    "detect": [
+      "ともなると"
+    ],
+    "examples": [
+      {
+        "ja": "{{社長ともなると}}、毎日の予定が分刻みだ。",
+        "en": "When you're a company president, your schedule is planned down to the minute every day.",
+        "hint": "社長 + ともなると"
+      },
+      {
+        "ja": "{{大人ともなると}}、いつまでも子どもではいられない。",
+        "en": "Once you're an adult, you can't stay a child forever.",
+        "hint": "大人 + ともなると"
+      },
+      {
+        "ja": "一国の{{首相ともなると}}、発言の影響が大きい。",
+        "en": "When it comes to a prime minister, what he says has a big impact.",
+        "hint": "首相 + ともなると"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-te-hajimete",
+    "jlpt": "N2",
+    "title": "〜てはじめて",
+    "meaning": "only after ... (does one realize / understand ...)",
+    "structure": "Verb て-form + はじめて",
+    "formality": "neutral",
+    "notes": "Means that something is understood or realized only after a particular experience. The main clause usually expresses a new insight or a change in feeling. It is often used for lessons learned from experience. It is not used for ordinary sequences of events.",
+    "similar": [
+      "〜てから"
+    ],
+    "detect": [
+      "てはじめて"
+    ],
+    "examples": [
+      {
+        "ja": "{{失敗してはじめて}}、その大切さがわかった。",
+        "en": "Only after failing did I understand how important it was.",
+        "hint": "失敗する + てはじめて"
+      },
+      {
+        "ja": "{{親になってはじめて}}、母の苦労がわかった。",
+        "en": "Only after becoming a parent did I understand my mother's hardships.",
+        "hint": "親になる + てはじめて"
+      },
+      {
+        "ja": "実際に{{住んでみてはじめて}}、この町の良さがわかった。",
+        "en": "Only after actually living here did I come to appreciate the town.",
+        "hint": "住んでみる + てはじめて"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-te-made",
+    "jlpt": "N2",
+    "title": "〜てまで",
+    "meaning": "to the extent of ... / even going so far as to ...",
+    "structure": "Verb て-form + まで",
+    "formality": "neutral",
+    "notes": "Expresses that someone goes to an extreme or unreasonable length to do something. The speaker usually feels the action is excessive or regrettable. It is often used with 〜たくない or a question about whether something is worth it. It is different from 〜まで meaning simply 'even' or 'until'.",
+    "similar": [],
+    "detect": [
+      "てまで"
+    ],
+    "examples": [
+      {
+        "ja": "彼は借金を{{してまで}}、その車を買った。",
+        "en": "He even went into debt to buy that car.",
+        "hint": "する + てまで"
+      },
+      {
+        "ja": "頭を{{下げてまで}}、彼女に謝りたくはない。",
+        "en": "I don't want to apologize to her by bowing my head that far.",
+        "hint": "下げる + てまで"
+      },
+      {
+        "ja": "夢のために家族を{{犠牲にしてまで}}働くべきではない。",
+        "en": "You should not work so hard that you sacrifice your family for your dream.",
+        "hint": "犠牲にする + てまで"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-te-naranai",
+    "jlpt": "N2",
+    "title": "〜てならない",
+    "meaning": "can't help feeling ... / incessantly ...",
+    "structure": "Verb て-form / Adjective て-form / Na-adjective + でならない + ならない",
+    "formality": "neutral",
+    "notes": "Expresses a feeling that cannot be suppressed, such as worry, sadness, or sympathy. It is used for the speaker's own feelings that cannot be suppressed. It is typically used with emotion adjectives like 心配 or 悲しい, and with verbs such as 思い出される.",
+    "similar": [
+      "〜てたまらない"
+    ],
+    "detect": [
+      "(て|で)ならない"
+    ],
+    "examples": [
+      {
+        "ja": "その話を聞いて、何だか{{悲しくてならない}}。",
+        "en": "Hearing that story, I can't help feeling sad.",
+        "hint": "悲しい + てならない"
+      },
+      {
+        "ja": "彼が無事か{{心配でならない}}。",
+        "en": "I can't stop worrying about whether he is safe.",
+        "hint": "心配だ + でならない"
+      },
+      {
+        "ja": "母の言葉が{{思い出されてならない}}。",
+        "en": "I can't stop thinking about my mother's words.",
+        "hint": "思い出す + てならない"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-te-yamanai",
+    "jlpt": "N2",
+    "title": "〜てやまない",
+    "meaning": "continue to ... (strongly, persistently) / cannot stop ...ing",
+    "structure": "Verb て-form + やまない",
+    "formality": "formal",
+    "notes": "A formal, written-style expression for a strong and lasting feeling or wish. It is used to express hope, admiration, or affection that does not change. It is common in speeches, letters, and announcements. Do not use it for temporary feelings.",
+    "similar": [
+      "〜てならない"
+    ],
+    "detect": [
+      "てやま(ない|ません)"
+    ],
+    "examples": [
+      {
+        "ja": "皆さんの幸せを{{願ってやみません}}。",
+        "en": "We continue to wish for your happiness.",
+        "hint": "願う + てやまない"
+      },
+      {
+        "ja": "彼の活躍を今も{{応援してやまない}}。",
+        "en": "I continue to cheer for his success.",
+        "hint": "応援する + てやまない"
+      },
+      {
+        "ja": "この作品は、多くの人に{{愛されてやまない}}。",
+        "en": "This work continues to be loved by many people.",
+        "hint": "愛する + てやまない"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-o-yogi-naku-sareru",
+    "jlpt": "N2",
+    "title": "〜を余儀なくされる",
+    "meaning": "to be forced to ... / to have no choice but to ...",
+    "structure": "Noun を余儀なくされる",
+    "formality": "formal",
+    "notes": "Describes a situation where circumstances force someone or something to take an action or undergo a change. It is typically used in news reports and formal statements. The subject is usually the person or organization affected, not the one causing the change. It is often used with nouns like 変更, 閉鎖, or 引退.",
+    "similar": [
+      "〜ざるをえない"
+    ],
+    "detect": [
+      "余儀なく"
+    ],
+    "examples": [
+      {
+        "ja": "台風の影響で、計画の{{変更を余儀なくされた}}。",
+        "en": "Because of the typhoon, the plan was forced to change.",
+        "hint": "変更する + 〜を余儀なくされる"
+      },
+      {
+        "ja": "経営不振により、工場の{{閉鎖を余儀なくされた}}。",
+        "en": "Due to poor business, the factory was forced to close.",
+        "hint": "閉鎖 + 〜を余儀なくされる"
+      },
+      {
+        "ja": "怪我のため、選手は{{引退を余儀なくされた}}。",
+        "en": "Because of his injury, the player was forced to retire.",
+        "hint": "引退 + 〜を余儀なくされる"
+      }
+    ]
+  }
+]

@@ -4,6 +4,7 @@ const fs = require('node:fs/promises');
 const os = require('node:os');
 const path = require('node:path');
 const { createServices } = require('../src/main/services');
+const { MangaLibrary } = require('../src/core/manga');
 
 let root;
 
@@ -35,6 +36,12 @@ function newLog() {
     translateCalls: [],
     translateFails: false,
     addCardError: null,
+    systemAudioClips: [],
+    systemAudioClip: Buffer.from('mp3-bytes'),
+    systemAudioError: null,
+    systemAudioStops: 0,
+    lastUtteranceCalls: 0,
+    lastUtteranceClip: Buffer.from('utterance-mp3'),
   };
 }
 
@@ -96,6 +103,29 @@ function fakeAnkiClient(log) {
   };
 }
 
+function fakeSystemAudio(log) {
+  return {
+    start() {},
+    touch() {},
+    async clip(range) {
+      log.systemAudioClips.push(range);
+      if (log.systemAudioError) throw new Error(log.systemAudioError);
+      return log.systemAudioClip;
+    },
+    async clipLastUtterance() {
+      log.lastUtteranceCalls += 1;
+      if (log.systemAudioError) throw new Error(log.systemAudioError);
+      return log.lastUtteranceClip;
+    },
+    stop() {
+      log.systemAudioStops += 1;
+    },
+    status() {
+      return { running: true };
+    },
+  };
+}
+
 function fakeDictionary(log) {
   return class FakeDictionary {
     isReady() {
@@ -137,6 +167,18 @@ function fakeTranslate(log) {
   };
 }
 
+const FURIGANA_TOKENS = {
+  '雨が降ってる': [
+    { start: 0, end: 1, surface: '雨', base: '雨', reading: 'あめ' },
+    { start: 2, end: 6, surface: '降ってる', base: '降る', reading: 'ふってる' },
+  ],
+  '降る': [{ start: 0, end: 2, surface: '降る', base: '降る', reading: 'ふる' }],
+};
+
+function fakeTokenize(text) {
+  return FURIGANA_TOKENS[text] ?? [];
+}
+
 async function parseSrtFile(file) {
   const text = (await fs.readFile(file, 'utf8')).replace(/^\uFEFF/, '');
   const toSeconds = (stamp) => {
@@ -159,7 +201,7 @@ async function parseSrtFile(file) {
     });
 }
 
-async function setup({ dataDir } = {}) {
+async function setup({ dataDir, tokenize } = {}) {
   const dir = dataDir ?? (await fs.mkdtemp(path.join(root, 'case-')));
   const log = newLog();
   const dialog = {
@@ -173,13 +215,16 @@ async function setup({ dataDir } = {}) {
     dialog,
     notify: (channel, payload) => log.notified.push({ channel, payload }),
     deps: {
+      webPort: 0,
       Library: fakeLibrary(log),
       Dictionary: fakeDictionary(log),
       AnkiClient: fakeAnkiClient(log),
       media: fakeMedia(log),
       explain: fakeExplain(log),
       translate: fakeTranslate(log),
+      tokenize,
       parseSubtitleFile: parseSrtFile,
+      systemAudio: fakeSystemAudio(log),
     },
   });
   return { dir, log, services, call: (channel, ...args) => services.handlers[channel](...args) };
@@ -191,22 +236,42 @@ test('exposes every IPC channel from the contract', async () => {
     'ai:explain',
     'ai:translate',
     'anki:browse',
+    'anki:cardAction',
+    'anki:cardInfo',
+    'anki:deckOptions',
     'anki:deleteNote',
+    'anki:facets',
     'anki:getView',
     'anki:listDecks',
     'anki:media',
     'anki:mine',
+    'anki:openDeckOptions',
     'anki:openInAnki',
     'anki:overview',
     'anki:preview',
     'anki:recent',
+    'anki:setDeckOptions',
     'anki:setView',
     'anki:setup',
     'anki:status',
+    'anki:studyAnswer',
+    'anki:studyQueue',
     'anki:updateNote',
+    'corpus:coverage',
+    'corpus:indexAnime',
+    'corpus:removeWork',
+    'corpus:stats',
+    'corpus:works',
+    'desub:clearCache',
+    'desub:install',
+    'desub:isClean',
+    'desub:status',
     'dict:download',
     'dict:lookup',
     'dict:status',
+    'examples:download',
+    'grammar:analyze',
+    'kanjidic:download',
     'known:ankiFields',
     'known:classify',
     'known:coverage',
@@ -214,12 +279,49 @@ test('exposes every IPC channel from the contract', async () => {
     'known:importText',
     'known:mark',
     'known:stats',
+    'learn:addWord',
+    'learn:browse',
+    'learn:card',
+    'learn:completeLessons',
+    'learn:cram',
+    'learn:dashboard',
+    'learn:downloadPack',
+    'learn:episodePrep',
+    'learn:furigana',
+    'learn:grammarIn',
+    'learn:lessons',
+    'learn:levels',
+    'learn:mnemonic',
+    'learn:removeWord',
+    'learn:resetLevel',
+    'learn:resurrect',
+    'learn:reviews',
+    'learn:scanGrammar',
+    'learn:setUserData',
+    'learn:settingsGet',
+    'learn:settingsSet',
+    'learn:stats',
+    'learn:status',
+    'learn:submit',
+    'learn:vacation',
     'library:addFolder',
     'library:getFolders',
     'library:getShows',
     'library:linkSubtitle',
     'library:removeFolder',
     'lookup:at',
+    'manga:addFolder',
+    'manga:blocks',
+    'manga:cancelIndex',
+    'manga:continue',
+    'manga:getFolders',
+    'manga:getProgress',
+    'manga:getSeries',
+    'manga:index',
+    'manga:mine',
+    'manga:page',
+    'manga:removeFolder',
+    'manga:setProgress',
     'media:cacheInfo',
     'media:cancel',
     'media:clearCache',
@@ -235,6 +337,13 @@ test('exposes every IPC channel from the contract', async () => {
     'progress:update',
     'settings:get',
     'settings:set',
+    'vocab:counts',
+    'vocab:extract',
+    'vocab:kanji',
+    'vocab:list',
+    'vocab:status',
+    'vocab:word',
+    'web:info',
   ]);
 });
 
@@ -259,6 +368,11 @@ test('settings:get returns defaults when no settings file exists', async () => {
     knownField: '',
     knownMatureOnly: false,
     loopLine: false,
+    removeBurnedSubs: false,
+    burnedSubsMode: 'blur',
+    subtitleCover: null,
+    manga: { aiOcr: false },
+    jimaku: { enabled: true, apiKey: '' },
   });
 });
 
@@ -329,17 +443,20 @@ test('anki:mine in word mode maps fields and sends media with cue times and padd
   assert.deepEqual(log.audioCalls, [
     { video: '/videos/Show S01E05.mkv', start: 10, end: 14, padStart: 0.15, padEnd: 0.25 },
   ]);
-  assert.deepEqual(log.screenshotCalls, [{ video: '/videos/Show S01E05.mkv', time: 12 }]);
-  assert.deepEqual(log.setup, [{ deck: 'Anime Mining', model: 'AnimeMine' }]);
+  assert.deepEqual(log.screenshotCalls, [{ video: '/videos/Show S01E05.mkv', time: 12, censorSubs: true, cover: null }]);
+  assert.deepEqual(log.setup, [{ deck: 'Anime Mining::show', model: 'AnimeMine' }]);
   assert.equal(log.cards.length, 1);
   const card = log.cards[0];
-  assert.equal(card.deck, 'Anime Mining');
+  assert.equal(card.deck, 'Anime Mining::show');
+  assert.equal(card.duplicateRoot, 'Anime Mining');
   assert.equal(card.model, 'AnimeMine');
   assert.deepEqual(card.fields, {
     Word: '降る',
     Reading: 'ふる',
     Meaning: 'to fall (of rain)',
     Sentence: '雨が<b>降ってる</b>',
+    SentenceFurigana: '雨[あめ]が <b>降[ふ]</b><b>っ</b><b>てる</b>',
+    WordFurigana: '降[ふ]る',
     SentenceTranslation: 'It is raining.',
     Notes: '',
     Source: 'Show S01E05',
@@ -348,6 +465,26 @@ test('anki:mine in word mode maps fields and sends media with cue times and padd
   assert.equal(card.audio.data.toString(), 'mp3');
   assert.match(card.picture.filename, /^am_\d+\.jpg$/);
   assert.equal(card.picture.data.toString(), 'jpg');
+});
+
+test('anki:mine files each anime in its own subdeck of the mining deck', async () => {
+  const { log, call } = await setup();
+  const cue = { start: 2, end: 4, text: 'x' };
+
+  await call('anki:mine', { videoPath: '/videos/Frieren S01E01.mkv', cue, mode: 'sentence', translation: 'x' });
+  await call('anki:mine', { videoPath: '/videos/Show S01E05.mkv', cue, mode: 'sentence', translation: 'x' });
+
+  assert.deepEqual(log.setup.map(s => s.deck), ['Anime Mining::frieren', 'Anime Mining::show']);
+  assert.deepEqual(log.cards.map(c => c.deck), ['Anime Mining::frieren', 'Anime Mining::show']);
+});
+
+test('anki:mine uses the mining deck itself when the anime title sanitises to nothing', async () => {
+  const { log, call } = await setup();
+
+  await call('anki:mine', { videoPath: '/videos/[Group].mkv', cue: { start: 2, end: 4, text: 'x' }, mode: 'sentence', translation: 'x' });
+
+  assert.deepEqual(log.setup, [{ deck: 'Anime Mining', model: 'AnimeMine' }]);
+  assert.equal(log.cards[0].deck, 'Anime Mining');
 });
 
 test('anki:mine in sentence mode leaves Word empty and uses padding from settings', async () => {
@@ -369,6 +506,7 @@ test('anki:mine in sentence mode leaves Word empty and uses padding from setting
     Reading: '',
     Meaning: '',
     Sentence: 'おはよう',
+    SentenceFurigana: 'おはよう',
     SentenceTranslation: 'Good morning.',
     Notes: '',
     Source: 'Show S01E05',
@@ -394,6 +532,7 @@ test('player:loadCues parses the linked srt file', async () => {
     subtitlePath: srtPath,
     source: 'external',
     embeddedIndex: null,
+    synced: false,
   });
 });
 
@@ -404,7 +543,18 @@ test('player:loadCues without a linked subtitle returns no cues', async () => {
     subtitlePath: null,
     source: 'none',
     embeddedIndex: null,
+    synced: false,
   });
+});
+
+test('settings:set stores a clamped subtitleCover and null for an invalid one', async () => {
+  const { call } = await setup();
+
+  await call('settings:set', { subtitleCover: { x: 0.25, y: 0.5, w: 0.9, h: 0.75 } });
+  assert.deepEqual((await call('settings:get')).subtitleCover, { x: 0.25, y: 0.5, w: 0.75, h: 0.5 });
+
+  await call('settings:set', { subtitleCover: { x: 'left', y: 0, w: 0.5, h: 0.5 } });
+  assert.equal((await call('settings:get')).subtitleCover, null);
 });
 
 test('settings:set downloadsDir restarts the downloads watcher', async () => {
@@ -474,6 +624,8 @@ test('anki:mine escapes every plain-text field and highlights the escaped surfac
     Reading: 'ふ&#39;る',
     Meaning: '&lt;script&gt;x&lt;/script&gt;<br>line two',
     Sentence: '&lt;img src=x onerror=alert(1)&gt;<b>降ってる</b><br>&quot;A &amp; B&quot;',
+    SentenceFurigana: '&lt;img src=x onerror=alert(1)&gt; <b>降[ふ]</b><b>っ</b><b>てる</b><br>"A &amp; B"',
+    WordFurigana: '&lt;img src=x onerror=alert(1)&gt;',
     SentenceTranslation: 'it&#39;s &lt;b&gt;raining&lt;/b&gt; &amp; more',
     Notes: '',
     Source: '&lt;img src=x onerror=alert(1)&gt;',
@@ -572,21 +724,29 @@ async function ankiHarness({ responses = {}, ping = true } = {}) {
       if (reply === undefined) throw new Error(`unexpected AnkiConnect action ${action}`);
       return typeof reply === 'function' ? reply(params) : reply;
     }
+
+    async ensureSetup() {}
+
+    async addCard() {
+      return 1;
+    }
   }
   const dir = await fs.mkdtemp(path.join(root, 'anki-'));
   const services = createServices({
     dataDir: dir,
     dialog: { showOpenDialog: async () => ({ canceled: true, filePaths: [] }) },
     deps: {
+      webPort: 0,
       Library: fakeLibrary(log),
       Dictionary: fakeDictionary(log),
       AnkiClient: RecordingAnki,
       media: fakeMedia(log),
       explain: fakeExplain(log),
       parseSubtitleFile: parseSrtFile,
+      systemAudio: fakeSystemAudio(log),
     },
   });
-  return { calls, call: (channel, ...args) => services.handlers[channel](...args), dir };
+  return { calls, call: (channel, ...args) => services.handlers[channel](...args), dir, services };
 }
 
 const invokes = (calls) => calls.filter((c) => c.type !== 'client' && c.type !== 'ping');
@@ -598,7 +758,7 @@ test('hidden anki view makes zero AnkiConnect requests for every anki channel', 
   assert.deepEqual(await call('anki:getView'), { mode: 'hidden', connected: false, visibleDecks: ['Visible Deck'] });
   assert.deepEqual(await call('anki:listDecks'), []);
   assert.deepEqual(await call('anki:overview'), { mode: 'hidden' });
-  assert.deepEqual(await call('anki:browse', { deck: 'Visible Deck', query: 'x', state: 'all', limit: 5 }), { cards: [] });
+  assert.deepEqual(await call('anki:browse', { deck: 'Visible Deck', query: 'x', state: 'all', limit: 5 }), { cards: [], total: 0 });
   assert.equal(await call('anki:media', 'clip.mp3'), null);
   assert.deepEqual(calls, []);
 });
@@ -620,6 +780,97 @@ test('sample anki view returns sample data without any AnkiConnect request', asy
   assert.ok(cards.length > 0);
   assert.equal(await call('anki:media', 'clip.mp3'), null);
   assert.deepEqual(calls, []);
+});
+
+test('study handlers make zero AnkiConnect requests in hidden and sample modes', async () => {
+  const { calls, call } = await ankiHarness({ responses: { cardsInfo: () => [], multi: () => [[], [], []] } });
+  await call('anki:setView', { mode: 'hidden', visibleDecks: ['Visible Deck'] });
+  assert.deepEqual(await call('anki:studyQueue', { deck: 'Visible Deck', newLimit: 5 }), { cards: [] });
+  await assert.rejects(call('anki:studyAnswer', { cardId: 1, ease: 3 }), { message: 'Studying needs Live mode' });
+  await call('anki:setView', { mode: 'sample', visibleDecks: ['Visible Deck'] });
+  assert.deepEqual(await call('anki:studyQueue', { deck: 'Visible Deck' }), { cards: [] });
+  await assert.rejects(call('anki:studyAnswer', { cardId: 1, ease: 3 }), { message: 'Studying needs Live mode' });
+  assert.deepEqual(calls, []);
+});
+
+test('live study queue rejects hidden decks and serves visible ones with inlined audio', async () => {
+  const { calls, call } = await ankiHarness({
+    responses: {
+      animeMineStudyQueue: () => ({ cardIds: [11], token: 'native', remaining: {new:2,reviews:0,learning:0}, intervals:['1m','6m','1d','4d'] }),
+      cardsInfo: ({ cards }) =>
+        cards.map((id) => ({ cardId: id, deckName: 'Visible Deck', question: 'q', answer: 'a', fields: { Audio: { value: '[sound:x.mp3]', order: 0 } } })),
+      retrieveMediaFile: () => 'eHl6',
+    },
+  });
+  await call('anki:setView', { mode: 'live', visibleDecks: ['Visible Deck'] });
+
+  await assert.rejects(call('anki:studyQueue', { deck: 'Secret Deck' }), { message: 'Deck is hidden' });
+  assert.deepEqual(invokes(calls).map((c) => c.action), []);
+
+  const { cards } = await call('anki:studyQueue', { deck: 'Visible Deck', newLimit: 2 });
+  assert.deepEqual(cards.map((c) => c.id), [11]);
+  assert.equal(cards[0].audio, 'x.mp3');
+  assert.equal(await call('anki:media', 'x.mp3'), 'data:audio/mpeg;base64,eHl6');
+
+  assert.deepEqual((await call('anki:studyQueue', { deck: 'Visible Deck', newLimit: -3 })).cards.map(c => c.id), [11]);
+  assert.deepEqual(invokes(calls).filter(c => c.action === 'animeMineStudyQueue').map(c => c.params), [{deck:'Visible Deck'}, {deck:'Visible Deck'}]);
+});
+
+test('live study answer rejects hidden decks and posts token-authorized answers to the native scheduler', async () => {
+  const { calls, call } = await ankiHarness({
+    responses: {
+      cardsInfo: ({ cards }) => cards.map((id) => ({ cardId: id, deckName: id === 7 ? 'Visible Deck' : 'Secret' })),
+      animeMineStudyAnswer: () => ({ok:true}),
+    },
+  });
+  await call('anki:setView', { mode: 'live', visibleDecks: ['Visible Deck'] });
+
+  await assert.rejects(call('anki:studyAnswer', { cardId: 8, ease: 3, deck: 'Visible Deck', token: 'native' }), { message: 'Deck is hidden' });
+  assert.deepEqual(await call('anki:studyAnswer', { cardId: 7, ease: 3, deck: 'Visible Deck', token: 'native' }), { ok: true });
+
+  assert.deepEqual(invokes(calls).filter((c) => c.action === 'animeMineStudyAnswer').map((c) => c.params), [
+    { cardId: 7, ease: 3, deck: 'Visible Deck', token: 'native', visibleDecks: ['Visible Deck'] },
+  ]);
+});
+
+test('study answer is blocked when the mode changes while the card lookup is in flight', async () => {
+  let switchMode;
+  const { calls, call } = await ankiHarness({
+    responses: {
+      cardsInfo: async ({ cards }) => {
+        await switchMode();
+        return cards.map((id) => ({ cardId: id, deckName: 'Visible Deck' }));
+      },
+      animeMineStudyAnswer: () => ({ok:true}),
+    },
+  });
+  await call('anki:setView', { mode: 'live', visibleDecks: ['Visible Deck'] });
+  switchMode = () => call('anki:setView', { mode: 'hidden' });
+
+  await assert.rejects(call('anki:studyAnswer', { cardId: 7, ease: 3, deck: 'Visible Deck', token: 'native' }), { message: 'Studying needs Live mode' });
+  assert.equal(invokes(calls).filter((c) => c.action === 'animeMineStudyAnswer').length, 0);
+});
+
+test('a study queue that finishes after the scope changed returns nothing and grants no media', async () => {
+  let changeScope;
+  const { call } = await ankiHarness({
+    responses: {
+      animeMineStudyQueue: () => ({cardIds:[7], token:'native'}),
+      cardsInfo: async ({ cards }) => {
+        await changeScope();
+        return cards.map((id) => ({
+          cardId: id, deckName: 'Visible Deck', question: 'q', answer: 'a', css: '',
+          fields: { Audio: { value: '[sound:x.mp3]', order: 0 } },
+        }));
+      },
+      retrieveMediaFile: 'eHl6',
+    },
+  });
+  await call('anki:setView', { mode: 'live', visibleDecks: ['Visible Deck'] });
+  changeScope = () => call('anki:setView', { visibleDecks: [] });
+
+  assert.deepEqual(await call('anki:studyQueue', { deck: 'Visible Deck' }), { cards: [] });
+  assert.equal(await call('anki:media', 'x.mp3'), null);
 });
 
 test('live anki view reports connected only after a successful ping', async () => {
@@ -671,8 +922,17 @@ test('live browse of a deck outside the allow-list throws Deck is hidden', async
   await call('anki:setView', { mode: 'live', visibleDecks: ['Visible Deck'] });
 
   await assert.rejects(call('anki:browse', { deck: 'Hidden Deck', query: '', state: 'all' }), /Deck is hidden/);
-  await assert.rejects(call('anki:browse', {}), /Deck is hidden/);
+  await assert.rejects(call('anki:browse', { decks: ['Visible Deck', 'Hidden Deck'] }), /Deck is hidden/);
   assert.deepEqual(invokes(calls), []);
+});
+
+test('live browse without a deck covers every visible deck and nothing hidden', async () => {
+  const { calls, call } = await ankiHarness({ responses: { multi: ({ actions }) => actions.map(() => []), cardsInfo: () => [] } });
+  await call('anki:setView', { mode: 'live', visibleDecks: ['Visible Deck', 'Other Visible'] });
+
+  assert.deepEqual(await call('anki:browse', {}), { cards: [], total: 0 });
+  const queries = invokes(calls).filter((c) => c.action === 'multi').flatMap((c) => c.params.actions.map((a) => a.params.query));
+  assert.ok(queries.length && queries.every((q) => q.includes('deck:"Visible Deck"') && q.includes('deck:"Other Visible"') && !q.includes('Hidden')));
 });
 
 test('live browse keeps free text inside the visible deck scope', async () => {
@@ -725,7 +985,7 @@ test('anki:media rejects path-like filenames in every mode and fetches live medi
 test('anki:media only serves files a visible card exposed, and forgets them when the view changes', async () => {
   const card = { cardId: 1, deckName: 'Visible Deck', note: 1, ord: 0, queue: 2, type: 2, fields: { Word: { value: 'a', order: 0 }, Audio: { value: '[sound:clip.mp3]', order: 1 } } };
   const { calls, call } = await ankiHarness({
-    responses: { multi: ({ actions }) => actions.map(() => [1]), cardsInfo: () => [card], retrieveMediaFile: () => 'AAEC' },
+    responses: { multi: ({ actions }) => actions.map(() => [1]), cardsInfo: () => [card], notesInfo: () => [], retrieveMediaFile: () => 'AAEC' },
   });
   await call('anki:setView', { mode: 'live', visibleDecks: ['Visible Deck'] });
   assert.equal(await call('anki:media', 'clip.mp3'), null);
@@ -740,7 +1000,7 @@ test('anki:media only serves files a visible card exposed, and forgets them when
 });
 
 // Note channels (setup, recent, updateNote, deleteNote, openInAnki): a fake AnkiClient records each call.
-async function noteHarness({ notes = {}, ping = true, recent = [] } = {}) {
+async function noteHarness({ notes = {}, decks = {}, ping = true, recent = [] } = {}) {
   const calls = [];
   class FakeNoteAnki {
     constructor(url) {
@@ -774,6 +1034,13 @@ async function noteHarness({ notes = {}, ping = true, recent = [] } = {}) {
       calls.push({ method: 'deleteNotes', args: [ids] });
     }
 
+    async invoke(action, params = {}) {
+      calls.push({ method: action, args: [params] });
+      if (action === 'findCards') return [Number(/nid:(\d+)/.exec(params.query)[1]) * 10];
+      if (action === 'cardsInfo') return params.cards.map((cardId) => ({ cardId, deckName: decks[cardId / 10] ?? 'Visible Deck' }));
+      return [];
+    }
+
     async guiBrowse(query) {
       calls.push({ method: 'guiBrowse', args: [query] });
     }
@@ -792,8 +1059,32 @@ async function noteHarness({ notes = {}, ping = true, recent = [] } = {}) {
       parseSubtitleFile: parseSrtFile,
     },
   });
+  await services.handlers['anki:setView']({ mode: 'live', visibleDecks: ['Visible Deck'] });
+  calls.length = 0;
   return { calls, call: (channel, ...args) => services.handlers[channel](...args) };
 }
+
+test('live note edits refuse a note whose cards sit in a hidden deck before any write', async () => {
+  const { calls, call } = await noteHarness({ notes: { 7: 'AnimeMine' }, decks: { 7: 'Hidden Deck' } });
+
+  await assert.rejects(call('anki:updateNote', { noteId: 7, fields: { Meaning: 'x' } }), /Deck is hidden/);
+  await assert.rejects(call('anki:deleteNote', 7), /Deck is hidden/);
+  await assert.rejects(call('anki:openInAnki', 7), /Deck is hidden/);
+  assert.deepEqual(writesOf(calls), []);
+});
+
+test('card actions and facets in sample and hidden modes never reach AnkiConnect', async () => {
+  const { calls, call } = await ankiHarness();
+  await call('anki:setView', { mode: 'sample', visibleDecks: [] });
+  await assert.rejects(call('anki:cardAction', { action: 'suspend', cardIds: [1], args: {} }), { message: 'Sample data is read-only' });
+  const facets = await call('anki:facets', {});
+  assert.ok(facets.decks.length > 0 && facets.saved.length === 9);
+  await call('anki:setView', { mode: 'hidden', visibleDecks: ['Visible Deck'] });
+  assert.deepEqual(await call('anki:facets', {}), { decks: [], tags: [], noteTypes: [], saved: [] });
+  assert.equal(await call('anki:cardInfo', { cardId: 1 }), null);
+  await assert.rejects(call('anki:cardAction', { action: 'suspend', cardIds: [1], args: {} }), { message: 'Card actions need Live mode' });
+  assert.deepEqual(invokes(calls), []);
+});
 
 const methodsOf = (calls) => calls.map((c) => c.method);
 const WRITE_METHODS = ['updateNoteFields', 'deleteNotes', 'guiBrowse'];
@@ -958,6 +1249,86 @@ test('deleteNote and openInAnki act on the validated note only', async () => {
   ]);
 });
 
+async function webMineClient(t, services) {
+  await services.start();
+  t.after(() => services.stop());
+  const { port, token } = services.handlers['web:info']();
+  return (body) =>
+    fetch(`http://127.0.0.1:${port}/mine`, {
+      method: 'POST',
+      headers: { authorization: `Bearer ${token}`, 'content-type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+}
+
+test('web mine with captionShownAt attaches the system-audio clip to the card and stops it on shutdown', async (t) => {
+  const { log, services } = await setup();
+  const post = await webMineClient(t, services);
+  const captionShownAt = Date.now() - 1000;
+
+  const res = await post({ mode: 'sentence', sentence: '雨が降ってる', captionShownAt });
+
+  assert.equal(res.status, 200);
+  assert.deepEqual(await res.json(), { noteId: 42 });
+  assert.equal(log.systemAudioClips.length, 1);
+  assert.equal(log.systemAudioClips[0].fromMs, captionShownAt - 300);
+  assert.ok(log.systemAudioClips[0].toMs >= captionShownAt);
+  const card = log.cards.at(-1);
+  assert.match(card.audio.filename, /^am_\d+\.mp3$/);
+  assert.equal(card.audio.data, log.systemAudioClip);
+  services.stop();
+  assert.equal(log.systemAudioStops, 1);
+});
+
+test('web mine ends the audio clip shortly after captionEndedAt instead of at click time', async (t) => {
+  const { log, services } = await setup();
+  const post = await webMineClient(t, services);
+  const captionShownAt = Date.now() - 10000;
+  const captionEndedAt = captionShownAt + 3000;
+
+  assert.equal((await post({ mode: 'sentence', sentence: '雨', captionShownAt, captionEndedAt })).status, 200);
+
+  assert.equal(log.systemAudioClips[0].toMs, captionEndedAt + 200);
+});
+
+test('web mine still saves the card without audio when the clip is null or throws', async (t) => {
+  const { log, services } = await setup();
+  const post = await webMineClient(t, services);
+  const captionShownAt = Date.now() - 1000;
+
+  log.systemAudioClip = null;
+  assert.equal((await post({ mode: 'sentence', sentence: '一', captionShownAt })).status, 200);
+  log.systemAudioError = 'capture failed';
+  assert.equal((await post({ mode: 'sentence', sentence: '二', captionShownAt })).status, 200);
+
+  assert.equal(log.cards.length, 2);
+  assert.equal(log.cards[0].audio, undefined);
+  assert.equal(log.cards[1].audio, undefined);
+});
+
+test('web mine without captionShownAt attaches the last utterance clip and still saves when it is null or throws', async (t) => {
+  const { log, services } = await setup();
+  const post = await webMineClient(t, services);
+
+  const res = await post({ mode: 'sentence', sentence: '雨が降ってる' });
+
+  assert.equal(res.status, 200);
+  assert.equal(log.lastUtteranceCalls, 1);
+  assert.equal(log.systemAudioClips.length, 0);
+  assert.match(log.cards.at(-1).audio.filename, /^am_\d+\.mp3$/);
+  assert.equal(log.cards.at(-1).audio.data, log.lastUtteranceClip);
+
+  log.lastUtteranceClip = null;
+  assert.equal((await post({ mode: 'sentence', sentence: '一' })).status, 200);
+  assert.equal(log.cards.at(-1).audio, undefined);
+
+  log.lastUtteranceClip = Buffer.from('utterance-mp3');
+  log.systemAudioError = 'capture failed';
+  assert.equal((await post({ mode: 'sentence', sentence: '二' })).status, 200);
+  assert.equal(log.cards.at(-1).audio, undefined);
+  assert.equal(log.systemAudioClips.length, 0);
+});
+
 // Mining extras: audio stream, field overrides, context, timing, auto-translate, learning mark, duplicates.
 const MINE_BASE = { videoPath: '/videos/Show.mkv', cue: { start: 10, end: 14, text: '雨が降ってる' }, mode: 'sentence' };
 
@@ -973,6 +1344,18 @@ test('anki:mine passes audioStreamIndex through as audioStream and rejects bad i
     await assert.rejects(call('anki:mine', { ...MINE_BASE, audioStreamIndex }), /audioStreamIndex must be a non-negative integer/);
   }
   assert.equal(log.audioCalls.length, 1);
+});
+
+test('anki:mine adds the mined deck to ankiVisibleDecks once and keeps existing visible decks', async () => {
+  const { log, call } = await setup();
+  await call('settings:set', { ankiVisibleDecks: ['Other'] });
+
+  await call('anki:mine', { ...MINE_BASE });
+  await call('anki:mine', { ...MINE_BASE });
+
+  const [deck, sameDeck] = log.cards.map((card) => card.deck);
+  assert.equal(deck, sameDeck);
+  assert.deepEqual((await call('settings:get')).ankiVisibleDecks, ['Other', deck]);
 });
 
 test('anki:mine field overrides are escaped like generated fields and keep the highlighted sentence', async () => {
@@ -996,6 +1379,8 @@ test('anki:mine field overrides are escaped like generated fields and keep the h
     Reading: 'ふ&#39;る',
     Meaning: '&lt;b&gt;x&lt;/b&gt;<br>line',
     Sentence: '雨が<b>降ってる</b>',
+    SentenceFurigana: '雨[あめ]が <b>降[ふ]</b><b>っ</b><b>てる</b>',
+    WordFurigana: '降[ふ]る',
     SentenceTranslation: 't &amp; u',
     Notes: 'n &lt;i&gt;1&lt;/i&gt;<br>2',
     Source: 'Show',
@@ -1029,7 +1414,7 @@ test('anki:mine timing replaces the audio span, is validated, and keeps the scre
   assert.deepEqual(log.audioCalls, [
     { video: '/videos/Show.mkv', start: 11, end: 12.5, padStart: 0.15, padEnd: 0.25 },
   ]);
-  assert.deepEqual(log.screenshotCalls, [{ video: '/videos/Show.mkv', time: 12 }]);
+  assert.deepEqual(log.screenshotCalls, [{ video: '/videos/Show.mkv', time: 12, censorSubs: true, cover: null }]);
   await assert.rejects(call('anki:mine', { ...MINE_BASE, timing: { start: 6, end: 5 } }), /0 <= start < end/);
   await assert.rejects(call('anki:mine', { ...MINE_BASE, timing: { start: 0, end: 200 } }), /at most 120 seconds/);
   assert.equal(log.audioCalls.length, 1);
@@ -1074,6 +1459,47 @@ test('a failed auto-translation still creates the card without a translation', a
   assert.equal(log.cards[0].fields.SentenceTranslation, '');
 });
 
+async function mangaRequest(ctx) {
+  const folder = await fs.mkdtemp(path.join(root, 'manga-'));
+  await fs.mkdir(path.join(folder, 'Series A', 'Vol 1'), { recursive: true });
+  await fs.writeFile(path.join(folder, 'Series A', 'Vol 1', '001.jpg'), Buffer.from([0xff, 0xd8, 0xff, 0xe0]));
+  new MangaLibrary(ctx.dir).addFolder(folder);
+  const [series] = await ctx.call('manga:getSeries');
+  return { seriesId: series.id, volId: series.volumes[0].id, index: 0, sentence: 'ページ' };
+}
+
+test('manga:mine auto-translates an empty translation when enabled and a key is set', async () => {
+  const ctx = await setup();
+  await ctx.call('settings:set', { ai: { apiKey: 'secret' } });
+
+  await ctx.call('manga:mine', await mangaRequest(ctx));
+
+  assert.deepEqual(ctx.log.translateCalls.map((call) => call.req), [{ sentence: 'ページ' }]);
+  assert.equal(ctx.log.cards[0].fields.SentenceTranslation, 'It is raining.');
+});
+
+test('manga:mine keeps a user translation without calling the AI', async () => {
+  const ctx = await setup();
+  await ctx.call('settings:set', { ai: { apiKey: 'secret' } });
+
+  await ctx.call('manga:mine', { ...(await mangaRequest(ctx)), translation: 'Mine.' });
+
+  assert.deepEqual(ctx.log.translateCalls, []);
+  assert.equal(ctx.log.cards[0].fields.SentenceTranslation, 'Mine.');
+});
+
+test('a failed manga auto-translation still saves the card without a translation', async () => {
+  const ctx = await setup();
+  await ctx.call('settings:set', { ai: { apiKey: 'secret' } });
+  ctx.log.translateFails = true;
+
+  await ctx.call('manga:mine', await mangaRequest(ctx));
+
+  assert.equal(ctx.log.translateCalls.length, 1);
+  assert.equal(ctx.log.cards.length, 1);
+  assert.equal(ctx.log.cards[0].fields.SentenceTranslation, '');
+});
+
 test('mining a word marks its base form as learning without demoting a known word', async () => {
   const { dir, call } = await setup();
   await fs.writeFile(
@@ -1100,4 +1526,210 @@ test('a duplicate note reads as Already in your deck; other AnkiConnect errors p
 
   log.addCardError = 'boom';
   await assert.rejects(call('anki:mine', { ...MINE_BASE }), /boom/);
+});
+
+const FURIGANA_WORD = { surface: '降ってる', base: '降る', reading: 'ふる' };
+
+test('video mine in word mode stores WordFurigana and SentenceFurigana with the word highlighted', async () => {
+  const { log, call } = await setup({ tokenize: fakeTokenize });
+
+  await call('anki:mine', { ...MINE_BASE, mode: 'word', word: FURIGANA_WORD });
+
+  const [card] = log.cards;
+  assert.equal(card.fields.WordFurigana, '降[ふ]る');
+  assert.equal(card.fields.SentenceFurigana, '雨[あめ]が <b>降[ふ]</b><b>ってる</b>');
+});
+
+test('video mine in sentence mode stores only SentenceFurigana', async () => {
+  const { log, call } = await setup({ tokenize: fakeTokenize });
+
+  await call('anki:mine', { ...MINE_BASE });
+
+  const [card] = log.cards;
+  assert.equal(card.fields.SentenceFurigana, '雨[あめ]が 降[ふ]ってる');
+  assert.equal('WordFurigana' in card.fields, false);
+});
+
+test('web mine in word mode stores furigana fields', async (t) => {
+  const { log, services } = await setup({ tokenize: fakeTokenize });
+  const post = await webMineClient(t, services);
+
+  const res = await post({ mode: 'word', word: FURIGANA_WORD, sentence: '雨が降ってる', meaning: 'to fall', translation: 'It is raining.' });
+
+  assert.equal(res.status, 200);
+  const card = log.cards.at(-1);
+  assert.equal(card.fields.WordFurigana, '降[ふ]る');
+  assert.equal(card.fields.SentenceFurigana, '雨[あめ]が <b>降[ふ]</b><b>ってる</b>');
+});
+
+test('a tokenizer failure still saves the card with empty furigana fields', async () => {
+  const { log, call } = await setup({
+    tokenize: async () => {
+      throw new Error('dictionary missing');
+    },
+  });
+
+  await call('anki:mine', { ...MINE_BASE, mode: 'word', word: FURIGANA_WORD });
+  await call('anki:mine', { ...MINE_BASE });
+
+  assert.equal(log.cards.length, 2);
+  assert.equal(log.cards[0].fields.WordFurigana, '');
+  assert.equal(log.cards[0].fields.SentenceFurigana, '');
+  assert.equal(log.cards[1].fields.SentenceFurigana, '');
+});
+
+test('deck options never contact Anki in hidden/sample mode; sample cannot write', async () => {
+  const {calls,call} = await ankiHarness();
+  assert.equal(await call('anki:deckOptions', {deck:'Visible Deck'}), null);
+  await assert.rejects(call('anki:setDeckOptions', {deck:'Visible Deck',revision:'r',patch:{scope:'today',newPerDay:30}}), /Live mode/);
+  await call('anki:setView', {mode:'sample'});
+  const [deck] = await call('anki:listDecks');
+  assert.equal((await call('anki:deckOptions', {deck})).sample,true);
+  await assert.rejects(call('anki:openDeckOptions', {deck}), /Live mode/);
+  await assert.rejects(call('anki:setDeckOptions', {deck,revision:'sample',patch:{scope:'permanent',newPerDay:20}}), /Live mode/);
+  assert.deepEqual(calls,[]);
+});
+
+test('native deck options gate hidden decks, validate writes and pass revisions', async () => {
+  const {calls,call} = await ankiHarness({responses:{
+    animeMineDeckOptions: ({deck})=>({deck,revision:'r'}),
+    animeMineSetDeckOptions: ({deck})=>({deck,revision:'next'}),
+    animeMineOpenDeckOptions: ()=>({ok:true}),
+  }});
+  await call('anki:setView',{mode:'live',visibleDecks:['Visible Deck']});
+  await assert.rejects(call('anki:deckOptions',{deck:'Secret'}),/hidden/);
+  await assert.rejects(call('anki:setDeckOptions',{deck:'Secret',revision:'r',patch:{scope:'today',newPerDay:30}}),/hidden/);
+  await assert.rejects(call('anki:setDeckOptions',{deck:'Visible Deck',revision:'r',patch:{scope:'today',newPerDay:-1}}),/whole numbers/);
+  assert.deepEqual(invokes(calls),[]);
+  assert.deepEqual(await call('anki:deckOptions',{deck:'Visible Deck'}),{deck:'Visible Deck',revision:'r'});
+  await call('anki:setDeckOptions',{deck:'Visible Deck',revision:'r',patch:{scope:'today',newPerDay:30}});
+  assert.deepEqual(invokes(calls).at(-1).params,{deck:'Visible Deck',expectedRevision:'r',patch:{scope:'today',newPerDay:30},visibleDecks:['Visible Deck']});
+  assert.deepEqual(invokes(calls).filter(c=>c.action==='animeMineDeckOptions').map(c=>c.params),[{deck:'Visible Deck',visibleDecks:['Visible Deck']}]);
+});
+
+test('a stale options response is never returned after deck visibility changes', async () => {
+  let hide;
+  const {call}=await ankiHarness({responses:{animeMineDeckOptions:async()=>{await hide();return {deck:'Visible Deck',revision:'r'};}}});
+  await call('anki:setView',{mode:'live',visibleDecks:['Visible Deck']});
+  hide=()=>call('anki:setView',{mode:'hidden'});
+  await assert.rejects(call('anki:deckOptions',{deck:'Visible Deck'}),/Live mode/);
+});
+
+test('legacy un-tokened study writes are blocked before contacting Anki', async () => {
+  const {calls,call}=await ankiHarness();
+  await call('anki:setView',{mode:'live',visibleDecks:['Visible Deck']});
+  await assert.rejects(call('anki:studyAnswer',{cardId:1,ease:3}),/native Anki study session/);
+  assert.deepEqual(invokes(calls),[]);
+});
+
+const NATIVE_QUEUE = { cardIds: [11], token: 'native', remaining: { new: 0, reviews: 0, learning: 0 }, intervals: [] };
+const visibleCards = ({ cards }) => cards.map((id) => ({ cardId: id, deckName: 'Visible Deck', question: 'q', answer: 'a', fields: {} }));
+
+test('an unrelated settings change keeps an in-flight study queue, a visible-deck change drops it', async () => {
+  let change;
+  const { call } = await ankiHarness({
+    responses: {
+      animeMineStudyQueue: async () => {
+        await change();
+        return NATIVE_QUEUE;
+      },
+      cardsInfo: visibleCards,
+    },
+  });
+  await call('anki:setView', { mode: 'live', visibleDecks: ['Visible Deck'] });
+
+  change = () => call('settings:set', { audioPadStart: 0.3 });
+  assert.deepEqual((await call('anki:studyQueue', { deck: 'Visible Deck' })).cards.map((c) => c.id), [11]);
+
+  change = () => call('anki:setView', { visibleDecks: ['Visible Deck', 'Other'] });
+  assert.deepEqual(await call('anki:studyQueue', { deck: 'Visible Deck' }), { cards: [] });
+});
+
+test('revealing the mined deck keeps an in-flight study queue alive', async () => {
+  let reveal;
+  const { call } = await ankiHarness({
+    responses: {
+      animeMineStudyQueue: async () => {
+        await reveal();
+        return NATIVE_QUEUE;
+      },
+      cardsInfo: visibleCards,
+    },
+  });
+  await call('anki:setView', { mode: 'live', visibleDecks: ['Visible Deck'] });
+
+  reveal = () => call('anki:mine', { ...MINE_BASE });
+  assert.deepEqual((await call('anki:studyQueue', { deck: 'Visible Deck' })).cards.map((c) => c.id), [11]);
+  assert.deepEqual((await call('settings:get')).ankiVisibleDecks, ['Visible Deck', 'Anime Mining::show']);
+});
+
+test('web status reaches AnkiConnect only in live mode', async (t) => {
+  const { calls, call, services } = await ankiHarness();
+  await services.start();
+  t.after(() => services.stop());
+  const { port, token } = services.handlers['web:info']();
+  const status = async () => (await fetch(`http://127.0.0.1:${port}/ping`, { headers: { authorization: `Bearer ${token}` } })).json();
+  calls.length = 0;
+
+  assert.equal((await status()).ankiConnected, false);
+  await call('anki:setView', { mode: 'sample', visibleDecks: ['Visible Deck'] });
+  assert.equal((await status()).ankiConnected, false);
+  assert.deepEqual(calls, []);
+
+  await call('anki:setView', { mode: 'live', visibleDecks: ['Visible Deck'] });
+  assert.equal((await status()).ankiConnected, true);
+});
+
+test('concurrent settings patches preserve both changes on disk and in memory', async (t) => {
+  const { dir, call } = await setup();
+  await call('settings:get');
+  const write = fs.writeFile.bind(fs);
+  let release;
+  let started;
+  const blocked = new Promise(resolve => { release = resolve; });
+  const firstStarted = new Promise(resolve => { started = resolve; });
+  let first = true;
+  t.mock.method(fs, 'writeFile', async (...args) => {
+    if (first && String(args[0]).startsWith(path.join(dir, 'settings.json'))) {
+      first = false;
+      started();
+      await blocked;
+    }
+    return write(...args);
+  });
+  const a = call('settings:set', { ai: { model: 'first-model' } });
+  await firstStarted;
+  const b = call('settings:set', { ai: { baseUrl: 'http://localhost:9999' }, loopLine: true });
+  await new Promise(resolve => setImmediate(resolve));
+  release();
+  await Promise.all([a, b]);
+  const current = await call('settings:get');
+  assert.equal(current.ai.model, 'first-model');
+  assert.equal(current.ai.baseUrl, 'http://localhost:9999');
+  assert.equal(current.loopLine, true);
+  assert.deepEqual(JSON.parse(await fs.readFile(path.join(dir, 'settings.json'), 'utf8')), current);
+});
+
+test('a failed settings write keeps the previous file and allows the next save', async (t) => {
+  const { dir, call } = await setup();
+  await call('settings:set', { loopLine: true });
+  const file = path.join(dir, 'settings.json');
+  const before = await fs.readFile(file, 'utf8');
+  const write = fs.writeFile.bind(fs);
+  const mock = t.mock.method(fs, 'writeFile', async (target, ...args) => {
+    if (String(target).startsWith(file)) {
+      await write(target, '{partial', args[1]);
+      throw Object.assign(new Error('simulated disk write failure'), { code: 'EIO' });
+    }
+    return write(target, ...args);
+  });
+  await assert.rejects(call('settings:set', { loopLine: false }), /simulated disk write failure/);
+  assert.equal(await fs.readFile(file, 'utf8'), before);
+  assert.equal((await call('settings:get')).loopLine, true);
+  mock.mock.restore();
+  await call('settings:set', { audioPadEnd: 0.4 });
+  const saved = JSON.parse(await fs.readFile(file, 'utf8'));
+  assert.equal(saved.loopLine, true);
+  assert.equal(saved.audioPadEnd, 0.4);
+  assert.deepEqual((await fs.readdir(dir)).filter(name => name.startsWith('settings.json')), ['settings.json']);
 });

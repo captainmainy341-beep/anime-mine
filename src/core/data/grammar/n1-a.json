@@ -1,0 +1,989 @@
+[
+  {
+    "id": "g:n1-wo-mono-to-semezu",
+    "jlpt": "N1",
+    "title": "〜をものともせず",
+    "meaning": "without being fazed by / brushing aside (an obstacle or criticism)",
+    "structure": "Noun + をものともせず",
+    "formality": "neutral",
+    "notes": "Describes pushing ahead regardless of an obstacle, opposition or danger. The subject is a determined person or group. Mostly used in written prose and narration.",
+    "similar": [
+      "〜をよそに",
+      "〜にもかかわらず"
+    ],
+    "detect": [
+      "をものともせず"
+    ],
+    "examples": [
+      {
+        "ja": "周りの反対を{{ものともせず}}、彼女は自分の夢に向かって進んだ。",
+        "en": "Brushing aside the opposition around her, she pressed on toward her dream.",
+        "hint": "反対 + をものともせず"
+      },
+      {
+        "ja": "チームは雨を{{ものともせず}}、最後まで全力で戦い続けた。",
+        "en": "Unfazed by the rain, the team kept fighting with everything until the end.",
+        "hint": "雨 + をものともせず"
+      },
+      {
+        "ja": "彼は危険を{{ものともせず}}、川に飛び込んで子供を助けた。",
+        "en": "Disregarding the danger, he jumped into the river and rescued the child.",
+        "hint": "危険 + をものともせず"
+      }
+    ]
+  },
+  {
+    "id": "g:n1-wo-yoso-ni",
+    "jlpt": "N1",
+    "title": "〜をよそに",
+    "meaning": "regardless of / paying no heed to (others' feelings or expectations)",
+    "structure": "Noun + をよそに",
+    "formality": "neutral",
+    "notes": "Used when someone carries on with an action while others worry, object or expect otherwise. Carries a slight sense of the actor being indifferent or inconsiderate. Often seen in news and narration.",
+    "similar": [
+      "〜をものともせず",
+      "〜にもかかわらず"
+    ],
+    "detect": [
+      "をよそに"
+    ],
+    "examples": [
+      {
+        "ja": "みんなの心配を{{よそに}}、彼は平然と笑っていた。",
+        "en": "Paying no mind to everyone's worry, he sat there smiling calmly.",
+        "hint": "心配 + をよそに"
+      },
+      {
+        "ja": "周囲の批判を{{よそに}}、社長は新しい計画を発表した。",
+        "en": "Ignoring the criticism around him, the president announced a new plan.",
+        "hint": "批判 + をよそに"
+      },
+      {
+        "ja": "両親の反対を{{よそに}}、妹は留学の準備を進めている。",
+        "en": "My younger sister is preparing to study abroad, regardless of our parents' objections.",
+        "hint": "反対 + をよそに"
+      }
+    ]
+  },
+  {
+    "id": "g:n1-tomo-nareba",
+    "jlpt": "N1",
+    "title": "〜ともなれば",
+    "meaning": "if it comes to / when it reaches (such a stage or status), then naturally ...",
+    "structure": "Noun + ともなれば",
+    "formality": "neutral",
+    "notes": "Introduces a situation that is natural or expected once a certain stage or status is reached. The following clause describes what follows as a matter of course. Typically used with status nouns like 大人, 大統領, 本番.",
+    "similar": [
+      "〜ともあろう",
+      "〜ならまだしも"
+    ],
+    "detect": [
+      "ともなれば"
+    ],
+    "examples": [
+      {
+        "ja": "大統領{{ともなれば}}、一つの発言が世界中に影響を与える。",
+        "en": "When it comes to a president, a single remark affects the whole world.",
+        "hint": "大統領 + ともなれば"
+      },
+      {
+        "ja": "{{本番ともなれば}}、誰でも緊張するものだ。",
+        "en": "When the real performance arrives, anyone gets nervous.",
+        "hint": "本番 + ともなれば"
+      },
+      {
+        "ja": "来週は大きな大会{{ともなれば}}、練習の時間も増やさなければならない。",
+        "en": "With a big tournament coming next week, we will have to increase our practice time too.",
+        "hint": "大会 + ともなれば"
+      }
+    ]
+  },
+  {
+    "id": "g:n1-wo-oite",
+    "jlpt": "N1",
+    "title": "〜をおいて",
+    "meaning": "other than / nobody but; apart from (the one mentioned)",
+    "structure": "Noun + をおいて（ほかに）",
+    "formality": "neutral",
+    "notes": "Signals that the named person or thing is the only suitable choice, often followed by ほかにいない or ほかにない. Stresses exclusivity. Used in formal speech and writing.",
+    "similar": [
+      "〜ほかない",
+      "〜しか〜ない"
+    ],
+    "detect": [
+      "をおいて"
+    ],
+    "examples": [
+      {
+        "ja": "この仕事を任せられるのは、彼{{をおいて}}ほかにいない。",
+        "en": "There is nobody but him who could be entrusted with this job.",
+        "hint": "彼 + をおいて"
+      },
+      {
+        "ja": "チームを救えるのは君{{をおいて}}ほかにない。",
+        "en": "Nobody but you can save the team.",
+        "hint": "君 + をおいて"
+      },
+      {
+        "ja": "この町の将来を考えるなら、若者{{をおいて}}他に誰がいるだろう。",
+        "en": "If you think about the future of this town, who else is there but the young people?",
+        "hint": "若者 + をおいて"
+      }
+    ]
+  },
+  {
+    "id": "g:n1-ni-hikae",
+    "jlpt": "N1",
+    "title": "〜にひきかえ",
+    "meaning": "in contrast to / unlike (what is described above)",
+    "structure": "Noun + にひきかえ",
+    "formality": "neutral",
+    "notes": "Contrasts two people or things that are noticeably different. Mostly used with a negative or disappointed tone toward the first item. Often appears in the form Aにひきかえ、Bは.",
+    "similar": [
+      "〜にたいして",
+      "〜とは裏腹に"
+    ],
+    "detect": [
+      "にひきかえ"
+    ],
+    "examples": [
+      {
+        "ja": "姉{{にひきかえ}}、妹はとてもおとなしい性格だ。",
+        "en": "Unlike her older sister, the younger sister is very quiet.",
+        "hint": "姉 + にひきかえ"
+      },
+      {
+        "ja": "彼は毎日勉強するが、弟は一日中ゲームばかりしている。兄の真面目さ{{にひきかえ}}、弟は怠け者だ。",
+        "en": "He studies every day, but his younger brother only plays games all day. In contrast to his brother's seriousness, the younger one is lazy.",
+        "hint": "真面目さ + にひきかえ"
+      },
+      {
+        "ja": "昔の活気{{にひきかえ}}、今の商店街はひっそりとしている。",
+        "en": "In contrast to its former liveliness, the shopping street is quiet now.",
+        "hint": "活気 + にひきかえ"
+      }
+    ]
+  },
+  {
+    "id": "g:n1-kiwamarinai",
+    "jlpt": "N1",
+    "title": "〜極まりない",
+    "meaning": "extremely / utterly (usually negative)",
+    "structure": "Noun or な-adjective stem + 極まりない",
+    "formality": "formal",
+    "notes": "Intensifies a negative quality, such as 失礼, 不愉快, 危険. It is strong and formal, so avoid it in casual conversation. Not used for positive qualities.",
+    "similar": [
+      "〜の極み",
+      "〜といったらない"
+    ],
+    "detect": [
+      "極まりない|きわまりない"
+    ],
+    "examples": [
+      {
+        "ja": "彼の態度は失礼{{極まりない}}。",
+        "en": "His attitude is utterly rude.",
+        "hint": "失礼 + 極まりない"
+      },
+      {
+        "ja": "電車の遅延で一時間も待たされ、不愉快{{極まりない}}。",
+        "en": "We were kept waiting for a full hour by the train delay. It was utterly unpleasant.",
+        "hint": "不愉快 + 極まりない"
+      },
+      {
+        "ja": "夜道を一人で歩くのは、危険{{極まりない}}行為だ。",
+        "en": "Walking alone on a dark road is an extremely dangerous act.",
+        "hint": "危険 + 極まりない"
+      }
+    ]
+  },
+  {
+    "id": "g:n1-no-kiwami",
+    "jlpt": "N1",
+    "title": "〜の極み",
+    "meaning": "the height / extreme of (usually a strong feeling or state)",
+    "structure": "Noun + の極み",
+    "formality": "formal",
+    "notes": "Expresses that someone or something has reached the peak of a state, often 光栄, 感激 or 無礼. Common in set phrases like 光栄の極み. Sounds formal and somewhat literary.",
+    "similar": [
+      "〜極まりない",
+      "〜かぎりだ"
+    ],
+    "detect": [
+      "の極み"
+    ],
+    "examples": [
+      {
+        "ja": "このような賞をいただき、光栄の{{極み}}です。",
+        "en": "To receive such an award is the greatest honour.",
+        "hint": "光栄 + の極み"
+      },
+      {
+        "ja": "この料理は美味の{{極み}}だ。",
+        "en": "This dish is the height of deliciousness.",
+        "hint": "美味 + の極み"
+      },
+      {
+        "ja": "そんな無礼の{{極み}}だ。さすがに許すことはできない。",
+        "en": "That is the height of rudeness. I cannot possibly forgive it.",
+        "hint": "無礼 + の極み"
+      }
+    ]
+  },
+  {
+    "id": "g:n1-kagiri-da",
+    "jlpt": "N1",
+    "title": "〜かぎりだ",
+    "meaning": "extremely / so ... that I cannot express it (emotion)",
+    "structure": "い-adjective plain form / emotional noun + かぎりだ",
+    "formality": "formal",
+    "notes": "Expresses a strong emotion such as joy, regret or gratitude. Almost always used with feelings words like 嬉しい, 残念, 感謝. Written as 限りだ in formal writing.",
+    "similar": [
+      "〜の極み",
+      "〜にたえない"
+    ],
+    "detect": [
+      "かぎりだ|限りだ|かぎりです|限りです"
+    ],
+    "examples": [
+      {
+        "ja": "優勝できて、嬉しい{{かぎりだ}}。",
+        "en": "I am overjoyed to have won the championship.",
+        "hint": "嬉しい + かぎりだ"
+      },
+      {
+        "ja": "大切な友人を失って、残念な{{限りです}}。",
+        "en": "It is deeply regrettable that I lost such a dear friend.",
+        "hint": "残念 + 限りだ"
+      },
+      {
+        "ja": "皆さんのご協力に、感謝の{{限りだ}}。",
+        "en": "I am endlessly grateful for everyone's cooperation.",
+        "hint": "感謝 + 限りだ"
+      }
+    ]
+  },
+  {
+    "id": "g:n1-to-ittara-nai",
+    "jlpt": "N1",
+    "title": "〜といったらない",
+    "meaning": "incredibly / beyond description (very much so)",
+    "structure": "Noun or adjective stem + といったらない",
+    "formality": "neutral",
+    "notes": "Used to stress how extreme something is, usually in a negative or exclaimed way. Compare 〜ことといったら. Natural in spoken narration and essays.",
+    "similar": [
+      "〜極まりない",
+      "〜かぎりだ"
+    ],
+    "detect": [
+      "といったらない|といったらありゃしない"
+    ],
+    "examples": [
+      {
+        "ja": "あの映画の怖さ{{といったらない}}。夜も眠れなかった。",
+        "en": "That movie was incredibly scary. I could not sleep at night.",
+        "hint": "怖さ + といったらない"
+      },
+      {
+        "ja": "夏の暑さ{{といったらない}}。外に出ただけで汗が止まらないよ。",
+        "en": "The heat of summer is unbelievable. Just stepping outside makes me sweat nonstop.",
+        "hint": "暑さ + といったらない"
+      },
+      {
+        "ja": "彼の自慢話の長さ{{といったらない}}。もう聞きたくないよ。",
+        "en": "His bragging goes on and on. I really do not want to hear any more.",
+        "hint": "長さ + といったらない"
+      }
+    ]
+  },
+  {
+    "id": "g:n1-wo-kinjienai",
+    "jlpt": "N1",
+    "title": "〜を禁じえない",
+    "meaning": "cannot help feeling (an emotion); cannot suppress",
+    "structure": "Noun + を禁じえない",
+    "formality": "formal",
+    "notes": "Expresses an emotion that arises naturally and cannot be held back, such as 怒り, 驚き, 同情. Written 禁じ得ない in many texts. Used for the speaker's own feelings or a feeling about a situation, not commands.",
+    "similar": [
+      "〜にたえない",
+      "〜を禁じ得ない"
+    ],
+    "detect": [
+      "を禁じ(え|得)な"
+    ],
+    "examples": [
+      {
+        "ja": "彼の無礼な言動には、怒り{{を禁じえない}}。",
+        "en": "I cannot help but feel anger at his rude words and actions.",
+        "hint": "禁じる + を禁じえない"
+      },
+      {
+        "ja": "被災地の様子を見て、同情{{を禁じ得ない}}。",
+        "en": "Seeing the state of the disaster area, I cannot help feeling sympathy.",
+        "hint": "同情 + を禁じえない"
+      },
+      {
+        "ja": "あまりの出来栄えに、驚き{{を禁じえなかった}}。",
+        "en": "The quality was so astonishing that I could not hold back my surprise.",
+        "hint": "驚き + を禁じえない"
+      }
+    ]
+  },
+  {
+    "id": "g:n1-zu-ni-wa-sumanai",
+    "jlpt": "N1",
+    "title": "〜ずにはすまない",
+    "meaning": "cannot let it go without (doing); must (do) out of obligation or feeling",
+    "structure": "Verb ない-stem + ずにはすまない",
+    "formality": "formal",
+    "notes": "Expresses that the speaker cannot leave a situation without taking an action, because of duty, guilt or strong emotion. Common in spoken and written apology or confession. Keep to verbs of action or feeling.",
+    "similar": [
+      "〜ずにはいられない",
+      "〜ないではすまない"
+    ],
+    "detect": [
+      "ずにはすま"
+    ],
+    "examples": [
+      {
+        "ja": "彼の話を聞いて、思わず涙を{{流さずにはすまなかった}}。",
+        "en": "Hearing his story, I could not help but shed tears.",
+        "hint": "流す + ずにはすまない"
+      },
+      {
+        "ja": "あんなひどい嘘をつかれては、{{怒らずにはすまない}}。",
+        "en": "After being lied to so cruelly, I cannot help but be angry.",
+        "hint": "怒る + ずにはすまない"
+      },
+      {
+        "ja": "事故を起こした以上、会社に{{報告せずにはすまない}}だろう。",
+        "en": "Since we caused the accident, we will have to report it to the company.",
+        "hint": "報告する + ずにはすまない"
+      }
+    ]
+  },
+  {
+    "id": "g:n1-wo-kiri-ni",
+    "jlpt": "N1",
+    "title": "〜を皮切りに",
+    "meaning": "starting with (X), as the first step of a series",
+    "structure": "Noun + を皮切りに（して）",
+    "formality": "neutral",
+    "notes": "Marks the first event of a longer sequence, such as a tour or a campaign. The following clause describes what continues after it. Common in news and event announcements.",
+    "similar": [
+      "〜を限りに",
+      "〜をもって"
+    ],
+    "detect": [
+      "を皮切りに"
+    ],
+    "examples": [
+      {
+        "ja": "東京{{を皮切りに}}、全国ツアーが始まる。",
+        "en": "Starting with Tokyo, the nationwide tour is about to begin.",
+        "hint": "東京 + を皮切りに"
+      },
+      {
+        "ja": "この新製品の発表を{{皮切りに}}、今年は大きな変化が続いた。",
+        "en": "Starting with the launch of this new product, big changes followed this year.",
+        "hint": "発表 + を皮切りに"
+      },
+      {
+        "ja": "新人賞を{{皮切りに}}、彼女は次々と賞を取った。",
+        "en": "Beginning with a newcomer award, she went on to win one prize after another.",
+        "hint": "新人賞 + を皮切りに"
+      }
+    ]
+  },
+  {
+    "id": "g:n1-wo-kagiri-ni",
+    "jlpt": "N1",
+    "title": "〜を限りに",
+    "meaning": "for the last time; ending with (X)",
+    "structure": "Noun + を限りに",
+    "formality": "formal",
+    "notes": "Marks a point after which something will stop or end, such as a business or a practice. Used to announce a final date. Sounds formal and is common in notices and news.",
+    "similar": [
+      "〜を皮切りに",
+      "〜をもって"
+    ],
+    "detect": [
+      "を限りに"
+    ],
+    "examples": [
+      {
+        "ja": "今日{{を限りに}}、この店は閉店することになりました。",
+        "en": "This shop will close, with today being its last day.",
+        "hint": "今日 + を限りに"
+      },
+      {
+        "ja": "彼は引退を発表し、今シーズン{{を限りに}}グラウンドを去った。",
+        "en": "He announced his retirement and left the field for good after this season.",
+        "hint": "今シーズン + を限りに"
+      },
+      {
+        "ja": "この歌を{{限りに}}、彼はステージから姿を消した。",
+        "en": "After singing this song, he vanished from the stage for good.",
+        "hint": "この歌 + を限りに"
+      }
+    ]
+  },
+  {
+    "id": "g:n1-ni-atte",
+    "jlpt": "N1",
+    "title": "〜にあって",
+    "meaning": "in (a special situation or position); under (such circumstances)",
+    "structure": "Noun + にあって",
+    "formality": "formal",
+    "notes": "Introduces the circumstances in which an action or judgement takes place, especially an unusual or difficult time. The following clause shows what is true or required under those conditions. Mostly written.",
+    "similar": [
+      "〜にして",
+      "〜においては"
+    ],
+    "detect": [
+      "にあって"
+    ],
+    "examples": [
+      {
+        "ja": "非常時{{にあって}}、冷静さを保つことは難しい。",
+        "en": "In an emergency like this, it is hard to stay calm.",
+        "hint": "非常時 + にあって"
+      },
+      {
+        "ja": "この困難な時代{{にあって}}も、彼は希望を失わなかった。",
+        "en": "Even in these difficult times, he never lost hope.",
+        "hint": "時代 + にあって"
+      },
+      {
+        "ja": "国際社会{{にあって}}、日本は独自の役割を果たしている。",
+        "en": "Within the international community, Japan plays a role of its own.",
+        "hint": "国際社会 + にあって"
+      }
+    ]
+  },
+  {
+    "id": "g:n1-ni-itaru",
+    "jlpt": "N1",
+    "title": "〜に至る",
+    "meaning": "to reach / to end up at (a state or result), after a process",
+    "structure": "Noun or Verb dictionary form + に至る",
+    "formality": "formal",
+    "notes": "Describes a process that finally arrives at a result, often a serious or hard-won one. Typically used with 成功, 結論, 事態 or 解決. Written style; the spoken equivalent is 〜ようになる or 〜てしまう.",
+    "similar": [
+      "〜にとどまらず",
+      "〜に至っては"
+    ],
+    "detect": [
+      "に至(っ|る|り)"
+    ],
+    "examples": [
+      {
+        "ja": "数年の努力の末、ついに成功に{{至った}}。",
+        "en": "After years of effort, they finally reached success.",
+        "hint": "成功 + に至る"
+      },
+      {
+        "ja": "議論は長引き、双方が結論に{{至る}}まで三日かかった。",
+        "en": "The discussion dragged on, and it took three days before both sides reached a conclusion.",
+        "hint": "結論 + に至る"
+      },
+      {
+        "ja": "事態は、彼が辞任する{{に至った}}。",
+        "en": "The situation came to the point where he resigned.",
+        "hint": "辞任する + に至る"
+      }
+    ]
+  },
+  {
+    "id": "g:n1-ni-todomarazu",
+    "jlpt": "N1",
+    "title": "〜にとどまらず",
+    "meaning": "not only ... but also; not limited to",
+    "structure": "Noun + にとどまらず",
+    "formality": "formal",
+    "notes": "Signals that an effect or scope goes beyond the first item to include a wider one. Usually followed by 〜も or 〜まで. Used in written and formal spoken Japanese.",
+    "similar": [
+      "〜ばかりか",
+      "〜はおろか"
+    ],
+    "detect": [
+      "にとどまらず"
+    ],
+    "examples": [
+      {
+        "ja": "その影響は国内{{にとどまらず}}、世界中に広がった。",
+        "en": "The effects were not limited to the country but spread across the world.",
+        "hint": "国内 + にとどまらず"
+      },
+      {
+        "ja": "この問題は一部の地域{{にとどまらず}}、全国的な関心を集めている。",
+        "en": "This problem is not confined to a few regions and is drawing nationwide attention.",
+        "hint": "地域 + にとどまらず"
+      },
+      {
+        "ja": "彼の活躍は、スポーツ{{にとどまらず}}、芸能の世界にも広がった。",
+        "en": "His success was not limited to sports but also spread into the entertainment world.",
+        "hint": "スポーツ + にとどまらず"
+      }
+    ]
+  },
+  {
+    "id": "g:n1-ni-sokushite",
+    "jlpt": "N1",
+    "title": "〜に即して",
+    "meaning": "in line with / based on (the actual situation, facts or principles)",
+    "structure": "Noun + に即して",
+    "formality": "formal",
+    "notes": "Means that something is done in accordance with a real condition, rule or principle. Stresses being practical and faithful to the facts. Often used in reports, policy and essays.",
+    "similar": [
+      "〜にのっとって",
+      "〜に沿って"
+    ],
+    "detect": [
+      "に即し"
+    ],
+    "examples": [
+      {
+        "ja": "現実{{に即して}}計画を立てる必要がある。",
+        "en": "We need to make a plan that fits reality.",
+        "hint": "現実 + に即して"
+      },
+      {
+        "ja": "法律{{に即して}}処理を進めてください。",
+        "en": "Please proceed with the handling in accordance with the law.",
+        "hint": "法律 + に即して"
+      },
+      {
+        "ja": "それぞれの事例に{{即して}}、適切な対策を考えたい。",
+        "en": "I would like to consider suitable measures based on each individual case.",
+        "hint": "事例 + に即して"
+      }
+    ]
+  },
+  {
+    "id": "g:n1-ni-kakatte-iru",
+    "jlpt": "N1",
+    "title": "〜にかかっている",
+    "meaning": "depends on; hinges on",
+    "structure": "Noun + にかかっている",
+    "formality": "neutral",
+    "notes": "Says that an outcome is determined by one main factor. Often used with 〜次第 or the question word かどうか. Neutral in tone and common in both speech and writing.",
+    "similar": [
+      "〜次第だ",
+      "〜にかかわる"
+    ],
+    "detect": [
+      "にかかってい"
+    ],
+    "examples": [
+      {
+        "ja": "試合の結果は、君の働き{{にかかっている}}。",
+        "en": "The outcome of the match depends on your effort.",
+        "hint": "働き + にかかっている"
+      },
+      {
+        "ja": "成功するかどうかは、この一週間の努力{{にかかっている}}。",
+        "en": "Whether we succeed depends on the efforts of this one week.",
+        "hint": "努力 + にかかっている"
+      },
+      {
+        "ja": "計画の成否は、天気{{にかかっている}}と言ってもいい。",
+        "en": "You could say that the success of the plan hinges on the weather.",
+        "hint": "天気 + にかかっている"
+      }
+    ]
+  },
+  {
+    "id": "g:n1-ni-kakawaru",
+    "jlpt": "N1",
+    "title": "〜にかかわる",
+    "meaning": "to concern; to affect (something important like life, safety or reputation)",
+    "structure": "Noun + にかかわる",
+    "formality": "formal",
+    "notes": "Signals that something has a serious bearing on an important matter such as safety, livelihood or honour. Unlike にかかっている, it does not say something depends on it. Used mostly in written or formal speech.",
+    "similar": [
+      "〜にかかっている",
+      "〜にかかわらず"
+    ],
+    "detect": [
+      "にかかわ(る|り|ら)"
+    ],
+    "examples": [
+      {
+        "ja": "それは国の安全{{にかかわる}}問題だ。",
+        "en": "That is a problem that affects the safety of the nation.",
+        "hint": "安全 + にかかわる"
+      },
+      {
+        "ja": "この件は、会社の信用{{にかかわる}}重大なことだ。",
+        "en": "This matter is serious, as it affects the company's credibility.",
+        "hint": "信用 + にかかわる"
+      },
+      {
+        "ja": "健康{{にかかわる}}ので、無理はしないでください。",
+        "en": "Please do not overdo it, since it could affect your health.",
+        "hint": "健康 + にかかわる"
+      }
+    ]
+  },
+  {
+    "id": "g:n1-ni-taenai",
+    "jlpt": "N1",
+    "title": "〜にたえない",
+    "meaning": "cannot help (feeling); deeply (moved, sorry, etc.); too ... to bear",
+    "structure": "Noun + にたえない",
+    "formality": "formal",
+    "notes": "Expresses a strong feeling the speaker cannot suppress, or a state so unpleasant it is hard to endure. Used in set phrases like 感謝にたえない and 見るにたえない. Polite form is にたえません.",
+    "similar": [
+      "〜を禁じえない",
+      "〜かぎりだ"
+    ],
+    "detect": [
+      "にたえ(ない|ません)"
+    ],
+    "examples": [
+      {
+        "ja": "皆様のご厚意に、感謝{{にたえません}}。",
+        "en": "I am deeply grateful for your kindness.",
+        "hint": "感謝 + にたえない"
+      },
+      {
+        "ja": "あの惨状は、見{{るにたえない}}ほどひどかった。",
+        "en": "The disaster was so terrible that it was too painful to look at.",
+        "hint": "見る + にたえない"
+      },
+      {
+        "ja": "彼の言い訳は、聞く{{にたえない}}。",
+        "en": "His excuses are too unbearable to listen to.",
+        "hint": "聞く + にたえない"
+      }
+    ]
+  },
+  {
+    "id": "g:n1-ni-taeru",
+    "jlpt": "N1",
+    "title": "〜にたえる",
+    "meaning": "worth (doing); able to withstand or bear (use, examination, scrutiny)",
+    "structure": "Noun + にたえる",
+    "formality": "formal",
+    "notes": "Says that something is good enough or sturdy enough to stand up to a use or test. Used for works, designs and equipment: 鑑賞にたえる, 使用にたえる. Contrast with 〜にたえない, which expresses an emotion or an unbearable state.",
+    "similar": [
+      "〜にたえない",
+      "〜に足る"
+    ],
+    "detect": [
+      "にたえ(る|ます)"
+    ],
+    "examples": [
+      {
+        "ja": "この作品は何度読んでも、鑑賞{{にたえる}}。",
+        "en": "No matter how many times I read this work, it is worth appreciating.",
+        "hint": "鑑賞 + にたえる"
+      },
+      {
+        "ja": "その理論は、厳しい実験{{にたえる}}ほど確かなものだ。",
+        "en": "The theory is solid enough to withstand rigorous experiments.",
+        "hint": "実験 + にたえる"
+      },
+      {
+        "ja": "このドレスは、一生ものとして使用{{にたえる}}丈夫さだ。",
+        "en": "This dress is durable enough to be used as a lifelong piece.",
+        "hint": "使用 + にたえる"
+      }
+    ]
+  },
+  {
+    "id": "g:n1-ni-taru",
+    "jlpt": "N1",
+    "title": "〜に足る",
+    "meaning": "worth; sufficient to (deserve or justify something)",
+    "structure": "Noun or Verb dictionary form + に足る",
+    "formality": "formal",
+    "notes": "Means that something is good or convincing enough to deserve trust, attention or a judgement. Often in the negative 〜に足りない (not worth). Written and formal in tone.",
+    "similar": [
+      "〜に値する",
+      "〜にたえる"
+    ],
+    "detect": [
+      "に足(る|り|ら)"
+    ],
+    "examples": [
+      {
+        "ja": "彼は、信頼{{に足る}}人物だ。",
+        "en": "He is a person worthy of trust.",
+        "hint": "信頼 + に足る"
+      },
+      {
+        "ja": "その証拠は、有罪と判断する{{に足る}}ものだった。",
+        "en": "That evidence was enough to justify a guilty verdict.",
+        "hint": "判断する + に足る"
+      },
+      {
+        "ja": "この作品は、一見{{に足る}}価値がある。",
+        "en": "This work is worth seeing.",
+        "hint": "一見 + に足る"
+      }
+    ]
+  },
+  {
+    "id": "g:n1-ni-atai-suru",
+    "jlpt": "N1",
+    "title": "〜に値する",
+    "meaning": "worthy of; deserving (to be)",
+    "structure": "Noun or Verb dictionary form + に値する",
+    "formality": "formal",
+    "notes": "Used to say something deserves a certain response, such as attention, praise or consideration. The negative 〜に値しない means not worth. Common in reviews, essays and news.",
+    "similar": [
+      "〜に足る",
+      "〜にたえる"
+    ],
+    "detect": [
+      "に値(する|しない|し)"
+    ],
+    "examples": [
+      {
+        "ja": "これは注目{{に値する}}研究だ。",
+        "en": "This is research worthy of attention.",
+        "hint": "注目 + に値する"
+      },
+      {
+        "ja": "彼の努力は、称賛{{に値する}}。",
+        "en": "His effort deserves praise.",
+        "hint": "称賛 + に値する"
+      },
+      {
+        "ja": "その意見は、検討{{に値する}}と思う。",
+        "en": "I think that opinion is worth considering.",
+        "hint": "検討 + に値する"
+      }
+    ]
+  },
+  {
+    "id": "g:n1-to-atte",
+    "jlpt": "N1",
+    "title": "〜とあって",
+    "meaning": "because it is (a special occasion or event); given that (something special is happening)",
+    "structure": "Plain form of noun/verb/adjective + とあって",
+    "formality": "formal",
+    "notes": "Gives a special event or unusual circumstance as the reason for a noticeable result, such as a crowd or a rush. The clause that follows describes the outcome. Used in news and written narration.",
+    "similar": [
+      "〜とあれば",
+      "〜だけに"
+    ],
+    "detect": [
+      "とあって"
+    ],
+    "examples": [
+      {
+        "ja": "人気の俳優が来る{{とあって}}、会場は大混雑だった。",
+        "en": "Because a popular actor was coming, the venue was packed.",
+        "hint": "来る + とあって"
+      },
+      {
+        "ja": "休日{{とあって}}、街はにぎわっていた。",
+        "en": "Since it was a holiday, the town was bustling.",
+        "hint": "休日 + とあって"
+      },
+      {
+        "ja": "初めての試合{{とあって}}、選手たちは緊張していた。",
+        "en": "Because it was their first match, the players were nervous.",
+        "hint": "試合 + とあって"
+      }
+    ]
+  },
+  {
+    "id": "g:n1-to-areba",
+    "jlpt": "N1",
+    "title": "〜とあれば",
+    "meaning": "if it is (such a special case); given that (it is so), then naturally",
+    "structure": "Plain form of noun/verb/adjective + とあれば",
+    "formality": "formal",
+    "notes": "Introduces a special condition under which the speaker makes an exception or acts decisively. The clause after it states the resulting willingness or action. Often used for 〜のためとあれば.",
+    "similar": [
+      "〜とあって",
+      "〜ともなれば"
+    ],
+    "detect": [
+      "とあれば"
+    ],
+    "examples": [
+      {
+        "ja": "お客様のため{{とあれば}}、どんな努力も惜しまない。",
+        "en": "For the sake of our customers, we will spare no effort.",
+        "hint": "お客様 + とあれば"
+      },
+      {
+        "ja": "家族の頼み{{とあれば}}、断るわけにはいかない。",
+        "en": "If it is a request from my family, I cannot refuse.",
+        "hint": "頼み + とあれば"
+      },
+      {
+        "ja": "締め切りが{{迫っているとあれば}}、今夜は徹夜するしかない。",
+        "en": "With the deadline this close, we have no choice but to stay up all night tonight.",
+        "hint": "迫る + とあれば"
+      }
+    ]
+  },
+  {
+    "id": "g:n1-to-bakari-ni",
+    "jlpt": "N1",
+    "title": "〜とばかりに",
+    "meaning": "as if to say (that); as though (to show a feeling or intention)",
+    "structure": "Plain form or quoted phrase + とばかりに",
+    "formality": "neutral",
+    "notes": "Describes an action done as if to express a clear message, without actually saying it. The main clause is a vivid action, such as standing up or shaking one's head. Common in narration.",
+    "similar": [
+      "〜んばかりに",
+      "〜ようとして"
+    ],
+    "detect": [
+      "とばかりに"
+    ],
+    "examples": [
+      {
+        "ja": "彼は「もう帰る」{{とばかりに}}立ち上がった。",
+        "en": "He stood up as if to say, \"I'm going home now.\"",
+        "hint": "帰る + とばかりに"
+      },
+      {
+        "ja": "彼女は「知らない」{{とばかりに}}首を振った。",
+        "en": "She shook her head as if to say, \"I don't know.\"",
+        "hint": "知る + とばかりに"
+      },
+      {
+        "ja": "店員は、早く帰れ{{とばかりに}}電気を消した。",
+        "en": "The clerk turned off the lights as if to say, \"Go home now.\"",
+        "hint": "帰る + とばかりに"
+      }
+    ]
+  },
+  {
+    "id": "g:n1-n-bakari-ni",
+    "jlpt": "N1",
+    "title": "〜んばかりに",
+    "meaning": "as if about to (do); almost (doing), to a striking degree",
+    "structure": "Verb ます-stem + んばかりに",
+    "formality": "formal",
+    "notes": "Describes an extreme state or action that looks as though it is about to happen, though it does not. Used to express intensity in vivid writing. Also seen as 〜んばかりだ and 〜んばかりの.",
+    "similar": [
+      "〜とばかりに",
+      "〜ばかりに"
+    ],
+    "detect": [
+      "んばかり"
+    ],
+    "examples": [
+      {
+        "ja": "彼女は今にも泣き出さ{{んばかりに}}訴えた。",
+        "en": "She pleaded as if she were about to burst into tears.",
+        "hint": "泣き出す + んばかりに"
+      },
+      {
+        "ja": "子供は今にも踊り出さ{{んばかりに}}喜んだ。",
+        "en": "The child was so happy that it looked as if he were about to start dancing.",
+        "hint": "踊り出す + んばかりに"
+      },
+      {
+        "ja": "あの山は、今にも崩れ落ち{{んばかりに}}そびえている。",
+        "en": "That mountain rises as though it might collapse at any moment.",
+        "hint": "崩れ落ちる + んばかりに"
+      }
+    ]
+  },
+  {
+    "id": "g:n1-made-mo-nai",
+    "jlpt": "N1",
+    "title": "〜までもない",
+    "meaning": "no need even to (do); it goes without saying that",
+    "structure": "Verb dictionary form + までもない",
+    "formality": "neutral",
+    "notes": "Says that something is so obvious that doing it, or saying it, is unnecessary. Often used to close a discussion or to avoid over-explaining. Sounds a little firm, so be careful with superiors.",
+    "similar": [
+      "〜ことはない",
+      "〜ことに変わりはない"
+    ],
+    "detect": [
+      "までもな"
+    ],
+    "examples": [
+      {
+        "ja": "そんなことは、説明する{{までもない}}だろう。",
+        "en": "There is no need to explain that, surely.",
+        "hint": "説明する + までもない"
+      },
+      {
+        "ja": "わざわざ確認する{{までもなく}}、答えは明らかだ。",
+        "en": "There is no need to check; the answer is obvious.",
+        "hint": "確認する + までもない"
+      },
+      {
+        "ja": "彼が優秀なのは、言う{{までもない}}ことだ。",
+        "en": "That he is talented goes without saying.",
+        "hint": "言う + までもない"
+      }
+    ]
+  },
+  {
+    "id": "g:n1-ba-koso",
+    "jlpt": "N1",
+    "title": "〜ばこそ",
+    "meaning": "precisely because (it is so); only because (of the condition)",
+    "structure": "Verb ば-form / い-adjective ければ + こそ",
+    "formality": "formal",
+    "notes": "Stresses that a reason is the sole and exact cause of the result, often when the speaker is explaining their true motive. The clause after it is typically a justified or emotional conclusion. Literary in tone but also used in serious speech.",
+    "similar": [
+      "〜からこそ",
+      "〜だけに"
+    ],
+    "detect": [
+      "ばこそ"
+    ],
+    "examples": [
+      {
+        "ja": "君を思え{{ばこそ}}、厳しく言うんだ。",
+        "en": "I am speaking harshly precisely because I care about you.",
+        "hint": "思う + ばこそ"
+      },
+      {
+        "ja": "愛し{{ていればこそ}}、別れを選んだのだ。",
+        "en": "It was precisely because I loved her that I chose to part ways.",
+        "hint": "愛する + ばこそ"
+      },
+      {
+        "ja": "努力すれ{{ばこそ}}、成功があるのだ。",
+        "en": "Success only comes because of effort.",
+        "hint": "努力する + ばこそ"
+      }
+    ]
+  },
+  {
+    "id": "g:n1-nari-ni",
+    "jlpt": "N1",
+    "title": "〜なりに",
+    "meaning": "in one's own way; to the extent of one's (own) ability or situation",
+    "structure": "Noun + なりに",
+    "formality": "neutral",
+    "notes": "Means that someone does something according to their own level, position or ability, even if it is not perfect. Often praises effort in a modest way. Also used as 〜なりの, as in 彼なりの考え.",
+    "similar": [],
+    "detect": [
+      "なりに"
+    ],
+    "examples": [
+      {
+        "ja": "私は私{{なりに}}精一杯やった。",
+        "en": "I did my best in my own way.",
+        "hint": "私 + なりに"
+      },
+      {
+        "ja": "子供は子供{{なりに}}、いろいろ考えているものだ。",
+        "en": "Children think about many things in their own way.",
+        "hint": "子供 + なりに"
+      },
+      {
+        "ja": "それぞれ{{なりに}}事情があるのだから、責めないでやってくれ。",
+        "en": "Everyone has their own circumstances, so please do not blame them.",
+        "hint": "それぞれ + なりに"
+      }
+    ]
+  }
+]

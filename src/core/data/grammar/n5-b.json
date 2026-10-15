@@ -1,0 +1,730 @@
+[
+  {
+    "id": "g:n5-nai",
+    "jlpt": "N5",
+    "title": "〜ない",
+    "meaning": "plain negative: does not / will not",
+    "structure": "Verb ない-form (plain negative)",
+    "formality": "casual",
+    "notes": "The plain negative of verbs: 食べる becomes 食べない, 行く becomes 行かない, する becomes しない. Use it with friends and family; polite speech uses 〜ません.",
+    "similar": [
+      "〜ないでください"
+    ],
+    "detect": [],
+    "examples": [
+      {
+        "ja": "今日は雨が{{降らない}}から、傘はいらないよ。",
+        "en": "It won't rain today, so we don't need umbrellas.",
+        "hint": "降る + ない"
+      },
+      {
+        "ja": "明日は学校に{{行かない}}。",
+        "en": "I'm not going to school tomorrow.",
+        "hint": "行く + ない"
+      },
+      {
+        "ja": "そんなこと、{{知らない}}よ。",
+        "en": "I don't know anything about that.",
+        "hint": "知る + ない"
+      }
+    ]
+  },
+  {
+    "id": "g:n5-ta",
+    "jlpt": "N5",
+    "title": "〜た",
+    "meaning": "plain past: did / has done",
+    "structure": "Verb た-form (plain past)",
+    "formality": "casual",
+    "notes": "The plain past of verbs: 見る becomes 見た, 食べる becomes 食べた, 来る becomes 来た. Use it with friends; polite speech uses 〜ました. In casual speech, 食べた？ also asks whether someone has done something yet.",
+    "similar": [],
+    "detect": [],
+    "examples": [
+      {
+        "ja": "昨日、映画を{{見た}}。",
+        "en": "I watched a movie yesterday.",
+        "hint": "見る + た"
+      },
+      {
+        "ja": "ご飯、もう{{食べた}}？",
+        "en": "Have you eaten yet?",
+        "hint": "食べる + た"
+      },
+      {
+        "ja": "さっき駅で友達に{{会った}}よ。",
+        "en": "I ran into a friend at the station just now.",
+        "hint": "会う + た"
+      }
+    ]
+  },
+  {
+    "id": "g:n5-te",
+    "jlpt": "N5",
+    "title": "〜て",
+    "meaning": "and (then); connects actions in order",
+    "structure": "Verb て-form, then the next verb",
+    "formality": "neutral",
+    "notes": "Links actions by the same subject in time order: 顔を洗って、朝ご飯を食べる. The て-form is also the base for 〜てください and 〜ている. Only the last verb takes tense and politeness.",
+    "similar": [],
+    "detect": [],
+    "examples": [
+      {
+        "ja": "手を{{洗って}}、ご飯を食べます。",
+        "en": "I wash my hands and then eat dinner.",
+        "hint": "洗う + て"
+      },
+      {
+        "ja": "朝起きて、顔を{{洗って}}、コーヒーを飲みます。",
+        "en": "I get up, wash my face, and drink coffee.",
+        "hint": "洗う + て"
+      },
+      {
+        "ja": "漢字を{{書いて}}、覚えます。",
+        "en": "I write the kanji and then memorize them.",
+        "hint": "書く + て"
+      }
+    ]
+  },
+  {
+    "id": "g:n5-yori-hou-ga",
+    "jlpt": "N5",
+    "title": "〜より〜のほうが",
+    "meaning": "X is more ... than Y",
+    "structure": "A は B より〜のほうが + adjective / verb",
+    "formality": "neutral",
+    "notes": "Compares two things: A より B のほうが…. The より part marks the thing being compared against. Use 〜のほうが to make the preferred or stronger item the subject.",
+    "similar": [],
+    "detect": [
+      "より.{1,15}のほうが"
+    ],
+    "examples": [
+      {
+        "ja": "電車より、バス{{のほうが}}安いです。",
+        "en": "The bus is cheaper than the train.",
+        "hint": "安い + より〜のほうが"
+      },
+      {
+        "ja": "夏より、冬{{のほうが}}好きです。",
+        "en": "I like winter more than summer.",
+        "hint": "好きだ + より〜のほうが"
+      },
+      {
+        "ja": "私は犬より、猫{{のほうが}}かわいいと思う。",
+        "en": "I think cats are cuter than dogs.",
+        "hint": "かわいい + より〜のほうが"
+      }
+    ]
+  },
+  {
+    "id": "g:n5-naka-de-ichiban",
+    "jlpt": "N5",
+    "title": "〜の中で〜が一番",
+    "meaning": "among ..., X is the most ...",
+    "structure": "名詞 の中で 名詞 が 一番 + adjective",
+    "formality": "neutral",
+    "notes": "Picks the top item from a group. The group comes first after の中で, then the winner with が一番. Use it for choosing favourites or superlatives.",
+    "similar": [],
+    "detect": [
+      "の中で.{1,12}が一番"
+    ],
+    "examples": [
+      {
+        "ja": "果物の中で、{{りんごが一番}}好きです。",
+        "en": "Among fruits, I like apples the most.",
+        "hint": "好きだ + の中で〜が一番"
+      },
+      {
+        "ja": "クラスの中で{{田中さんが一番}}背が高い。",
+        "en": "Tanaka is the tallest in the class.",
+        "hint": "高い + の中で〜が一番"
+      },
+      {
+        "ja": "このお店の中で{{ラーメンが一番}}おいしいと思う。",
+        "en": "I think the ramen is the most delicious thing here.",
+        "hint": "おいしい + の中で〜が一番"
+      }
+    ]
+  },
+  {
+    "id": "g:n5-mashou-ka",
+    "jlpt": "N5",
+    "title": "〜ましょうか",
+    "meaning": "shall I ...? (offering to do something)",
+    "structure": "Verb ます-stem + ましょうか",
+    "formality": "polite",
+    "notes": "Offers to do something for someone: 手伝いましょうか. Use it to ask whether the listener wants you to act. For suggesting something to do together, use 〜ましょう instead.",
+    "similar": [
+      "〜ましょう"
+    ],
+    "detect": [
+      "ましょうか"
+    ],
+    "examples": [
+      {
+        "ja": "荷物を{{持ちましょうか}}？",
+        "en": "Shall I carry your bag?",
+        "hint": "持つ + ましょうか"
+      },
+      {
+        "ja": "じゃあ、そろそろ{{帰りましょうか}}。",
+        "en": "Well, shall we head home soon?",
+        "hint": "帰る + ましょうか"
+      },
+      {
+        "ja": "ドア、{{開けましょうか}}。",
+        "en": "Shall I open the door?",
+        "hint": "開ける + ましょうか"
+      }
+    ]
+  },
+  {
+    "id": "g:n5-ga-hoshii",
+    "jlpt": "N5",
+    "title": "〜がほしい",
+    "meaning": "want (a thing)",
+    "structure": "Noun が ほしい",
+    "formality": "neutral",
+    "notes": "Says you want a concrete object: パソコンがほしい. The object takes が, not を. To say someone else wants something, use 〜がほしいそうだ or 〜がほしいと言っている rather than stating it directly.",
+    "similar": [],
+    "detect": [
+      "がほしい",
+      "が欲しい"
+    ],
+    "examples": [
+      {
+        "ja": "新しいパソコンが{{ほしい}}です。",
+        "en": "I want a new computer.",
+        "hint": "欲しい + 〜がほしい"
+      },
+      {
+        "ja": "今、時間が{{欲しい}}。",
+        "en": "Right now I want some time.",
+        "hint": "欲しい + 〜がほしい"
+      },
+      {
+        "ja": "妹は青い自転車が{{ほしい}}と言っている。",
+        "en": "My younger sister says she wants a blue bicycle.",
+        "hint": "欲しい + 〜がほしい"
+      }
+    ]
+  },
+  {
+    "id": "g:n5-dake",
+    "jlpt": "N5",
+    "title": "〜だけ",
+    "meaning": "only / just",
+    "structure": "Noun or number + だけ",
+    "formality": "neutral",
+    "notes": "Limits something to exactly that amount or item. It attaches directly after the noun or number. Do not confuse it with ばかり, which means 'nothing but' or 'just finished'.",
+    "similar": [],
+    "detect": [],
+    "examples": [
+      {
+        "ja": "一人{{だけ}}来ました。",
+        "en": "Only one person came.",
+        "hint": "名詞 + だけ"
+      },
+      {
+        "ja": "今日は三時間{{だけ}}寝ました。",
+        "en": "I only slept for three hours today.",
+        "hint": "名詞 + だけ"
+      },
+      {
+        "ja": "ケーキを{{一つだけ}}食べた。",
+        "en": "I ate only one piece of cake.",
+        "hint": "数量 + だけ"
+      }
+    ]
+  },
+  {
+    "id": "g:n5-gurai-kurai",
+    "jlpt": "N5",
+    "title": "〜ぐらい / 〜くらい",
+    "meaning": "about, roughly (amount or time)",
+    "structure": "Number or quantity + ぐらい / くらい",
+    "formality": "neutral",
+    "notes": "Gives a rough estimate of a number, amount, or length of time. ぐらい and くらい mean the same thing; くらい is the standard form in Tokyo. It does not mean 'exactly', so use ちょうど for that.",
+    "similar": [
+      "〜ごろ"
+    ],
+    "detect": [
+      "(ぐらい|くらい)"
+    ],
+    "examples": [
+      {
+        "ja": "駅まで十分{{ぐらい}}です。",
+        "en": "It's about ten minutes to the station.",
+        "hint": "数量 + ぐらい"
+      },
+      {
+        "ja": "あの人は三十歳{{くらい}}に見える。",
+        "en": "That person looks about thirty years old.",
+        "hint": "数 + くらい"
+      },
+      {
+        "ja": "毎日、三時間{{くらい}}勉強します。",
+        "en": "I study for about three hours every day.",
+        "hint": "数量 + くらい"
+      }
+    ]
+  },
+  {
+    "id": "g:n5-goro",
+    "jlpt": "N5",
+    "title": "〜ごろ",
+    "meaning": "around (a time)",
+    "structure": "Time + ごろ",
+    "formality": "neutral",
+    "notes": "Attaches to a time of day or date to mean 'around that time'. Unlike 〜ぐらい, it is used only with time expressions. It is written 時頃 in kanji, though the kana form is more common.",
+    "similar": [
+      "〜ぐらい / 〜くらい"
+    ],
+    "detect": [
+      "時(ごろ|頃)"
+    ],
+    "examples": [
+      {
+        "ja": "明日の朝、七時{{ごろ}}に出かけます。",
+        "en": "I'll leave around seven tomorrow morning.",
+        "hint": "時間 + ごろ"
+      },
+      {
+        "ja": "昨日は夜十一時{{ごろ}}寝ました。",
+        "en": "I went to bed around eleven last night.",
+        "hint": "時間 + ごろ"
+      },
+      {
+        "ja": "3時{{ごろ}}来てくれる？",
+        "en": "Could you come around three?",
+        "hint": "時間 + ごろ"
+      }
+    ]
+  },
+  {
+    "id": "g:n5-naru",
+    "jlpt": "N5",
+    "title": "〜くなる / 〜になる",
+    "meaning": "become (adjective or noun)",
+    "structure": "い-adjective stem + くなる; な-adjective or noun + になる",
+    "formality": "neutral",
+    "notes": "Shows a change of state. い-adjectives drop the い and add く (寒い to 寒くなる); な-adjectives and nouns take に (元気になる, 大人になる). It describes a change, not an action someone does.",
+    "similar": [],
+    "detect": [
+      "くなり|くなる|になり|になる"
+    ],
+    "examples": [
+      {
+        "ja": "最近、急に{{寒くなりました}}。",
+        "en": "It suddenly got cold recently.",
+        "hint": "寒い + くなる"
+      },
+      {
+        "ja": "二十歳に{{なりました}}。",
+        "en": "I turned twenty.",
+        "hint": "二十歳 + になる"
+      },
+      {
+        "ja": "日本語が{{上手になりたい}}。",
+        "en": "I want to become good at Japanese.",
+        "hint": "上手だ + になる"
+      }
+    ]
+  },
+  {
+    "id": "g:n5-mae-ni",
+    "jlpt": "N5",
+    "title": "〜前に",
+    "meaning": "before (doing ...)",
+    "structure": "Verb dictionary form + 前に; Noun + の前に",
+    "formality": "neutral",
+    "notes": "Puts one action before another. Use the dictionary form of the verb directly before 前に. For a noun, add の first: 授業の前に.",
+    "similar": [
+      "〜てから"
+    ],
+    "detect": [
+      "前に"
+    ],
+    "examples": [
+      {
+        "ja": "{{寝る前に}}、歯を磨きます。",
+        "en": "I brush my teeth before going to bed.",
+        "hint": "寝る + 前に"
+      },
+      {
+        "ja": "{{食べる前に}}手を洗ってね。",
+        "en": "Wash your hands before you eat.",
+        "hint": "食べる + 前に"
+      },
+      {
+        "ja": "授業{{の前に}}、少し話しましょう。",
+        "en": "Let's talk for a bit before class.",
+        "hint": "名詞 + の前に"
+      }
+    ]
+  },
+  {
+    "id": "g:n5-te-kara",
+    "jlpt": "N5",
+    "title": "〜てから",
+    "meaning": "after doing ...",
+    "structure": "Verb て-form + から",
+    "formality": "neutral",
+    "notes": "Places one action after the completion of another. The first action must be finished before the second starts. Compare 〜前に, which has no completion nuance.",
+    "similar": [
+      "〜前に"
+    ],
+    "detect": [
+      "てから"
+    ],
+    "examples": [
+      {
+        "ja": "{{宿題をしてから}}、遊びに行きなさい。",
+        "en": "Go out to play after you finish your homework.",
+        "hint": "する + てから"
+      },
+      {
+        "ja": "ご飯を{{食べてから}}、出かけよう。",
+        "en": "Let's go out after we eat.",
+        "hint": "食べる + てから"
+      },
+      {
+        "ja": "シャワーを{{浴びてから}}寝ます。",
+        "en": "I sleep after I take a shower.",
+        "hint": "浴びる + てから"
+      }
+    ]
+  },
+  {
+    "id": "g:n5-deshou",
+    "jlpt": "N5",
+    "title": "〜でしょう",
+    "meaning": "probably / right? (softer guess or confirmation)",
+    "structure": "Plain form + でしょう",
+    "formality": "polite",
+    "notes": "Expresses a guess or asks for agreement, more tentatively than だ. Use it in polite speech or when unsure; the rising tone at the end makes it a question. Casual speakers use だろう instead.",
+    "similar": [],
+    "detect": [
+      "でしょう"
+    ],
+    "examples": [
+      {
+        "ja": "明日は{{晴れるでしょう}}。",
+        "en": "It will probably be sunny tomorrow.",
+        "hint": "晴れる + でしょう"
+      },
+      {
+        "ja": "この料理、{{おいしいでしょう}}？",
+        "en": "This dish is delicious, right?",
+        "hint": "おいしい + でしょう"
+      },
+      {
+        "ja": "彼は今日{{来ないでしょう}}。",
+        "en": "He probably won't come today.",
+        "hint": "来ない + でしょう"
+      }
+    ]
+  },
+  {
+    "id": "g:n5-ya-nado",
+    "jlpt": "N5",
+    "title": "〜や〜など",
+    "meaning": "and so on / things like ... and ...",
+    "structure": "Noun や Noun など",
+    "formality": "neutral",
+    "notes": "Lists examples without naming everything. や joins the items, and など signals that there are more. など is often left out, but the list then sounds less open-ended.",
+    "similar": [],
+    "detect": [
+      "や.{1,10}など"
+    ],
+    "examples": [
+      {
+        "ja": "机の上には本や{{ノートなど}}があります。",
+        "en": "On the desk there are books, notebooks, and so on.",
+        "hint": "名詞 + や + 名詞 + など"
+      },
+      {
+        "ja": "週末は{{映画や買い物など}}をして過ごします。",
+        "en": "On weekends I spend time doing things like watching movies and shopping.",
+        "hint": "名詞 + や + 名詞 + など"
+      },
+      {
+        "ja": "{{パンやおにぎりなど}}を買いました。",
+        "en": "I bought things like bread and rice balls.",
+        "hint": "名詞 + や + 名詞 + など"
+      }
+    ]
+  },
+  {
+    "id": "g:n5-ne-yo",
+    "jlpt": "N5",
+    "title": "〜ね / 〜よ",
+    "meaning": "sentence endings: ね (seeking agreement) / よ (telling someone)",
+    "structure": "Sentence + ね / よ",
+    "formality": "casual",
+    "notes": "ね asks for agreement or shares a feeling: 暑いね. よ gives new information the listener may not know: 明日雨だよ. Both are mostly used in casual speech.",
+    "similar": [],
+    "detect": [],
+    "examples": [
+      {
+        "ja": "今日は暑い{{ね}}。",
+        "en": "It's hot today, isn't it?",
+        "hint": "暑い + ね"
+      },
+      {
+        "ja": "それ、私のだ{{よ}}。",
+        "en": "That's mine, you know.",
+        "hint": "だ + よ"
+      },
+      {
+        "ja": "明日、雨が降る{{よ}}。",
+        "en": "It's going to rain tomorrow, you know.",
+        "hint": "降る + よ"
+      }
+    ]
+  },
+  {
+    "id": "g:n5-kedo-ga",
+    "jlpt": "N5",
+    "title": "〜けど / 〜が",
+    "meaning": "but / although (softened contrast)",
+    "structure": "Plain or polite sentence + けど / が",
+    "formality": "casual",
+    "notes": "Joins two clauses that contrast, often softening the second part. けど is the casual form and is also common in polite speech; が is more formal and written. Use it to leave a sentence open, as in 行きたいけど…, instead of stating a clear contrast.",
+    "similar": [],
+    "detect": [
+      "けど|けれど"
+    ],
+    "examples": [
+      {
+        "ja": "{{行きたいけど}}、お金がない。",
+        "en": "I want to go, but I don't have any money.",
+        "hint": "行きたい + けど"
+      },
+      {
+        "ja": "さっき電話した{{けど}}、出なかったね。",
+        "en": "I called earlier, but you didn't pick up, did you?",
+        "hint": "電話する + けど"
+      },
+      {
+        "ja": "{{高いけど}}、おいしいです。",
+        "en": "It's expensive, but it's delicious.",
+        "hint": "高い + けど"
+      }
+    ]
+  },
+  {
+    "id": "g:n5-toki",
+    "jlpt": "N5",
+    "title": "〜時",
+    "meaning": "when (doing ...) / at the time of",
+    "structure": "Plain verb / い-adjective / Noun の + 時",
+    "formality": "neutral",
+    "notes": "Describes the moment or situation in which something happens. Attach it after the plain form of a verb or adjective, or after の for nouns. Do not confuse it with the time-of-day use 〜時 (3時), which is about clock time.",
+    "similar": [
+      "〜前に"
+    ],
+    "detect": [
+      "[るうくぐすつぬぶむたのい]時"
+    ],
+    "examples": [
+      {
+        "ja": "{{学生の時}}、よく川で泳ぎました。",
+        "en": "When I was a student, I often swam in the river.",
+        "hint": "名詞 + の時"
+      },
+      {
+        "ja": "{{食べる時}}は手を洗ってください。",
+        "en": "Please wash your hands when you eat.",
+        "hint": "食べる + 時"
+      },
+      {
+        "ja": "{{疲れた時}}は、ゆっくり休んでね。",
+        "en": "When you're tired, take it easy and rest.",
+        "hint": "疲れる + 時"
+      }
+    ]
+  },
+  {
+    "id": "g:n5-hou-ga-ii",
+    "jlpt": "N5",
+    "title": "〜ほうがいい",
+    "meaning": "had better / it's better to (advice)",
+    "structure": "Verb た-form + ほうがいい; ない-form + ほうがいい for negative advice",
+    "formality": "neutral",
+    "notes": "Gives advice about what someone should or should not do. The verb takes the た-form for positive advice and the ない-form for negative advice. Saying it to a superior sounds rude, so use 〜たらどうですか instead.",
+    "similar": [
+      "〜ないほうがいい"
+    ],
+    "detect": [
+      "ほうがいい|方がいい"
+    ],
+    "examples": [
+      {
+        "ja": "{{寝たほうがいい}}よ。",
+        "en": "You should go to sleep.",
+        "hint": "寝る + たほうがいい"
+      },
+      {
+        "ja": "薬を{{飲んだほうがいい}}。",
+        "en": "You should take some medicine.",
+        "hint": "飲む + たほうがいい"
+      },
+      {
+        "ja": "そんなに{{食べないほうがいい}}よ。",
+        "en": "You shouldn't eat that much.",
+        "hint": "食べる + ないほうがいい"
+      }
+    ]
+  },
+  {
+    "id": "g:n5-no-ga-suki",
+    "jlpt": "N5",
+    "title": "〜のが好き",
+    "meaning": "I like (doing) ... / am good at ...",
+    "structure": "Verb dictionary form + のが好き / 得意 / 苦手",
+    "formality": "neutral",
+    "notes": "Turns a verb into a noun with の so it can be the object of 好き, 得意, or 苦手. It is used for activities and hobbies. For a plain noun object, use 〜が好き instead.",
+    "similar": [
+      "〜が好き / 上手 / 下手"
+    ],
+    "detect": [
+      "のが(好き|嫌い|得意|苦手)"
+    ],
+    "examples": [
+      {
+        "ja": "私は{{泳ぐのが}}好きです。",
+        "en": "I like swimming.",
+        "hint": "泳ぐ + のが好き"
+      },
+      {
+        "ja": "弟は{{ゲームをするのが}}好きです。",
+        "en": "My younger brother likes playing games.",
+        "hint": "する + のが好き"
+      },
+      {
+        "ja": "母は{{料理を作るのが}}得意です。",
+        "en": "My mother is good at cooking.",
+        "hint": "作る + のが得意"
+      }
+    ]
+  },
+  {
+    "id": "g:n5-demo",
+    "jlpt": "N5",
+    "title": "〜でも",
+    "meaning": "or something (suggestion); even (in case of)",
+    "structure": "Noun + でも",
+    "formality": "neutral",
+    "notes": "Suggests something casually, as in コーヒーでも飲みませんか. It can also mean 'even' in 雨でも行きます. Do not confuse it with the conjunction でも meaning 'but', which starts a new sentence.",
+    "similar": [],
+    "detect": [],
+    "examples": [
+      {
+        "ja": "コーヒー{{でも}}飲みませんか。",
+        "en": "Shall we have some coffee or something?",
+        "hint": "名詞 + でも"
+      },
+      {
+        "ja": "{{お茶でも}}どうですか。",
+        "en": "How about some tea or something?",
+        "hint": "名詞 + でも"
+      },
+      {
+        "ja": "雨{{でも}}行きます。",
+        "en": "I'll go even if it rains.",
+        "hint": "名詞 + でも"
+      }
+    ]
+  },
+  {
+    "id": "g:n5-nagara",
+    "jlpt": "N5",
+    "title": "〜ながら",
+    "meaning": "while doing (two actions at once)",
+    "structure": "Verb ます-stem + ながら",
+    "formality": "neutral",
+    "notes": "Shows two actions happening at the same time by the same person. The main action comes after ながら. Both actions must be done by the same subject.",
+    "similar": [],
+    "detect": [
+      "ながら"
+    ],
+    "examples": [
+      {
+        "ja": "音楽を{{聞きながら}}勉強します。",
+        "en": "I study while listening to music.",
+        "hint": "聞く + ながら"
+      },
+      {
+        "ja": "{{歩きながら}}電話しないでください。",
+        "en": "Please don't talk on the phone while walking.",
+        "hint": "歩く + ながら"
+      },
+      {
+        "ja": "テレビを{{見ながら}}ご飯を食べる。",
+        "en": "I eat dinner while watching TV.",
+        "hint": "見る + ながら"
+      }
+    ]
+  },
+  {
+    "id": "g:n5-nakatta",
+    "jlpt": "N5",
+    "title": "〜ませんでした / 〜なかった",
+    "meaning": "did not (past negative)",
+    "structure": "Verb ます-stem + ませんでした (polite); ない-form stem + なかった (plain)",
+    "formality": "neutral",
+    "notes": "Negates an action in the past. ませんでした is the polite form and なかった is the plain form. Adjectives use くなかったです and くなかった instead.",
+    "similar": [
+      "〜ない",
+      "〜た"
+    ],
+    "detect": [
+      "(ませんでした|なかった)"
+    ],
+    "examples": [
+      {
+        "ja": "昨日は{{行きませんでした}}。",
+        "en": "I didn't go yesterday.",
+        "hint": "行く + ませんでした"
+      },
+      {
+        "ja": "昨日は{{行かなかった}}。",
+        "en": "I didn't go yesterday.",
+        "hint": "行く + なかった"
+      },
+      {
+        "ja": "雨は{{降らなかった}}。",
+        "en": "It didn't rain.",
+        "hint": "降る + なかった"
+      }
+    ]
+  },
+  {
+    "id": "g:n5-i-na-adj",
+    "jlpt": "N5",
+    "title": "〜いです / 〜だ",
+    "meaning": "adjective sentences: is ... (い-adjective / な-adjective)",
+    "structure": "い-adjective + です / な-adjective + です or だ",
+    "formality": "neutral",
+    "notes": "Describes a state with an adjective. い-adjectives end in い and take です directly; な-adjectives take です in polite speech and だ in plain speech. Do not add だ to い-adjectives.",
+    "similar": [],
+    "detect": [],
+    "examples": [
+      {
+        "ja": "この部屋は{{広いです}}。",
+        "en": "This room is spacious.",
+        "hint": "広い + です"
+      },
+      {
+        "ja": "彼女は{{元気です}}。",
+        "en": "She's doing well.",
+        "hint": "元気だ + です"
+      },
+      {
+        "ja": "この店は{{静かだ}}。",
+        "en": "This shop is quiet.",
+        "hint": "静かだ + だ"
+      }
+    ]
+  }
+]

@@ -1,0 +1,266 @@
+[
+  {
+    "id": "p:wa", "surface": "は", "name": "topic marker", "level": "N5",
+    "roles": [
+      { "id": "topic", "explanation": "Marks the topic the sentence is about.", "example": { "ja": "私は学生です。", "en": "I am a student." } }
+    ]
+  },
+  {
+    "id": "p:ga", "surface": "が", "name": "subject marker", "level": "N5",
+    "roles": [
+      { "id": "subject", "explanation": "Marks the doer or the thing that is/does something.", "example": { "ja": "猫が好きです。", "en": "I like cats." } },
+      { "id": "contrast", "explanation": "Joins two clauses like \"but\" (softer than けど).", "example": { "ja": "行きたいが、お金がない。", "en": "I want to go, but I have no money." } }
+    ]
+  },
+  {
+    "id": "p:wo", "surface": "を", "name": "object marker", "level": "N5",
+    "roles": [
+      { "id": "object", "explanation": "Marks the thing that an action is done to.", "example": { "ja": "魚を食べた。", "en": "I ate fish." } }
+    ]
+  },
+  {
+    "id": "p:ni", "surface": "に", "name": "direction / location / time marker", "level": "N5",
+    "roles": [
+      { "id": "destination", "explanation": "Marks where someone goes or moves to (with 行く, 来る, 帰る).", "example": { "ja": "学校に行く。", "en": "I go to school." } },
+      { "id": "location", "explanation": "Marks where something exists (with いる, ある, 住む).", "example": { "ja": "家にいる。", "en": "I am at home." } },
+      { "id": "time", "explanation": "Marks a point in time (with a time word or number).", "example": { "ja": "七時に起きる。", "en": "I get up at seven." } },
+      { "id": "recipient", "explanation": "Marks the person who receives something (with あげる, 渡す, 教える).", "example": { "ja": "友達に本をあげた。", "en": "I gave a book to my friend." } },
+      { "id": "agent", "explanation": "Marks the person who does something to you (passive) or makes you do it (causative).", "example": { "ja": "先生に褒められた。", "en": "I was praised by the teacher." } }
+    ]
+  },
+  {
+    "id": "p:de", "surface": "で", "name": "place / means / cause marker", "level": "N5",
+    "roles": [
+      { "id": "location", "explanation": "Marks the place where an action happens.", "example": { "ja": "図書館で勉強する。", "en": "I study at the library." } },
+      { "id": "means", "explanation": "Marks the tool, method, or language used.", "example": { "ja": "日本語で話す。", "en": "I speak in Japanese." } },
+      { "id": "cause", "explanation": "Marks the reason something happened (e.g. weather, illness).", "example": { "ja": "雨で行けない。", "en": "I can't go because of the rain." } },
+      { "id": "te-form", "explanation": "Joins verbs in the te-form (e.g. 遊んで, then 〜ている).", "example": { "ja": "遊んでいる。", "en": "is playing." } }
+    ]
+  },
+  {
+    "id": "p:e", "surface": "へ", "name": "direction marker", "level": "N4",
+    "roles": [
+      { "id": "direction", "explanation": "Marks the direction of a movement (toward).", "example": { "ja": "東京へ行く。", "en": "I go toward Tokyo." } }
+    ]
+  },
+  {
+    "id": "p:to", "surface": "と", "name": "and / with / quotation / conditional marker", "level": "N5",
+    "roles": [
+      { "id": "with", "explanation": "Marks a companion (with someone) for an action.", "example": { "ja": "友達と映画を見た。", "en": "I watched a movie with a friend." } },
+      { "id": "and", "explanation": "Joins nouns in a list (A and B).", "example": { "ja": "りんごとバナナ。", "en": "Apples and bananas." } },
+      { "id": "quotation", "explanation": "Marks what someone said or thought (with 言う, 思う, 聞く).", "example": { "ja": "明日行くと言った。", "en": "He said he would go tomorrow." } },
+      { "id": "conditional", "explanation": "Means \"when\" or \"if\" after a plain verb or adjective (whenever X, Y).", "example": { "ja": "春になると花が咲く。", "en": "When spring comes, flowers bloom." } }
+    ]
+  },
+  {
+    "id": "p:kara", "surface": "から", "name": "from / because marker", "level": "N5",
+    "roles": [
+      { "id": "from", "explanation": "Marks the starting point of a place or time.", "example": { "ja": "九時から始まる。", "en": "It starts at nine." } },
+      { "id": "because", "explanation": "Marks a reason (after a plain verb or adjective).", "example": { "ja": "行くから待って。", "en": "Wait, because I'm going." } }
+    ]
+  },
+  {
+    "id": "p:made", "surface": "まで", "name": "until / even marker", "level": "N5",
+    "roles": [
+      { "id": "until", "explanation": "Marks the end point of a place or time.", "example": { "ja": "五時まで働く。", "en": "I work until five." } },
+      { "id": "even", "explanation": "Means \"even\" or \"as far as\" (emphasis).", "example": { "ja": "彼まで来た。", "en": "Even he came." } }
+    ]
+  },
+  {
+    "id": "p:yori", "surface": "より", "name": "comparison marker", "level": "N4",
+    "roles": [
+      { "id": "comparison", "explanation": "Marks the thing compared to (than).", "example": { "ja": "兄より背が高い。", "en": "I am taller than my older brother." } }
+    ]
+  },
+  {
+    "id": "p:no", "surface": "の", "name": "possessive / explanatory marker", "level": "N5",
+    "roles": [
+      { "id": "possessive", "explanation": "Links two nouns: X's Y or Y of X.", "example": { "ja": "先生の本。", "en": "The teacher's book." } },
+      { "id": "nominalizer", "explanation": "Turns a verb or adjective phrase into a noun (-ing / the act of).", "example": { "ja": "食べるのが好きだ。", "en": "I like eating." } },
+      { "id": "explanatory", "explanation": "Softens a sentence to explain or ask for context.", "example": { "ja": "パンを食べたのね。", "en": "So you ate bread, huh." } }
+    ]
+  },
+  {
+    "id": "p:mo", "surface": "も", "name": "also / too marker", "level": "N5",
+    "roles": [
+      { "id": "also", "explanation": "Means \"also\" or \"too\" (replaces は or が).", "example": { "ja": "私も行く。", "en": "I'm going too." } }
+    ]
+  },
+  {
+    "id": "p:ka", "surface": "か", "name": "question / or marker", "level": "N5",
+    "roles": [
+      { "id": "question", "explanation": "Makes a sentence a question (end of sentence).", "example": { "ja": "行きますか。", "en": "Are you going?" } },
+      { "id": "or", "explanation": "Means \"or\" between two choices.", "example": { "ja": "お茶かコーヒー。", "en": "Tea or coffee." } }
+    ]
+  },
+  {
+    "id": "p:ne", "surface": "ね", "name": "confirmation marker", "level": "N5",
+    "roles": [
+      { "id": "confirmation", "explanation": "Seeks agreement or softens a statement (right? / isn't it?).", "example": { "ja": "いい天気ですね。", "en": "Nice weather, isn't it?" } }
+    ]
+  },
+  {
+    "id": "p:yo", "surface": "よ", "name": "assertion marker", "level": "N5",
+    "roles": [
+      { "id": "assertion", "explanation": "Tells the listener something new or emphasizes a point.", "example": { "ja": "もう帰るよ。", "en": "I'm going home now, you know." } }
+    ]
+  },
+  {
+    "id": "p:na", "surface": "な", "name": "feeling / prohibition marker", "level": "N5",
+    "roles": [
+      { "id": "feeling", "explanation": "Expresses a feeling such as admiration or wishing.", "example": { "ja": "きれいだな。", "en": "How pretty." } },
+      { "id": "prohibition", "explanation": "After a plain verb, forbids an action (don't do).", "example": { "ja": "行くな。", "en": "Don't go." } }
+    ]
+  },
+  {
+    "id": "p:zo", "surface": "ぞ", "name": "emphasis marker (casual)", "level": "N4",
+    "roles": [
+      { "id": "emphasis", "explanation": "Strong, casual emphasis, mostly used by men.", "example": { "ja": "早く行くぞ。", "en": "Let's go quickly!" } }
+    ]
+  },
+  {
+    "id": "p:ze", "surface": "ぜ", "name": "emphasis marker (casual)", "level": "N4",
+    "roles": [
+      { "id": "emphasis", "explanation": "Casual emphasis, mostly used by men.", "example": { "ja": "大丈夫だぜ。", "en": "It's fine, I tell you." } }
+    ]
+  },
+  {
+    "id": "p:sa", "surface": "さ", "name": "emphasis marker (casual)", "level": "N4",
+    "roles": [
+      { "id": "emphasis", "explanation": "Casual emphasis or softening in speech.", "example": { "ja": "いいさ。", "en": "It's fine, really." } }
+    ]
+  },
+  {
+    "id": "p:wa-f", "surface": "わ", "name": "emphasis marker (feminine)", "level": "N4",
+    "roles": [
+      { "id": "emphasis", "explanation": "Soft, feminine emphasis at sentence end.", "example": { "ja": "きれいだわ。", "en": "It's beautiful, you know." } }
+    ]
+  },
+  {
+    "id": "p:ba", "surface": "ば", "name": "conditional marker (if)", "level": "N4",
+    "roles": [
+      { "id": "conditional", "explanation": "Means \"if\" or \"when\" (verb or adjective stem + ば).", "example": { "ja": "行けば分かる。", "en": "If you go, you'll understand." } }
+    ]
+  },
+  {
+    "id": "p:te", "surface": "て", "name": "te-form connector", "level": "N5",
+    "roles": [
+      { "id": "te-form", "explanation": "Connects verbs or clauses (and, then, so) and forms many patterns.", "example": { "ja": "食べて、寝る。", "en": "Eat, then sleep." } }
+    ]
+  },
+  {
+    "id": "p:shi", "surface": "し", "name": "listing marker (and also)", "level": "N4",
+    "roles": [
+      { "id": "listing", "explanation": "Lists reasons or facts (and also, what's more).", "example": { "ja": "雨も降っているし、行かない。", "en": "It's raining, and I'm not going." } }
+    ]
+  },
+  {
+    "id": "p:kedo", "surface": "けど", "name": "but / although (casual)", "level": "N4",
+    "roles": [
+      { "id": "contrast", "explanation": "Means \"but\" or \"although\" in casual speech.", "example": { "ja": "行きたいけど、無理だ。", "en": "I want to go, but it's impossible." } }
+    ]
+  },
+  {
+    "id": "p:node", "surface": "ので", "name": "because (polite)", "level": "N4",
+    "roles": [
+      { "id": "reason", "explanation": "Gives a reason, usually softer than から.", "example": { "ja": "雨が降っているので、家にいる。", "en": "Since it's raining, I'm staying home." } }
+    ]
+  },
+  {
+    "id": "p:noni", "surface": "のに", "name": "although / despite", "level": "N3",
+    "roles": [
+      { "id": "despite", "explanation": "Means \"even though\", often expressing surprise or annoyance.", "example": { "ja": "勉強したのに、落ちた。", "en": "Even though I studied, I failed." } }
+    ]
+  },
+  {
+    "id": "p:tari", "surface": "たり", "name": "listing marker (and so on)", "level": "N4",
+    "roles": [
+      { "id": "listing", "explanation": "Lists example actions (sometimes ~ and so on).", "example": { "ja": "読んだり書いたりする。", "en": "I read and write, and so on." } }
+    ]
+  },
+  {
+    "id": "p:nagara", "surface": "ながら", "name": "while doing", "level": "N3",
+    "roles": [
+      { "id": "while", "explanation": "Two actions at the same time (while doing).", "example": { "ja": "音楽を聴きながら勉強する。", "en": "I study while listening to music." } }
+    ]
+  },
+  {
+    "id": "p:dake", "surface": "だけ", "name": "only marker", "level": "N4",
+    "roles": [
+      { "id": "only", "explanation": "Means \"only\" or \"just\".", "example": { "ja": "水だけ飲んだ。", "en": "I only drank water." } }
+    ]
+  },
+  {
+    "id": "p:shika", "surface": "しか", "name": "only (with negative)", "level": "N4",
+    "roles": [
+      { "id": "only-negative", "explanation": "\"Only\", always used with a negative verb.", "example": { "ja": "一人しか来なかった。", "en": "Only one person came." } }
+    ]
+  },
+  {
+    "id": "p:bakari", "surface": "ばかり", "name": "just / only about", "level": "N3",
+    "roles": [
+      { "id": "only", "explanation": "Means \"just\", \"only\", or \"about\" (approximately).", "example": { "ja": "ゲームばかりしている。", "en": "I'm doing nothing but games." } }
+    ]
+  },
+  {
+    "id": "p:nado", "surface": "など", "name": "etc. / and so on", "level": "N3",
+    "roles": [
+      { "id": "etc", "explanation": "Lists examples (etc., and so on), often softer.", "example": { "ja": "りんごなどが好きだ。", "en": "I like things like apples." } }
+    ]
+  },
+  {
+    "id": "p:ya", "surface": "や", "name": "and (among others)", "level": "N4",
+    "roles": [
+      { "id": "listing", "explanation": "Lists some nouns out of several (A and B, among others).", "example": { "ja": "本やノート。", "en": "Books, notebooks, and so on." } }
+    ]
+  },
+  {
+    "id": "p:toka", "surface": "とか", "name": "like / such as (casual)", "level": "N3",
+    "roles": [
+      { "id": "listing", "explanation": "Lists examples casually (like, such as).", "example": { "ja": "寿司とかラーメンとか。", "en": "Things like sushi or ramen." } }
+    ]
+  },
+  {
+    "id": "p:tte", "surface": "って", "name": "quotation / topic (casual)", "level": "N3",
+    "roles": [
+      { "id": "quotation", "explanation": "Casual form of と for quoting (〜って言う).", "example": { "ja": "行くって言ってた。", "en": "He said he's going." } },
+      { "id": "topic", "explanation": "Casual topic marker, like は.", "example": { "ja": "それって何？", "en": "What's that?" } }
+    ]
+  },
+  {
+    "id": "p:koso", "surface": "こそ", "name": "emphasis marker (precisely)", "level": "N2",
+    "roles": [
+      { "id": "emphasis", "explanation": "Stresses the exact word it follows (precisely, that's the one).", "example": { "ja": "今日こそ勝つ。", "en": "Today I will definitely win." } }
+    ]
+  },
+  {
+    "id": "p:sae", "surface": "さえ", "name": "even marker", "level": "N3",
+    "roles": [
+      { "id": "even", "explanation": "Means \"even\" (the extreme case).", "example": { "ja": "子供でさえ知っている。", "en": "Even children know it." } }
+    ]
+  },
+  {
+    "id": "p:demo", "surface": "でも", "name": "even / or something", "level": "N3",
+    "roles": [
+      { "id": "even", "explanation": "Means \"even\" or \"or something\" (e.g. 誰でも, anyone).", "example": { "ja": "誰でも知っている。", "en": "Everyone knows it." } }
+    ]
+  },
+  {
+    "id": "p:hodo", "surface": "ほど", "name": "extent / about", "level": "N3",
+    "roles": [
+      { "id": "extent", "explanation": "Marks an extent or degree (to the extent of, about).", "example": { "ja": "死ぬほど疲れた。", "en": "I was tired to the point of dying." } }
+    ]
+  },
+  {
+    "id": "p:kurai", "surface": "くらい", "name": "about / approximately", "level": "N4",
+    "roles": [
+      { "id": "approximately", "explanation": "Means \"about\" or \"approximately\".", "example": { "ja": "十分くらい待って。", "en": "Wait about ten minutes." } }
+    ]
+  },
+  {
+    "id": "p:zutsu", "surface": "ずつ", "name": "each / apiece", "level": "N4",
+    "roles": [
+      { "id": "each", "explanation": "Means \"each\" or \"apiece\" (equal shares).", "example": { "ja": "一人に二つずつ。", "en": "Two each per person." } }
+    ]
+  }
+]

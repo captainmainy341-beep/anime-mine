@@ -26,9 +26,35 @@ const quote = (text) => `"${escapeSearch(text)}"`;
 const exactDeck = (name) => `(deck:${quote(name)} -deck:"${escapeSearch(name)}::*")`;
 const deckScope = (names) => `(${names.map(exactDeck).join(' OR ')})`;
 
+const OPERATOR = /(^|[\s(])-?[a-z]+:|\(|\)|(^|\s)-|\s(or|and)\s|(^|\s)"/i;
+
+// Balanced quotes (only at token start or after name:) and parens, so raw text can't close our scope group.
+function isWellFormed(text) {
+  let depth = 0;
+  let inQuote = false;
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (inQuote) {
+      if (ch === '\\') i++;
+      else if (ch === '"') inQuote = false;
+      continue;
+    }
+    if (ch === '\\') { i++; continue; }
+    if (ch === '"') {
+      const prev = text[i - 1] ?? ' ';
+      if (!/[\s(:-]/.test(prev)) return false;
+      inQuote = true;
+    } else if (ch === '(') depth++;
+    else if (ch === ')' && --depth < 0) return false;
+  }
+  return !inQuote && depth === 0;
+}
+
+// Plain words stay an exact phrase; anything using Anki operators is passed through untouched.
 function searchText(query) {
   const text = typeof query === 'string' ? query.trim() : '';
-  return text ? quote(text) : '';
+  if (!text) return '';
+  return OPERATOR.test(text) && isWellFormed(text) ? `(${text})` : quote(text);
 }
 
 function normalizeState(state = 'all') {
@@ -68,12 +94,47 @@ function cardState(info) {
   return 'learn';
 }
 
-function toBrowseCard(info, dueIds) {
+const FIELD_CHARS = 2000;
+
+function wordFieldName(fields) {
+  if (Object.hasOwn(fields, 'Word')) return 'Word';
+  return Object.keys(fields).sort((a, b) => (fields[a]?.order ?? 0) - (fields[b]?.order ?? 0))[0];
+}
+
+function plainFields(fields) {
+  return Object.fromEntries(Object.entries(fields).map(([name, field]) => [name, plainText(field?.value).slice(0, FIELD_CHARS)]));
+}
+
+const truncatedFields = (fields) => Object.keys(fields).filter((name) => plainText(fields[name]?.value).length > FIELD_CHARS);
+
+function reviewDays(info, today) {
+  return today != null && info.type === 2 ? info.due - today : null;
+}
+
+function dayLabel(days) {
+  if (days === 0) return 'today';
+  if (days === 1) return 'tomorrow';
+  if (days < 0) return `overdue ${-days}d`;
+  if (days <= 30) return `in ${days}d`;
+  return `in ${Math.round(days / 30)}mo`;
+}
+
+function dueText(info, due, today) {
+  if (info.queue === -1) return 'suspended';
+  if (info.queue === -2 || info.queue === -3) return 'buried';
+  if (info.type === 0) return `new #${info.due}`;
+  if (info.type !== 2) return 'learning';
+  const days = reviewDays(info, today);
+  if (days === null) return due ? 'due' : 'scheduled';
+  return dayLabel(days);
+}
+
+function toBrowseCard(info, dueIds, tags = [], today = null) {
   const fields = info.fields ?? {};
   const raw = (name) => (Object.hasOwn(fields, name) ? fields[name]?.value : undefined);
-  const ordered = Object.keys(fields).sort((a, b) => (fields[a]?.order ?? 0) - (fields[b]?.order ?? 0));
-  const wordField = raw('Word') !== undefined ? 'Word' : ordered[0];
+  const wordField = wordFieldName(fields);
   const id = info.cardId ?? info.id;
+  const isNew = info.type === 0;
   return {
     id,
     word: plainText(wordField ? raw(wordField) : ''),
@@ -85,11 +146,101 @@ function toBrowseCard(info, dueIds) {
     due: dueIds.has(id),
     interval: info.interval ?? 0,
     ease: info.factor ? info.factor / 1000 : 0,
+    easePct: isNew || !info.factor ? null : Math.round(info.factor / 10),
     reps: info.reps ?? 0,
     lapses: info.lapses ?? 0,
     audio: soundName(raw('Audio')),
     picture: imageName(raw('Picture')),
+    noteId: info.note ?? null,
+    deck: info.deckName ?? null,
+    noteType: info.modelName ?? null,
+    fields: plainFields(fields),
+    fieldsTruncated: truncatedFields(fields),
+    tags: [...tags],
+    flag: info.flags ?? 0,
+    marked: tags.includes('marked'),
+    suspended: info.queue === -1,
+    buried: info.queue === -2 || info.queue === -3,
+    dueText: dueText(info, dueIds.has(id), today),
+    dueDay: reviewDays(info, today),
+    createdTs: info.note ?? null,
+    modifiedTs: info.mod ? info.mod * 1000 : null,
   };
+}
+
+const SORTS = ['created', 'due', 'interval', 'ease', 'lapses', 'reps', 'modified', 'word', 'deck'];
+const INFO_CHUNK = 500;
+
+function normalizeSort(sort = 'created') {
+  if (!SORTS.includes(sort)) throw new Error(`sort must be one of ${SORTS.join(', ')}`);
+  return sort;
+}
+
+const clampOffset = (offset) => Math.max(0, Number.isFinite(offset) ? Math.floor(offset) : 0);
+
+const scopeOf = (names) => (names.length === 1 ? exactDeck(names[0]) : deckScope(names));
+
+async function cardInfos(client, ids) {
+  const infos = [];
+  for (let i = 0; i < ids.length; i += INFO_CHUNK) {
+    infos.push(...((await client.invoke('cardsInfo', { cards: ids.slice(i, i + INFO_CHUNK) })) ?? []));
+  }
+  return infos;
+}
+
+// The collection day comes from the add-on; any failure leaves it unknown so browsing never fails on it.
+async function collectionToday(client) {
+  try {
+    const day = await client.invoke('animeMineToday');
+    return Number.isInteger(day?.today) ? day.today : null;
+  } catch {
+    return null;
+  }
+}
+
+async function noteTags(client, infos) {
+  const notes = [...new Set(infos.map((info) => info.note))];
+  if (!notes.length) return new Map();
+  const found = (await client.invoke('notesInfo', { notes })) ?? [];
+  return new Map(found.map((note) => [note.noteId, note.tags ?? []]));
+}
+
+const sortValue = {
+  interval: (info) => info.interval ?? 0,
+  ease: (info) => info.factor ?? 0,
+  lapses: (info) => info.lapses ?? 0,
+  reps: (info) => info.reps ?? 0,
+  modified: (info) => info.mod ?? 0,
+  word: (info) => {
+    const fields = info.fields ?? {};
+    const name = wordFieldName(fields);
+    return name ? plainText(fields[name]?.value) : '';
+  },
+  deck: (info) => info.deckName ?? '',
+};
+
+// Without the collection day, raw due order stands. With it, new cards come first by position, then learning, then review.
+// A review card's due is a day number, so comparing raw due orders reviews by dueDay.
+function dueRank(info, today) {
+  if (today == null || info.type === 0) return 0;
+  return info.type === 2 ? 2 : 1;
+}
+
+function compareDue(a, b, today) {
+  return dueRank(a, today) - dueRank(b, today) || (a.due ?? 0) - (b.due ?? 0);
+}
+
+function compareValues(x, y) {
+  return typeof x === 'string' ? x.localeCompare(y) : x - y;
+}
+
+function sortInfos(infos, sort, desc, today) {
+  const key = sortValue[sort];
+  const sign = desc ? -1 : 1;
+  return infos.sort((a, b) => {
+    const order = sort === 'due' ? compareDue(a, b, today) : compareValues(key(a), key(b));
+    return order * sign || a.cardId - b.cardId;
+  });
 }
 
 const forecastShape = (counts = []) =>
@@ -194,21 +345,57 @@ class AnkiBrowser {
       });
   }
 
-  async browse({ deck, query, state, limit } = {}) {
-    if (typeof deck !== 'string' || deck === '') throw new Error('deck is required');
+  async browse({ deck, decks, query, state, limit, sort, desc = false, offset } = {}) {
+    const names = typeof deck === 'string' && deck !== '' ? [deck] : Array.isArray(decks) ? [...new Set(decks)] : null;
+    if (!names) throw new Error('deck is required');
+    if (!names.length) return { cards: [], total: 0 };
     const cardState = normalizeState(state);
+    const sortBy = normalizeSort(sort);
     const max = clampLimit(limit);
-    const scope = exactDeck(deck);
+    const start = clampOffset(offset);
+    const scope = scopeOf(names);
     const search = [scope, STATE_SEARCH[cardState], searchText(query)].filter(Boolean).join(' ');
     const [ids, due] = await this.run([
       ['findCards', { query: search }],
       ['findCards', { query: `${scope} is:due` }],
     ]);
-    const page = (ids ?? []).slice(0, max);
-    if (!page.length) return { cards: [] };
-    const infos = await this.client.invoke('cardsInfo', { cards: page });
+    const today = await collectionToday(this.client);
+    const matched = ids ?? [];
     const dueIds = new Set(due ?? []);
-    return { cards: infos.filter((info) => info.deckName === deck).map((info) => toBrowseCard(info, dueIds)) };
+    const allowed = new Set(names);
+    const keep = (info) => allowed.has(info.deckName);
+    let page;
+    let total = matched.length;
+    if (sortBy === 'created') {
+      const ordered = desc ? [...matched].reverse() : matched;
+      const infos = await cardInfos(this.client, ordered.slice(start, start + max));
+      page = infos.filter(keep);
+      if (page.length !== infos.length) total = (await cardInfos(this.client, matched)).filter(keep).length;
+    } else {
+      const found = (await cardInfos(this.client, matched)).filter(keep);
+      page = sortInfos(found, sortBy, desc, today).slice(start, start + max);
+      total = found.length;
+    }
+    const tags = await noteTags(this.client, page);
+    return {
+      cards: page.map((info) => toBrowseCard(info, dueIds, tags.get(info.note), today)),
+      total,
+    };
+  }
+
+  async facets(args) {
+    const actions = require('./ankiBrowseActions');
+    return actions.facets(this.client, args);
+  }
+
+  async cardInfo(args) {
+    const actions = require('./ankiBrowseActions');
+    return actions.cardInfo(this.client, args);
+  }
+
+  async cardAction(args) {
+    const actions = require('./ankiBrowseActions');
+    return actions.cardAction(this.client, args);
   }
 
   async media(filename) {
@@ -222,8 +409,13 @@ module.exports = {
   AnkiBrowser,
   BROWSE_STATES,
   assertMediaName,
+  cardInfos,
   clampLimit,
+  collectionToday,
+  noteTags,
   normalizeState,
+  plainFields,
+  scopeOf,
   toBrowseCard,
   plainText,
 };

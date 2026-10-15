@@ -38,6 +38,15 @@ test('exposes the second part-of-speech field', async () => {
   assert.equal(find(tokens, 'て').pos2, '接続助詞');
 });
 
+test('exposes conjugation type and form, empty for uninflected words', async () => {
+  const tokens = await tokenize('食べた');
+  assert.equal(find(tokens, 'た').conjugatedType, '特殊・タ');
+  assert.equal(find(tokens, 'た').conjugatedForm, '基本形');
+  assert.equal(find(tokens, '食べ').conjugatedForm, '連用形');
+  assert.equal(find(tokens, '食べ').conjugatedType, '一段');
+  assert.equal(find(tokens, '食べ').base, '食べる');
+});
+
 test('marks punctuation as non-words', async () => {
   const tokens = await tokenize(TEXT);
   const punctuation = find(tokens, '。');

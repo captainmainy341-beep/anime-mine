@@ -1,3 +1,6 @@
 node_modules
 .DS_Store
 dist
+.task-backups/
+/p_*.jpg
+/pick.jpg

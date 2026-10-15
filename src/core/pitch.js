@@ -1,13 +1,10 @@
 const fs = require('node:fs');
 const path = require('node:path');
+const { toHiragana } = require('./kana');
 
 const ACCENTS_URL = 'https://raw.githubusercontent.com/mifunetoshiro/kanjium/master/data/source_files/raw/accents.txt';
 const USER_AGENT = 'anime-mine';
 const SMALL_KANA = new Set('ゃゅょぁぃぅぇぉャュョァィゥェォ');
-
-function toHiragana(text) {
-  return text.replace(/[\u30a1-\u30f6]/g, (char) => String.fromCharCode(char.charCodeAt(0) - 0x60));
-}
 
 function parseAccent(text) {
   const parts = text.replace(/[[\]\s]/g, '').split(',');

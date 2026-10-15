@@ -1,0 +1,1078 @@
+[
+  {
+    "id": "g:n4-ta-koto-ga-aru",
+    "jlpt": "N4",
+    "title": "〜たことがある",
+    "meaning": "have had the experience of ...",
+    "structure": "Verb た-form + ことがある",
+    "formality": "neutral",
+    "notes": "Talks about an experience at some unspecified time in the past, not a specific event. The negative 〜たことがない means never having done something. Polite form: 〜たことがあります.",
+    "similar": [],
+    "detect": [
+      "たことが"
+    ],
+    "examples": [
+      {
+        "ja": "日本に{{行ったことがあります}}か。",
+        "en": "Have you ever been to Japan?",
+        "hint": "行く + たことがある"
+      },
+      {
+        "ja": "あの映画は{{見たことがある}}けど、内容は忘れた。",
+        "en": "I have seen that movie before, but I forgot the story.",
+        "hint": "見る + たことがある"
+      },
+      {
+        "ja": "まだ一度も{{作ったことがない}}。",
+        "en": "I have never made it before.",
+        "hint": "作る + たことがある"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-tari-tari-suru",
+    "jlpt": "N4",
+    "title": "〜たり〜たりする",
+    "meaning": "do things like ... and ... (among other actions)",
+    "structure": "Verb た-form + り, Verb た-form + りする",
+    "formality": "neutral",
+    "notes": "Lists typical actions as examples, implying there are others. The final する can be conjugated (したりする, しなかったりする). Used with verbs; the same pattern appears with adjectives at a higher level.",
+    "similar": [],
+    "detect": [
+      "たり.{0,15}たり"
+    ],
+    "examples": [
+      {
+        "ja": "休みの日は{{本を読んだり音楽を聞いたりする}}。",
+        "en": "On days off I read books, listen to music, and so on.",
+        "hint": "読む + たりする"
+      },
+      {
+        "ja": "雨の日は家で{{掃除をしたりゲームをしたりする}}。",
+        "en": "On rainy days I clean the house, play games, and so on.",
+        "hint": "する + たりする"
+      },
+      {
+        "ja": "ここでは{{走ったりしないでください}}。",
+        "en": "Please don't do things like running around here.",
+        "hint": "走る + たりする"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-koto-ga-dekiru",
+    "jlpt": "N4",
+    "title": "〜ことができる",
+    "meaning": "can do ... / be able to ...",
+    "structure": "Verb dictionary form + ことができる",
+    "formality": "neutral",
+    "notes": "Expresses ability or possibility in a more formal or written style. In everyday speech the potential form (食べられる) is more common. Also appears on signs for permitted actions.",
+    "similar": [
+      "〜られる / 〜える (potential)"
+    ],
+    "detect": [
+      "ことができ"
+    ],
+    "examples": [
+      {
+        "ja": "彼は英語で{{話すことができる}}。",
+        "en": "He can speak English.",
+        "hint": "話す + ことができる"
+      },
+      {
+        "ja": "ここで写真を{{撮ることができます}}。",
+        "en": "You can take photos here.",
+        "hint": "撮る + ことができる"
+      },
+      {
+        "ja": "明日までに{{終わらせることができるかな}}。",
+        "en": "I wonder if I can finish it by tomorrow.",
+        "hint": "終わらせる + ことができる"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-kamo-shirenai",
+    "jlpt": "N4",
+    "title": "〜かもしれない",
+    "meaning": "might / may / perhaps",
+    "structure": "Plain form + かもしれない",
+    "formality": "neutral",
+    "notes": "Expresses uncertain possibility, weaker than a firm prediction. Attach to the plain form; for na-adjectives and nouns, drop だ (休み + かもしれない). Polite form: かもしれません.",
+    "similar": [
+      "〜でしょう (probably / right?)"
+    ],
+    "detect": [
+      "かもしれ"
+    ],
+    "examples": [
+      {
+        "ja": "明日は雨が{{降るかもしれない}}。",
+        "en": "It might rain tomorrow.",
+        "hint": "降る + かもしれない"
+      },
+      {
+        "ja": "彼は{{知らないかもしれません}}。",
+        "en": "He may not know.",
+        "hint": "知る + かもしれない"
+      },
+      {
+        "ja": "その店は{{休みかもしれない}}。",
+        "en": "That shop might be closed.",
+        "hint": "休み + かもしれない"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-tsumori",
+    "jlpt": "N4",
+    "title": "〜つもり",
+    "meaning": "intend to / plan to (personal intention)",
+    "structure": "Verb dictionary form + つもり / Verb ない-form + つもり",
+    "formality": "neutral",
+    "notes": "Shows the speaker's own intention or decision, not an arranged schedule (use 予定 for that). Negative intention: 〜つもりはない (no intention of doing it). Sounds firm when stated with だ or です.",
+    "similar": [
+      "〜予定"
+    ],
+    "detect": [
+      "つもり"
+    ],
+    "examples": [
+      {
+        "ja": "今年こそ日本語を{{勉強するつもりだ}}。",
+        "en": "This year I really intend to study Japanese.",
+        "hint": "勉強する + つもり"
+      },
+      {
+        "ja": "明日は早く{{寝るつもりです}}。",
+        "en": "I plan to go to bed early tomorrow.",
+        "hint": "寝る + つもり"
+      },
+      {
+        "ja": "もう{{行かないつもりだ}}。",
+        "en": "I've decided not to go anymore.",
+        "hint": "行く + つもり"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-yotei",
+    "jlpt": "N4",
+    "title": "〜予定",
+    "meaning": "plan / scheduled to (arranged in advance)",
+    "structure": "Verb dictionary form + 予定 / noun の + 予定",
+    "formality": "neutral",
+    "notes": "Refers to an arrangement or schedule already decided, such as a meeting or trip. Common forms: 予定がある / 予定はない. For a personal intention, use 〜つもり instead.",
+    "similar": [
+      "〜つもり"
+    ],
+    "detect": [
+      "予定"
+    ],
+    "examples": [
+      {
+        "ja": "来週、東京へ{{行く予定}}です。",
+        "en": "I'm scheduled to go to Tokyo next week.",
+        "hint": "行く + 予定"
+      },
+      {
+        "ja": "今日は何も{{予定がない}}。",
+        "en": "I have nothing planned today.",
+        "hint": "予定 + ある"
+      },
+      {
+        "ja": "会議は三時から{{始まる予定}}だ。",
+        "en": "The meeting is scheduled to start at three.",
+        "hint": "始まる + 予定"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-to-omou",
+    "jlpt": "N4",
+    "title": "〜と思う",
+    "meaning": "I think that ... / I believe that ...",
+    "structure": "Plain form + と思う",
+    "formality": "neutral",
+    "notes": "States the speaker's opinion or belief. The negative 〜と思わない means I don't think so. Attach to the plain form even in polite speech: 〜と思います.",
+    "similar": [
+      "〜かもしれない"
+    ],
+    "detect": [
+      "と思"
+    ],
+    "examples": [
+      {
+        "ja": "明日は{{晴れると思う}}。",
+        "en": "I think it will be sunny tomorrow.",
+        "hint": "晴れる + と思う"
+      },
+      {
+        "ja": "彼は{{来ないと思います}}。",
+        "en": "I don't think he'll come.",
+        "hint": "来る + と思う"
+      },
+      {
+        "ja": "この料理は{{おいしいと思う}}。",
+        "en": "I think this dish is delicious.",
+        "hint": "おいしい + と思う"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-to-iu-quote",
+    "jlpt": "N4",
+    "title": "〜と言う (quoting)",
+    "meaning": "says that ... / said that ...",
+    "structure": "Plain form + と言う",
+    "formality": "neutral",
+    "notes": "Reports what someone said, quoting in plain form. Past report: 〜と言った / 〜と言っていた. Different from 〜という (called / named), which names something.",
+    "similar": [
+      "〜という (called / named)"
+    ],
+    "detect": [
+      "と言(う|った|って)"
+    ],
+    "examples": [
+      {
+        "ja": "先生は{{明日休みだと言った}}。",
+        "en": "The teacher said that tomorrow is a day off.",
+        "hint": "言う + と言う"
+      },
+      {
+        "ja": "友達は{{行かないと言っていた}}。",
+        "en": "My friend said they wouldn't go.",
+        "hint": "言う + と言う"
+      },
+      {
+        "ja": "お母さんは{{もう寝ると言った}}。",
+        "en": "Mom said she was going to sleep now.",
+        "hint": "言う + と言う"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-sugiru",
+    "jlpt": "N4",
+    "title": "〜すぎる",
+    "meaning": "too much / excessively",
+    "structure": "Verb ます-stem + すぎる / i-adjective stem + すぎる / na-adjective stem + すぎる",
+    "formality": "neutral",
+    "notes": "Means doing or being more than is appropriate, usually with a negative nuance. Examples: 食べすぎる (eat too much), 高すぎる (too expensive).",
+    "similar": [],
+    "detect": [
+      "すぎ(る|ます|た|ない|て)"
+    ],
+    "examples": [
+      {
+        "ja": "昨日は{{食べすぎた}}ので、お腹が痛い。",
+        "en": "I ate too much yesterday, so my stomach hurts.",
+        "hint": "食べる + すぎる"
+      },
+      {
+        "ja": "この靴は{{高すぎます}}。",
+        "en": "These shoes are too expensive.",
+        "hint": "高い + すぎる"
+      },
+      {
+        "ja": "もう{{遅すぎる}}よ、今日は帰ろう。",
+        "en": "It's already too late. Let's head home today.",
+        "hint": "遅い + すぎる"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-yasui",
+    "jlpt": "N4",
+    "title": "〜やすい",
+    "meaning": "easy to ... / tends to ...",
+    "structure": "Verb ます-stem + やすい",
+    "formality": "neutral",
+    "notes": "Describes something that is easy to do, or something that tends to happen (風邪をひきやすい). The opposite is 〜にくい. Often used for habits or tendencies.",
+    "similar": [
+      "〜にくい"
+    ],
+    "detect": [
+      "やすい"
+    ],
+    "examples": [
+      {
+        "ja": "この本は{{読みやすい}}ですよ。",
+        "en": "This book is easy to read.",
+        "hint": "読む + やすい"
+      },
+      {
+        "ja": "冬は風邪を{{ひきやすい}}です。",
+        "en": "People tend to catch colds in winter.",
+        "hint": "引く + やすい"
+      },
+      {
+        "ja": "このペンは{{書きやすい}}。",
+        "en": "This pen is easy to write with.",
+        "hint": "書く + やすい"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-nikui",
+    "jlpt": "N4",
+    "title": "〜にくい",
+    "meaning": "hard to ... / difficult to ...",
+    "structure": "Verb ます-stem + にくい",
+    "formality": "neutral",
+    "notes": "Describes something that is difficult to do, the opposite of 〜やすい. It describes difficulty, not impossibility. Often used for things that are hard to read, understand, or use.",
+    "similar": [
+      "〜やすい"
+    ],
+    "detect": [
+      "にくい"
+    ],
+    "examples": [
+      {
+        "ja": "この字は{{読みにくい}}です。",
+        "en": "This handwriting is hard to read.",
+        "hint": "読む + にくい"
+      },
+      {
+        "ja": "この椅子は{{座りにくい}}。",
+        "en": "This chair is hard to sit on.",
+        "hint": "座る + にくい"
+      },
+      {
+        "ja": "漢字は{{覚えにくい}}ね。",
+        "en": "Kanji are hard to remember, aren't they?",
+        "hint": "覚える + にくい"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-sou-da-appearance",
+    "jlpt": "N4",
+    "title": "〜そうだ (appearance)",
+    "meaning": "looks like / seems ... (judging from appearance)",
+    "structure": "Verb ます-stem + そうだ / i-adjective stem + そうだ / na-adjective stem + そうだ",
+    "formality": "neutral",
+    "notes": "A judgment from how something looks, before trying it. Exceptions: いい becomes よさそうだ and ない becomes なさそうだ. For information heard from someone else, use 〜そうだ (hearsay).",
+    "similar": [
+      "〜そうだ (hearsay)"
+    ],
+    "detect": [],
+    "examples": [
+      {
+        "ja": "このケーキ、{{おいしそう}}！",
+        "en": "This cake looks delicious!",
+        "hint": "おいしい + そうだ"
+      },
+      {
+        "ja": "空が暗くて、雨が{{降りそうだ}}。",
+        "en": "The sky is dark; it looks like it's going to rain.",
+        "hint": "降る + そうだ"
+      },
+      {
+        "ja": "その箱は{{重そうです}}ね。",
+        "en": "That box looks heavy, doesn't it?",
+        "hint": "重い + そうだ"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-sou-da-hearsay",
+    "jlpt": "N4",
+    "title": "〜そうだ (hearsay)",
+    "meaning": "I hear that ... / they say that ...",
+    "structure": "Plain verb or i-adjective + そうだ / noun or na-adjective + だそうだ",
+    "formality": "neutral",
+    "notes": "Reports information heard from someone else. Attach to the plain form; nouns and na-adjectives take だそうだ. Polite form: そうです. Unlike 〜そうだ (appearance), it is based on what was heard, not how things look.",
+    "similar": [
+      "〜そうだ (appearance)",
+      "〜によると"
+    ],
+    "detect": [],
+    "examples": [
+      {
+        "ja": "明日は{{雨だそうです}}。",
+        "en": "I hear it's going to rain tomorrow.",
+        "hint": "雨 + だそうだ"
+      },
+      {
+        "ja": "彼は{{来ないそうだ}}。",
+        "en": "I heard he isn't coming.",
+        "hint": "来る + そうだ"
+      },
+      {
+        "ja": "そのレストランは{{おいしいそうだ}}。",
+        "en": "I hear that restaurant is good.",
+        "hint": "おいしい + そうだ"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-you-da",
+    "jlpt": "N4",
+    "title": "〜ようだ",
+    "meaning": "seems / appears / looks like (based on evidence)",
+    "structure": "Plain form + ようだ / noun の + ようだ / na-adjective な + ようだ",
+    "formality": "neutral",
+    "notes": "Expresses a conclusion drawn from observation or evidence, less certain than a fact. Also used for comparisons (まるで〜ようだ, as if ...). Polite form: ようです.",
+    "similar": [
+      "〜らしい"
+    ],
+    "detect": [
+      "ようだ",
+      "ようです"
+    ],
+    "examples": [
+      {
+        "ja": "外が静かだ。誰も{{いないようだ}}。",
+        "en": "It's quiet outside. It seems no one is there.",
+        "hint": "いる + ようだ"
+      },
+      {
+        "ja": "彼は{{風邪をひいたようです}}。",
+        "en": "He seems to have caught a cold.",
+        "hint": "引く + ようだ"
+      },
+      {
+        "ja": "この雨は、まるで空が{{泣いているようだ}}。",
+        "en": "This rain is as if the sky were crying.",
+        "hint": "泣く + ようだ"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-rashii",
+    "jlpt": "N4",
+    "title": "〜らしい",
+    "meaning": "seems / apparently / it is said (from indirect information)",
+    "structure": "Plain form + らしい / noun + らしい",
+    "formality": "neutral",
+    "notes": "Expresses a conclusion from indirect information, less certain than a fact. Also describes a typical quality (男らしい, manly). Attaches directly to plain forms, nouns, and na-adjectives.",
+    "similar": [
+      "〜ようだ"
+    ],
+    "detect": [
+      "らしい"
+    ],
+    "examples": [
+      {
+        "ja": "明日は{{雨らしい}}よ。",
+        "en": "Apparently it's going to rain tomorrow.",
+        "hint": "雨 + らしい"
+      },
+      {
+        "ja": "彼は{{学生らしい}}。",
+        "en": "He seems to be a student.",
+        "hint": "学生 + らしい"
+      },
+      {
+        "ja": "あの{{子供らしい}}笑顔が好きだ。",
+        "en": "I like that childlike smile.",
+        "hint": "子供 + らしい"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-hazu-da",
+    "jlpt": "N4",
+    "title": "〜はずだ",
+    "meaning": "should be / is expected to ... (by reasoning)",
+    "structure": "Plain form + はずだ / na-adjective + なはずだ / noun + のはずだ",
+    "formality": "neutral",
+    "notes": "Expresses a reasonable expectation based on known facts or plans. The speaker is fairly confident but not certain. The negative 〜はずがない means it is impossible.",
+    "similar": [
+      "〜はずがない"
+    ],
+    "detect": [
+      "はず(だ|です)"
+    ],
+    "examples": [
+      {
+        "ja": "彼は今日、{{来るはずだ}}。",
+        "en": "He should come today.",
+        "hint": "来る + はずだ"
+      },
+      {
+        "ja": "この店は九時に{{開くはずです}}。",
+        "en": "This shop should open at nine.",
+        "hint": "開く + はずだ"
+      },
+      {
+        "ja": "鍵は机の上に{{あるはずだ}}。",
+        "en": "The key should be on the desk.",
+        "hint": "ある + はずだ"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-hazu-ga-nai",
+    "jlpt": "N4",
+    "title": "〜はずがない",
+    "meaning": "there is no way that ... / it can't be that ...",
+    "structure": "Plain form + はずがない",
+    "formality": "neutral",
+    "notes": "A strong judgment that something is impossible, based on reasoning. Expresses emphatic disbelief. Polite form: 〜はずがありません.",
+    "similar": [
+      "〜はずだ"
+    ],
+    "detect": [
+      "はずがな"
+    ],
+    "examples": [
+      {
+        "ja": "彼が{{嘘をつくはずがない}}。",
+        "en": "There's no way he would lie.",
+        "hint": "嘘をつく + はずがない"
+      },
+      {
+        "ja": "こんな時間に{{開いているはずがありません}}。",
+        "en": "There's no way that place is open at this hour.",
+        "hint": "開く + はずがない"
+      },
+      {
+        "ja": "あれが{{高いはずがない}}よ。",
+        "en": "There's no way that's expensive.",
+        "hint": "高い + はずがない"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-nasai",
+    "jlpt": "N4",
+    "title": "〜なさい",
+    "meaning": "do ... (firm instruction)",
+    "structure": "Verb ます-stem + なさい",
+    "formality": "polite",
+    "notes": "A polite but firm command, often from a parent or teacher to a child. Softer than a plain imperative, stricter than 〜てください. Do not use it toward superiors.",
+    "similar": [
+      "〜てください"
+    ],
+    "detect": [
+      "なさい"
+    ],
+    "examples": [
+      {
+        "ja": "もう{{寝なさい}}。",
+        "en": "Go to bed now.",
+        "hint": "寝る + なさい"
+      },
+      {
+        "ja": "ちゃんと{{食べなさい}}。",
+        "en": "Eat properly.",
+        "hint": "食べる + なさい"
+      },
+      {
+        "ja": "宿題は{{やりなさい}}よ。",
+        "en": "Do your homework, okay?",
+        "hint": "やる + なさい"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-ta-hou-ga-ii",
+    "jlpt": "N4",
+    "title": "〜たほうがいい",
+    "meaning": "should / had better (advice)",
+    "structure": "Verb た-form + ほうがいい",
+    "formality": "neutral",
+    "notes": "Gives advice on what someone should do. Stronger than 〜といい. The negative 〜ないほうがいい means should not. Can sound strong, so avoid it with superiors.",
+    "similar": [
+      "〜ないほうがいい"
+    ],
+    "detect": [
+      "たほうがいい"
+    ],
+    "examples": [
+      {
+        "ja": "薬を{{飲んだほうがいい}}よ。",
+        "en": "You should take the medicine.",
+        "hint": "飲む + たほうがいい"
+      },
+      {
+        "ja": "もう一度{{確認したほうがいいです}}。",
+        "en": "You should check it once more.",
+        "hint": "確認する + たほうがいい"
+      },
+      {
+        "ja": "今日は{{早く寝たほうがいい}}。",
+        "en": "You should go to bed early today.",
+        "hint": "寝る + たほうがいい"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-nai-hou-ga-ii",
+    "jlpt": "N4",
+    "title": "〜ないほうがいい",
+    "meaning": "should not / had better not",
+    "structure": "Verb ない-form + ほうがいい",
+    "formality": "neutral",
+    "notes": "Advises against an action; the mirror of 〜たほうがいい. Often used to warn someone gently. Polite form: 〜ないほうがいいです.",
+    "similar": [
+      "〜たほうがいい"
+    ],
+    "detect": [
+      "ないほうがいい"
+    ],
+    "examples": [
+      {
+        "ja": "夜は{{走らないほうがいい}}。",
+        "en": "You shouldn't run at night.",
+        "hint": "走る + ないほうがいい"
+      },
+      {
+        "ja": "そんな話は{{信じないほうがいいですよ}}。",
+        "en": "You shouldn't believe that kind of story.",
+        "hint": "信じる + ないほうがいい"
+      },
+      {
+        "ja": "甘いものは{{食べすぎないほうがいい}}。",
+        "en": "It's better not to eat too many sweets.",
+        "hint": "食べる + ないほうがいい"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-nakute-mo-ii",
+    "jlpt": "N4",
+    "title": "〜なくてもいい",
+    "meaning": "don't have to / needn't",
+    "structure": "Verb ない-form (ない → なくて) + もいい",
+    "formality": "neutral",
+    "notes": "Says an action is not necessary. The stem form 〜ないでもいい is also used. Polite form: 〜なくてもいいです. It is about lack of necessity, not prohibition; for prohibition use 〜てはいけない.",
+    "similar": [
+      "〜てはいけない"
+    ],
+    "detect": [
+      "なくてもいい"
+    ],
+    "examples": [
+      {
+        "ja": "明日は学校に{{来なくてもいい|来なくてもよい}}。",
+        "en": "You don't have to come to school tomorrow.",
+        "hint": "来る + なくてもいい"
+      },
+      {
+        "ja": "お金は{{払わなくてもいいです}}。",
+        "en": "You don't need to pay.",
+        "hint": "払う + なくてもいい"
+      },
+      {
+        "ja": "今日は{{手伝わなくてもいいよ}}。",
+        "en": "You don't have to help today.",
+        "hint": "手伝う + なくてもいい"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-nakucha",
+    "jlpt": "N4",
+    "title": "〜なくちゃ / なきゃ",
+    "meaning": "have to / must (colloquial)",
+    "structure": "Verb ない-form + なくちゃ / なきゃ",
+    "formality": "casual",
+    "notes": "Casual contraction of 〜なくては / 〜なければならない. Used in speech; avoid it in formal writing. Both なくちゃ and なきゃ are common.",
+    "similar": [
+      "〜なくてもいい"
+    ],
+    "detect": [
+      "な(くちゃ|きゃ)"
+    ],
+    "examples": [
+      {
+        "ja": "早く{{帰らなくちゃ}}。",
+        "en": "I have to go home soon.",
+        "hint": "帰る + なくちゃ"
+      },
+      {
+        "ja": "もう{{行かなきゃ}}。",
+        "en": "I have to go now.",
+        "hint": "行く + なきゃ"
+      },
+      {
+        "ja": "宿題を{{やらなきゃ}}だめだよ。",
+        "en": "You have to do your homework.",
+        "hint": "やる + なきゃ"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-toki",
+    "jlpt": "N4",
+    "title": "〜とき",
+    "meaning": "when ... / at the time of ...",
+    "structure": "Plain form + とき / な-adjective + な + とき / noun + の + とき",
+    "formality": "neutral",
+    "notes": "Describes the time when an event happens. The tense of the preceding clause matters: 寝るとき (when going to sleep) vs 寝たとき (after falling asleep). Often used with plain forms before とき.",
+    "similar": [
+      "〜時 (when)"
+    ],
+    "detect": [
+      "とき"
+    ],
+    "examples": [
+      {
+        "ja": "{{困ったとき}}は、いつでも言ってね。",
+        "en": "Whenever you're in trouble, just tell me.",
+        "hint": "困る + とき"
+      },
+      {
+        "ja": "{{寝るとき}}は電気を消してください。",
+        "en": "Please turn off the lights when you go to sleep.",
+        "hint": "寝る + とき"
+      },
+      {
+        "ja": "日本に{{来たとき}}、驚いた。",
+        "en": "I was surprised when I came to Japan.",
+        "hint": "来る + とき"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-aida",
+    "jlpt": "N4",
+    "title": "〜あいだ / 〜あいだに",
+    "meaning": "while / during / between",
+    "structure": "Plain form + あいだ / noun + の + あいだ",
+    "formality": "neutral",
+    "notes": "あいだ: a span of time during which something continues. あいだに: within that span, when a single action happens. Attach verbs in plain form; use の only after nouns.",
+    "similar": [
+      "〜うちに"
+    ],
+    "detect": [
+      "あいだ"
+    ],
+    "examples": [
+      {
+        "ja": "私が{{留守のあいだ}}に、荷物が届いた。",
+        "en": "A package arrived while I was out.",
+        "hint": "留守 + あいだ"
+      },
+      {
+        "ja": "寝ている{{あいだに}}、雨が止んだ。",
+        "en": "The rain stopped while I was sleeping.",
+        "hint": "寝る + あいだに"
+      },
+      {
+        "ja": "日本にいる{{あいだに}}、たくさん旅行したい。",
+        "en": "I want to travel a lot while I'm in Japan.",
+        "hint": "いる + あいだに"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-uchi-ni",
+    "jlpt": "N4",
+    "title": "〜うちに",
+    "meaning": "while / before a condition changes",
+    "structure": "Plain form + うちに / い-adjective + うちに / な-adjective + なうちに / noun + のうちに",
+    "formality": "neutral",
+    "notes": "Doing something while a condition lasts, before it changes. Often used with 〜ないうちに (before something happens). 〜あいだに is similar, but うちに stresses that a state is changing.",
+    "similar": [
+      "〜あいだ / 〜あいだに"
+    ],
+    "detect": [
+      "うちに"
+    ],
+    "examples": [
+      {
+        "ja": "{{若いうちに}}、いろいろ経験しよう。",
+        "en": "Let's experience many things while we're young.",
+        "hint": "若い + うちに"
+      },
+      {
+        "ja": "{{冷めないうちに}}食べてください。",
+        "en": "Please eat it before it gets cold.",
+        "hint": "冷める + うちに"
+      },
+      {
+        "ja": "{{忘れないうちに}}メモしておこう。",
+        "en": "Let's make a note before we forget.",
+        "hint": "忘れる + うちに"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-shika-nai",
+    "jlpt": "N4",
+    "title": "〜しか〜ない",
+    "meaning": "only / nothing but",
+    "structure": "Noun + しか + negative predicate",
+    "formality": "neutral",
+    "notes": "Means only, paired with a negative predicate. Unlike だけ, it always needs a negative verb or adjective. Example: 百円しか持っていない (I only have 100 yen).",
+    "similar": [
+      "〜だけ"
+    ],
+    "detect": [
+      "しか.{0,12}ない"
+    ],
+    "examples": [
+      {
+        "ja": "財布には{{百円しか入っていない}}。",
+        "en": "There's only 100 yen in my wallet.",
+        "hint": "入る + しか〜ない"
+      },
+      {
+        "ja": "教室には{{三人しかいない}}。",
+        "en": "There are only three people in the classroom.",
+        "hint": "いる + しか〜ない"
+      },
+      {
+        "ja": "お金は{{千円しか持っていない}}。",
+        "en": "I only have 1,000 yen with me.",
+        "hint": "持つ + しか〜ない"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-kadou-ka",
+    "jlpt": "N4",
+    "title": "〜かどうか",
+    "meaning": "whether or not ...",
+    "structure": "Plain form + かどうか",
+    "formality": "neutral",
+    "notes": "Expresses uncertainty about a yes-or-no question, used when reporting a question or expressing doubt. Nouns and na-adjectives drop だ (元気かどうか). Often used with 分からない, 聞く, or 確認する.",
+    "similar": [
+      "〜か (question particle)"
+    ],
+    "detect": [
+      "かどうか"
+    ],
+    "examples": [
+      {
+        "ja": "明日{{来られるかどうか}}分からない。",
+        "en": "I don't know whether I can come tomorrow.",
+        "hint": "来る + かどうか"
+      },
+      {
+        "ja": "彼が{{本当に来るかどうか}}確認した。",
+        "en": "I checked whether he would really come.",
+        "hint": "来る + かどうか"
+      },
+      {
+        "ja": "そのケーキが{{おいしいかどうか}}教えて。",
+        "en": "Tell me whether that cake is good.",
+        "hint": "おいしい + かどうか"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-to-iu-named",
+    "jlpt": "N4",
+    "title": "〜という (called / named)",
+    "meaning": "called / named ... / a so-called ...",
+    "structure": "Plain form + という + noun",
+    "formality": "neutral",
+    "notes": "Introduces a name or term, or identifies something as a particular kind. Not for quoting speech (that is 〜と言う). Polite speech often uses 〜といいます.",
+    "similar": [
+      "〜と言う (quoting)"
+    ],
+    "detect": [
+      "という"
+    ],
+    "examples": [
+      {
+        "ja": "{{東京という}}町に住んでいます。",
+        "en": "I live in a city called Tokyo.",
+        "hint": "東京 + という"
+      },
+      {
+        "ja": "「ハナ」{{という}}名前の猫を飼っている。",
+        "en": "I have a cat named Hana.",
+        "hint": "言う + という"
+      },
+      {
+        "ja": "これは{{ラーメンという}}料理です。",
+        "en": "This is a dish called ramen.",
+        "hint": "ラーメン + という"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-bakari",
+    "jlpt": "N4",
+    "title": "〜ばかり",
+    "meaning": "only / nothing but / just (did)",
+    "structure": "Noun + ばかり / Verb て-form + ばかり / Verb た-form + ばかり (just did)",
+    "formality": "neutral",
+    "notes": "Means 'only' or 'nothing but' with nouns and continuing actions (〜てばかりいる). With the past form た, it means 'just did something'. Similar to 〜だけ in meaning, but often carries a negative nuance.",
+    "similar": [
+      "〜だけ"
+    ],
+    "detect": [
+      "ばかり"
+    ],
+    "examples": [
+      {
+        "ja": "彼はゲームの話{{ばかり}}している。",
+        "en": "He only talks about games.",
+        "hint": "話 + ばかり"
+      },
+      {
+        "ja": "今{{来たばかり}}なので、まだ疲れていない。",
+        "en": "I just arrived, so I'm not tired yet.",
+        "hint": "来る + ばかり"
+      },
+      {
+        "ja": "最近は{{寝てばかり}}いる。",
+        "en": "Lately all I do is sleep.",
+        "hint": "寝る + ばかり"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-tokoro-da",
+    "jlpt": "N4",
+    "title": "〜ところだ",
+    "meaning": "about to / in the middle of / just did",
+    "structure": "Dictionary form + ところだ (about to) / Verb ている + ところだ (in progress) / Verb た + ところだ (just now)",
+    "formality": "neutral",
+    "notes": "Refers to the stage of an action. Dictionary form means about to, ている means in the middle, and た means just done. Often used with words like ちょうど or 今.",
+    "similar": [
+      "〜たばかり"
+    ],
+    "detect": [
+      "ところ(だ|です)"
+    ],
+    "examples": [
+      {
+        "ja": "今、ご飯を{{食べるところだ}}。",
+        "en": "I'm just about to eat.",
+        "hint": "食べる + ところだ"
+      },
+      {
+        "ja": "今、{{出かけているところです}}。",
+        "en": "I'm just on my way out now.",
+        "hint": "出かける + ところだ"
+      },
+      {
+        "ja": "たった今{{帰ってきたところだ}}。",
+        "en": "I just got back.",
+        "hint": "帰る + ところだ"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-ni-yoruto",
+    "jlpt": "N4",
+    "title": "〜によると",
+    "meaning": "according to ...",
+    "structure": "Noun + によると",
+    "formality": "neutral",
+    "notes": "Gives the source of information, commonly news, reports, or forecasts. The more formal version is 〜によれば. Often followed by そうだ, らしい, or a plain statement.",
+    "similar": [
+      "〜そうだ (hearsay)"
+    ],
+    "detect": [
+      "によると"
+    ],
+    "examples": [
+      {
+        "ja": "ニュース{{によると}}、明日は雪が降るそうだ。",
+        "en": "According to the news, it will snow tomorrow.",
+        "hint": "ニュース + によると"
+      },
+      {
+        "ja": "天気予報{{によると}}、明日は晴れるらしい。",
+        "en": "According to the weather forecast, it will be sunny tomorrow.",
+        "hint": "天気予報 + によると"
+      },
+      {
+        "ja": "先生{{によると}}、テストは来週です。",
+        "en": "According to the teacher, the test is next week.",
+        "hint": "先生 + によると"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-nitsuite",
+    "jlpt": "N4",
+    "title": "〜について",
+    "meaning": "about / regarding",
+    "structure": "Noun + について",
+    "formality": "neutral",
+    "notes": "Marks the topic of a talk, discussion, question, or report. Used in both speech and writing; 〜の話 is more casual. Common phrases: 〜について話す, 〜について考える.",
+    "similar": [],
+    "detect": [
+      "について"
+    ],
+    "examples": [
+      {
+        "ja": "日本の文化{{について}}話してください。",
+        "en": "Please talk about Japanese culture.",
+        "hint": "文化 + について"
+      },
+      {
+        "ja": "その{{問題について}}、どう思う？",
+        "en": "What do you think about that problem?",
+        "hint": "問題 + について"
+      },
+      {
+        "ja": "旅行の{{計画について}}相談したい。",
+        "en": "I want to consult about the travel plan.",
+        "hint": "計画 + について"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-hodo-nai",
+    "jlpt": "N4",
+    "title": "〜ほど〜ない",
+    "meaning": "not as ... as ...",
+    "structure": "A + ほど + negative predicate (B は A ほど〜ない)",
+    "formality": "neutral",
+    "notes": "Compares two things and says one does not reach the level of the other. The predicate must be negative. Example: 東京ほど寒くない (not as cold as Tokyo).",
+    "similar": [
+      "〜より〜のほうが"
+    ],
+    "detect": [
+      "ほど.{0,12}ない"
+    ],
+    "examples": [
+      {
+        "ja": "今日は昨日{{ほど寒くない}}。",
+        "en": "Today is not as cold as yesterday.",
+        "hint": "寒い + ほど〜ない"
+      },
+      {
+        "ja": "この映画は思っていたほど{{面白くない}}。",
+        "en": "This movie isn't as interesting as I expected.",
+        "hint": "面白い + ほど〜ない"
+      },
+      {
+        "ja": "あの店{{ほど高くない}}けど、おいしいよ。",
+        "en": "It isn't as expensive as that shop, but it's good.",
+        "hint": "高い + ほど〜ない"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-mama",
+    "jlpt": "N4",
+    "title": "〜まま",
+    "meaning": "as it is / leaving something in the same state",
+    "structure": "Verb た-form + まま / Verb ている + まま / noun + の + まま",
+    "formality": "neutral",
+    "notes": "Describes a state that stays unchanged while something else happens. Common forms: そのまま (just as it is), 〜ままにする. Used with a state, not with a change of state.",
+    "similar": [],
+    "detect": [
+      "まま"
+    ],
+    "examples": [
+      {
+        "ja": "電気を{{つけたまま}}寝てしまった。",
+        "en": "I fell asleep with the light still on.",
+        "hint": "つける + まま"
+      },
+      {
+        "ja": "靴を{{履いたまま}}部屋に入らないで。",
+        "en": "Don't come into the room with your shoes on.",
+        "hint": "履く + まま"
+      },
+      {
+        "ja": "彼は何も言わず、{{黙ったまま}}だった。",
+        "en": "He stayed silent without saying anything.",
+        "hint": "黙る + まま"
+      }
+    ]
+  }
+]

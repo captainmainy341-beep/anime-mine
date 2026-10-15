@@ -22,8 +22,33 @@ const CARDS = [
   { id: 1013, deck: DECKS[3], word: '心', reading: 'こころ', meaning: 'heart, mind', sentence: '心から感謝する。', source: 'Kanji (sample)', state: 'learn', due: false, interval: 0, ease: 2.5, reps: 1, lapses: 0 },
 ];
 
+const SAMPLE_NOTE_TYPE = 'AnimeMine';
+const MINUTE = 60 * 1000;
+const DAY = 24 * 60 * MINUTE;
+const SAMPLE_NOW = Date.UTC(2026, 9, 12);
+
+const dueTextOf = (card) => {
+  if (card.state === 'suspended') return 'suspended';
+  if (card.state === 'new') return `new #${card.id % 100}`;
+  if (card.state === 'learn') return 'learning';
+  return card.due ? 'due' : 'scheduled';
+};
+
 const toCard = (card) => ({
   id: card.id,
+  noteId: card.id + 5000,
+  deck: card.deck,
+  noteType: SAMPLE_NOTE_TYPE,
+  fields: { Word: card.word, Reading: card.reading, Meaning: card.meaning, Sentence: card.sentence, Source: card.source },
+  tags: card.state === 'learn' ? ['sample'] : [],
+  flag: 0,
+  marked: false,
+  suspended: card.state === 'suspended',
+  buried: false,
+  easePct: card.state === 'new' ? null : Math.round(card.ease * 100),
+  dueText: dueTextOf(card),
+  createdTs: SAMPLE_NOW - (card.id % 100) * DAY,
+  modifiedTs: SAMPLE_NOW - card.reps * MINUTE,
   word: card.word,
   reading: card.reading,
   meaning: card.meaning,
@@ -38,6 +63,20 @@ const toCard = (card) => ({
   audio: null,
   picture: null,
 });
+
+const SAMPLE_SORT = {
+  created: (card) => card.id,
+  due: (card) => (card.due ? 0 : 1),
+  interval: (card) => card.interval,
+  ease: (card) => card.ease,
+  lapses: (card) => card.lapses,
+  reps: (card) => card.reps,
+  modified: (card) => card.reps,
+  word: (card) => card.word,
+  deck: (card) => card.deck,
+};
+
+const inDecks = (names) => (card) => !names || names.includes(card.deck);
 
 const minedCards = () =>
   CARDS.filter((card) => card.deck === MINING_DECK)
@@ -80,17 +119,68 @@ class SampleBrowser {
     };
   }
 
-  async browse({ deck, query, state, limit } = {}) {
+  async browse({ deck, decks, query, state, limit, sort = 'created', desc = false, offset = 0 } = {}) {
     const cardState = normalizeState(state);
     const max = clampLimit(limit);
+    if (!Object.hasOwn(SAMPLE_SORT, sort)) throw new Error(`sort must be one of ${Object.keys(SAMPLE_SORT).join(', ')}`);
+    const names = deck ? [deck] : decks ?? null;
     const text = typeof query === 'string' ? query.trim().toLowerCase() : '';
-    const cards = CARDS.filter(
+    const matched = CARDS.filter(
       (card) =>
-        (!deck || card.deck === deck) &&
+        inDecks(names)(card) &&
         matchesState(card, cardState) &&
         (!text || [card.word, card.reading, card.meaning, card.sentence, card.source].some((field) => field.toLowerCase().includes(text))),
     );
-    return { cards: cards.slice(0, max).map(toCard) };
+    const key = SAMPLE_SORT[sort];
+    const sorted = [...matched].sort((a, b) => {
+      const x = key(a);
+      const y = key(b);
+      const order = typeof x === 'string' ? x.localeCompare(y) : x - y;
+      return (desc ? -order : order) || a.id - b.id;
+    });
+    const start = Math.max(0, Math.floor(offset) || 0);
+    return { cards: sorted.slice(start, start + max).map(toCard), total: matched.length };
+  }
+
+  async facets({ decks = [] } = {}) {
+    const scoped = CARDS.filter(inDecks(decks));
+    const count = (predicate) => scoped.filter(predicate).length;
+    const saved = [
+      { id: 'today', label: 'Today', query: 'added:1', count: count((c) => c.ago === 0) },
+      { id: 'week', label: 'Added this week', query: 'added:7', count: count((c) => c.ago === undefined || c.ago <= 7) },
+      { id: 'due', label: 'Due today', query: 'is:due', count: count((c) => c.due) },
+      { id: 'flagged', label: 'Flagged', query: '-flag:0', count: 0 },
+      { id: 'marked', label: 'Marked', query: 'tag:marked', count: 0 },
+      { id: 'suspended', label: 'Suspended', query: 'is:suspended', count: count((c) => c.state === 'suspended') },
+      { id: 'buried', label: 'Buried', query: 'is:buried', count: 0 },
+      { id: 'leeches', label: 'Leeches', query: 'tag:leech', count: 0 },
+      { id: 'failed', label: 'Failed today', query: 'rated:1:1', count: 0 },
+    ];
+    return {
+      decks: decks.map((name) => {
+        const cards = scoped.filter((c) => c.deck === name);
+        return { name, total: cards.length, due: cards.filter((c) => c.due).length, new: cards.filter((c) => c.state === 'new').length };
+      }),
+      tags: [{ name: 'sample', count: count((c) => c.state === 'learn') }],
+      noteTypes: [{ name: SAMPLE_NOTE_TYPE, count: scoped.length }],
+      saved,
+    };
+  }
+
+  async cardInfo({ cardId, decks } = {}) {
+    const card = CARDS.find((c) => c.id === cardId);
+    if (!card || !inDecks(decks)(card)) throw new Error('Card is not in a visible deck');
+    const info = toCard(card);
+    return {
+      card: info,
+      history: [],
+      created: info.createdTs,
+      firstReview: null,
+      lastReview: null,
+      averageTimeMs: null,
+      totalTimeMs: null,
+      note: { id: info.noteId, fields: info.fields, tags: info.tags },
+    };
   }
 
   async media(filename) {

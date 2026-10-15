@@ -1,6 +1,6 @@
 const test = require('node:test')
 const assert = require('node:assert/strict')
-const {explain, translate, buildPrompt, buildTranslatePrompt} = require('../src/core/ai')
+const {explain, translate, complete, aiReady, deps, buildPrompt, buildTranslatePrompt} = require('../src/core/ai')
 
 const anthropicSettings = {provider: 'anthropic', apiKey: 'sk-test', model: 'claude-haiku-4-5-20251001'}
 const openaiSettings = {provider: 'openai', apiKey: 'sk-openai', model: 'gpt-4o-mini'}
@@ -216,4 +216,63 @@ test('explain still uses the 700 token cap', async t => {
   const calls = stubFetch(t, 200, {choices: [{message: {content: 'ok'}}]})
   await explain(openaiSettings, {sentence: 'x'})
   assert.equal(calls[0].body.max_tokens, 700)
+})
+
+test('complete sends the given system and user prompt with the requested token cap', async t => {
+  const calls = stubFetch(t, 200, {content: [{type: 'text', text: '  A hook.  '}]})
+  const reply = await complete(anthropicSettings, {system: 'sys', user: 'usr'}, 300)
+
+  assert.equal(reply, 'A hook.')
+  assert.equal(calls[0].body.max_tokens, 300)
+  assert.equal(calls[0].body.system, 'sys')
+  assert.deepEqual(calls[0].body.messages, [{role: 'user', content: 'usr'}])
+})
+
+const claudeSettings = {provider: 'claude-cli', apiKey: '', model: 'claude-haiku-4-5-20251001'}
+
+function stubExecFile(t, handler) {
+  const calls = []
+  t.mock.method(deps, 'execFile', (file, args, options, callback) => {
+    calls.push({file, args, options})
+    handler(callback)
+  })
+  return calls
+}
+
+test('claude-cli: runs Claude Code with Haiku 5.5 at medium effort, no tools, and no API key', async t => {
+  const calls = stubExecFile(t, callback => callback(null, '  It was breakfast.\n', ''))
+  const prompt = buildTranslatePrompt({sentence: '朝ご飯を食べた。'})
+  const reply = await translate(claudeSettings, {sentence: '朝ご飯を食べた。'})
+
+  assert.equal(reply, 'It was breakfast.')
+  assert.equal(calls.length, 1)
+  const {args} = calls[0]
+  const flag = name => args[args.indexOf(name) + 1]
+  assert.equal(args[0], '-p')
+  assert.equal(flag('--model'), 'claude-haiku-5-5')
+  assert.equal(flag('--effort'), 'medium')
+  assert.equal(flag('--system-prompt'), prompt.system)
+  assert.equal(flag('--tools'), '')
+  assert.ok(args.includes('--no-session-persistence'))
+  assert.equal(args.at(-1), prompt.user)
+})
+
+test('claude-cli: a missing binary gets a friendly install message', async t => {
+  stubExecFile(t, callback => callback(Object.assign(new Error('spawn claude ENOENT'), {code: 'ENOENT'}), '', ''))
+  await assert.rejects(
+    translate(claudeSettings, {sentence: 'x'}),
+    {message: 'Claude Code not found. Install it and run "claude" once to log in, or pick another provider in Settings.'},
+  )
+})
+
+test('claude-cli: other failures surface the start of stderr', async t => {
+  stubExecFile(t, callback => callback(new Error('Command failed'), '', 'not logged in'))
+  await assert.rejects(translate(claudeSettings, {sentence: 'x'}), {message: 'Claude Code failed: not logged in'})
+})
+
+test('aiReady: claude-cli needs no key, other providers need one', () => {
+  assert.equal(aiReady({provider: 'claude-cli', apiKey: ''}), true)
+  assert.equal(aiReady({provider: 'anthropic', apiKey: 'sk-test'}), true)
+  assert.equal(aiReady({provider: 'anthropic', apiKey: ''}), false)
+  assert.equal(aiReady(undefined), false)
 })

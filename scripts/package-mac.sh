@@ -23,6 +23,7 @@ rm -f "$RES/default_app.asar"
 mkdir -p "$RES/app"
 cp package.json package-lock.json "$RES/app/"
 cp -R src "$RES/app/src"
+cp -R native "$RES/app/native"
 rsync -a --exclude electron --exclude .bin node_modules/ "$RES/app/node_modules/"
 cp "$BUILD/icon.icns" "$RES/electron.icns"
 

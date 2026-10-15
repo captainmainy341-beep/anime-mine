@@ -1,0 +1,9 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Isolated study reviewer regression fixture</title><link rel="icon" href="data:,"><link rel="stylesheet" href="../../../src/renderer/styles.css"></head><body><header class="topbar"><div class="brand">anime<span>-mine</span></div><nav><button>Library</button><button>Learn</button><button>Anki</button><button>Settings</button></nav></header><main id="view"></main><div id="toasts" class="toasts" aria-live="polite"></div><script type="module">
+const card = await fetch('./jp1k-card.json').then(r=>r.json());
+const deck='JAP LEARN::AJT JP1K';
+const calls=[];let resolveGrade,rejectGrade;
+window.studyMocks={calls,resolveGrade:()=>resolveGrade(),rejectGrade:()=>rejectGrade(new Error('Offline test')),queueCalls:0};
+window.Audio=class {pause(){} async play(){calls.push({audio:true})}};
+window.api={anki:{getView:async()=>({mode:'live',connected:true,visibleDecks:[deck]}),overview:async()=>({mode:'live',today:{due:2},decks:[{name:deck,due:2,new:0,learning:0}],forecast:[],mined:[]}),media:async()=> 'data:audio/mpeg;base64,AA==',studyQueue:async()=>{window.studyMocks.queueCalls++;return{cards:[1,2].map(id=>({...card,id,deck,audio:'fixture.mp3',intervals:['<10m','<15m','5d','12d']}))}},studyAnswer:({cardId,ease})=>{calls.push({cardId,ease});return new Promise((resolve,reject)=>{resolveGrade=resolve;rejectGrade=reject})}}};
+const {mountAnki}=await import('../../../src/renderer/anki.mjs');window.disposeStudy=mountAnki(document.getElementById('view'));
+</script></body></html>

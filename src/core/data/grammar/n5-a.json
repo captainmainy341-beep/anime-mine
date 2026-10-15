@@ -1,0 +1,715 @@
+[
+  {
+    "id": "g:n5-wa-desu",
+    "jlpt": "N5",
+    "title": "〜は〜です",
+    "meaning": "X is Y (polite copula)",
+    "structure": "Noun は Noun です",
+    "formality": "polite",
+    "notes": "Connects a topic (は, read wa) to a noun or description. The polite negative is じゃありません; the plain form is だ.",
+    "similar": [],
+    "detect": [],
+    "examples": [
+      {
+        "ja": "私は学生{{です}}。",
+        "en": "I am a student.",
+        "hint": "です + は〜です"
+      },
+      {
+        "ja": "これは私の{{かさです}}。",
+        "en": "This is my umbrella.",
+        "hint": "かさ + です"
+      },
+      {
+        "ja": "田中さんは先生{{です}}。",
+        "en": "Mr. Tanaka is a teacher.",
+        "hint": "です + は〜です"
+      }
+    ]
+  },
+  {
+    "id": "g:n5-ka",
+    "jlpt": "N5",
+    "title": "〜か",
+    "meaning": "question marker (yes/no question)",
+    "structure": "Sentence か",
+    "formality": "polite",
+    "notes": "Adding か at the end of a sentence turns it into a question. In speech it can be shown with a rising tone. In casual talk か is often dropped and only the rising tone remains.",
+    "similar": [],
+    "detect": [],
+    "examples": [
+      {
+        "ja": "これはペン{{ですか}}。",
+        "en": "Is this a pen?",
+        "hint": "です + か"
+      },
+      {
+        "ja": "今日は{{暑いですか}}。",
+        "en": "Is it hot today?",
+        "hint": "暑い + ですか"
+      },
+      {
+        "ja": "明日、学校に{{行きますか}}。",
+        "en": "Will you go to school tomorrow?",
+        "hint": "行く + ますか"
+      }
+    ]
+  },
+  {
+    "id": "g:n5-mo",
+    "jlpt": "N5",
+    "title": "〜も",
+    "meaning": "also / too",
+    "structure": "Noun も",
+    "formality": "neutral",
+    "notes": "も replaces は, が, or を when the item is also true or included. Do not add は after も; も already marks the topic. It can attach to nouns, verbs, and adjectives.",
+    "similar": [],
+    "detect": [],
+    "examples": [
+      {
+        "ja": "{{私も}}学生です。",
+        "en": "I am a student, too.",
+        "hint": "も (also)"
+      },
+      {
+        "ja": "{{猫も}}好きです。",
+        "en": "I like cats, too.",
+        "hint": "も (also)"
+      },
+      {
+        "ja": "{{父も}}来ました。",
+        "en": "My father came, too.",
+        "hint": "も (also)"
+      }
+    ]
+  },
+  {
+    "id": "g:n5-no",
+    "jlpt": "N5",
+    "title": "〜の",
+    "meaning": "of / 's (possession or modification)",
+    "structure": "Noun の Noun",
+    "formality": "neutral",
+    "notes": "の links two nouns: the first owns or describes the second. At the end of a casual sentence, の can soften a statement or express a feeling.",
+    "similar": [],
+    "detect": [],
+    "examples": [
+      {
+        "ja": "{{私の}}本です。",
+        "en": "It is my book.",
+        "hint": "の (possessive)"
+      },
+      {
+        "ja": "{{日本の}}食べ物はおいしいです。",
+        "en": "Japanese food is delicious.",
+        "hint": "の (modifier)"
+      },
+      {
+        "ja": "これは{{田中さんの}}かさです。",
+        "en": "This is Mr. Tanaka's umbrella.",
+        "hint": "の (possessive)"
+      }
+    ]
+  },
+  {
+    "id": "g:n5-o",
+    "jlpt": "N5",
+    "title": "〜を",
+    "meaning": "marks the direct object of an action",
+    "structure": "Noun を Verb",
+    "formality": "neutral",
+    "notes": "を marks the thing a transitive verb acts on. It is written as を but pronounced o. Intransitive verbs such as 行く or 来る use に or へ for direction instead.",
+    "similar": [],
+    "detect": [],
+    "examples": [
+      {
+        "ja": "{{パンを}}食べます。",
+        "en": "I eat bread.",
+        "hint": "を (object)"
+      },
+      {
+        "ja": "{{水を}}飲みます。",
+        "en": "I drink water.",
+        "hint": "を (object)"
+      },
+      {
+        "ja": "毎朝{{コーヒーを}}飲みます。",
+        "en": "I drink coffee every morning.",
+        "hint": "を (object)"
+      }
+    ]
+  },
+  {
+    "id": "g:n5-ni",
+    "jlpt": "N5",
+    "title": "〜に",
+    "meaning": "at / on / in (time); to (destination)",
+    "structure": "Time に Verb / Place に 行きます",
+    "formality": "neutral",
+    "notes": "に marks a specific point in time (七時に, 月曜日に) and the goal of movement (学校に). Do not use に with きのう, きょう, あした, or いつ. Those time words take no particle.",
+    "similar": [],
+    "detect": [],
+    "examples": [
+      {
+        "ja": "{{七時に}}起きます。",
+        "en": "I wake up at seven.",
+        "hint": "に (time)"
+      },
+      {
+        "ja": "{{学校に}}行きます。",
+        "en": "I go to school.",
+        "hint": "に (destination)"
+      },
+      {
+        "ja": "{{月曜日に}}会いましょう。",
+        "en": "Let's meet on Monday.",
+        "hint": "に (time)"
+      }
+    ]
+  },
+  {
+    "id": "g:n5-de-place",
+    "jlpt": "N5",
+    "title": "〜で（場所）",
+    "meaning": "at / in (place where an action happens)",
+    "structure": "Place で Verb",
+    "formality": "neutral",
+    "notes": "で after a place shows where an action takes place. It is different from に, which marks where something exists or where one is going. Use で with verbs of action such as 勉強する or 食べる.",
+    "similar": [],
+    "detect": [],
+    "examples": [
+      {
+        "ja": "{{図書館で}}勉強します。",
+        "en": "I study at the library.",
+        "hint": "で (place of action)"
+      },
+      {
+        "ja": "{{駅で}}友だちを待ちます。",
+        "en": "I wait for a friend at the station.",
+        "hint": "で (place of action)"
+      },
+      {
+        "ja": "{{教室で}}話しましょう。",
+        "en": "Let's talk in the classroom.",
+        "hint": "で (place of action)"
+      }
+    ]
+  },
+  {
+    "id": "g:n5-de-means",
+    "jlpt": "N5",
+    "title": "〜で（手段）",
+    "meaning": "by / with (means, tool, or language)",
+    "structure": "Tool / Method で Verb",
+    "formality": "neutral",
+    "notes": "で after a noun shows the tool, means of transport, or language used to do something. The same particle marks a place of action, so context decides. For accompanying people use と, not で.",
+    "similar": [],
+    "detect": [],
+    "examples": [
+      {
+        "ja": "{{ペンで}}書きます。",
+        "en": "I write with a pen.",
+        "hint": "で (tool)"
+      },
+      {
+        "ja": "{{バスで}}行きます。",
+        "en": "I go by bus.",
+        "hint": "で (means)"
+      },
+      {
+        "ja": "{{日本語で}}話します。",
+        "en": "I speak in Japanese.",
+        "hint": "で (language)"
+      }
+    ]
+  },
+  {
+    "id": "g:n5-to-with",
+    "jlpt": "N5",
+    "title": "〜と（〜と一緒に）",
+    "meaning": "with (someone)",
+    "structure": "Person と Verb",
+    "formality": "neutral",
+    "notes": "と after a person means doing something together with that person. It is different from the list particle と, which joins nouns. Use と with 友だち, 家族, and similar people.",
+    "similar": [],
+    "detect": [],
+    "examples": [
+      {
+        "ja": "{{友だちと}}映画を見ます。",
+        "en": "I watch a movie with my friend.",
+        "hint": "と (with)"
+      },
+      {
+        "ja": "{{母と}}買い物に行きます。",
+        "en": "I go shopping with my mother.",
+        "hint": "と (with)"
+      },
+      {
+        "ja": "{{兄と}}話します。",
+        "en": "I talk with my older brother.",
+        "hint": "と (with)"
+      }
+    ]
+  },
+  {
+    "id": "g:n5-to-and",
+    "jlpt": "N5",
+    "title": "〜と（並列）",
+    "meaning": "and (complete list of nouns)",
+    "structure": "Noun と Noun",
+    "formality": "neutral",
+    "notes": "と joins nouns into a list that is complete. For a partial list use や instead, which implies there are others. と can only link nouns, not verbs or adjectives.",
+    "similar": [
+      "〜や〜"
+    ],
+    "detect": [],
+    "examples": [
+      {
+        "ja": "{{りんごと}}バナナが好きです。",
+        "en": "I like apples and bananas.",
+        "hint": "と (and)"
+      },
+      {
+        "ja": "{{ペンと}}ノートを買いました。",
+        "en": "I bought a pen and a notebook.",
+        "hint": "と (and)"
+      },
+      {
+        "ja": "{{犬と}}猫がいます。",
+        "en": "There are dogs and cats.",
+        "hint": "と (and)"
+      }
+    ]
+  },
+  {
+    "id": "g:n5-kara-made",
+    "jlpt": "N5",
+    "title": "〜から〜まで",
+    "meaning": "from ... to ... (range in time or place)",
+    "structure": "Start から End まで",
+    "formality": "neutral",
+    "notes": "から marks the starting point and まで the end point. Either one can be used alone, as in 九時から or 駅まで. Do not replace まで with に here.",
+    "similar": [],
+    "detect": [
+      "から.{1,12}まで"
+    ],
+    "examples": [
+      {
+        "ja": "{{九時から五時まで}}働きます。",
+        "en": "I work from nine to five.",
+        "hint": "から + まで"
+      },
+      {
+        "ja": "{{東京から大阪まで}}新幹線で行きます。",
+        "en": "I go from Tokyo to Osaka by bullet train.",
+        "hint": "から + まで"
+      },
+      {
+        "ja": "{{月曜日から金曜日まで}}学校があります。",
+        "en": "There is school from Monday to Friday.",
+        "hint": "から + まで"
+      }
+    ]
+  },
+  {
+    "id": "g:n5-ga-subject",
+    "jlpt": "N5",
+    "title": "〜が（主語）",
+    "meaning": "marks the subject of a sentence",
+    "structure": "Noun が Verb / Adjective",
+    "formality": "neutral",
+    "notes": "が marks the new or focused subject, especially with 誰, どれ, and with existence verbs. は introduces a topic, が points to the doer. Some sentences with 好き or 上手 also take が for the object of feeling.",
+    "similar": [],
+    "detect": [],
+    "examples": [
+      {
+        "ja": "{{猫が}}寝ています。",
+        "en": "The cat is sleeping.",
+        "hint": "が (subject)"
+      },
+      {
+        "ja": "{{誰が}}来ましたか。",
+        "en": "Who came?",
+        "hint": "が (subject)"
+      },
+      {
+        "ja": "{{私が}}やります。",
+        "en": "I will do it.",
+        "hint": "が (subject)"
+      }
+    ]
+  },
+  {
+    "id": "g:n5-ga-suki",
+    "jlpt": "N5",
+    "title": "〜が好き／上手／下手",
+    "meaning": "like / good at / bad at (something)",
+    "structure": "Noun が 好きです / 上手です / 下手です",
+    "formality": "polite",
+    "notes": "好き, 上手, and 下手 take が for the thing liked or the skill, not を. 嫌い uses the same pattern. Use these with nouns or with 〜こと when the item is a verb phrase.",
+    "similar": [],
+    "detect": [
+      "が(好き|上手|下手)"
+    ],
+    "examples": [
+      {
+        "ja": "{{音楽が}}好きです。",
+        "en": "I like music.",
+        "hint": "好き + が"
+      },
+      {
+        "ja": "{{英語が}}上手です。",
+        "en": "I am good at English.",
+        "hint": "上手 + が"
+      },
+      {
+        "ja": "{{料理が}}下手です。",
+        "en": "I am bad at cooking.",
+        "hint": "下手 + が"
+      }
+    ]
+  },
+  {
+    "id": "g:n5-ga-aru-iru",
+    "jlpt": "N5",
+    "title": "〜がある／いる",
+    "meaning": "there is / there are (things / living things)",
+    "structure": "Place に Noun が あります / います",
+    "formality": "polite",
+    "notes": "ある is for things and plants, いる is for people and animals. The location takes に, and the thing that exists takes が. The plain forms are ある and いる.",
+    "similar": [],
+    "detect": [
+      "が(ある|あります|いる|います)"
+    ],
+    "examples": [
+      {
+        "ja": "机の上にペン{{があります}}。",
+        "en": "There is a pen on the desk.",
+        "hint": "ある + が"
+      },
+      {
+        "ja": "庭に猫{{がいます}}。",
+        "en": "There is a cat in the garden.",
+        "hint": "いる + が"
+      },
+      {
+        "ja": "冷蔵庫に牛乳{{がある}}。",
+        "en": "There is milk in the fridge.",
+        "hint": "ある + が"
+      }
+    ]
+  },
+  {
+    "id": "g:n5-mashou",
+    "jlpt": "N5",
+    "title": "〜ましょう",
+    "meaning": "let's ... (suggestion to do something together)",
+    "structure": "Verb stem ましょう",
+    "formality": "polite",
+    "notes": "ましょう suggests doing something together. A common reply is はい、そうしましょう. For a polite offer of help, use 〜ましょうか instead.",
+    "similar": [
+      "〜ましょうか"
+    ],
+    "detect": [
+      "ましょう"
+    ],
+    "examples": [
+      {
+        "ja": "{{行きましょう}}。",
+        "en": "Let's go.",
+        "hint": "行く + ましょう"
+      },
+      {
+        "ja": "一緒に{{食べましょう}}。",
+        "en": "Let's eat together.",
+        "hint": "食べる + ましょう"
+      },
+      {
+        "ja": "少し{{休みましょう}}。",
+        "en": "Let's take a short break.",
+        "hint": "休む + ましょう"
+      }
+    ]
+  },
+  {
+    "id": "g:n5-masenka",
+    "jlpt": "N5",
+    "title": "〜ませんか",
+    "meaning": "would you like to ...? / shall we ...?",
+    "structure": "Verb stem ませんか",
+    "formality": "polite",
+    "notes": "ませんか invites someone politely to do something. It is softer than a direct request. Use it with people you do not know well, and accept or decline with はい、ぜひ or すみません.",
+    "similar": [
+      "〜ましょう"
+    ],
+    "detect": [
+      "ませんか"
+    ],
+    "examples": [
+      {
+        "ja": "映画を{{見ませんか}}。",
+        "en": "Would you like to watch a movie?",
+        "hint": "見る + ませんか"
+      },
+      {
+        "ja": "明日{{行きませんか}}。",
+        "en": "Would you like to go tomorrow?",
+        "hint": "行く + ませんか"
+      },
+      {
+        "ja": "一緒に{{昼ご飯を食べませんか}}。",
+        "en": "Would you like to eat lunch together?",
+        "hint": "食べる + ませんか"
+      }
+    ]
+  },
+  {
+    "id": "g:n5-tai",
+    "jlpt": "N5",
+    "title": "〜たい",
+    "meaning": "want to (do something)",
+    "structure": "Verb stem たい / たいです",
+    "formality": "neutral",
+    "notes": "たい attaches to the verb stem and works like an i-adjective. The object takes を or が, and both are seen in speech. Use it only for your own wishes; for someone else's wish use 〜たがっている.",
+    "similar": [],
+    "detect": [
+      "たいです"
+    ],
+    "examples": [
+      {
+        "ja": "日本に{{行きたい}}です。",
+        "en": "I want to go to Japan.",
+        "hint": "行く + たい"
+      },
+      {
+        "ja": "{{寝たい}}です。",
+        "en": "I want to sleep.",
+        "hint": "寝る + たい"
+      },
+      {
+        "ja": "ケーキを{{食べたい}}です。",
+        "en": "I want to eat cake.",
+        "hint": "食べる + たい"
+      }
+    ]
+  },
+  {
+    "id": "g:n5-ni-iku",
+    "jlpt": "N5",
+    "title": "〜に行く",
+    "meaning": "go in order to (do something)",
+    "structure": "Verb stem に 行きます",
+    "formality": "polite",
+    "notes": "The verb stem before に expresses the purpose of going. The sentence ends with a movement verb such as 行く, 来る, or 帰る. Nouns before に are the thing being done, like 買い物に行く.",
+    "similar": [],
+    "detect": [
+      "に行(く|きます|きましょう)"
+    ],
+    "examples": [
+      {
+        "ja": "{{買い物に行きます}}。",
+        "en": "I am going shopping.",
+        "hint": "買い物 + に行く"
+      },
+      {
+        "ja": "映画を{{見に行きます}}。",
+        "en": "I am going to see a movie.",
+        "hint": "見る + に行く"
+      },
+      {
+        "ja": "ラーメンを{{食べに行きましょう}}。",
+        "en": "Let's go eat ramen.",
+        "hint": "食べる + に行く"
+      }
+    ]
+  },
+  {
+    "id": "g:n5-te-iru",
+    "jlpt": "N5",
+    "title": "〜ています",
+    "meaning": "is doing (ongoing action or state)",
+    "structure": "Verb て-form いる / ています",
+    "formality": "neutral",
+    "notes": "ている shows an action in progress or a repeated state. With some verbs such as 知る or 持つ it shows a resulting state. The plain form is 〜ている and the polite form is 〜ています.",
+    "similar": [],
+    "detect": [
+      "ています"
+    ],
+    "examples": [
+      {
+        "ja": "今、本を{{読んでいます}}。",
+        "en": "I am reading a book now.",
+        "hint": "読む + ています"
+      },
+      {
+        "ja": "雨が{{降っています}}。",
+        "en": "It is raining.",
+        "hint": "降る + ています"
+      },
+      {
+        "ja": "弟は{{勉強しています}}。",
+        "en": "My younger brother is studying.",
+        "hint": "勉強する + ています"
+      }
+    ]
+  },
+  {
+    "id": "g:n5-te-kudasai",
+    "jlpt": "N5",
+    "title": "〜てください",
+    "meaning": "please (do something)",
+    "structure": "Verb て-form ください",
+    "formality": "polite",
+    "notes": "てください politely asks someone to do something. It is a direct request, so add ね or すみません to soften it.",
+    "similar": [
+      "〜ないでください"
+    ],
+    "detect": [
+      "てください"
+    ],
+    "examples": [
+      {
+        "ja": "ここに名前を{{書いてください}}。",
+        "en": "Please write your name here.",
+        "hint": "書く + てください"
+      },
+      {
+        "ja": "{{待ってください}}。",
+        "en": "Please wait.",
+        "hint": "待つ + てください"
+      },
+      {
+        "ja": "ゆっくり{{話してください}}。",
+        "en": "Please speak slowly.",
+        "hint": "話す + てください"
+      }
+    ]
+  },
+  {
+    "id": "g:n5-na-de-kudasai",
+    "jlpt": "N5",
+    "title": "〜ないでください",
+    "meaning": "please don't (do something)",
+    "structure": "Verb ない-form で ください",
+    "formality": "polite",
+    "notes": "ないでください politely asks someone not to do something. It is the negative counterpart of 〜てください. Use it for rules, warnings, or polite requests to stop.",
+    "similar": [
+      "〜てください"
+    ],
+    "detect": [
+      "ないでください"
+    ],
+    "examples": [
+      {
+        "ja": "ここは{{入らないでください}}。",
+        "en": "Please don't enter here.",
+        "hint": "入る + ないでください"
+      },
+      {
+        "ja": "ここで{{写真を撮らないでください}}。",
+        "en": "Please don't take photos here.",
+        "hint": "撮る + ないでください"
+      },
+      {
+        "ja": "{{忘れないでください}}。",
+        "en": "Please don't forget.",
+        "hint": "忘れる + ないでください"
+      }
+    ]
+  },
+  {
+    "id": "g:n5-te-mo-ii",
+    "jlpt": "N5",
+    "title": "〜てもいい",
+    "meaning": "may / it is okay to (do something)",
+    "structure": "Verb て-form もいい",
+    "formality": "neutral",
+    "notes": "てもいい gives or asks permission. Asking 〜てもいいですか is polite. Do not use it to refuse: for a prohibition use 〜てはいけない, and for it not being necessary use 〜なくてもいい.",
+    "similar": [
+      "〜なくてもいい",
+      "〜てはいけない"
+    ],
+    "detect": [
+      "て(も|は)いい"
+    ],
+    "examples": [
+      {
+        "ja": "ここで写真を{{撮ってもいい|撮ってもよい}}ですか。",
+        "en": "May I take photos here?",
+        "hint": "撮る + てもいい"
+      },
+      {
+        "ja": "{{食べてもいい}}ですよ。",
+        "en": "You may eat it.",
+        "hint": "食べる + てもいい"
+      },
+      {
+        "ja": "今日は{{休んでもいい}}です。",
+        "en": "You may take the day off today.",
+        "hint": "休む + てもいい"
+      }
+    ]
+  },
+  {
+    "id": "g:n5-te-wa-ikenai",
+    "jlpt": "N5",
+    "title": "〜てはいけない",
+    "meaning": "must not / is not allowed to (do something)",
+    "structure": "Verb て-form はいけない / はいけません",
+    "formality": "neutral",
+    "notes": "てはいけない states a prohibition. It is firm, so use it for rules or to warn someone. Speakers often say ちゃいけない in casual talk. The polite form is 〜てはいけません.",
+    "similar": [
+      "〜てもいい"
+    ],
+    "detect": [
+      "てはいけ"
+    ],
+    "examples": [
+      {
+        "ja": "ここでたばこを{{吸ってはいけません}}。",
+        "en": "You must not smoke here.",
+        "hint": "吸う + てはいけない"
+      },
+      {
+        "ja": "学校に{{遅れてはいけない}}。",
+        "en": "You must not be late for school.",
+        "hint": "遅れる + てはいけない"
+      },
+      {
+        "ja": "プールで{{走ってはいけません}}。",
+        "en": "You must not run in the pool.",
+        "hint": "走る + てはいけない"
+      }
+    ]
+  },
+  {
+    "id": "g:n5-kara-reason",
+    "jlpt": "N5",
+    "title": "〜から（理由）",
+    "meaning": "because / since (reason)",
+    "structure": "Plain clause から、Clause",
+    "formality": "neutral",
+    "notes": "から gives a reason and comes after the cause, as in 寒いから. The result comes after the comma. It is more direct than ので, which sounds softer and more polite.",
+    "similar": [
+      "〜ので"
+    ],
+    "detect": [],
+    "examples": [
+      {
+        "ja": "雨が降っている{{から}}、行きません。",
+        "en": "Because it's raining, I won't go.",
+        "hint": "降る + から"
+      },
+      {
+        "ja": "{{忙しいから}}、来られません。",
+        "en": "I can't come because I'm busy.",
+        "hint": "忙しい + から"
+      },
+      {
+        "ja": "{{寒いから}}、窓を閉めてください。",
+        "en": "It's cold, so please close the window.",
+        "hint": "寒い + から"
+      }
+    ]
+  }
+]

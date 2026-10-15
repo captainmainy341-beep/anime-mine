@@ -1,5 +1,5 @@
 function nodes(children) {
-  return children.flat().filter((child) => child != null && child !== false);
+  return children.flat(Infinity).filter((child) => child != null && child !== false);
 }
 
 export function h(tag, props = {}, ...children) {

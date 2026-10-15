@@ -1,3 +1,12 @@
+const fs = require('node:fs')
+const os = require('node:os')
+const path = require('node:path')
+const deps = {execFile: require('node:child_process').execFile}
+
+const CLAUDE_CLI_MODEL = 'claude-haiku-5-5'
+const LEGACY_DEFAULT_MODEL = 'claude-haiku-4-5-20251001'
+const CLAUDE_MISSING = 'Claude Code not found. Install it and run "claude" once to log in, or pick another provider in Settings.'
+
 const DEFAULT_BASE_URL = {
   anthropic: 'https://api.anthropic.com',
   openai: 'https://api.openai.com',
@@ -83,15 +92,76 @@ async function callOpenAI(settings, {system, user}, maxTokens) {
   return data.choices?.[0]?.message?.content ?? ''
 }
 
+function isExecutable(file) {
+  try {
+    fs.accessSync(file, fs.constants.X_OK)
+    return fs.statSync(file).isFile()
+  } catch {
+    return false
+  }
+}
+
+function findClaude() {
+  const home = os.homedir()
+  const candidates = [
+    process.env.CLAUDE_BIN,
+    path.join(home, '.local/bin/claude'),
+    path.join(home, '.claude/local/claude'),
+    '/opt/homebrew/bin/claude',
+    '/usr/local/bin/claude',
+    path.join(home, '.local/share/pi-node/current/bin/claude'),
+  ]
+  return candidates.find(candidate => candidate && isExecutable(candidate)) || 'claude'
+}
+
+function claudeModel(settings) {
+  const model = settings.model
+  return model && model.startsWith('claude-') && model !== LEGACY_DEFAULT_MODEL ? model : CLAUDE_CLI_MODEL
+}
+
+function claudeWorkDir() {
+  const dir = path.join(os.tmpdir(), `anime-mine-claude-${os.userInfo().username}`)
+  fs.mkdirSync(dir, {recursive: true, mode: 0o700})
+  return dir
+}
+
+function claudeEnv(bin) {
+  const dirs = path.isAbsolute(bin) ? [path.dirname(bin)] : []
+  const {CLAUDECODE, ...env} = process.env
+  return {...env, PATH: [...dirs, process.env.PATH].filter(Boolean).join(path.delimiter)}
+}
+
+async function callClaudeCli(settings, {system, user}) {
+  const bin = findClaude()
+  const args = [
+    '-p', '--model', claudeModel(settings), '--effort', 'medium',
+    '--system-prompt', system, '--setting-sources', 'user', '--tools', '', '--no-session-persistence', '--', user,
+  ]
+  const options = {timeout: 60000, maxBuffer: 1024 * 1024, cwd: claudeWorkDir(), env: claudeEnv(bin)}
+  return new Promise((resolve, reject) => {
+    const child = deps.execFile(bin, args, options, (err, stdout, stderr) => {
+      if (!err) return resolve(stdout)
+      if (err.code === 'ENOENT') return reject(new Error(CLAUDE_MISSING))
+      reject(new Error(`Claude Code failed: ${String(stderr || err.message).trim().slice(0, 200)}`))
+    })
+    child?.stdin?.end()
+  })
+}
+
 const PROVIDERS = new Map([
+  ['claude-cli', callClaudeCli],
   ['anthropic', callAnthropic],
   ['openai', callOpenAI],
 ])
 
+function aiReady(settings) {
+  return Boolean(settings && (settings.provider === 'claude-cli' || settings.apiKey))
+}
+
 async function run(settings, prompt, maxTokens) {
   const call = PROVIDERS.get(settings.provider)
   if (!call) throw new Error(`Unknown AI provider: ${settings.provider}`)
-  if (!settings.apiKey) throw new Error(`No API key set for ${settings.provider}. Add one in Settings.`)
+  if (!aiReady(settings)) throw new Error(`No API key set for ${settings.provider}. Add one in Settings.`)
   const reply = (await call(settings, prompt, maxTokens)).trim()
   if (!reply) throw new Error('AI returned an empty reply')
   return reply
@@ -108,4 +178,8 @@ async function translate(settings, req) {
   return text
 }
 
-module.exports = {explain, translate, buildPrompt, buildTranslatePrompt}
+async function complete(settings, {system, user}, maxTokens = 400) {
+  return run(settings, {system, user}, maxTokens)
+}
+
+module.exports = {explain, translate, complete, aiReady, deps, buildPrompt, buildTranslatePrompt}
