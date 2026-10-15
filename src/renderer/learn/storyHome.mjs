@@ -54,20 +54,6 @@ export function mountHome(root, list, actions) {
   const rows = [];
   const resume = continueRow(all);
   if (resume.length) rows.push(buildRow({ key: 'continue', title: 'Continue where you left off', sub: 'Saved scenes', scenes: resume, accent: 'var(--accent)' }));
-  const current = currentSeason(seasons);
-  for (const season of seasons) {
-    rows.push(buildRow({
-      key: `season-${season.level}`,
-      title: `Season ${season.number} · ${season.name}`,
-      sub: season.blurb,
-      level: season.level,
-      accent: season.accent,
-      scenes: season.chapters,
-      progress: { done: season.done, total: season.total },
-      focusId: season.started || season === current ? season.nextId : null,
-      active: season === current,
-    }));
-  }
   const genki = genkiRows(list.genki);
   if (genki.length) {
     const lessonsDone = genki.filter((g) => g.primer?.done && isDone(g)).length;
@@ -80,6 +66,20 @@ export function mountHome(root, list, actions) {
       progress: { done: lessonsDone, total: genki.length },
       focusId: genki.find((g) => g.upNext)?.id,
       genki: true,
+    }));
+  }
+  const current = currentSeason(seasons);
+  for (const season of seasons) {
+    rows.push(buildRow({
+      key: `season-${season.level}`,
+      title: `Season ${season.number} · ${season.name}`,
+      sub: season.blurb,
+      level: season.level,
+      accent: season.accent,
+      scenes: season.chapters,
+      progress: { done: season.done, total: season.total },
+      focusId: season.started || season === current ? season.nextId : null,
+      active: season === current,
     }));
   }
   rows.push(buildMined());
