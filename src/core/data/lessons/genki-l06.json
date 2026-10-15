@@ -1,0 +1,152 @@
+{
+  "schema": 1,
+  "id": "genki-l06",
+  "lesson": 6,
+  "title": "The Café Rush",
+  "tagline": "Link actions with the て-form, ask for things, ask permission and give reasons.",
+  "hook": "It's the lunch rush at Hana's grandmother's café. Orders fly, rules are shouted, and you need the て-form to survive.",
+  "goals": ["Make the て-form of any verb", "Ask politely with てください and ask permission with てもいい", "Say \"you mustn't\" with てはいけません and give reasons with から"],
+  "minutes": 11,
+  "vocab": [
+    ["待つ", "まつ", "to wait", "⏳"],
+    ["持つ", "もつ", "to hold, carry", "🎒"],
+    ["買う", "かう", "to buy", "🛍️"],
+    ["使う", "つかう", "to use", "🛠️"],
+    ["手伝う", "てつだう", "to help", "🤲"],
+    ["教える", "おしえる", "to teach, tell", "🧑‍🏫"],
+    ["開ける", "あける", "to open", "📂"],
+    ["閉める", "しめる", "to close", "🚪"],
+    ["入る", "はいる", "to enter", "➡️"],
+    ["出る", "でる", "to leave, exit", "⬅️"],
+    ["座る", "すわる", "to sit", "💺"],
+    ["立つ", "たつ", "to stand", "🧍"],
+    ["止まる", "とまる", "to stop", "🛑"],
+    ["コーヒー", "コーヒー", "coffee", "☕"],
+    ["メニュー", "メニュー", "menu", "📋"],
+    ["注文", "ちゅうもん", "order", "🧾"],
+    ["写真", "しゃしん", "photo", "📷"],
+    ["ここ", "ここ", "here", "📍"],
+    ["すみません", "すみません", "excuse me, sorry", "🙏"],
+    ["だから", "だから", "so, therefore", "➡️"]
+  ],
+  "points": [
+    {
+      "id": "g:n5-te",
+      "title": "The て-form",
+      "formula": "verb → て / で",
+      "gist": "The linking form of verbs.",
+      "explain": [
+        "The て-form is the verb's connector. る-verbs drop る and add て (食べる → 食べて). う-verbs change by their ending: う・つ・る → って, む・ぶ・ぬ → んで, く → いて, ぐ → いで, す → して.",
+        "Two odd verbs: する → して and 来る → 来て (きて). 行く is the one irregular う-verb: 行って."
+      ],
+      "examples": [
+        { "ja": "食べて|ください。", "gloss": "eat (て-form)|please", "en": "Please eat." },
+        { "ja": "コーヒーを|飲んで|休みます。", "gloss": "coffee|drink (て)|rest", "en": "I drink coffee and rest." },
+        { "ja": "ここで|待って|ください。", "gloss": "here|wait (て)|please", "en": "Please wait here." }
+      ],
+      "tip": "Remember the groups with the rhyme: う・つ・る → って; む・ぶ・ぬ → んで.",
+      "watch": "行く → 行って, not 行いて."
+    },
+    {
+      "id": "g:n5-te-kudasai",
+      "title": "〜てください",
+      "formula": "て-form + ください",
+      "gist": "Please do ...",
+      "explain": [
+        "て-form + ください is the standard polite request. It is a request to someone else, not an order.",
+        "For \"please don't\" you'll use ないでください (a later lesson)."
+      ],
+      "examples": [
+        { "ja": "メニューを|見てください。", "gloss": "menu|look (て) please", "en": "Please look at the menu." },
+        { "ja": "ちょっと|待ってください。", "gloss": "a moment|wait (て) please", "en": "Please wait a moment." },
+        { "ja": "ここに|座ってください。", "gloss": "here|sit (て) please", "en": "Please sit here." }
+      ],
+      "tip": "Add ちょっと before it to soften the request.",
+      "watch": "To a friend, drop ください: 待って."
+    },
+    {
+      "id": "g:n5-te-mo-ii",
+      "title": "〜てもいいです",
+      "formula": "て-form + もいいですか",
+      "gist": "May I ...? / You may ...",
+      "explain": [
+        "て-form + もいいですか asks permission: \"is it all right if I ...?\" Answer はい、いいですよ to say yes.",
+        "Without か it states permission: 食べてもいいです (you may eat)."
+      ],
+      "examples": [
+        { "ja": "写真を|とってもいいですか。", "gloss": "photo|take (て) is it ok?", "en": "May I take a photo?" },
+        { "ja": "ここに|座ってもいいです。", "gloss": "here|sit (て) it's ok", "en": "You may sit here." },
+        { "ja": "ええ、|いいですよ。", "gloss": "yes|fine", "en": "Yes, that's fine." }
+      ],
+      "tip": "To refuse politely say すみません、ちょっと… (sorry, that's a bit...).",
+      "watch": "Don't say いいえ to refuse; it feels blunt."
+    },
+    {
+      "id": "g:n5-te-wa-ikenai",
+      "title": "〜てはいけません",
+      "formula": "て-form + はいけません",
+      "gist": "You must not ...",
+      "explain": [
+        "て-form + はいけません states a rule: this is not allowed. は is read \"wa\" here, as always for the particle.",
+        "It is the answer to a てもいいですか question when the answer is no."
+      ],
+      "examples": [
+        { "ja": "ここで|写真を|とってはいけません。", "gloss": "here|photo|take (て) you must not", "en": "You must not take photos here." },
+        { "ja": "店の中で|食べてはいけません。", "gloss": "inside the shop|eat (て) must not", "en": "You must not eat inside the shop." },
+        { "ja": "ここに|入ってはいけません。", "gloss": "here|enter (て) must not", "en": "You must not enter here." }
+      ],
+      "tip": "It states a rule, so use it for signs and instructions.",
+      "watch": "Don't use it to refuse an invitation; that would be rude."
+    },
+    {
+      "id": "g:n5-kara-reason",
+      "title": "〜から (reason)",
+      "formula": "sentence + から、 result",
+      "gist": "Because ...",
+      "explain": [
+        "から attaches to the end of a clause and means \"because\". The reason comes first, then the result.",
+        "The clause before から can end in です / ます or a plain form."
+      ],
+      "examples": [
+        { "ja": "いそがしいですから、|待ってください。", "gloss": "because busy|please wait", "en": "Because we're busy, please wait." },
+        { "ja": "おいしいから、|毎日|来ます。", "gloss": "because delicious|every day|come", "en": "It's delicious, so I come every day." },
+        { "ja": "あついですから、|まどを|あけてもいいですか。", "gloss": "because hot|window|may I open?", "en": "It's hot, so may I open the window?" }
+      ],
+      "tip": "At the start of a new sentence, だから works as \"so\" or \"that\u0027s why\".",
+      "watch": "から sits after the reason, not before it."
+    },
+    {
+      "id": "g:n5-mashou-ka",
+      "title": "〜ましょうか",
+      "formula": "verb stem + ましょうか",
+      "gist": "Shall I ...? / Shall we ...?",
+      "explain": [
+        "ましょうか offers help or asks \"shall we?\". It is friendly and polite at once.",
+        "Reply はい、おねがいします (yes, please) or だいじょうぶです (I'm fine, thanks)."
+      ],
+      "examples": [
+        { "ja": "手伝いましょうか。", "gloss": "shall I help?", "en": "Shall I help you?" },
+        { "ja": "まどを|あけましょうか。", "gloss": "window|shall I open?", "en": "Shall I open the window?" },
+        { "ja": "はい、|おねがいします。", "gloss": "yes|please", "en": "Yes, please." }
+      ],
+      "tip": "Offering help with ましょうか is the polite move in Japan.",
+      "watch": "ましょうか is an offer; ましょう alone is \"let's\"."
+    }
+  ],
+  "drills": [
+    { "type": "pick", "point": 0, "q": "The て-form of 食べる is...", "options": ["食べて", "食べって", "食べんで", "食べいて"], "answer": 0, "why": "る-verbs drop る and add て." },
+    { "type": "pick", "point": 0, "q": "The て-form of 飲む is...", "options": ["飲んで", "飲って", "飲いて", "飲して"], "answer": 0, "why": "む → んで." },
+    { "type": "pick", "point": 0, "q": "The て-form of 行く is...", "options": ["行って", "行いて", "行んで", "行きて"], "answer": 0, "why": "行く is irregular: 行って." },
+    { "type": "type", "prompt": "Type the て-form of 待つ in hiragana.", "show": "待つ", "answers": ["まって"] },
+    { "type": "gap", "point": 1, "ja": "ここで 待っ＿ください。", "options": ["て", "た", "ない", "ます"], "answer": "て", "en": "Please wait here.", "why": "て-form + ください." },
+    { "type": "order", "point": 1, "en": "Please look at the menu.", "chunks": ["メニューを", "見て", "ください"] },
+    { "type": "gap", "point": 2, "ja": "写真を とっても＿ですか。", "options": ["いい", "よい", "だめ", "いけ"], "answer": "いい", "en": "May I take a photo?", "why": "てもいいですか asks permission." },
+    { "type": "pick", "point": 3, "q": "A sign: you must not take photos here.", "options": ["写真を とってはいけません。", "写真を とってもいいです。", "写真を とってください。", "写真を とりましょう。"], "answer": 0, "why": "てはいけません is a prohibition." },
+    { "type": "gap", "point": 4, "ja": "いそがしいです＿、待ってください。", "options": ["から", "ので", "でも", "ながら"], "answer": "から", "en": "Because we're busy, please wait.", "why": "から follows the reason." },
+    { "type": "order", "point": 4, "en": "It's delicious, so I come every day.", "chunks": ["おいしいから", "毎日", "来ます"] },
+    { "type": "pick", "point": 5, "q": "You see someone carrying heavy bags. What do you say?", "options": ["手伝いましょうか。", "手伝いませんか。", "手伝いました。", "手伝います です。"], "answer": 0, "why": "ましょうか offers help." },
+    { "type": "pick", "q": "You want the window open. How do you ask permission?", "options": ["まどを あけてもいいですか。", "まどを あけてください ですか。", "まどを あけませんか ください。", "まどを あけません。"], "answer": 0, "why": "てもいいですか." },
+    { "type": "type", "prompt": "Type the reading of 手伝う (to help) in hiragana.", "show": "手伝う", "answers": ["てつだう"] },
+    { "type": "type", "prompt": "Type the reading of 注文 (order) in hiragana.", "show": "注文", "answers": ["ちゅうもん"] }
+  ]
+}

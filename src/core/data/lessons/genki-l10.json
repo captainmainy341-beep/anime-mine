@@ -1,0 +1,135 @@
+{
+  "schema": 1,
+  "id": "genki-l10",
+  "lesson": 10,
+  "title": "Winter Break Plans",
+  "tagline": "Compare things, pick the best, say what you plan to do and what has become different.",
+  "hook": "Winter break is coming and everyone has a favourite season, a favourite place and a plan. You'll need to compare, rank, plan and notice change.",
+  "goals": ["Compare with より and のほうが", "Pick the best with 〜の中で〜が一番", "Say what you intend with つもり and what has changed with なる"],
+  "minutes": 11,
+  "vocab": [
+    ["冬休み", "ふゆやすみ", "winter break", "❄️"],
+    ["雪", "ゆき", "snow", "⛄"],
+    ["季節", "きせつ", "season", "🍂"],
+    ["春", "はる", "spring", "🌸"],
+    ["夏", "なつ", "summer", "🌻"],
+    ["秋", "あき", "autumn", "🍁"],
+    ["冬", "ふゆ", "winter", "🧣"],
+    ["旅行", "りょこう", "trip", "🧳"],
+    ["温泉", "おんせん", "hot spring", "♨️"],
+    ["スキー", "スキー", "skiing", "⛷️"],
+    ["電車", "でんしゃ", "train", "🚃"],
+    ["飛行機", "ひこうき", "airplane", "✈️"],
+    ["べんり", "べんり", "convenient", "🧰"],
+    ["早い", "はやい", "early, fast", "⚡"],
+    ["おそい", "おそい", "late, slow", "🐌"],
+    ["ずっと", "ずっと", "much more, all along", "⏩"],
+    ["もっと", "もっと", "more", "➕"],
+    ["いちばん", "いちばん", "the most", "🥇"],
+    ["どこか", "どこか", "somewhere", "🗺️"],
+    ["どこも", "どこも", "nowhere / everywhere (with neg.)", "🚫"]
+  ],
+  "points": [
+    {
+      "id": "g:n5-yori-hou-ga",
+      "title": "〜より〜のほうが",
+      "formula": "A より B のほうが adjective",
+      "gist": "B is more ... than A.",
+      "explain": [
+        "To compare two things, put the winner in front of のほうが and the loser before より. The adjective goes at the end.",
+        "The question form is AとBと どちらが ...ですか (which is more ...?)."
+      ],
+      "examples": [
+        { "ja": "夏より|冬のほうが|好きです。", "gloss": "than summer|winter is more|like", "en": "I like winter more than summer." },
+        { "ja": "電車より|飛行機のほうが|早いです。", "gloss": "than the train|the plane is more|fast", "en": "Planes are faster than trains." },
+        { "ja": "犬と|ねこと|どちらが|好きですか。", "gloss": "dogs and|cats|which|do you like?", "en": "Which do you like more, dogs or cats?" }
+      ],
+      "tip": "The right-hand side after のほうが is always the \"more\" side.",
+      "watch": "Put ずっと before the adjective for \"much more\": ずっと 早いです."
+    },
+    {
+      "id": "g:n5-naka-de-ichiban",
+      "title": "〜の中で〜が一番",
+      "formula": "group の中で X が いちばん adjective",
+      "gist": "The most ... among ...",
+      "explain": [
+        "To pick the best of a group, name the group followed by の中で, then the winner and いちばん. Ask with 何 / どれ / だれ / どこ.",
+        "For two choices, use どちら instead of どれ."
+      ],
+      "examples": [
+        { "ja": "季節の中で|冬が|いちばん|好きです。", "gloss": "among seasons|winter (subject)|the most|like", "en": "Of all the seasons I like winter best." },
+        { "ja": "食べ物の中で|何が|いちばん|おいしいですか。", "gloss": "among foods|what (subject)|the most|delicious?", "en": "Of all foods, what is the most delicious?" },
+        { "ja": "クラスの中で|レオさんが|いちばん|背が高いです。", "gloss": "in the class|Leo (subject)|the most|tall", "en": "Leo is the tallest in the class." }
+      ],
+      "tip": "If you simply say 一番, you can drop the group when it's obvious.",
+      "watch": "Don't use より with いちばん; they answer different questions."
+    },
+    {
+      "id": "g:n4-tsumori",
+      "title": "〜つもり",
+      "formula": "dictionary form + つもりです",
+      "gist": "I intend to ... / I don't intend to ...",
+      "explain": [
+        "Use つもり after a dictionary form for an intention you've already decided on. The negative intention is ないつもり.",
+        "It is stronger than \"I think I'll\" and weaker than a promise."
+      ],
+      "examples": [
+        { "ja": "冬休みは|温泉に|行くつもりです。", "gloss": "winter break (topic)|hot spring|intend to go", "en": "I plan to go to a hot spring over winter break." },
+        { "ja": "スキーは|しないつもりです。", "gloss": "skiing (topic)|don't intend to do", "en": "I don't intend to ski." },
+        { "ja": "ことしは|どこにも|行かないつもりです。", "gloss": "this year (topic)|nowhere|don't intend to go", "en": "I don't plan to go anywhere this year." }
+      ],
+      "tip": "つもり attaches to the short form. Don't add です before it.",
+      "watch": "Don't use つもり for habits; it is for intentions."
+    },
+    {
+      "id": "g:genki-dokomo",
+      "title": "どこかに · どこにも",
+      "formula": "どこかに + verb / どこにも + negative",
+      "gist": "Somewhere / nowhere.",
+      "explain": [
+        "か after a question word makes it indefinite: どこか (somewhere), 何か (something), だれか (someone). も + negative makes it \"none\": どこにも 行きません.",
+        "Particles like に, で go between: どこかに, どこにも."
+      ],
+      "examples": [
+        { "ja": "どこかに|行きませんか。", "gloss": "somewhere|won't you go?", "en": "Won't you go somewhere?" },
+        { "ja": "どこにも|行きませんでした。", "gloss": "nowhere|didn't go", "en": "I didn't go anywhere." },
+        { "ja": "何か|食べましょう。", "gloss": "something|let's eat", "en": "Let's eat something." }
+      ],
+      "tip": "The か / も pair works like English some- and no-: somewhere, nowhere.",
+      "watch": "どこにも must be negative."
+    },
+    {
+      "id": "g:n5-naru",
+      "title": "〜くなる / 〜になる",
+      "formula": "い-adj: ○くなる / noun, な-adj: ○になる",
+      "gist": "Become ...",
+      "explain": [
+        "なる means \"to become\". After an い-adjective use くなる: さむくなる (get cold). After a な-adjective or noun use になる: 元気になる, 先生になる.",
+        "The past is なった: さむくなりました."
+      ],
+      "examples": [
+        { "ja": "だんだん|さむく|なりました。", "gloss": "gradually|cold|became", "en": "It gradually became cold." },
+        { "ja": "雪で|町が|きれいに|なりました。", "gloss": "with snow|town|pretty|became", "en": "The town became pretty with the snow." },
+        { "ja": "先生に|なりたいです。", "gloss": "teacher|want to become", "en": "I want to become a teacher." }
+      ],
+      "tip": "Think: change = なる. The word before shows what it became.",
+      "watch": "くなる only follows い-adjectives."
+    }
+  ],
+  "drills": [
+    { "type": "gap", "point": 0, "ja": "夏＿ 冬のほうが 好きです。", "options": ["より", "から", "まで", "の"], "answer": "より", "en": "I like winter more than summer.", "why": "より marks what is being compared against." },
+    { "type": "order", "point": 0, "en": "Planes are faster than trains.", "chunks": ["電車より", "飛行機のほうが", "早いです"] },
+    { "type": "pick", "point": 0, "q": "\"Which do you like more, dogs or cats?\"", "options": ["犬とねことどちらが 好きですか。", "犬とねこをどちらが 好きですか。", "犬とねこでどちらを 好きですか。", "犬とねこのどちらは 好きですか。"], "answer": 0, "why": "AとBと どちらが ...ですか." },
+    { "type": "gap", "point": 1, "ja": "季節＿中で 冬が いちばん 好きです。", "options": ["の", "を", "が", "に"], "answer": "の", "en": "Of all the seasons I like winter best.", "why": "の + 中で." },
+    { "type": "order", "point": 1, "en": "Leo is the tallest in the class.", "chunks": ["クラスの中で", "レオさんが", "いちばん", "背が高いです"] },
+    { "type": "pick", "point": 1, "q": "Which word means \"the most\" here?", "options": ["いちばん", "もっと", "ずっと", "とても"], "answer": 0, "why": "いちばん = number one / the most." },
+    { "type": "gap", "point": 2, "ja": "冬休みは 温泉に 行く＿です。", "options": ["つもり", "たい", "ほう", "から"], "answer": "つもり", "en": "I plan to go to a hot spring.", "why": "Dictionary form + つもりです." },
+    { "type": "order", "point": 2, "en": "I don't plan to go anywhere this year.", "chunks": ["ことしは", "どこにも", "行かない", "つもりです"] },
+    { "type": "gap", "point": 3, "ja": "どこ＿に 行きませんか。", "options": ["か", "も", "が", "を"], "answer": "か", "en": "Won't you go somewhere?", "why": "どこか = somewhere." },
+    { "type": "pick", "point": 3, "q": "\"I didn't go anywhere.\"", "options": ["どこにも 行きませんでした。", "どこかに 行きませんでした。", "どこにも 行きました。", "どこが 行きませんでした。"], "answer": 0, "why": "どこにも + negative." },
+    { "type": "gap", "point": 4, "ja": "だんだん さむ＿ なりました。", "options": ["く", "い", "に", "で"], "answer": "く", "en": "It gradually became cold.", "why": "い-adjective: ○く + なる." },
+    { "type": "gap", "point": 4, "ja": "町が きれい＿ なりました。", "options": ["に", "く", "を", "と"], "answer": "に", "en": "The town became pretty.", "why": "な-adjective + になる." },
+    { "type": "type", "prompt": "Type the reading of 旅行 (trip) in hiragana.", "show": "旅行", "answers": ["りょこう"] },
+    { "type": "type", "prompt": "Type the reading of 飛行機 (airplane) in hiragana.", "show": "飛行機", "answers": ["ひこうき"] }
+  ]
+}

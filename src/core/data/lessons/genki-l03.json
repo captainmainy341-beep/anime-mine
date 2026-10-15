@@ -1,0 +1,137 @@
+{
+  "schema": 1,
+  "id": "genki-l03",
+  "lesson": 3,
+  "title": "Weekend Plans",
+  "tagline": "Say what you do, where, when and how often, and invite someone along.",
+  "hook": "Leo and Hana are comparing weekends and Noa wants in. You'll need verbs, a handful of particles and the magic of ませんか.",
+  "goals": ["Build a polite sentence with ます verbs", "Pick the right particle: を, で, に, へ", "Invite with ませんか and talk about frequency"],
+  "minutes": 10,
+  "vocab": [
+    ["食べる", "たべる", "to eat", "🍙"],
+    ["飲む", "のむ", "to drink", "🥤"],
+    ["見る", "みる", "to see, watch", "👀"],
+    ["聞く", "きく", "to listen, ask", "👂"],
+    ["読む", "よむ", "to read", "📖"],
+    ["書く", "かく", "to write", "✍️"],
+    ["する", "する", "to do", "🔧"],
+    ["行く", "いく", "to go", "🚶"],
+    ["来る", "くる", "to come", "🏃"],
+    ["帰る", "かえる", "to return home", "🏠"],
+    ["勉強", "べんきょう", "study", "✏️"],
+    ["映画", "えいが", "movie", "🎬"],
+    ["音楽", "おんがく", "music", "🎵"],
+    ["図書館", "としょかん", "library", "📚"],
+    ["海", "うみ", "sea", "🌊"],
+    ["毎日", "まいにち", "every day", "📆"],
+    ["よく", "よく", "often", "🔁"],
+    ["ときどき", "ときどき", "sometimes", "🌤️"],
+    ["あまり", "あまり", "not very often (with ない)", "🌥️"],
+    ["全然", "ぜんぜん", "not at all (with ない)", "🚫"],
+    ["いっしょに", "いっしょに", "together", "👫"],
+    ["土曜日", "どようび", "Saturday", "🗓️"]
+  ],
+  "points": [
+    {
+      "id": "g:genki-masu",
+      "title": "〜ます / 〜ません",
+      "formula": "verb (ます-stem) + ます / ません",
+      "gist": "Polite present or future verbs.",
+      "explain": [
+        "The polite verb ending ます covers both \"do\" and \"will do\". The negative is ません. Look at the ending, not at a separate tense word.",
+        "Verbs sit at the very end of the sentence, after everything else. Subject, time, place, object, then the verb."
+      ],
+      "examples": [
+        { "ja": "わたしは|コーヒーを|飲みます。", "gloss": "I (topic)|coffee (object)|drink", "en": "I drink coffee." },
+        { "ja": "あした|学校へ|行きません。", "gloss": "tomorrow|to school|don't go", "en": "I won't go to school tomorrow." },
+        { "ja": "毎日|日本語を|勉強します。", "gloss": "every day|Japanese (object)|study", "en": "I study Japanese every day." }
+      ],
+      "tip": "A verb in ます form is complete on its own: 食べます is a whole polite sentence.",
+      "watch": "ます verbs always end the sentence. ませんか joins them to a question."
+    },
+    {
+      "id": "g:n5-o",
+      "title": "を · で · に · へ",
+      "formula": "object を / place で / time or goal に / direction へ",
+      "gist": "Four particles that point at the parts of an action.",
+      "explain": [
+        "を marks what the verb acts on (the object). で marks where an action happens. に marks a point in time or a destination. へ points a direction and is read \"e\".",
+        "Think of each particle as a label stuck onto a noun so the listener knows its job in the sentence."
+      ],
+      "examples": [
+        { "ja": "図書館で|本を|読みます。", "gloss": "at the library|book (object)|read", "en": "I read a book at the library." },
+        { "ja": "七時に|学校へ|行きます。", "gloss": "at 7|to school|go", "en": "I go to school at seven." },
+        { "ja": "海に|行きます。", "gloss": "to the sea|go", "en": "I go to the sea." }
+      ],
+      "tip": "Ask two questions: what is acted on (を) and where does it happen (で)?",
+      "watch": "Use に, not で, with 行く, 来る and 帰る when you name the destination (either に or へ works)."
+    },
+    {
+      "id": "g:n5-ni",
+      "title": "時間 + に",
+      "formula": "time + に + verb",
+      "gist": "At a specific time.",
+      "explain": [
+        "When you name a specific time (七時, 土曜日), add に. Words like 毎日, あした and きょう don't take に.",
+        "Times come near the start of the sentence, before the place and the object."
+      ],
+      "examples": [
+        { "ja": "土曜日に|海へ|行きます。", "gloss": "on Saturday|to the sea|go", "en": "I go to the sea on Saturday." },
+        { "ja": "八時に|ごはんを|食べます。", "gloss": "at 8|meal (object)|eat", "en": "I eat at eight." },
+        { "ja": "あした|友だちに|会います。", "gloss": "tomorrow|friend|meet", "en": "I'll meet my friend tomorrow." }
+      ],
+      "tip": "Days of the week and clock times take に. Relative words (あした, きのう) don't.",
+      "watch": "あしたに is wrong; あした stands alone."
+    },
+    {
+      "id": "g:n5-masenka",
+      "title": "〜ませんか",
+      "formula": "verb stem + ませんか",
+      "gist": "Won't you ...? (a polite invitation)",
+      "explain": [
+        "Turn the negative into a question and you get an invitation: 行きませんか sounds like \"wouldn't you like to go?\". It's softer than asking directly.",
+        "The reply \"yes, let's\" is ええ、いいですね or はい、行きましょう."
+      ],
+      "examples": [
+        { "ja": "いっしょに|映画を|見ませんか。", "gloss": "together|movie|won't you watch?", "en": "Would you like to watch a movie with me?" },
+        { "ja": "土曜日に|海へ|行きませんか。", "gloss": "on Saturday|to the sea|won't you go?", "en": "Would you like to go to the sea on Saturday?" },
+        { "ja": "ええ、|いいですね。", "gloss": "yes|sounds good", "en": "Yes, sounds good." }
+      ],
+      "tip": "Put いっしょに in front to make the invitation clear.",
+      "watch": "ませんか is an invitation, not \"don't you...?\" in the negative sense."
+    },
+    {
+      "id": "g:genki-frequency",
+      "title": "よく · ときどき · あまり · ぜんぜん",
+      "formula": "frequency word + verb",
+      "gist": "How often you do something.",
+      "explain": [
+        "Frequency words go right before the verb. よく is often, ときどき is sometimes.",
+        "あまり (not very often) and ぜんぜん (not at all) must be paired with a negative verb: あまり 行きません."
+      ],
+      "examples": [
+        { "ja": "よく|音楽を|聞きます。", "gloss": "often|music|listen", "en": "I often listen to music." },
+        { "ja": "あまり|映画を|見ません。", "gloss": "not often|movies|don't watch", "en": "I don't watch movies very often." },
+        { "ja": "ぜんぜん|コーヒーを|飲みません。", "gloss": "not at all|coffee|don't drink", "en": "I don't drink coffee at all." }
+      ],
+      "tip": "毎日 (every day) is the biggest, ぜんぜん (never) the smallest.",
+      "watch": "あまり and ぜんぜん without ません sound wrong."
+    }
+  ],
+  "drills": [
+    { "type": "gap", "point": 0, "ja": "わたしは コーヒーを 飲み＿。", "options": ["ます", "ません", "ました", "です"], "answer": "ます", "en": "I drink coffee.", "why": "The polite present positive ending is ます." },
+    { "type": "order", "point": 0, "en": "I study Japanese every day.", "chunks": ["毎日", "日本語を", "勉強します"] },
+    { "type": "pick", "point": 0, "q": "Which is the polite negative of 食べます?", "options": ["食べません", "食べますん", "食べません。か", "食べないます"], "answer": 0, "why": "Swap ます for ません." },
+    { "type": "gap", "point": 1, "ja": "図書館＿ 本を 読みます。", "options": ["で", "を", "に", "へ"], "answer": "で", "en": "I read a book at the library.", "why": "で marks where the action happens." },
+    { "type": "gap", "point": 1, "ja": "本＿ 読みます。", "options": ["を", "で", "に", "は"], "answer": "を", "en": "I read a book.", "why": "を marks what you read." },
+    { "type": "order", "point": 1, "en": "I go to school at seven.", "chunks": ["七時に", "学校へ", "行きます"], "alts": [["学校へ", "七時に", "行きます"]] },
+    { "type": "gap", "point": 2, "ja": "土曜日＿ 海へ 行きます。", "options": ["に", "で", "を", "は"], "answer": "に", "en": "I go to the sea on Saturday.", "why": "A specific day takes に." },
+    { "type": "pick", "point": 2, "q": "Which one is NOT correct?", "options": ["あしたに 行きます。", "八時に 行きます。", "土曜日に 行きます。", "あした 行きます。"], "answer": 0, "why": "あした doesn't take に." },
+    { "type": "gap", "point": 3, "ja": "いっしょに 映画を 見＿か。", "options": ["ません", "ます", "ました", "たい"], "answer": "ません", "en": "Would you like to watch a movie together?", "why": "ませんか is a polite invitation." },
+    { "type": "order", "point": 3, "en": "Won't you go to the sea with me?", "chunks": ["いっしょに", "海へ", "行きませんか"], "alts": [["海へ", "いっしょに", "行きませんか"]] },
+    { "type": "gap", "point": 4, "ja": "あまり 映画を 見＿。", "options": ["ません", "ます", "ました", "か"], "answer": "ません", "en": "I don't watch movies very often.", "why": "あまり needs a negative verb." },
+    { "type": "pick", "point": 4, "q": "\"I often listen to music.\"", "options": ["よく 音楽を 聞きます。", "あまり 音楽を 聞きます。", "ぜんぜん 音楽を 聞きます。", "よく 音楽を 聞きません。"], "answer": 0, "why": "よく goes with a positive verb." },
+    { "type": "type", "prompt": "Type the reading of 映画 (movie) in hiragana.", "show": "映画", "answers": ["えいが"] },
+    { "type": "type", "prompt": "Type the reading of 図書館 (library) in hiragana.", "show": "図書館", "answers": ["としょかん"] }
+  ]
+}
