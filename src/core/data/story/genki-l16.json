@@ -1,0 +1,287 @@
+{
+  "schema": 1,
+  "id": "genki-l16",
+  "order": 116,
+  "track": "genki",
+  "lesson": 16,
+  "title": "あめの バスてい",
+  "summary": "The class trip meets rain. Say what happens if, when and even if: 〜たら, 〜と and 〜ても.",
+  "covers": "〜たら · 〜と（natural result） · 〜ても（even if）",
+  "jlpt": "N4",
+  "source": "authored",
+  "bg": "riverside-evening",
+  "characters": {
+    "mori": {
+      "name": "森先生",
+      "color": "#8e7cc3"
+    },
+    "hana": {
+      "name": "ハナ",
+      "color": "#7cc6b4"
+    },
+    "leo": {
+      "name": "レオ",
+      "color": "#f0a35e"
+    }
+  },
+  "glossary": {
+    "g:n4-tara-conditional": {
+      "label": "〜たら",
+      "meaning": "if / when / after",
+      "note": "Plain past form + ら: 雨がやんだら (if/when the rain stops). Very flexible: it can describe a condition, or what you will do once something has happened."
+    },
+    "g:n4-to-conditional": {
+      "label": "〜と",
+      "meaning": "whenever / when (natural result)",
+      "note": "Plain non-past + と: a result that follows automatically. 春になると、桜が咲きます. It cannot be followed by a request or your own decision."
+    },
+    "g:n4-te-mo-even-if": {
+      "label": "〜ても",
+      "meaning": "even if / even though",
+      "note": "て-form + も: 雨が降っても、行きます. い-adjectives use くても, nouns and な-adjectives use でも."
+    },
+    "g:n5-ga-subject": {
+      "label": "〜が",
+      "meaning": "subject marker",
+      "note": "が marks the subject of the clause, often new information."
+    },
+    "k:雨": {
+      "label": "雨",
+      "meaning": "rain",
+      "reading": "あめ"
+    },
+    "k:傘": {
+      "label": "傘",
+      "meaning": "umbrella",
+      "reading": "かさ"
+    }
+  },
+  "beats": [
+    {
+      "type": "show",
+      "char": "mori",
+      "expr": "neutral",
+      "pos": "center"
+    },
+    {
+      "type": "show",
+      "char": "hana",
+      "expr": "sad",
+      "pos": "left"
+    },
+    {
+      "type": "show",
+      "char": "leo",
+      "expr": "neutral",
+      "pos": "right"
+    },
+    {
+      "type": "say",
+      "who": "mori",
+      "text": "あ、雨が 降って きましたね。",
+      "en": "Oh, it has started to rain."
+    },
+    {
+      "type": "reading",
+      "item": "k:雨",
+      "display": "雨",
+      "answers": [
+        "あめ"
+      ],
+      "prompt": "Read the word that spoils the trip.",
+      "target": "雨"
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "どうしよう…。おべんとうも ぬれちゃう。",
+      "en": "What shall we do... Our lunches will get wet."
+    },
+    {
+      "type": "intro",
+      "item": "g:n4-tara-conditional"
+    },
+    {
+      "type": "choice",
+      "item": "g:n4-tara-conditional",
+      "who": "mori",
+      "prompt": "Say: \"If the rain stops, let us go to the aquarium.\"",
+      "options": [
+        {
+          "text": "雨が やんだら、水族館へ 行きましょう。",
+          "correct": true
+        },
+        {
+          "text": "雨が やむたら、水族館へ 行きましょう。",
+          "awkward": {
+            "who": "mori",
+            "text": "「やんだら」ですよ。た-形に ら。",
+            "en": "It is \"yandara\": the ta-form plus ra."
+          }
+        },
+        {
+          "text": "雨が やんだり、水族館へ 行きましょう。",
+          "awkward": {
+            "who": "leo",
+            "text": "「たり」じゃなくて 「たら」だよ！",
+            "en": "Not \"tari\" but \"tara\"!"
+          }
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "leo",
+      "text": "もし バスが こなかったら どうする？",
+      "en": "What if the bus doesn't come?"
+    },
+    {
+      "type": "reading",
+      "item": "k:傘",
+      "display": "傘",
+      "answers": [
+        "かさ"
+      ],
+      "prompt": "Read it: what Leo is holding up.",
+      "target": "傘"
+    },
+    {
+      "type": "intro",
+      "item": "g:n4-to-conditional"
+    },
+    {
+      "type": "choice",
+      "item": "g:n4-to-conditional",
+      "who": "hana",
+      "prompt": "Say: \"When spring comes, the cherry blossoms bloom.\"",
+      "options": [
+        {
+          "text": "春に なると、さくらが さきます。",
+          "correct": true
+        },
+        {
+          "text": "春に なるたら、さくらが さきます。",
+          "awkward": {
+            "who": "hana",
+            "text": "「と」だけで いいんだよ。「なると」。",
+            "en": "Just \"to\" is fine: \"naru to\"."
+          }
+        },
+        {
+          "text": "春に なるば、さくらが さきます。",
+          "awkward": {
+            "who": "mori",
+            "text": "「なれば」ですよ。ここは 「なると」の ほうが しぜんです。",
+            "en": "It would be \"nareba\", but \"naru to\" is more natural here."
+          }
+        }
+      ]
+    },
+    {
+      "type": "particle",
+      "item": "g:n4-to-conditional",
+      "who": "mori",
+      "text": "この ボタンを おす＿、ドアが あきます。",
+      "options": [
+        "と",
+        "に",
+        "て",
+        "を"
+      ],
+      "answers": [
+        "と"
+      ],
+      "en": "When you press this button, the door opens.",
+      "role": "p:to/conditional",
+      "prompt": "Which particle links cause and automatic result?"
+    },
+    {
+      "type": "intro",
+      "item": "g:n4-te-mo-even-if"
+    },
+    {
+      "type": "choice",
+      "item": "g:n4-te-mo-even-if",
+      "who": "hana",
+      "prompt": "Say: \"Even if it rains, I will go.\"",
+      "options": [
+        {
+          "text": "雨が 降っても、行きます。",
+          "correct": true
+        },
+        {
+          "text": "雨が 降るても、行きます。",
+          "awkward": {
+            "who": "hana",
+            "text": "「降っても」だよ。て-形に も。",
+            "en": "It is \"futtemo\": te-form plus mo."
+          }
+        },
+        {
+          "text": "雨が 降ると、行きます。",
+          "awkward": {
+            "who": "leo",
+            "text": "それだと 「降ったら 行く」に なるよ。",
+            "en": "That means \"when it rains, I go\"."
+          }
+        }
+      ]
+    },
+    {
+      "type": "particle",
+      "item": "g:n5-ga-subject",
+      "who": "leo",
+      "text": "いくら 食べても、ぼく＿ ふとりません。",
+      "options": [
+        "は",
+        "を",
+        "に",
+        "へ"
+      ],
+      "answers": [
+        "は"
+      ],
+      "en": "No matter how much I eat, I do not put on weight.",
+      "role": "p:wa/topic"
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "雨が ふっても、みんなで 行けば たのしいよね。",
+      "en": "Even in the rain, it will be fun if we all go."
+    },
+    {
+      "type": "say",
+      "who": "mori",
+      "text": "では バスが きたら、水族館へ 行きましょう。",
+      "en": "Then if the bus comes, let's go to the aquarium."
+    },
+    {
+      "type": "say",
+      "who": "leo",
+      "text": "あ、虹だ！",
+      "en": "Oh, a rainbow!",
+      "expr": "smile"
+    },
+    {
+      "type": "affection",
+      "char": "hana",
+      "delta": 1
+    },
+    {
+      "type": "affection",
+      "char": "leo",
+      "delta": 1
+    },
+    {
+      "type": "affection",
+      "char": "mori",
+      "delta": 2
+    },
+    {
+      "type": "cg",
+      "id": "genki-rainbow",
+      "title": "After the rain"
+    }
+  ]
+}

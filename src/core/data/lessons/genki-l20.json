@@ -1,0 +1,364 @@
+{
+  "schema": 1,
+  "id": "genki-l20",
+  "lesson": 20,
+  "title": "At Your Service",
+  "tagline": "Speak humbly about yourself and offer help the way a good host does.",
+  "hook": "At the culture festival café, Noa is the one serving. Last time you raised other people; now you lower yourself with お〜する and the humble verbs, and add polite forms for shop speech.",
+  "goals": [
+    "Offer help with お〜する",
+    "Use the special humble verbs",
+    "Sound polite with ございます and おります"
+  ],
+  "minutes": 13,
+  "vocab": [
+    [
+      "荷物",
+      "にもつ",
+      "luggage, bags",
+      "🧳"
+    ],
+    [
+      "本日",
+      "ほんじつ",
+      "today (formal)",
+      "📅"
+    ],
+    [
+      "メニュー",
+      "めにゅー",
+      "menu",
+      "📋"
+    ],
+    [
+      "お見せする",
+      "おみせする",
+      "to show (humble)",
+      "🖼️"
+    ],
+    [
+      "お持ちする",
+      "おもちする",
+      "to carry (humble)",
+      "🛍️"
+    ],
+    [
+      "伺う",
+      "うかがう",
+      "to visit/ask (humble)",
+      "🚪"
+    ],
+    [
+      "申す",
+      "もうす",
+      "to say (humble)",
+      "🗣️"
+    ],
+    [
+      "参る",
+      "まいる",
+      "to go/come (humble)",
+      "🚶"
+    ],
+    [
+      "いたす",
+      "いたす",
+      "to do (humble)",
+      "🔧"
+    ],
+    [
+      "拝見する",
+      "はいけんする",
+      "to see (humble)",
+      "👀"
+    ],
+    [
+      "いただく",
+      "いただく",
+      "to receive/eat (humble)",
+      "🍰"
+    ],
+    [
+      "存じる",
+      "ぞんじる",
+      "to know (humble)",
+      "💡"
+    ],
+    [
+      "お待たせする",
+      "おまたせする",
+      "to keep waiting",
+      "⏳"
+    ],
+    [
+      "少々",
+      "しょうしょう",
+      "a little, a moment",
+      "⏱️"
+    ],
+    [
+      "申し訳ない",
+      "もうしわけない",
+      "inexcusable, very sorry",
+      "🙇"
+    ],
+    [
+      "お願い",
+      "おねがい",
+      "request",
+      "🙏"
+    ],
+    [
+      "承知",
+      "しょうち",
+      "understanding, consent",
+      "👌"
+    ],
+    [
+      "こちら",
+      "こちら",
+      "this way, this (polite)",
+      "👉"
+    ],
+    [
+      "お茶",
+      "おちゃ",
+      "tea",
+      "🍵"
+    ],
+    [
+      "お勘定",
+      "おかんじょう",
+      "bill",
+      "🧾"
+    ]
+  ],
+  "points": [
+    {
+      "id": "g:n4-o-suru",
+      "title": "お〜する",
+      "formula": "お + ます-stem + する",
+      "gist": "Lower yourself while helping.",
+      "explain": [
+        "Use お + ます-stem + する when you do something for the other person: 荷物を お持ちします (I will carry your bags). It lowers the speaker and respects the listener.",
+        "For する-verbs use ご…する: ご案内します. A few verbs, like 見る or 聞く, do not take this form and use special verbs instead."
+      ],
+      "examples": [
+        {
+          "ja": "お荷物を|お持ちします。",
+          "gloss": "baggage (object)|will carry (humble)",
+          "en": "Let me carry your bags."
+        },
+        {
+          "ja": "こちらを|ご案内します。",
+          "gloss": "this way (object)|will guide (humble)",
+          "en": "Let me show you this way."
+        },
+        {
+          "ja": "メニューを|お見せします。",
+          "gloss": "menu (object)|will show (humble)",
+          "en": "I will show you the menu."
+        }
+      ],
+      "tip": "お〜する = \"I will do it for you\".",
+      "watch": "Never use it for the customer's action. That would sound like you are lowering them."
+    },
+    {
+      "id": "g:genki-humble",
+      "title": "いたす・参る・申す・伺う",
+      "formula": "special humble verbs",
+      "gist": "Verbs that lower your own actions.",
+      "explain": [
+        "A set of verbs lowers your own actions: する → いたす, 行く・来る → 参る, 言う → 申す, 食べる・もらう → いただく, 訪ねる・聞く → 伺う, 見る → 拝見する, 知っている → 存じている.",
+        "You can say 申します when you give your name: ノアと 申します. The ます-forms are いたします, 参ります, 申します, 伺います."
+      ],
+      "examples": [
+        {
+          "ja": "ノアと|申します。",
+          "gloss": "Noa (quote)|I am called (humble)",
+          "en": "My name is Noa."
+        },
+        {
+          "ja": "あした|伺います。",
+          "gloss": "tomorrow|will visit (humble)",
+          "en": "I will visit tomorrow."
+        },
+        {
+          "ja": "わたしが|いたします。",
+          "gloss": "I (subject)|will do (humble)",
+          "en": "I will do it."
+        }
+      ],
+      "tip": "Keep honorific and humble apart: honorific for them, humble for me.",
+      "watch": "伺う has two uses: to visit and to ask. Context tells you which."
+    },
+    {
+      "id": "g:genki-gozaimasu",
+      "title": "ございます・おります",
+      "formula": "polite forms of ある、いる、です",
+      "gist": "Make your own speech very polite.",
+      "explain": [
+        "ある becomes ございます, いる becomes おります, and です becomes でございます. They are used in shops, announcements and formal speech.",
+        "ありがとう ございます comes from the same word. The form ここに ございます means \"it is here\"."
+      ],
+      "examples": [
+        {
+          "ja": "こちらが|メニューで|ございます。",
+          "gloss": "this (subject)|menu|is (polite)",
+          "en": "This is the menu."
+        },
+        {
+          "ja": "店長は|ただいま|おりません。",
+          "gloss": "manager (topic)|at the moment|is not (humble)",
+          "en": "The manager is not here right now."
+        }
+      ],
+      "tip": "Think of ございます and おります as the \"uniform\" of formal speech.",
+      "watch": "Use おります about your own side only. For the customer's side use いらっしゃいます."
+    }
+  ],
+  "drills": [
+    {
+      "type": "gap",
+      "point": 0,
+      "ja": "お荷物を お持ち＿ます。",
+      "options": [
+        "し",
+        "に",
+        "なり",
+        "で"
+      ],
+      "answer": "し",
+      "en": "Let me carry your bags.",
+      "why": "お + stem + します."
+    },
+    {
+      "type": "pick",
+      "q": "You offer to show the menu humbly.",
+      "options": [
+        "メニューを お見せします。",
+        "メニューを お見せに なります。",
+        "メニューを 見せて くれます。",
+        "メニューを ご覧に なります。"
+      ],
+      "answer": 0,
+      "why": "Your action: お〜する.",
+      "point": 0
+    },
+    {
+      "type": "pick",
+      "q": "Which is for your own action?",
+      "options": [
+        "お待ちします",
+        "お待ちに なります",
+        "お待ちに なった",
+        "お待ちください"
+      ],
+      "answer": 0,
+      "why": "お〜する = humble.",
+      "point": 0
+    },
+    {
+      "type": "order",
+      "point": 0,
+      "en": "Let me guide you this way.",
+      "chunks": [
+        "こちらを",
+        "ご案内",
+        "します"
+      ]
+    },
+    {
+      "type": "gap",
+      "point": 1,
+      "ja": "ノアと ＿します。",
+      "options": [
+        "申し",
+        "言い",
+        "おっしゃり",
+        "伺い"
+      ],
+      "answer": "申し",
+      "en": "My name is Noa.",
+      "why": "Humble: 申す."
+    },
+    {
+      "type": "pick",
+      "q": "Humble form of する:",
+      "options": [
+        "いたす",
+        "なさる",
+        "おっしゃる",
+        "参る"
+      ],
+      "answer": 0,
+      "why": "する → いたす.",
+      "point": 1
+    },
+    {
+      "type": "pick",
+      "q": "Say to a teacher: \"I will visit tomorrow.\"",
+      "options": [
+        "あした 伺います。",
+        "あした いらっしゃいます。",
+        "あした 行かれます。",
+        "あした お行きになります。"
+      ],
+      "answer": 0,
+      "why": "行く → 伺う.",
+      "point": 1
+    },
+    {
+      "type": "order",
+      "point": 1,
+      "en": "I will do it.",
+      "chunks": [
+        "わたしが",
+        "いたします"
+      ]
+    },
+    {
+      "type": "gap",
+      "point": 2,
+      "ja": "こちらが メニューで ＿ます。",
+      "options": [
+        "ござい",
+        "あり",
+        "おり",
+        "いらっしゃい"
+      ],
+      "answer": "ござい",
+      "en": "This is the menu.",
+      "why": "です → でございます."
+    },
+    {
+      "type": "pick",
+      "q": "The manager is not here (formal):",
+      "options": [
+        "店長は おりません。",
+        "店長は いらっしゃいません。",
+        "店長は いません。",
+        "店長は ありません。"
+      ],
+      "answer": 0,
+      "why": "いない → おりません.",
+      "point": 2
+    },
+    {
+      "type": "type",
+      "prompt": "Type the reading of 荷物 (luggage) in hiragana.",
+      "show": "荷物",
+      "answers": [
+        "にもつ"
+      ]
+    },
+    {
+      "type": "type",
+      "prompt": "Type the reading of 本日 (today, formal) in hiragana.",
+      "show": "本日",
+      "answers": [
+        "ほんじつ"
+      ]
+    }
+  ]
+}

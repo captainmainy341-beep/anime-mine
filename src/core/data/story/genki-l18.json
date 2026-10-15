@@ -1,0 +1,331 @@
+{
+  "schema": 1,
+  "id": "genki-l18",
+  "order": 118,
+  "track": "genki",
+  "lesson": 18,
+  "title": "あっ、われた！",
+  "summary": "A busy day at Café Aozora ends with a broken cup. Say what happened by itself and what you did, finish things off, and say what you are in the middle of.",
+  "covers": "〜てしまう · 自動詞 / 他動詞 (が vs を) · 〜てくる / 〜ていく · 〜ところだ",
+  "jlpt": "N4",
+  "source": "authored",
+  "bg": "cafe",
+  "characters": {
+    "hana": {
+      "name": "ハナ",
+      "color": "#7cc6b4"
+    },
+    "tomi": {
+      "name": "とみさん",
+      "color": "#c97b5a"
+    },
+    "leo": {
+      "name": "レオ",
+      "color": "#f0a35e"
+    }
+  },
+  "glossary": {
+    "g:n4-te-shimau": {
+      "label": "〜てしまう",
+      "meaning": "end up doing / do completely",
+      "note": "て-form + しまう: either something finished completely (全部食べてしまった) or an unhappy result (わってしまいました). Casual: 〜ちゃう / 〜じゃう."
+    },
+    "g:genki-jidoushi": {
+      "label": "自動詞 / 他動詞",
+      "meaning": "intransitive / transitive pairs",
+      "note": "Many verbs come in pairs: ドアが開く (it opens by itself) and ドアを開ける (someone opens it). The intransitive verb takes が, the transitive verb takes を."
+    },
+    "g:n4-te-kuru": {
+      "label": "〜てくる",
+      "meaning": "come to / go and come back",
+      "note": "て-form + くる: do something and come back (買ってくる), or a change moving toward now (雨が降ってきた). 〜ていく is the opposite direction."
+    },
+    "g:n4-tokoro-da": {
+      "label": "〜ところだ",
+      "meaning": "about to / in the middle of / just did",
+      "note": "Dictionary form + ところ: about to. 〜ている + ところ: in the middle of. 〜た + ところ: has just done."
+    },
+    "g:n5-ga-subject": {
+      "label": "〜が",
+      "meaning": "subject marker",
+      "note": "が marks what the verb describes. Intransitive verbs describe what happens to a thing, so the thing takes が."
+    },
+    "k:割": {
+      "label": "割",
+      "meaning": "divide, break",
+      "reading": "わ(る)"
+    },
+    "k:落": {
+      "label": "落",
+      "meaning": "drop, fall",
+      "reading": "お(ちる/とす)"
+    }
+  },
+  "beats": [
+    {
+      "type": "show",
+      "char": "hana",
+      "expr": "neutral",
+      "pos": "left"
+    },
+    {
+      "type": "show",
+      "char": "tomi",
+      "expr": "neutral",
+      "pos": "right"
+    },
+    {
+      "type": "say",
+      "who": "tomi",
+      "text": "ノアさん、おぼん、気を つけてね！",
+      "en": "Noa, careful with the tray!"
+    },
+    {
+      "type": "say",
+      "who": null,
+      "text": "ガシャン！",
+      "en": "Crash!"
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "あっ！ コップが われた！",
+      "en": "Oh! The cup broke!",
+      "expr": "surprised"
+    },
+    {
+      "type": "reading",
+      "item": "k:割",
+      "display": "割る",
+      "answers": [
+        "わる"
+      ],
+      "prompt": "Read it: the verb for what happened to the cup.",
+      "target": "割"
+    },
+    {
+      "type": "intro",
+      "item": "g:genki-jidoushi"
+    },
+    {
+      "type": "choice",
+      "item": "g:genki-jidoushi",
+      "who": "hana",
+      "prompt": "Say that the cup broke (as it happened to it).",
+      "options": [
+        {
+          "text": "コップが われました。",
+          "correct": true
+        },
+        {
+          "text": "コップを われました。",
+          "awkward": {
+            "who": "hana",
+            "text": "「われる」の ときは 「が」だよ。",
+            "en": "With \"wareru\" the cup takes \"ga\"."
+          }
+        },
+        {
+          "text": "コップが わりました。",
+          "awkward": {
+            "who": "tomi",
+            "text": "「わる」は だれかが わる ときですよ。",
+            "en": "\"Waru\" is when someone breaks it."
+          }
+        }
+      ]
+    },
+    {
+      "type": "particle",
+      "item": "g:genki-jidoushi",
+      "who": "tomi",
+      "text": "ドア＿ しまって います。",
+      "options": [
+        "が",
+        "を",
+        "に",
+        "で"
+      ],
+      "answers": [
+        "が"
+      ],
+      "en": "The door is closed.",
+      "role": "p:ga/subject",
+      "prompt": "Which particle goes with しまる?"
+    },
+    {
+      "type": "particle",
+      "item": "g:genki-jidoushi",
+      "who": "hana",
+      "text": "ドア＿ しめて ください。",
+      "options": [
+        "を",
+        "が",
+        "に",
+        "は"
+      ],
+      "answers": [
+        "を"
+      ],
+      "en": "Please close the door.",
+      "role": "p:wo/object",
+      "prompt": "Which particle goes with しめる?"
+    },
+    {
+      "type": "intro",
+      "item": "g:n4-te-shimau"
+    },
+    {
+      "type": "choice",
+      "item": "g:n4-te-shimau",
+      "who": null,
+      "prompt": "Say that you ended up breaking it: \"I broke the cup. I am sorry.\"",
+      "options": [
+        {
+          "text": "コップを わって しまいました。すみません。",
+          "correct": true
+        },
+        {
+          "text": "コップを わって いました。すみません。",
+          "awkward": {
+            "who": "tomi",
+            "text": "「いました」だと ただ わっていた 状態ですよ。",
+            "en": "\"Imashita\" describes a state."
+          }
+        },
+        {
+          "text": "コップを わって しまりました。すみません。",
+          "awkward": {
+            "who": "leo",
+            "text": "「しまいました」だよ。",
+            "en": "It is \"shimaimashita\"."
+          }
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "tomi",
+      "text": "いいのよ。けがは ない？",
+      "en": "It's okay. Did you get hurt?"
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "わたしが ほうきを もって くる。",
+      "en": "I'll go get the broom."
+    },
+    {
+      "type": "intro",
+      "item": "g:n4-te-kuru"
+    },
+    {
+      "type": "choice",
+      "item": "g:n4-te-kuru",
+      "who": "hana",
+      "prompt": "Say: \"I will go and buy milk (and come back).\"",
+      "options": [
+        {
+          "text": "牛乳を 買って きます。",
+          "correct": true
+        },
+        {
+          "text": "牛乳を 買って いきます。",
+          "awkward": {
+            "who": "tomi",
+            "text": "もどって くるなら 「きます」ですよ。",
+            "en": "If you come back, \"kimasu\"."
+          }
+        },
+        {
+          "text": "牛乳を 買って しまいます。",
+          "awkward": {
+            "who": "leo",
+            "text": "「しまう」は 全部 やる という いみだよ。",
+            "en": "\"Shimau\" means finishing off."
+          }
+        }
+      ]
+    },
+    {
+      "type": "reading",
+      "item": "k:落",
+      "display": "落とす",
+      "answers": [
+        "おとす"
+      ],
+      "prompt": "Read it: what Noa did with the tray.",
+      "target": "落"
+    },
+    {
+      "type": "say",
+      "who": "leo",
+      "text": "ノア、いま 何を してるの？",
+      "en": "Noa, what are you doing now?"
+    },
+    {
+      "type": "intro",
+      "item": "g:n4-tokoro-da"
+    },
+    {
+      "type": "choice",
+      "item": "g:n4-tokoro-da",
+      "who": null,
+      "prompt": "Say: \"I am just in the middle of cleaning.\"",
+      "options": [
+        {
+          "text": "いま そうじを している ところです。",
+          "correct": true
+        },
+        {
+          "text": "いま そうじを した ところです。",
+          "awkward": {
+            "who": "leo",
+            "text": "それは 「いま おわった」 という いみだよ。",
+            "en": "That means \"just finished\"."
+          }
+        },
+        {
+          "text": "いま そうじを するの ところです。",
+          "awkward": {
+            "who": "hana",
+            "text": "「する ところ」だよ。「の」は いらない。",
+            "en": "\"Suru tokoro\". No \"no\" needed."
+          }
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "手伝う ことが あったら、言ってね。",
+      "en": "If there's anything I can help with, say so."
+    },
+    {
+      "type": "say",
+      "who": "tomi",
+      "text": "ノアさん、あしたも がんばってね。",
+      "en": "Noa, do your best tomorrow too."
+    },
+    {
+      "type": "affection",
+      "char": "tomi",
+      "delta": 2
+    },
+    {
+      "type": "affection",
+      "char": "hana",
+      "delta": 1
+    },
+    {
+      "type": "affection",
+      "char": "leo",
+      "delta": 1
+    },
+    {
+      "type": "cg",
+      "id": "genki-sorry",
+      "title": "The broken cup"
+    }
+  ]
+}

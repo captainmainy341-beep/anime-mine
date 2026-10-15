@@ -11,7 +11,7 @@ import {
   scanSummary,
   vacationBanner,
 } from './homeModel.mjs';
-import { nextAction, pathProgress } from './genkiModel.mjs';
+import { nextAction, pathName, pathProgress } from './genkiModel.mjs';
 
 const EXTRA_SOURCES = [
   ['recentMistakes', 'Recent mistakes'],
@@ -99,7 +99,7 @@ export function mountHome(el, ctx) {
     const open = (target) => ctx.go('story', target);
     return h('section', { class:'home-genki' },
       h('div', { class:'home-session-heading' }, h('h2', {}, 'Your Genki path'),
-        h('span', { class:'course-chip mint' }, genki.complete ? 'Genki I complete' : `${genki.done} of ${genki.total} lessons`)),
+        h('span', { class:'course-chip mint' }, genki.complete ? `${pathName(genki)} complete` : `${genki.done} of ${genki.total} lessons`)),
       progressBar(genki.total ? genki.done / genki.total : 0),
       action
         ? h('div', { class:'home-genki-next' },

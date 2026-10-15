@@ -1,0 +1,361 @@
+{
+  "schema": 1,
+  "id": "genki-l22",
+  "lesson": 22,
+  "title": "Let Me!",
+  "tagline": "Ask to be allowed, say who made or let whom do something, and say what you try to do.",
+  "hook": "Noa has been offered a speech on the festival stage. To say yes you'll need させてください, the causative for 'make' and 'let', and ようにする for habits you are working on.",
+  "goals": [
+    "Form and use the causative",
+    "Ask permission with 〜させてください",
+    "Talk about habits with 〜ようにする"
+  ],
+  "minutes": 13,
+  "vocab": [
+    [
+      "スピーチ",
+      "すぴーち",
+      "speech",
+      "🎤"
+    ],
+    [
+      "ステージ",
+      "すてーじ",
+      "stage",
+      "🎭"
+    ],
+    [
+      "生徒",
+      "せいと",
+      "student (pupil)",
+      "🧑‍🎓"
+    ],
+    [
+      "台所",
+      "だいどころ",
+      "kitchen",
+      "🍳"
+    ],
+    [
+      "げき",
+      "げき",
+      "play, drama",
+      "🎬"
+    ],
+    [
+      "服",
+      "ふく",
+      "clothes",
+      "👗"
+    ],
+    [
+      "野菜",
+      "やさい",
+      "vegetables",
+      "🥦"
+    ],
+    [
+      "宿題",
+      "しゅくだい",
+      "homework",
+      "📚"
+    ],
+    [
+      "やる",
+      "やる",
+      "to do",
+      "🙌"
+    ],
+    [
+      "使う",
+      "つかう",
+      "to use",
+      "🧰"
+    ],
+    [
+      "読む",
+      "よむ",
+      "to read",
+      "📖"
+    ],
+    [
+      "泣く",
+      "なく",
+      "to cry",
+      "😢"
+    ],
+    [
+      "笑う",
+      "わらう",
+      "to laugh",
+      "😂"
+    ],
+    [
+      "待つ",
+      "まつ",
+      "to wait",
+      "⏳"
+    ],
+    [
+      "歌う",
+      "うたう",
+      "to sing",
+      "🎶"
+    ],
+    [
+      "えらい",
+      "えらい",
+      "admirable",
+      "🌟"
+    ],
+    [
+      "どりょく",
+      "どりょく",
+      "effort",
+      "💪"
+    ],
+    [
+      "練習",
+      "れんしゅう",
+      "practice",
+      "🎯"
+    ],
+    [
+      "毎朝",
+      "まいあさ",
+      "every morning",
+      "🌅"
+    ],
+    [
+      "習慣",
+      "しゅうかん",
+      "habit",
+      "🔁"
+    ]
+  ],
+  "points": [
+    {
+      "id": "g:n4-saseru",
+      "title": "〜させる（make / let）",
+      "formula": "ru: stem + させる / u: あ-row + せる",
+      "gist": "Make or let someone do something.",
+      "explain": [
+        "Ru-verbs add させる: 食べる → 食べさせる. U-verbs change the last sound to the あ-row and add せる: 読む → 読ませる, 待つ → 待たせる. する → させる, 来る → 来させる.",
+        "The causative can mean \"make\" (force) or \"let\" (allow), depending on the situation. The person who acts takes に when the verb has an object: 子どもに 野菜を 食べさせる. If the verb has no object, they take を: 子どもを 泣かせた."
+      ],
+      "examples": [
+        {
+          "ja": "先生は|生徒に|本を|読ませました。",
+          "gloss": "teacher (topic)|students (to)|book (object)|made read",
+          "en": "The teacher made the students read the book."
+        },
+        {
+          "ja": "お母さんは|子どもに|野菜を|食べさせます。",
+          "gloss": "mother (topic)|child (to)|vegetables (object)|makes eat",
+          "en": "The mother makes her child eat vegetables."
+        },
+        {
+          "ja": "先生は|わたしを|笑わせました。",
+          "gloss": "teacher (topic)|me (object)|made laugh",
+          "en": "The teacher made me laugh."
+        }
+      ],
+      "tip": "に for the person made to act, except when the verb has no object.",
+      "watch": "Do not use two を in one sentence. 生徒を 本を 読ませる is wrong."
+    },
+    {
+      "id": "g:genki-sasete",
+      "title": "〜させてください",
+      "formula": "causative て-form + ください",
+      "gist": "Politely ask to be allowed.",
+      "explain": [
+        "Causative て-form + ください asks the listener to let you do something: わたしに やらせて ください (Please let me do it). Add ぜひ for enthusiasm.",
+        "For more politeness use 〜させていただけませんか, which combines this lesson with いただけませんか from lesson 14."
+      ],
+      "examples": [
+        {
+          "ja": "わたしにも|やらせて|ください。",
+          "gloss": "to me too|let me do|please",
+          "en": "Please let me do it too."
+        },
+        {
+          "ja": "もう少し|考えさせて|ください。",
+          "gloss": "a little more|let me think|please",
+          "en": "Please let me think about it a little more."
+        }
+      ],
+      "tip": "Think \"let me\" = させて. Add ください for \"please\".",
+      "watch": "Using やって ください would ask the other person to do it for you."
+    },
+    {
+      "id": "g:n4-you-ni-suru",
+      "title": "〜ようにする",
+      "formula": "dictionary form + ようにする",
+      "gist": "Try to, make a point of.",
+      "explain": [
+        "Dictionary form + ようにする means you try to do something regularly or consciously: 毎日 日本語で 話すように しています (I make a point of speaking Japanese every day).",
+        "The negative is 〜ないようにする: 夜は コーヒーを 飲まないように しています. Compare ことにする (a decision) and ようになる (a change that happens)."
+      ],
+      "examples": [
+        {
+          "ja": "毎日|日本語で|話すように|しています。",
+          "gloss": "every day|in Japanese|trying to speak|am doing",
+          "en": "I try to speak Japanese every day."
+        },
+        {
+          "ja": "夜は|コーヒーを|飲まないように|しています。",
+          "gloss": "night (topic)|coffee (object)|not to drink|am trying",
+          "en": "I try not to drink coffee at night."
+        }
+      ],
+      "tip": "ようにする = effort. ようになる = change.",
+      "watch": "It shows effort, not a promise. For a firm decision use ことにする."
+    }
+  ],
+  "drills": [
+    {
+      "type": "gap",
+      "point": 0,
+      "ja": "先生は 生徒＿ 本を 読ませました。",
+      "options": [
+        "に",
+        "を",
+        "が",
+        "は"
+      ],
+      "answer": "に",
+      "en": "The teacher made the students read the book.",
+      "why": "Verb has an object: に."
+    },
+    {
+      "type": "pick",
+      "q": "What is the causative of 食べる?",
+      "options": [
+        "食べさせる",
+        "食べられる",
+        "食べせる",
+        "食べらせる"
+      ],
+      "answer": 0,
+      "why": "Ru-verb: stem + させる.",
+      "point": 0
+    },
+    {
+      "type": "pick",
+      "q": "What is the causative of 待つ?",
+      "options": [
+        "待たせる",
+        "待たされる",
+        "待てる",
+        "待ちせる"
+      ],
+      "answer": 0,
+      "why": "あ-row + せる.",
+      "point": 0
+    },
+    {
+      "type": "order",
+      "point": 0,
+      "en": "The mother makes her child eat vegetables.",
+      "chunks": [
+        "お母さんは",
+        "子どもに",
+        "野菜を",
+        "食べさせます"
+      ]
+    },
+    {
+      "type": "gap",
+      "point": 1,
+      "ja": "わたしにも やら＿ ください。",
+      "options": [
+        "せて",
+        "れて",
+        "して",
+        "らせ"
+      ],
+      "answer": "せて",
+      "en": "Please let me do it too.",
+      "why": "やらせて ください."
+    },
+    {
+      "type": "pick",
+      "q": "You want to ask politely to think a little more:",
+      "options": [
+        "もう少し 考えさせて ください。",
+        "もう少し 考えて ください。",
+        "もう少し 考えられて ください。",
+        "もう少し 考えさせる ください。"
+      ],
+      "answer": 0,
+      "why": "させて ください = let me.",
+      "point": 1
+    },
+    {
+      "type": "order",
+      "point": 1,
+      "en": "Please let me help too.",
+      "chunks": [
+        "わたしにも",
+        "手伝わせて",
+        "ください"
+      ]
+    },
+    {
+      "type": "gap",
+      "point": 2,
+      "ja": "まいにち 日本語で 話す＿ しています。",
+      "options": [
+        "ように",
+        "ことに",
+        "ものに",
+        "ために"
+      ],
+      "answer": "ように",
+      "en": "I try to speak Japanese every day.",
+      "why": "ようにする."
+    },
+    {
+      "type": "pick",
+      "q": "You try not to drink coffee at night:",
+      "options": [
+        "夜は コーヒーを 飲まないように しています。",
+        "夜は コーヒーを 飲まなくように しています。",
+        "夜は コーヒーを 飲むないように しています。",
+        "夜は コーヒーを 飲んでないように しています。"
+      ],
+      "answer": 0,
+      "why": "Negative: ないように.",
+      "point": 2
+    },
+    {
+      "type": "pick",
+      "q": "Which expresses effort, not a change?",
+      "options": [
+        "〜ようにする",
+        "〜ようになる",
+        "〜ことになる",
+        "〜そうだ"
+      ],
+      "answer": 0,
+      "why": "する = effort.",
+      "point": 2
+    },
+    {
+      "type": "type",
+      "prompt": "Type the reading of 台所 (kitchen) in hiragana.",
+      "show": "台所",
+      "answers": [
+        "だいどころ"
+      ]
+    },
+    {
+      "type": "type",
+      "prompt": "Type the reading of 野菜 (vegetables) in hiragana.",
+      "show": "野菜",
+      "answers": [
+        "やさい"
+      ]
+    }
+  ]
+}

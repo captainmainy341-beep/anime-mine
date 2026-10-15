@@ -1,0 +1,291 @@
+{
+  "schema": 1,
+  "id": "genki-l22",
+  "order": 122,
+  "track": "genki",
+  "lesson": 22,
+  "title": "スピーチを させてください",
+  "summary": "Mori-sensei offers Noa a place on the festival stage. Ask permission with 〜させてください, say who made or let whom do what, and talk about habits you are trying to keep.",
+  "covers": "〜させる（make / let） · 〜させてください · 〜ようにする",
+  "jlpt": "N4",
+  "source": "authored",
+  "bg": "festival-hall",
+  "characters": {
+    "mori": {
+      "name": "森先生",
+      "color": "#8e7cc3"
+    },
+    "hana": {
+      "name": "ハナ",
+      "color": "#7cc6b4"
+    },
+    "tomi": {
+      "name": "とみさん",
+      "color": "#c97b5a"
+    }
+  },
+  "glossary": {
+    "g:n4-saseru": {
+      "label": "〜させる",
+      "meaning": "make / let someone do",
+      "note": "Ru-verbs: stem + させる (食べる → 食べさせる). U-verbs: あ-row + せる (読む → 読ませる). する → させる, 来る → 来させる. The person who is made or allowed to act takes に (or を if the verb has no object)."
+    },
+    "g:genki-sasete": {
+      "label": "〜させてください",
+      "meaning": "please let me ...",
+      "note": "Causative て-form + ください: a polite request to be allowed to do something. 私にやらせてください."
+    },
+    "g:n4-you-ni-suru": {
+      "label": "〜ようにする",
+      "meaning": "try to / make a point of",
+      "note": "Dictionary form + ようにする: you try to do it regularly. 毎日日本語で話すようにしています."
+    },
+    "g:n5-ni": {
+      "label": "〜に",
+      "meaning": "to / by (the person made to act)",
+      "note": "In causative sentences the person who is made to act takes に when the verb already has an object: 子どもに野菜を食べさせる."
+    },
+    "k:使": {
+      "label": "使",
+      "meaning": "use",
+      "reading": "つか(う)"
+    },
+    "k:壇": {
+      "label": "壇",
+      "meaning": "platform, stage",
+      "reading": "だん"
+    }
+  },
+  "beats": [
+    {
+      "type": "show",
+      "char": "mori",
+      "expr": "smile",
+      "pos": "center"
+    },
+    {
+      "type": "show",
+      "char": "hana",
+      "expr": "smile",
+      "pos": "left"
+    },
+    {
+      "type": "show",
+      "char": "tomi",
+      "expr": "smile",
+      "pos": "right"
+    },
+    {
+      "type": "say",
+      "who": "mori",
+      "text": "ノアさん、ぶんかさいの ステージで スピーチを しませんか。",
+      "en": "Noa, would you like to give a speech on the festival stage?"
+    },
+    {
+      "type": "reading",
+      "item": "k:壇",
+      "display": "壇",
+      "answers": [
+        "だん"
+      ],
+      "prompt": "Read it: the platform the speech will be on.",
+      "target": "壇"
+    },
+    {
+      "type": "intro",
+      "item": "g:genki-sasete"
+    },
+    {
+      "type": "choice",
+      "item": "g:genki-sasete",
+      "who": "mori",
+      "prompt": "Say yes eagerly: \"Please let me do it.\"",
+      "options": [
+        {
+          "text": "ぜひ、わたしに やらせて ください。",
+          "correct": true
+        },
+        {
+          "text": "ぜひ、わたしに やって ください。",
+          "awkward": {
+            "who": "hana",
+            "text": "それは 「わたしの かわりに やって」 になっちゃうよ。",
+            "en": "That means \"do it for me\"."
+          }
+        },
+        {
+          "text": "ぜひ、わたしに やらせて あげます。",
+          "awkward": {
+            "who": "tomi",
+            "text": "「あげます」だと えらそうに 聞こえますよ。",
+            "en": "\"Agemasu\" sounds arrogant."
+          }
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "わたしも 手伝わせて！ げきの ふくを 作りたいの。",
+      "en": "Let me help too! I want to make costumes for the play."
+    },
+    {
+      "type": "intro",
+      "item": "g:n4-saseru"
+    },
+    {
+      "type": "choice",
+      "item": "g:n4-saseru",
+      "who": "mori",
+      "prompt": "Say: \"Mori-sensei made the students read aloud.\"",
+      "options": [
+        {
+          "text": "先生は 生徒に 本を 読ませました。",
+          "correct": true
+        },
+        {
+          "text": "先生は 生徒を 本を 読ませました。",
+          "awkward": {
+            "who": "mori",
+            "text": "「を」が ふたつに なってしまいますよ。「生徒に」。",
+            "en": "You'd get two \"o\"s. Use \"seito ni\"."
+          }
+        },
+        {
+          "text": "先生は 生徒に 本を 読まれました。",
+          "awkward": {
+            "who": "tomi",
+            "text": "「読まれる」は 受身ですよ。",
+            "en": "\"Yomareru\" is passive."
+          }
+        }
+      ]
+    },
+    {
+      "type": "particle",
+      "item": "g:n5-ni",
+      "who": "tomi",
+      "text": "お母さんは 子ども＿ 野菜を 食べさせます。",
+      "options": [
+        "に",
+        "を",
+        "が",
+        "で"
+      ],
+      "answers": [
+        "に"
+      ],
+      "en": "The mother makes her child eat vegetables.",
+      "role": "p:ni/agent",
+      "prompt": "Who is made to eat?"
+    },
+    {
+      "type": "reading",
+      "item": "k:使",
+      "display": "使わせる",
+      "answers": [
+        "つかわせる"
+      ],
+      "prompt": "Read it: what Tomi-san lets Hana do with the kitchen.",
+      "target": "使"
+    },
+    {
+      "type": "choice",
+      "item": "g:n4-saseru",
+      "who": "hana",
+      "prompt": "Say: \"Tomi-san let me use the kitchen.\"",
+      "options": [
+        {
+          "text": "とみさんは わたしに 台所を 使わせて くれました。",
+          "correct": true
+        },
+        {
+          "text": "とみさんは わたしに 台所を 使わせて あげました。",
+          "awkward": {
+            "who": "tomi",
+            "text": "ハナさんの ために してくれたので 「くれました」ですよ。",
+            "en": "That means I let you use it for someone else."
+          }
+        },
+        {
+          "text": "とみさんは わたしに 台所を 使われて くれました。",
+          "awkward": {
+            "who": "hana",
+            "text": "「使わせて」だよ。",
+            "en": "It is \"tsukawasete\"."
+          }
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "mori",
+      "text": "ノアさんは、日本語で 話す ために 何を して いますか。",
+      "en": "Noa, what do you do to speak Japanese?"
+    },
+    {
+      "type": "intro",
+      "item": "g:n4-you-ni-suru"
+    },
+    {
+      "type": "choice",
+      "item": "g:n4-you-ni-suru",
+      "who": null,
+      "prompt": "Say you try to speak only Japanese every day.",
+      "options": [
+        {
+          "text": "まいにち 日本語だけで 話すように しています。",
+          "correct": true
+        },
+        {
+          "text": "まいにち 日本語だけで 話すように なります。",
+          "awkward": {
+            "who": "mori",
+            "text": "「なる」は 自然な 変化、「する」は 自分の どりょく ですよ。",
+            "en": "\"Naru\" is change; \"suru\" is your effort."
+          }
+        },
+        {
+          "text": "まいにち 日本語だけで 話すようを しています。",
+          "awkward": {
+            "who": "hana",
+            "text": "「ように しています」だよ。",
+            "en": "It is \"you ni shite imasu\"."
+          }
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "tomi",
+      "text": "えらいわ、ノアさん。",
+      "en": "That's admirable, Noa."
+    },
+    {
+      "type": "say",
+      "who": "mori",
+      "text": "では、スピーチは ノアさんに おねがいします。",
+      "en": "Then I'll leave the speech to you, Noa."
+    },
+    {
+      "type": "affection",
+      "char": "mori",
+      "delta": 2
+    },
+    {
+      "type": "affection",
+      "char": "hana",
+      "delta": 1
+    },
+    {
+      "type": "affection",
+      "char": "tomi",
+      "delta": 1
+    },
+    {
+      "type": "cg",
+      "id": "genki-stage",
+      "title": "On the stage"
+    }
+  ]
+}

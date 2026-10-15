@@ -5,7 +5,7 @@
 | Layer | Files |
 | --- | --- |
 | Scene schema, validation, AI repair | `src/core/storySchema.js` |
-| Authored chapters (JSON) | `src/core/data/story/n5-ch1..3.json`, `n4-ch1.json`, Genki path `genki-l01..l12.json`, loaded by `src/core/storyContent.js` |
+| Authored chapters (JSON) | `src/core/data/story/n5-ch1..3.json`, `n4-ch1.json`, Genki path `genki-l01..l23.json`, loaded by `src/core/storyContent.js` |
 | Particle guide, miss explanations | `src/core/storyParticles.js` (+ the shared `src/core/data/particles.json`) |
 | Anime-line scenes | `src/core/storyAnime.js` |
 | AI side quests + cache | `src/core/storyAi.js` (uses `ai.complete` / `ai.aiReady`) |
@@ -33,7 +33,7 @@ Grammar points that exist in the app's grammar deck use their ids (`g:n5-*`, `g:
 Genki points the deck does not have (これ/それ, ます-form, adjective past, んです, なければ...) use
 `g:genki-*` ids with a glossary entry: they get an intro card and practice, but nothing is submitted to the SRS
 (adding them to the grammar deck would mean editing `src/core/data/grammar`, outside this feature's files).
-Genki II (lessons 13–23) is not written yet.
+Genki II (lessons 13–23) follows the same pattern, one story scene and one primer per lesson, all `jlpt: "N4"`: potential, し and そう (13); giving and receiving (14); volitional, ておく, てある (15); たら, と, ても (16); ば, なら, ことにする / ことになる (17); intransitive and transitive pairs, てしまう, てくる, ところだ (18); honorific speech (19); humble speech (20); passive, affected passive, らしい (21); causative, させてください, ようにする (22); causative-passive, ようになる, ように (23). The story continues after lesson 12: Noa works at Café Aozora, decides to stay a second year, and lesson 23 ends one year after arriving. The menu shows the path as two rows, Genki I and Genki II (`genkiBooks` in `storyHomeModel.mjs`).
 
 ### Particle challenges and the particle guide
 
@@ -245,10 +245,10 @@ including all new Story tests, passes.
 30 chapters, six per level (`n5-ch1..6`, `n4-ch1..6`, `n3-ch1..6`, `n2-ch1..6`, `n1-ch1..6`), `order` 1 to 30 and titles "Chapter N: ...". Arc: Yuuki arrives at Sakuragaoka (N5), the festival and Kyoto trip (N4), saving the riverside cafe (N3), Tokyo five years on (N2), the ten-year promise (N1). Each chapter tests at least three grammar points of its own level (no point repeats within a level) and at least two kanji. `test/storyArc.test.js` enforces this. Nine new drawn backgrounds were added to `defaultSkin.mjs`.
 
 ### Learn first (Genki lessons)
-`src/core/data/lessons/genki-l01..12.json` (schema and validator in `src/core/storyLessons.js`): words, grammar patterns with animated chunk-by-chunk examples, and exercises (gap, pick, word order, type-in kana). `lessonModel.mjs` builds the steps (word cards and match-up, each pattern then two exercises, mixed practice with misses coming back once), grades answers and tracks XP and streaks; `lesson.mjs` is the DOM. A lesson never touches the SRS by itself; pattern cards can add a grammar point to the learner's reviews through `story:learn`. IPC: `story:lesson`, `story:lessonDone`; progress lives in `story.json` under `lessons`. The test suite checks that every `g:genki-*` point used by a story scene is taught by its lesson.
+`src/core/data/lessons/genki-l01..23.json` (schema and validator in `src/core/storyLessons.js`): words, grammar patterns with animated chunk-by-chunk examples, and exercises (gap, pick, word order, type-in kana). `lessonModel.mjs` builds the steps (word cards and match-up, each pattern then two exercises, mixed practice with misses coming back once), grades answers and tracks XP and streaks; `lesson.mjs` is the DOM. A lesson never touches the SRS by itself; pattern cards can add a grammar point to the learner's reviews through `story:learn`. IPC: `story:lesson`, `story:lessonDone`; progress lives in `story.json` under `lessons`. The test suite checks that every `g:genki-*` point used by a story scene is taught by its lesson.
 
 ### Manual check (headless Chromium, real renderer and real handlers)
 Home, detail sheet, and a full Genki lesson 3 run (cards, match-up, pattern, exercise with feedback) rendered without console errors. Not verified: audio (speech synthesis), furigana (stubbed in the harness), and a run inside Electron itself.
 
 ### Not done
-Genki II (lessons 13 to 23) has neither stories nor primers yet.
+Nothing left on the Genki path. Not verified: the new Genki II scenes and primers were checked by the schema, lesson and arc tests, but not played through in the renderer or by a Japanese reviewer, so wording is worth a read.

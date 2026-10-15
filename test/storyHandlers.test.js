@@ -338,7 +338,7 @@ test('story:list puts the Genki path in its own section, in lesson order; story:
   const { handlers } = story();
   const list = await handlers['story:list']();
   assert.ok(list.chapters.every((c) => c.track === 'main'));
-  assert.deepEqual(list.genki.map((c) => c.lesson), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+  assert.deepEqual(list.genki.map((c) => c.lesson), Array.from({ length: 23 }, (_, i) => i + 1));
   assert.ok(list.genki.every((c) => c.covers && c.completed === false));
   const open = await handlers['story:open']('genki-l03');
   const particle = open.scene.beats.find((b) => b.type === 'particle');

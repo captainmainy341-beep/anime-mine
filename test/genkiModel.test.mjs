@@ -27,3 +27,9 @@ test('lessonsForPoint lists lessons in order and labels them', () => {
   assert.deepEqual(lessonsForPoint(data, 'g:x'), []);
   assert.equal(lessonLabel({ lesson: 3, title: 'A' }), 'Genki Lesson 3 · A');
 });
+
+test('pathName says Genki I until the second book exists', async () => {
+  const { pathName } = await import('../src/renderer/learn/genkiModel.mjs');
+  assert.equal(pathName(pathProgress({ lessons: [row(1), row(12)] })), 'Genki I');
+  assert.equal(pathName(pathProgress({ lessons: [row(1), row(13)] })), 'Genki I & II');
+});
