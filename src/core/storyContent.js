@@ -1,6 +1,6 @@
 const fs = require('node:fs');
 const path = require('node:path');
-const { validateScene } = require('./storySchema');
+const { validateScene, CHALLENGES } = require('./storySchema');
 
 const DEFAULT_DIR = path.join(__dirname, 'data', 'story');
 
@@ -26,7 +26,7 @@ function loadChapters(dir = DEFAULT_DIR) {
   }
   const seen = new Set();
   const unique = chapters.filter((chapter) => !seen.has(chapter.id) && seen.add(chapter.id));
-  unique.sort((a, b) => (a.order ?? 999) - (b.order ?? 999) || a.id.localeCompare(b.id));
+  unique.sort((a, b) => (a.lesson ?? 0) - (b.lesson ?? 0) || (a.order ?? 999) - (b.order ?? 999) || a.id.localeCompare(b.id));
   return { chapters: unique, problems };
 }
 
@@ -39,8 +39,11 @@ function chapterSummary(scene) {
     summary: scene.summary ?? '',
     order: scene.order ?? null,
     beats: scene.beats.length,
-    challenges: scene.beats.filter((b) => ['choice', 'reading', 'meaning'].includes(b.type)).length,
+    challenges: scene.beats.filter((b) => CHALLENGES.includes(b.type)).length,
     items: scene.items,
+    track: scene.track ?? 'main',
+    lesson: scene.lesson ?? null,
+    covers: scene.covers ?? '',
   };
 }
 

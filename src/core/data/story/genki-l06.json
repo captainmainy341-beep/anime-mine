@@ -1,0 +1,362 @@
+{
+  "schema": 1,
+  "id": "genki-l06",
+  "order": 106,
+  "track": "genki",
+  "lesson": 6,
+  "title": "カフェの 一日",
+  "summary": "You help out at Café Aozora for a day: the te-form, polite requests, permission and rules.",
+  "covers": "て-form · 〜てください · 〜てもいいです · 〜てはいけません · 〜から · 〜ましょうか",
+  "jlpt": "N5",
+  "source": "authored",
+  "bg": "cafe",
+  "characters": {
+    "hana": {
+      "name": "ハナ",
+      "color": "#7cc6b4"
+    },
+    "tomi": {
+      "name": "とみさん",
+      "color": "#c97b5a"
+    }
+  },
+  "glossary": {
+    "g:n5-te": {
+      "label": "〜て",
+      "meaning": "and (then); connects actions in order",
+      "note": "Links actions by the same subject in time order: 顔を洗って、朝ご飯を食べる. The て-form is also the base for 〜てください and 〜ている. Only the last verb takes tense and politeness."
+    },
+    "g:n5-te-kudasai": {
+      "label": "〜てください",
+      "meaning": "please (do something)",
+      "note": "てください politely asks someone to do something. It is a direct request, so add ね or すみません to soften it."
+    },
+    "g:n5-te-mo-ii": {
+      "label": "〜てもいい",
+      "meaning": "may / it is okay to (do something)",
+      "note": "てもいい gives or asks permission. Asking 〜てもいいですか is polite. Do not use it to refuse: for a prohibition use 〜てはいけない, and for it not being necessary use 〜なくてもいい."
+    },
+    "g:n5-te-wa-ikenai": {
+      "label": "〜てはいけない",
+      "meaning": "must not / is not allowed to (do something)",
+      "note": "てはいけない states a prohibition. It is firm, so use it for rules or to warn someone. Speakers often say ちゃいけない in casual talk. The polite form is 〜てはいけません."
+    },
+    "k:出": {
+      "label": "出",
+      "reading": "で(る) / しゅつ",
+      "meaning": "go out, exit"
+    },
+    "g:n5-ni": {
+      "label": "〜に",
+      "meaning": "at / on / in (time); to (destination)",
+      "note": "に marks a specific point in time (七時に, 月曜日に) and the goal of movement (学校に). Do not use に with きのう, きょう, あした, or いつ. Those time words take no particle."
+    },
+    "g:n5-kara-reason": {
+      "label": "〜から（理由）",
+      "meaning": "because / since (reason)",
+      "note": "から gives a reason and comes after the cause, as in 寒いから. The result comes after the comma. It is more direct than ので, which sounds softer and more polite."
+    },
+    "g:n5-mashou-ka": {
+      "label": "〜ましょうか",
+      "meaning": "shall I ...? (offering to do something)",
+      "note": "Offers to do something for someone: 手伝いましょうか. Use it to ask whether the listener wants you to act. For suggesting something to do together, use 〜ましょう instead."
+    }
+  },
+  "beats": [
+    {
+      "type": "show",
+      "char": "hana",
+      "expr": "neutral",
+      "pos": "left"
+    },
+    {
+      "type": "show",
+      "char": "tomi",
+      "expr": "smile",
+      "pos": "right"
+    },
+    {
+      "type": "say",
+      "who": null,
+      "text": "日曜日。今日は カフェで おてつだいの 日。",
+      "en": "Sunday. Today you're helping out at the café."
+    },
+    {
+      "type": "say",
+      "who": "tomi",
+      "text": "ノアさん、よく 来ましたね。今日は よろしく。",
+      "en": "Noa, thanks for coming. I'm counting on you today."
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "じゃあ、ここに 名前を… あれ、「書く」の て形は？",
+      "en": "Then write your name here... wait, what's the te-form of \"kaku\"?"
+    },
+    {
+      "type": "intro",
+      "item": "g:n5-te"
+    },
+    {
+      "type": "choice",
+      "item": "g:n5-te",
+      "who": "hana",
+      "prompt": "What is the te-form of 書く (to write)?",
+      "options": [
+        {
+          "text": "書いて",
+          "correct": true
+        },
+        {
+          "text": "書って",
+          "awkward": {
+            "who": "hana",
+            "text": "「書って」…？ く → いて ですよ。",
+            "en": "\"Katte\"...? く becomes いて."
+          }
+        },
+        {
+          "text": "書きて"
+        }
+      ]
+    },
+    {
+      "type": "intro",
+      "item": "g:n5-te-kudasai"
+    },
+    {
+      "type": "choice",
+      "item": "g:n5-te-kudasai",
+      "who": null,
+      "prompt": "A customer is ready to order but you are busy. Ask them to wait a moment.",
+      "options": [
+        {
+          "text": "少し まってください。",
+          "correct": true
+        },
+        {
+          "text": "少し まちてください。",
+          "awkward": {
+            "who": "tomi",
+            "text": "「まちて」…？ 「まって」ですよ。",
+            "en": "\"Machite\"...? It's \"matte\"."
+          }
+        },
+        {
+          "text": "少し まつください。"
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "tomi",
+      "text": "ノアさん、この おさらを あらって、テーブルを ふいてください。",
+      "en": "Noa, please wash these plates and wipe the tables."
+    },
+    {
+      "type": "choice",
+      "item": "g:n5-te",
+      "who": null,
+      "prompt": "Say what you will do: \"I'll wash the plates and wipe the tables.\"",
+      "options": [
+        {
+          "text": "おさらを あらって、テーブルを ふきます。",
+          "correct": true
+        },
+        {
+          "text": "おさらを あらいます、テーブルを ふきて。",
+          "awkward": {
+            "who": "hana",
+            "text": "じゅんばんが へんですよ。「あらって、ふきます」！",
+            "en": "The order is odd. \"Aratte, fukimasu\"!"
+          }
+        },
+        {
+          "text": "おさらを あらうて、テーブルを ふきます。"
+        }
+      ]
+    },
+    {
+      "type": "intro",
+      "item": "g:n5-te-mo-ii"
+    },
+    {
+      "type": "choice",
+      "item": "g:n5-te-mo-ii",
+      "who": null,
+      "prompt": "Ask Tomi if you may use this apron.",
+      "options": [
+        {
+          "text": "この エプロンを つかってもいいですか。",
+          "correct": true
+        },
+        {
+          "text": "この エプロンを つかってはいいですか。",
+          "awkward": {
+            "who": "tomi",
+            "text": "「ては いい」？ 「ても いい」ですよ、ふふ。",
+            "en": "\"Te wa ii\"? It's \"te mo ii\", hehe."
+          }
+        },
+        {
+          "text": "この エプロンを つかうもいいですか。"
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "tomi",
+      "text": "ええ、どうぞ。でも、キッチンで けいたいを つかってはいけませんよ。",
+      "en": "Of course. But you mustn't use your phone in the kitchen."
+    },
+    {
+      "type": "intro",
+      "item": "g:n5-te-wa-ikenai"
+    },
+    {
+      "type": "choice",
+      "item": "g:n5-te-wa-ikenai",
+      "who": null,
+      "prompt": "A customer wants to smoke inside. Tell them it is not allowed (たばこを すう).",
+      "options": [
+        {
+          "text": "ここで たばこを すってはいけません。",
+          "correct": true
+        },
+        {
+          "text": "ここで たばこを すってもいけません。",
+          "awkward": {
+            "who": "hana",
+            "text": "「すっても いけません」…？ 「すっては」ですよ。",
+            "en": "\"Sutte mo ikemasen\"...? It's \"sutte wa\"."
+          }
+        },
+        {
+          "text": "ここで たばこを すわってはいけません。",
+          "awkward": {
+            "who": "hana",
+            "text": "「すわって」は \"sit\" ですよ！",
+            "en": "\"Suwatte\" means \"sit\"!"
+          }
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": null,
+      "text": "お客さん：「すみません、出口は どこですか。」",
+      "en": "Customer: \"Excuse me, where is the exit?\""
+    },
+    {
+      "type": "reading",
+      "item": "k:出",
+      "display": "出口",
+      "answers": [
+        "でぐち"
+      ],
+      "prompt": "Read the sign the customer is looking for.",
+      "target": "出"
+    },
+    {
+      "type": "particle",
+      "item": "g:n5-ni",
+      "who": null,
+      "text": "出口は 右＿ あります。",
+      "options": [
+        "に",
+        "で",
+        "を",
+        "が"
+      ],
+      "answers": [
+        "に"
+      ],
+      "en": "The exit is on the right.",
+      "role": "p:ni/location",
+      "prompt": "Tell the customer where it is."
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "ノアさん、つかれましたか。",
+      "en": "Tired, Noa?"
+    },
+    {
+      "type": "intro",
+      "item": "g:n5-kara-reason"
+    },
+    {
+      "type": "choice",
+      "item": "g:n5-kara-reason",
+      "who": null,
+      "prompt": "Say: \"It was busy, so I'm tired.\"",
+      "options": [
+        {
+          "text": "いそがしかったですから、つかれました。",
+          "correct": true
+        },
+        {
+          "text": "つかれましたから、いそがしかったです。",
+          "awkward": {
+            "who": "hana",
+            "text": "あれ？ つかれたから、いそがしかった？ ぎゃくですよ！",
+            "en": "Busy BECAUSE you got tired? It's the other way around!"
+          }
+        },
+        {
+          "text": "いそがしいかったですから、つかれました。"
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "tomi",
+      "text": "さあ、きょうは おしまい。この かばん、おもいわね…。",
+      "en": "Well, that's it for today. This bag is heavy..."
+    },
+    {
+      "type": "intro",
+      "item": "g:n5-mashou-ka"
+    },
+    {
+      "type": "choice",
+      "item": "g:n5-mashou-ka",
+      "who": null,
+      "prompt": "Offer to carry Tomi's bag.",
+      "options": [
+        {
+          "text": "かばんを もちましょうか。",
+          "correct": true
+        },
+        {
+          "text": "かばんを もちませんか。",
+          "awkward": {
+            "who": "tomi",
+            "text": "わたしに「もちませんか」？ ふふ、ノアさんが もってくれるの？",
+            "en": "Inviting ME to carry it? Hehe, or will you carry it?"
+          }
+        },
+        {
+          "text": "かばんを もってましょうか。"
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "tomi",
+      "text": "まあ、ありがとう。やさしいですね。",
+      "en": "Oh, thank you. How kind.",
+      "expr": "smile"
+    },
+    {
+      "type": "affection",
+      "char": "tomi",
+      "delta": 2
+    },
+    {
+      "type": "cg",
+      "id": "genki-cafe-day",
+      "title": "A day at Aozora"
+    }
+  ]
+}

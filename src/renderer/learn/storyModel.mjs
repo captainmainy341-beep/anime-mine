@@ -21,7 +21,7 @@ export function translateLabel(on) {
 
 // Backlog rows with the translation applied.
 export function backlogRows(entries, on) {
-  return entries.map((e) => ({ name: e.name ?? '', text: e.text, en: translationFor(e, on), bridge: e.bridge === true }));
+  return entries.map((e) => ({ name: e.name ?? '', text: e.text, en: translationFor(e, on), bridge: e.bridge === true, explain: e.explain ?? '' }));
 }
 
 export function completionMark(summary) {
@@ -94,4 +94,64 @@ export function endSummary(summary) {
 export function pendingLabel(pending) {
   if (!pending) return '';
   return pending === 1 ? '1 to revisit' : `${pending} to revisit`;
+}
+
+const KANJI = /\p{Script=Han}/u;
+const GAP = '＿';
+
+// Splits Japanese text so each kanji can become its own tappable element.
+export function splitKanji(text) {
+  const out = [];
+  for (const ch of String(text ?? '')) {
+    const kanji = KANJI.test(ch);
+    const last = out.at(-1);
+    if (!kanji && last && !last.kanji) last.text += ch;
+    else out.push({ text: ch, kanji });
+  }
+  return out;
+}
+
+const SRS_LINE = {
+  started: (stage) => `In your reviews: stage ${stage}`,
+  new: () => 'New: not learned yet',
+  untracked: () => 'Not in your study pack (download it in Learn > Home)',
+};
+
+// The lookup card for one kanji, from story:kanji. `tested` is true when the open challenge asks about it.
+export function kanjiCard(detail, { tested = false } = {}) {
+  const meanings = detail.meanings ?? [];
+  return {
+    char: detail.char,
+    meaning: meanings.slice(0, 4).join(', ') || 'No meaning available yet',
+    on: (detail.on ?? []).join('、'),
+    kun: (detail.kun ?? []).join('、'),
+    reading: !detail.on?.length && !detail.kun?.length ? detail.reading ?? '' : '',
+    facts: [detail.strokes ? `${detail.strokes} strokes` : null, detail.jlpt ? `JLPT N${detail.jlpt}` : null].filter(Boolean).join(' · '),
+    words: (detail.words ?? []).map((w) => ({ text: w.text, reading: w.reading && w.reading !== w.text ? w.reading : '', gloss: w.gloss ?? '' })),
+    status: SRS_LINE[detail.item?.state ?? 'untracked'](detail.item?.stage ?? 0),
+    learnable: detail.item?.state === 'new',
+    needsDownload: !detail.dictionaryReady,
+    canDownload: detail.canDownload !== false,
+    tested,
+  };
+}
+
+export const PEEK_WARNING = 'This is the kanji this challenge asks about. Looking it up counts as a miss: you can still answer, but it will come back later in the scene.';
+
+// A particle sentence around its gap.
+export function particleParts(text) {
+  const at = text.indexOf(GAP);
+  return at < 0 ? { before: text, after: '' } : { before: text.slice(0, at), after: text.slice(at + GAP.length) };
+}
+
+// The confusion pair to open from a particle challenge: the first one that contains its answer.
+export function guideFocus(guide, answer) {
+  return guide?.confusions?.find((c) => c.pair.includes(answer))?.id ?? null;
+}
+
+// Genki path rows: in lesson order, with the first unfinished lesson marked as up next.
+export function genkiRows(list) {
+  const rows = [...(list ?? [])].sort((a, b) => (a.lesson ?? 0) - (b.lesson ?? 0));
+  const next = rows.find((r) => !(r.completed || r.plays > 0));
+  return rows.map((r) => ({ ...r, label: r.lesson ? `Lesson ${r.lesson}` : r.jlpt, upNext: r === next }));
 }

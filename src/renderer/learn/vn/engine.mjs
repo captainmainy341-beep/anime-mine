@@ -1,4 +1,4 @@
-import { GENERIC_AWKWARD, bridgeLine, gradeAttempt, isChallenge, reorder, reorderedBeat } from './challenge.mjs';
+import { GENERIC_AWKWARD, bridgeLine, gradeAttempt, isChallenge, reorder, reorderedBeat, testedKanji } from './challenge.mjs';
 
 const SNAPSHOT_VERSION = 2;
 const MAX_BACKLOG = 200;
@@ -13,6 +13,9 @@ export const REQUEUE_GAPS = [3, 6, 10];
 export function requeueGap(misses) {
   return REQUEUE_GAPS[Math.min(Math.max(misses, 1), REQUEUE_GAPS.length) - 1];
 }
+
+// Said when a challenge was answered right after looking up the kanji it tests.
+export const PEEK_LINE = { who: null, text: '…調べたから、あとで もう一度 ためそう。', en: 'You looked it up, so this one comes back later.' };
 
 const clone = (value) => JSON.parse(JSON.stringify(value));
 const isCount = (n) => Number.isInteger(n) && n >= 0;
@@ -41,6 +44,7 @@ export function createEngine(scene, { restore = null, skipIntro = [] } = {}) {
     carry: null,
     awkward: null,
     moveOn: false,
+    peeked: null,
     finished: false,
     logged: -1,
     turns: 0,
@@ -81,6 +85,7 @@ export function createEngine(scene, { restore = null, skipIntro = [] } = {}) {
       state.reask.line = bridgeLine(scene.beats[state.reask.at].type, { atEnd: state.reask.atEnd, turn: state.reask.turn });
     }
     state.moveOn = snap.moveOn === true;
+    state.peeked = isCount(snap.peeked) && isChallenge(scene.beats[snap.peeked]) ? snap.peeked : null;
   }
 
   // Validates one requeue entry from a save; unknown or non-challenge beats are dropped.
@@ -161,6 +166,7 @@ export function createEngine(scene, { restore = null, skipIntro = [] } = {}) {
   // Leaves the beat (or re-ask) on screen and continues the story.
   function moveOn() {
     state.moveOn = false;
+    state.peeked = null;
     if (state.reask) state.reask = null;
     else state.index += 1;
     state.step += 1;
@@ -195,7 +201,7 @@ export function createEngine(scene, { restore = null, skipIntro = [] } = {}) {
   function frame() {
     if (state.awkward) {
       const a = state.awkward;
-      return { kind: 'awkward', who: a.who, name: nameOf(a.who), text: a.text, en: a.en ?? '', beat: currentChallenge() };
+      return { kind: 'awkward', who: a.who, name: nameOf(a.who), text: a.text, en: a.en ?? '', explain: a.explain ?? '', beat: currentChallenge() };
     }
     if (state.finished) return { kind: 'end', summary: summary() };
     if (state.reask?.phase === 'bridge') {
@@ -205,13 +211,13 @@ export function createEngine(scene, { restore = null, skipIntro = [] } = {}) {
     }
     if (state.reask) {
       const beat = currentChallenge();
-      return { kind: beat.type, beat, attempts: state.reask.wrong, requeued: true, recap: recapFor(state.reask.at), name: nameOf(beat.who) };
+      return { kind: beat.type, beat, attempts: state.reask.wrong, requeued: true, recap: recapFor(state.reask.at), name: nameOf(beat.who), peeked: state.peeked === state.reask.at };
     }
     const beat = scene.beats[state.index];
     if (beat.type === 'say') return { kind: 'say', who: beat.who, name: nameOf(beat.who), text: beat.text, en: beat.en ?? '', beat };
     if (beat.type === 'intro') return { kind: 'intro', item: beat.item, beat };
     const carried = state.carry?.at === state.index ? state.carry.wrong : 0;
-    return { kind: beat.type, beat, attempts: carried, requeued: false, recap: null, name: nameOf(beat.who) };
+    return { kind: beat.type, beat, attempts: carried, requeued: false, recap: null, name: nameOf(beat.who), peeked: state.peeked === state.index };
   }
 
   function advance() {
@@ -230,6 +236,27 @@ export function createEngine(scene, { restore = null, skipIntro = [] } = {}) {
     return true;
   }
 
+  // The scene index of the challenge on screen, or null when no challenge is waiting for an answer.
+  function challengeAt() {
+    if (state.finished || state.awkward || state.reask?.phase === 'bridge') return null;
+    if (state.reask) return state.reask.at;
+    return isChallenge(scene.beats[state.index]) ? state.index : null;
+  }
+
+  function isTested(char) {
+    const at = challengeAt();
+    return at !== null && testedKanji(scene.beats[at]).includes(char);
+  }
+
+  // Looking up a kanji. If it is the one the open challenge asks about, that challenge counts as missed:
+  // it can still be answered now, but it comes back later and the lookup counts as one wrong attempt.
+  function peek(char) {
+    if (!isTested(char)) return { counted: false };
+    const already = state.peeked === challengeAt();
+    state.peeked = challengeAt();
+    return { counted: true, already };
+  }
+
   function answer(input) {
     if (state.finished || state.awkward) return { result: 'invalid' };
     if (state.reask?.phase === 'bridge') return { result: 'invalid' };
@@ -238,6 +265,11 @@ export function createEngine(scene, { restore = null, skipIntro = [] } = {}) {
     const graded = gradeAttempt(beat, input);
     const at = state.reask ? state.reask.at : state.index;
     const wrongBefore = state.reask ? state.reask.wrong : state.carry?.at === at ? state.carry.wrong : 0;
+    const peeked = state.peeked === at;
+    if (graded.result === 'correct' && peeked) {
+      requeue(at, wrongBefore, PEEK_LINE);
+      return { result: 'correct', counted: 'peeked', requeuedIn: requeueGap(state.queue.at(-1).misses) };
+    }
     if (graded.result === 'correct') {
       const incorrectCount = Math.min(wrongBefore, MAX_REPORTED_MISTAKES);
       state.results.push({ item: beat.item, incorrectCount, type: beat.type });
@@ -247,17 +279,23 @@ export function createEngine(scene, { restore = null, skipIntro = [] } = {}) {
       return { result: 'correct', incorrectCount };
     }
     if (graded.result === 'incorrect') {
-      const misses = (state.reask?.misses ?? (wrongBefore > 0 ? wrongBefore : 0)) + 1;
-      const wrong = Math.min(wrongBefore + 1, MAX_REPORTED_MISTAKES);
-      const gap = requeueGap(misses);
-      state.queue.push({ at, misses, wrong, due: state.step + 1 + gap, turn: 0 });
-      state.carry = null;
-      state.awkward = graded.awkward ?? GENERIC_AWKWARD[beat.type];
-      state.moveOn = true;
-      log({ who: state.awkward.who, text: state.awkward.text, en: state.awkward.en ?? '' });
+      const gap = requeue(at, wrongBefore, graded.awkward ?? GENERIC_AWKWARD[beat.type]);
       return { ...graded, requeuedIn: gap };
     }
     return graded;
+  }
+
+  // One miss (a wrong answer, or a right one after peeking): react, queue the challenge, move on after.
+  function requeue(at, wrongBefore, reaction) {
+    const misses = (state.reask?.misses ?? (wrongBefore > 0 ? wrongBefore : 0)) + 1;
+    const wrong = Math.min(wrongBefore + 1, MAX_REPORTED_MISTAKES);
+    const gap = requeueGap(misses);
+    state.queue.push({ at, misses, wrong, due: state.step + 1 + gap, turn: 0 });
+    state.carry = null;
+    state.awkward = reaction;
+    state.moveOn = true;
+    log({ who: reaction.who, text: reaction.text, en: reaction.en ?? '', ...(reaction.explain ? { explain: reaction.explain } : {}) });
+    return gap;
   }
 
   // While an awkward reaction is on screen its speaker looks surprised (or uses the reaction's own expr).
@@ -303,6 +341,7 @@ export function createEngine(scene, { restore = null, skipIntro = [] } = {}) {
       queue: state.queue.map(entry),
       reask: state.reask ? { ...entry(state.reask), phase: state.reask.phase, atEnd: state.reask.atEnd } : null,
       moveOn: state.moveOn,
+      peeked: state.peeked,
       backlog: clone(state.backlog.slice(-SAVED_BACKLOG)),
     };
   }
@@ -311,6 +350,8 @@ export function createEngine(scene, { restore = null, skipIntro = [] } = {}) {
     frame,
     advance,
     answer,
+    peek,
+    isTested,
     takeReports,
     summary,
     snapshot,

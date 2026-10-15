@@ -5,9 +5,11 @@ import { revealAnswer, typedKana } from './vn/challenge.mjs';
 import { autoDelay, isComplete, sliceText, visibleCount } from './vn/typewriter.mjs';
 import { resolveBackground, resolveSprite } from './vn/skin.mjs';
 import { backgroundFor, backgroundSvg, characterSvg } from './vn/defaultSkin.mjs';
-import { TRANSLATE_PREF, affectionRows, backlogRows, chapterAction, completionMark, endSummary, introModel, menuSections, pendingLabel, pickSkin, reportLine, translateLabel, translationOn } from './storyModel.mjs';
+import { TRANSLATE_PREF, affectionRows, backlogRows, chapterAction, completionMark, endSummary, genkiRows, guideFocus, introModel, kanjiCard, menuSections, particleParts, pendingLabel, pickSkin, reportLine, translateLabel, translationOn } from './storyModel.mjs';
+import { jaNodes, kanjify, renderKanjiCard, renderParticleGuide, renderPeekConfirm } from './storyGuide.mjs';
 
 const POSITIONS = ['left', 'center', 'right'];
+const PEEKED_NOTE = 'You looked this kanji up: answer now, and it will come back later.';
 
 const button = (label, onclick, className = 'story-btn', props = {}) => h('button', { type: 'button', class: className, onclick, ...props }, label);
 
@@ -46,10 +48,14 @@ export function mountStory(el, ctx, arg = {}) {
     const skin = pickSkin(list.skins, ctx.prefs.get('storySkin', null));
     const card = (summary) => h(
       'article',
-      { class: 'story-card' },
-      h('div', { class: 'story-card-head' }, h('span', { class: 'story-level' }, summary.jlpt), completionMark(summary) ? h('span', { class: 'story-done' }, `✓ ${completionMark(summary)}`) : null),
+      { class: `story-card${summary.upNext ? ' up-next' : ''}` },
+      h('div', { class: 'story-card-head' },
+        h('span', { class: 'story-level' }, summary.label ?? summary.jlpt),
+        summary.upNext ? h('span', { class: 'story-next-badge' }, 'Up next') : null,
+        completionMark(summary) ? h('span', { class: 'story-done' }, `✓ ${completionMark(summary)}`) : null),
       h('h3', { lang: 'ja' }, summary.title),
       h('p', { class: 'learn-sub' }, summary.summary || `${summary.challenges} challenges`),
+      summary.covers ? h('p', { class: 'story-covers', lang: 'ja' }, summary.covers) : null,
       h('div', { class: 'story-card-actions' }, ...cardButtons(summary)),
     );
     const cardButtons = (summary) => {
@@ -70,10 +76,17 @@ export function mountStory(el, ctx, arg = {}) {
       root,
       h('header', { class: 'course-heading' },
         h('div', {}, h('h1', {}, 'Story'), h('p', { class: 'learn-sub' }, 'Read the story. Every kanji you read and every sentence you build counts as a review.')),
-        h('div', { class: 'course-tools' }, h('label', { class: 'story-skin-label' }, 'Art ', skinSelect)),
+        h('div', { class: 'course-tools' }, button('Particle guide', () => showGuide(), 'story-btn'), h('label', { class: 'story-skin-label' }, 'Art ', skinSelect)),
       ),
       h('h2', {}, 'Main story'),
       h('div', { class: 'story-grid' }, sections.chapters.map(card)),
+      list.genki?.length
+        ? [
+          h('h2', {}, 'Genki path'),
+          h('p', { class: 'learn-sub' }, 'One scene per lesson, following the grammar order of the Genki textbooks so you can play alongside them. Original story and characters; not affiliated with Genki or The Japan Times.'),
+          h('div', { class: 'story-grid' }, genkiRows(list.genki).map(card)),
+        ]
+        : null,
       h('h2', {}, 'Anime lines'),
       h('p', { class: 'learn-sub' }, 'Short bonus scenes built from sentences you mined. A frame from the episode becomes the background when the file is still on disk.'),
       h('div', { class: 'story-grid' }, sections.anime.map(card)),
@@ -92,6 +105,18 @@ export function mountStory(el, ctx, arg = {}) {
       ),
       affection.length ? h('div', { class: 'story-affection' }, h('h2', {}, 'Bonds'), affection.map((a) => h('label', { class: 'story-meter' }, h('span', {}, a.name), h('meter', { min: 0, max: 100, value: a.percent }), h('span', {}, String(a.value))))) : null,
     );
+  }
+
+  async function showGuide() {
+    teardownPlay?.();
+    teardownPlay = null;
+    fill(root, h('p', { class: 'learn-sub' }, 'Loading…'));
+    try {
+      const guide = await api.particles();
+      if (!disposed) fill(root, button('← Back to Story', showMenu, 'story-btn'), renderParticleGuide(guide));
+    } catch (err) {
+      if (!disposed) fill(root, h('div', { class: 'learn-card learn-error', role: 'alert' }, h('p', {}, err.message), button('Back', showMenu)));
+    }
   }
 
   async function buildAnime() {
@@ -140,6 +165,7 @@ function mountPlayer(host, ctx, { data, manifest, restore, exit }) {
   let tracker = '';
   let overlay = null;
   let translate = translationOn(ctx.prefs.get(TRANSLATE_PREF, null), scene);
+  let guide = null;
 
   const stageBg = h('div', { class: 'story-bg' });
   const sprites = Object.fromEntries(POSITIONS.map((pos) => [pos, h('div', { class: `story-sprite story-sprite-${pos}` })]));
@@ -153,6 +179,8 @@ function mountPlayer(host, ctx, { data, manifest, restore, exit }) {
   host.replaceChildren(view);
 
   document.addEventListener('keydown', onKey);
+  // Capture phase, so tapping a kanji in the dialogue box opens the lookup instead of advancing.
+  stage.addEventListener('click', onKanjiClick, true);
   render();
 
   return () => {
@@ -236,6 +264,7 @@ function mountPlayer(host, ctx, { data, manifest, restore, exit }) {
       tracker ? h('span', { class: 'story-tracker', role: 'status' }, tracker) : null,
       h('span', { class: 'story-hud-spacer' }),
       translateButton(),
+      button('Particles', () => openGuide(), 'story-chip', { title: 'Particle guide (P)' }),
       button('Backlog', openBacklog, 'story-chip'),
       button(auto ? 'Auto: on' : 'Auto: off', () => { auto = !auto; render(); }, 'story-chip', { 'aria-pressed': String(auto) }),
       button('Save', () => attempt(save), 'story-chip'),
@@ -267,7 +296,8 @@ function mountPlayer(host, ctx, { data, manifest, restore, exit }) {
     const plate = frame.name ? h('div', { class: 'story-plate', style: scene.characters[frame.who]?.color ? `border-color:${scene.characters[frame.who].color}` : null }, frame.name) : null;
     const body = h('p', { class: 'story-line', lang: 'ja' });
     const english = englishNode(frame.en, { hidden: true });
-    textBox.replaceChildren(...[plate, body, english, h('span', { class: 'story-next', 'aria-hidden': 'true' }, '▾')].filter(Boolean));
+    const explain = frame.explain ? h('p', { class: 'story-explain', hidden: true }, frame.explain) : null;
+    textBox.replaceChildren(...[plate, body, english, explain, h('span', { class: 'story-next', 'aria-hidden': 'true' }, '▾')].filter(Boolean));
     const started = performance.now();
     let done = false;
     const tick = () => {
@@ -282,9 +312,10 @@ function mountPlayer(host, ctx, { data, manifest, restore, exit }) {
       done = true;
       stopTyping();
       textBox.dataset.done = 'true';
-      body.textContent = frame.text;
-      if (furigana) rubyNode(ctx.api.learn, frame.text, { furigana }).then((node) => { if (!disposed && textBox.dataset.done === 'true') body.replaceChildren(...node.childNodes); });
+      body.replaceChildren(...jaNodes(frame.text));
+      if (furigana) rubyNode(ctx.api.learn, frame.text, { furigana }).then((node) => { if (!disposed && textBox.dataset.done === 'true') body.replaceChildren(...kanjify(node).childNodes); });
       if (english) english.hidden = false;
+      if (explain) explain.hidden = false;
       if (auto) autoTimer = setTimeout(next, autoDelay(frame.text));
     };
     textBox.dataset.done = 'false';
@@ -325,11 +356,11 @@ function mountPlayer(host, ctx, { data, manifest, restore, exit }) {
     const recap = frame.recap
       ? h('div', { class: 'story-recap' },
         h('span', { class: 'story-level' }, 'Once more'),
-        h('p', { lang: 'ja' }, frame.recap.name ? h('strong', {}, `${frame.recap.name}  `) : null, frame.recap.text),
+        h('p', { lang: 'ja' }, frame.recap.name ? h('strong', {}, `${frame.recap.name}  `) : null, ...jaNodes(frame.recap.text)),
         englishNode(frame.recap.en))
       : null;
     const prompt = h('div', { class: 'story-prompt' }, recap, frame.name ? h('span', { class: 'story-plate' }, frame.name) : null, beat.prompt ? h('p', { lang: 'en' }, beat.prompt) : null);
-    const feedback = h('p', { class: 'story-feedback', role: 'status', 'aria-live': 'polite' }, frame.requeued ? 'You missed this one earlier.' : frame.attempts > 0 ? 'Try again.' : '');
+    const feedback = h('p', { class: 'story-feedback', role: 'status', 'aria-live': 'polite' }, frame.peeked ? PEEKED_NOTE : frame.requeued ? 'You missed this one earlier.' : frame.attempts > 0 ? 'Try again.' : '');
     if (beat.type === 'reading') {
       const display = h('p', { class: 'story-display', lang: 'ja' }, ...displayParts(beat));
       const input = h('input', { class: 'story-input', type: 'text', lang: 'ja', autocomplete: 'off', autocapitalize: 'off', spellcheck: 'false', placeholder: 'Type the reading', 'aria-label': 'Reading in kana',
@@ -344,11 +375,25 @@ function mountPlayer(host, ctx, { data, manifest, restore, exit }) {
       input.focus();
       return;
     }
+    if (beat.type === 'particle') {
+      const parts = particleParts(beat.text);
+      fill(
+        panel,
+        prompt,
+        h('p', { class: 'story-display story-particle', lang: 'ja' }, ...jaNodes(parts.before), h('span', { class: 'story-gap', 'aria-label': 'missing particle' }, '？'), ...jaNodes(parts.after)),
+        englishNode(beat.en),
+        h('div', { class: 'story-options story-options-row' }, beat.options.map((text, index) => h('button', { type: 'button', class: 'story-option', lang: 'ja', onclick: () => submit(index, feedback) }, h('kbd', {}, String(index + 1)), ' ', text))),
+        h('div', { class: 'story-card-actions' }, button('Particle guide', () => openGuide(beat.answers[0]), 'story-chip')),
+        feedback,
+      );
+      panel.querySelector('.story-option')?.focus();
+      return;
+    }
     const options = beat.type === 'choice' ? beat.options.map((o) => o.text) : beat.options;
     fill(
       panel,
       prompt,
-      beat.display ? h('p', { class: 'story-display', lang: 'ja' }, beat.display) : null,
+      beat.display ? h('p', { class: 'story-display', lang: 'ja' }, ...jaNodes(beat.display)) : null,
       h('div', { class: 'story-options' }, options.map((text, index) => h('button', { type: 'button', class: 'story-option', lang: beat.type === 'choice' ? 'ja' : 'en', onclick: () => submit(index, feedback) }, h('kbd', {}, String(index + 1)), ' ', text))),
       feedback,
     );
@@ -356,9 +401,9 @@ function mountPlayer(host, ctx, { data, manifest, restore, exit }) {
   }
 
   function displayParts(beat) {
-    if (!beat.target) return [beat.display];
+    if (!beat.target) return jaNodes(beat.display);
     const at = beat.display.indexOf(beat.target);
-    return [beat.display.slice(0, at), h('mark', {}, beat.target), beat.display.slice(at + beat.target.length)];
+    return [...jaNodes(beat.display.slice(0, at)), h('mark', {}, ...jaNodes(beat.target)), ...jaNodes(beat.display.slice(at + beat.target.length))];
   }
 
   function submit(value, feedback) {
@@ -443,7 +488,11 @@ function mountPlayer(host, ctx, { data, manifest, restore, exit }) {
       openBacklog();
     } else if (event.key.toLowerCase() === 't') {
       toggleTranslate();
+    } else if (event.key.toLowerCase() === 'p') {
+      if (overlay === 'guide') closeOverlay();
+      else openGuide();
     } else if (/^[1-4]$/.test(event.key)) {
+      if (overlay) return;
       panel.querySelectorAll('.story-option')[Number(event.key) - 1]?.click();
     }
   }
@@ -459,10 +508,85 @@ function mountPlayer(host, ctx, { data, manifest, restore, exit }) {
     layer.replaceChildren(
       h('div', { class: 'story-backlog', role: 'dialog', 'aria-label': 'Backlog' },
         h('header', {}, h('h2', {}, 'Backlog'), h('div', { class: 'story-card-actions' }, translateButton(), button('Close', closeOverlay, 'story-chip'))),
-        h('ol', {}, backlogRows(engine.backlog(), translate).map((e) => h('li', { class: e.bridge ? 'story-bridge' : null }, e.name ? h('strong', {}, `${e.name}  `) : null, h('span', { lang: 'ja' }, e.text), e.en ? h('small', { lang: 'en' }, e.en) : null))),
+        h('ol', {}, backlogRows(engine.backlog(), translate).map((e) => h('li', { class: e.bridge ? 'story-bridge' : null }, e.name ? h('strong', {}, `${e.name}  `) : null, h('span', { lang: 'ja' }, ...jaNodes(e.text)), e.en ? h('small', { lang: 'en' }, e.en) : null, e.explain ? h('small', { class: 'story-explain' }, e.explain) : null))),
       ),
     );
     layer.querySelector('ol')?.lastElementChild?.scrollIntoView?.();
+  }
+
+  async function openGuide(answer = null) {
+    overlay = 'guide';
+    layer.hidden = false;
+    if (!guide) {
+      layer.replaceChildren(h('div', { class: 'story-guide' }, h('p', { class: 'learn-sub' }, 'Loading…')));
+      try {
+        guide = await api.particles();
+      } catch (err) {
+        toast(err.message, 'error');
+        return closeOverlay();
+      }
+    }
+    if (disposed || overlay !== 'guide') return;
+    layer.replaceChildren(renderParticleGuide(guide, { focus: answer ? guideFocus(guide, answer) : null, onClose: closeOverlay }));
+  }
+
+  function onKanjiClick(event) {
+    const target = event.target?.closest?.('.story-k');
+    if (!target || !stage.contains(target)) return;
+    event.preventDefault();
+    event.stopPropagation();
+    openKanji(target.textContent);
+  }
+
+  // A kanji the open challenge is testing asks first: looking it up counts as a miss for that challenge.
+  function openKanji(char) {
+    const tested = engine.isTested(char);
+    if (tested && !engine.frame().peeked) {
+      overlay = 'kanji';
+      layer.hidden = false;
+      layer.replaceChildren(renderPeekConfirm(char, {
+        onCancel: closeOverlay,
+        onConfirm: () => {
+          engine.peek(char);
+          const note = panel.querySelector('.story-feedback');
+          if (note) note.textContent = PEEKED_NOTE;
+          showKanji(char, true);
+        },
+      }));
+      layer.querySelector('.story-btn')?.focus();
+      return;
+    }
+    showKanji(char, tested);
+  }
+
+  async function showKanji(char, tested) {
+    overlay = 'kanji';
+    layer.hidden = false;
+    layer.replaceChildren(h('div', { class: 'story-kanji-card' }, h('p', { class: 'learn-sub' }, 'Looking up…')));
+    let detail;
+    try {
+      detail = await api.kanji({ char, scene: scene.id });
+    } catch (err) {
+      toast(err.message, 'error');
+      return closeOverlay();
+    }
+    if (disposed || overlay !== 'kanji') return;
+    const model = kanjiCard(detail, { tested });
+    layer.replaceChildren(renderKanjiCard(model, {
+      onClose: closeOverlay,
+      onLearn: () => attempt(async () => {
+        const out = await api.learn(detail.item.id);
+        if (out.started && data.items[detail.item.id]) data.items[detail.item.id].state = 'started';
+        toast(out.started ? `${char} added to your reviews` : `${char} could not be started yet`);
+        showKanji(char, tested);
+      }),
+      onDownload: () => attempt(async () => {
+        toast('Downloading the kanji dictionary…');
+        await ctx.api.vocab.downloadKanjidic();
+        showKanji(char, tested);
+      }),
+    }));
+    layer.querySelector('button')?.focus();
   }
 
   function closeOverlay() {

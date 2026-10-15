@@ -140,6 +140,8 @@ contextBridge.exposeInMainWorld('api', {
     skins: invoke('story:skins'),
     skinManifest: invoke('story:skinManifest'),
     skinAsset: invoke('story:skinAsset'),
+    particles: invoke('story:particles'),
+    kanji: invoke('story:kanji'),
   },
   settings: {
     get: invoke('settings:get'),
