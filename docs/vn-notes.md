@@ -5,19 +5,60 @@
 | Layer | Files |
 | --- | --- |
 | Scene schema, validation, AI repair | `src/core/storySchema.js` |
-| Authored chapters (JSON) | `src/core/data/story/n5-ch1..3.json`, `n4-ch1.json`, loaded by `src/core/storyContent.js` |
+| Authored chapters (JSON) | `src/core/data/story/n5-ch1..3.json`, `n4-ch1.json`, Genki path `genki-l01..l12.json`, loaded by `src/core/storyContent.js` |
+| Particle guide, miss explanations | `src/core/storyParticles.js` (+ the shared `src/core/data/particles.json`) |
 | Anime-line scenes | `src/core/storyAnime.js` |
 | AI side quests + cache | `src/core/storyAi.js` (uses `ai.complete` / `ai.aiReady`) |
 | Progress (completion, plays, best accuracy), saves, gallery, affection | `src/core/storyProgress.js` (`<userData>/story.json`) |
 | Art packs | `src/core/storySkins.js`, format in `docs/vn-skins.md` |
 | IPC | `src/main/storyHandlers.js` (registered in `main.js`, exposed in `preload.js` as `window.api.story`) |
 | Engine (pure) | `src/renderer/learn/vn/engine.mjs`, `challenge.mjs`, `typewriter.mjs`, `skin.mjs`, `defaultSkin.mjs` |
-| UI | `src/renderer/learn/story.mjs` (mount), `storyModel.mjs` (pure helpers), `css/story.css` |
+| UI | `src/renderer/learn/story.mjs` (mount), `storyGuide.mjs` (particle guide, kanji card), `storyModel.mjs` (pure helpers), `css/story.css` |
 
 All three scene sources (authored, anime, AI) are the same JSON scene schema and run through the same engine.
 
-Beat types: `say`, `intro`, `choice` (grammar), `reading` (kanji), `meaning`, plus staging beats `bg`, `show`,
-`hide`, `affection`, `cg` and forward-only `jump` (to a `label`).
+Beat types: `say`, `intro`, `choice` (grammar), `reading` (kanji), `meaning`, `particle` (fill the gap), plus
+staging beats `bg`, `show`, `hide`, `affection`, `cg` and forward-only `jump` (to a `label`).
+
+### Genki path
+
+A second track of authored scenes (`"track": "genki"`, `"lesson": 1..12`), one per lesson of Genki I, each
+drilling that lesson's grammar in the book's order, plus particle drills in every lesson and the lesson's kanji
+for reading challenges. Cast and story are original (exchange student Noa in the port town of Minato, with
+Hana, Leo, Mori-sensei and Hana's grandmother Tomi); no text, characters or dialogue come from the textbook.
+The menu shows them under **Genki path**, marks the first unfinished lesson "Up next", and lists what each
+lesson covers.
+
+Grammar points that exist in the app's grammar deck use their ids (`g:n5-*`, `g:n4-*`) and count as reviews.
+Genki points the deck does not have (これ/それ, ます-form, adjective past, んです, なければ...) use
+`g:genki-*` ids with a glossary entry: they get an intro card and practice, but nothing is submitted to the SRS
+(adding them to the grammar deck would mean editing `src/core/data/grammar`, outside this feature's files).
+Genki II (lessons 13–23) is not written yet.
+
+### Particle challenges and the particle guide
+
+`particle` beats show a sentence with one ＿ gap and 2–4 particle buttons; `answers` may list more than one
+(に / へ). `role` (e.g. `p:ni/destination`) points into `data/particles.json`. When a scene opens, the main
+process annotates particle beats with a one-line note per option and why the answer fits, so a miss explains
+itself under the awkward reaction ("「で」 marks where an action happens... Here you need 「に」: ..."), and
+the explanation is kept in the backlog. Misses are requeued like every other challenge.
+
+The **Particle guide** (menu button, **Particles** chip / `P` in the player, and a link on each particle
+challenge that opens it at the matching "often mixed up" pair) lists the N5/N4 particles from
+`particles.json` with roles and examples, plus original "often mixed up" pairs: は/が, に/で, に/へ, を/が,
+と/や, times with or without に, も replacing は/が/を, verbs that take に (会う, 乗る), and で for means.
+
+### Kanji lookup
+
+Every kanji in dialogue, reactions, recaps, challenge sentences and the backlog is tappable (not inside answer
+buttons). The card (`story:kanji`) shows meanings, on/kun readings, strokes, JLPT and common words from KANJIDIC
+when it is downloaded (the card offers the download otherwise and falls back to the scene glossary), and the
+learner's SRS state for `k:<kanji>` with **Learn it** when it is new. Tapping a kanji in the dialogue box opens
+the card instead of advancing.
+
+Looking up the kanji that the open reading/meaning challenge tests (`testedKanji`) asks first. Confirming counts
+as a miss: the learner can still answer, the challenge is requeued, and its eventual report includes the peek
+as one wrong attempt (a peek and a wrong answer on the same attempt count once). Other kanji are free to look up.
 
 ### Mistakes: in-scene requeue (Anki-style)
 
@@ -156,6 +197,23 @@ and are stored inside the scene JSON in `<userData>/story-anime/`, so the video 
   a contact sheet of every drawn background and character expression.
 - Found and fixed on the way: choice panels printed a literal "null" (native `replaceChildren` with a null
   child), and the drawn busts had overly long necks.
+
+### Kanji lookup, particle guide, Genki path (follow-up 2)
+
+- Unit tests: particle grading/explanations/rotation, `testedKanji`, peek rules (counted once, survives save and
+  load, belongs to one challenge), particle beat validation and track/lesson fields, the guide data and
+  annotations, `story:kanji` with and without dictionary handlers and its input checks, the Genki list, and an
+  automatic playthrough of **every shipped chapter** twice (all right; every challenge missed once first),
+  checking each finishes with exactly one report per challenge.
+- Real Electron, same setup as before, Genki lesson 3: the Genki section (12 lessons, "Up next" on lesson 1),
+  the guide page, tapping 何 in a line (card opened, dialogue did not advance), a deliberate wrong particle (the
+  explanation under the reaction), the guide opened from the challenge focused on "を or が", tapping 時 during
+  its reading challenge (confirm, card, "comes back later"), and both missed challenges coming back. End screen
+  "7 of 9 right first try". Screenshots inspected; this caught and fixed a CSS ordering bug in the particle
+  buttons.
+- Not verified: the full KANJIDIC card (the download was not run in the sandbox; the card fell back to the
+  glossary and offered the download), and furigana revealing a tested kanji's reading in dialogue lines (the
+  challenge display itself has no furigana).
 
 ## What could NOT be verified here
 
