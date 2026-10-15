@@ -1,0 +1,312 @@
+{
+  "schema": 1,
+  "id": "genki-l19",
+  "order": 119,
+  "track": "genki",
+  "lesson": 19,
+  "title": "おきゃくさまを むかえる",
+  "summary": "The mayor is coming to the culture festival. Mori-sensei coaches you in respectful speech: honorific verbs for other people's actions.",
+  "covers": "お〜になる · いらっしゃる / おっしゃる / 召し上がる · 〜(ら)れる（honorific）",
+  "jlpt": "N4",
+  "source": "authored",
+  "bg": "school-gate-evening",
+  "characters": {
+    "mori": {
+      "name": "森先生",
+      "color": "#8e7cc3"
+    },
+    "hana": {
+      "name": "ハナ",
+      "color": "#7cc6b4"
+    },
+    "leo": {
+      "name": "レオ",
+      "color": "#f0a35e"
+    }
+  },
+  "glossary": {
+    "g:n4-o-ni-naru": {
+      "label": "お〜になる",
+      "meaning": "honorific: (someone) does",
+      "note": "お + ます-stem + になる raises the other person: 読む → お読みになる. Use it for what a guest or a superior does. Never for your own actions."
+    },
+    "g:genki-irassharu": {
+      "label": "いらっしゃる / おっしゃる / 召し上がる",
+      "meaning": "special honorific verbs",
+      "note": "Some verbs have their own honorific form: いる・行く・来る → いらっしゃる, 言う → おっしゃる, 食べる・飲む → 召し上がる, 見る → ご覧になる, する → なさる."
+    },
+    "g:n4-rareru-honorific": {
+      "label": "〜(ら)れる（honorific）",
+      "meaning": "honorific via the passive form",
+      "note": "The passive form can also be honorific: 先生が来られました, 社長が帰られました. It is slightly less formal than お〜になる."
+    },
+    "g:n5-ga-subject": {
+      "label": "〜が",
+      "meaning": "subject marker",
+      "note": "が marks the subject of an honorific verb as usual."
+    },
+    "k:召": {
+      "label": "召",
+      "meaning": "honorific (eat, wear, summon)",
+      "reading": "め(す)"
+    },
+    "k:様": {
+      "label": "様",
+      "meaning": "Mr/Ms (formal)",
+      "reading": "さま"
+    }
+  },
+  "beats": [
+    {
+      "type": "show",
+      "char": "mori",
+      "expr": "smile",
+      "pos": "center"
+    },
+    {
+      "type": "show",
+      "char": "hana",
+      "expr": "neutral",
+      "pos": "left"
+    },
+    {
+      "type": "show",
+      "char": "leo",
+      "expr": "neutral",
+      "pos": "right"
+    },
+    {
+      "type": "say",
+      "who": "mori",
+      "text": "あしたの ぶんかさいには 市長が いらっしゃいます。",
+      "en": "The mayor will be coming to tomorrow's culture festival."
+    },
+    {
+      "type": "reading",
+      "item": "k:様",
+      "display": "お客様",
+      "answers": [
+        "おきゃくさま"
+      ],
+      "prompt": "Read it: how you address a guest.",
+      "target": "様"
+    },
+    {
+      "type": "say",
+      "who": "mori",
+      "text": "お客様や 目上の 人には、ていねいな ことばを 使いましょう。",
+      "en": "With guests and superiors, let's use respectful language."
+    },
+    {
+      "type": "intro",
+      "item": "g:n4-o-ni-naru"
+    },
+    {
+      "type": "choice",
+      "item": "g:n4-o-ni-naru",
+      "who": "mori",
+      "prompt": "Ask politely: \"Has the mayor already read this?\"",
+      "options": [
+        {
+          "text": "市長は もう これを お読みに なりましたか。",
+          "correct": true
+        },
+        {
+          "text": "市長は もう これを お読みします。",
+          "awkward": {
+            "who": "mori",
+            "text": "「お〜する」は 自分が する ときですよ。",
+            "en": "\"O-suru\" is for your own actions."
+          }
+        },
+        {
+          "text": "市長は もう これを お読みに ましたか。",
+          "awkward": {
+            "who": "hana",
+            "text": "「お読みに なりましたか」だよ。「なる」を わすれずに。",
+            "en": "Don't forget \"naru\": \"o-yomi ni narimashita ka\"."
+          }
+        }
+      ]
+    },
+    {
+      "type": "intro",
+      "item": "g:genki-irassharu"
+    },
+    {
+      "type": "choice",
+      "item": "g:genki-irassharu",
+      "who": "leo",
+      "prompt": "Say: \"The mayor is here.\"",
+      "options": [
+        {
+          "text": "市長は ここに いらっしゃいます。",
+          "correct": true
+        },
+        {
+          "text": "市長は ここに いらっしゃります。",
+          "awkward": {
+            "who": "mori",
+            "text": "「いらっしゃいます」ですよ。",
+            "en": "It is \"irasshaimasu\"."
+          }
+        },
+        {
+          "text": "市長は ここに います。",
+          "awkward": {
+            "who": "hana",
+            "text": "「います」でも 通じるけど、お客様には「いらっしゃいます」。",
+            "en": "\"Imasu\" is understood, but for a guest say \"irasshaimasu\"."
+          }
+        }
+      ]
+    },
+    {
+      "type": "particle",
+      "item": "g:n5-ga-subject",
+      "who": "mori",
+      "text": "市長＿ いらっしゃいました。",
+      "options": [
+        "が",
+        "を",
+        "に",
+        "と"
+      ],
+      "answers": [
+        "が"
+      ],
+      "en": "The mayor has arrived.",
+      "role": "p:ga/subject"
+    },
+    {
+      "type": "reading",
+      "item": "k:召",
+      "display": "召し上がる",
+      "answers": [
+        "めしあがる"
+      ],
+      "prompt": "Read it: the honorific for eat.",
+      "target": "召"
+    },
+    {
+      "type": "choice",
+      "item": "g:genki-irassharu",
+      "who": "mori",
+      "prompt": "Offer the guest cake: \"Please have some cake.\"",
+      "options": [
+        {
+          "text": "どうぞ ケーキを 召し上がって ください。",
+          "correct": true
+        },
+        {
+          "text": "どうぞ ケーキを 食べて ください。",
+          "awkward": {
+            "who": "mori",
+            "text": "失礼では ありませんが、お客様には 「召し上がって」。",
+            "en": "Not rude, but for a guest say \"meshiagatte\"."
+          }
+        },
+        {
+          "text": "どうぞ ケーキを いただいて ください。",
+          "awkward": {
+            "who": "hana",
+            "text": "「いただく」は 自分が 食べる ときだよ。",
+            "en": "\"Itadaku\" is for when you eat."
+          }
+        }
+      ]
+    },
+    {
+      "type": "choice",
+      "item": "g:genki-irassharu",
+      "who": "leo",
+      "prompt": "Ask: \"What did the mayor say?\"",
+      "options": [
+        {
+          "text": "市長は 何と おっしゃいましたか。",
+          "correct": true
+        },
+        {
+          "text": "市長は 何と 言いましたか。",
+          "awkward": {
+            "who": "leo",
+            "text": "「言いましたか」でも いいけど、「おっしゃいましたか」が ていねい。",
+            "en": "\"Iimashita ka\" is fine, but \"osshaimashita ka\" is more polite."
+          }
+        },
+        {
+          "text": "市長は 何と 申しましたか。",
+          "awkward": {
+            "who": "mori",
+            "text": "「申す」は 自分が 言う ときですよ。",
+            "en": "\"Mousu\" is for when you speak."
+          }
+        }
+      ]
+    },
+    {
+      "type": "intro",
+      "item": "g:n4-rareru-honorific"
+    },
+    {
+      "type": "choice",
+      "item": "g:n4-rareru-honorific",
+      "who": "hana",
+      "prompt": "Say: \"The principal will come at three o'clock.\"",
+      "options": [
+        {
+          "text": "校長先生は 三時に 来られます。",
+          "correct": true
+        },
+        {
+          "text": "校長先生は 三時に 来れます。",
+          "awkward": {
+            "who": "mori",
+            "text": "「来られます」は 敬語の 形ですが、「来れます」は 可能の 形ですよ。",
+            "en": "\"Koraremasu\" is honorific; \"koremasu\" is potential."
+          }
+        },
+        {
+          "text": "校長先生は 三時に 来る られます。",
+          "awkward": {
+            "who": "leo",
+            "text": "「来られます」だよ。",
+            "en": "It is \"koraremasu\"."
+          }
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "mori",
+      "text": "ノアさん、よく できました。あしたも おねがいしますね。",
+      "en": "Well done, Noa. I'm counting on you tomorrow too."
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "わたしも お客様に ごあいさつ しなきゃ…！",
+      "en": "I have to greet the guests too...!"
+    },
+    {
+      "type": "affection",
+      "char": "mori",
+      "delta": 2
+    },
+    {
+      "type": "affection",
+      "char": "hana",
+      "delta": 1
+    },
+    {
+      "type": "affection",
+      "char": "leo",
+      "delta": 1
+    },
+    {
+      "type": "cg",
+      "id": "genki-guest",
+      "title": "Welcoming the guest"
+    }
+  ]
+}

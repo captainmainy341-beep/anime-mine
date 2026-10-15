@@ -1,0 +1,306 @@
+{
+  "schema": 1,
+  "id": "genki-l20",
+  "order": 120,
+  "track": "genki",
+  "lesson": 20,
+  "title": "いらっしゃいませ",
+  "summary": "Noa runs the festival café stall. Lower yourself politely with humble verbs and offer help with お〜します.",
+  "covers": "お〜する · いたす / 参る / 申す / 伺う · ございます / おります",
+  "jlpt": "N4",
+  "source": "authored",
+  "bg": "festival-hall",
+  "characters": {
+    "tomi": {
+      "name": "とみさん",
+      "color": "#c97b5a"
+    },
+    "hana": {
+      "name": "ハナ",
+      "color": "#7cc6b4"
+    },
+    "mori": {
+      "name": "森先生",
+      "color": "#8e7cc3"
+    }
+  },
+  "glossary": {
+    "g:n4-o-suru": {
+      "label": "お〜する",
+      "meaning": "humble: I do (for you)",
+      "note": "お + ます-stem + する lowers your own action and respects the listener: 荷物を持つ → お荷物をお持ちします."
+    },
+    "g:genki-humble": {
+      "label": "いたす / 参る / 申す / 伺う",
+      "meaning": "special humble verbs",
+      "note": "する → いたす, 行く・来る → 参る, 言う → 申す, 食べる・もらう → いただく, 訪ねる・聞く → 伺う, 見る → 拝見する, いる → おる."
+    },
+    "g:genki-gozaimasu": {
+      "label": "ございます / おります",
+      "meaning": "polite-style equivalents of あります / います",
+      "note": "ある → ございます, いる → おります, です → でございます. They make your own speech very polite, as in the shop."
+    },
+    "g:n5-o": {
+      "label": "〜を",
+      "meaning": "object marker",
+      "note": "を marks the thing you do the action to."
+    },
+    "k:伺": {
+      "label": "伺",
+      "meaning": "to visit, ask (humble)",
+      "reading": "うかが(う)"
+    },
+    "k:申": {
+      "label": "申",
+      "meaning": "to say (humble)",
+      "reading": "もう(す)"
+    }
+  },
+  "beats": [
+    {
+      "type": "show",
+      "char": "tomi",
+      "expr": "smile",
+      "pos": "left"
+    },
+    {
+      "type": "show",
+      "char": "hana",
+      "expr": "smile",
+      "pos": "right"
+    },
+    {
+      "type": "say",
+      "who": "tomi",
+      "text": "ノアさん、今日は ぶんかさいの カフェですよ。",
+      "en": "Noa, today we're running the café at the culture festival."
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "お客様には ひくい たいどで、ていねいに ね。",
+      "en": "Be humble and polite with customers."
+    },
+    {
+      "type": "intro",
+      "item": "g:n4-o-suru"
+    },
+    {
+      "type": "choice",
+      "item": "g:n4-o-suru",
+      "who": "tomi",
+      "prompt": "A customer has heavy bags. Say: \"I will carry your bags.\"",
+      "options": [
+        {
+          "text": "お荷物を お持ちします。",
+          "correct": true
+        },
+        {
+          "text": "お荷物を お持ちになります。",
+          "awkward": {
+            "who": "tomi",
+            "text": "「お持ちになる」は お客様の 動作に 使いますよ。",
+            "en": "\"O-mochi ni naru\" is for the customer's action."
+          }
+        },
+        {
+          "text": "お荷物を 持ちます。",
+          "awkward": {
+            "who": "hana",
+            "text": "それだと ちょっと ぶっきらぼうかな。",
+            "en": "That sounds a little blunt."
+          }
+        }
+      ]
+    },
+    {
+      "type": "particle",
+      "item": "g:n5-o",
+      "who": "hana",
+      "text": "お客様に メニュー＿ お見せします。",
+      "options": [
+        "を",
+        "が",
+        "に",
+        "へ"
+      ],
+      "answers": [
+        "を"
+      ],
+      "en": "I will show the customer the menu.",
+      "role": "p:wo/object"
+    },
+    {
+      "type": "intro",
+      "item": "g:genki-humble"
+    },
+    {
+      "type": "choice",
+      "item": "g:genki-humble",
+      "who": "hana",
+      "prompt": "Say: \"I will do it.\"",
+      "options": [
+        {
+          "text": "わたしが いたします。",
+          "correct": true
+        },
+        {
+          "text": "わたしが なさいます。",
+          "awkward": {
+            "who": "tomi",
+            "text": "「なさる」は お客様が する ときですよ。",
+            "en": "\"Nasaru\" is for the customer."
+          }
+        },
+        {
+          "text": "わたしが いらっしゃいます。",
+          "awkward": {
+            "who": "hana",
+            "text": "「いらっしゃる」は 相手に 使う ことばだよ。",
+            "en": "\"Irassharu\" is for the other person."
+          }
+        }
+      ]
+    },
+    {
+      "type": "reading",
+      "item": "k:申",
+      "display": "申します",
+      "answers": [
+        "もうします"
+      ],
+      "prompt": "Read it: the humble way to say your name.",
+      "target": "申"
+    },
+    {
+      "type": "choice",
+      "item": "g:genki-humble",
+      "who": null,
+      "prompt": "Introduce yourself: \"I am Noa.\"",
+      "options": [
+        {
+          "text": "ノアと 申します。",
+          "correct": true
+        },
+        {
+          "text": "ノアと おっしゃいます。",
+          "awkward": {
+            "who": "mori",
+            "text": "「おっしゃる」は 相手の 動作に 使いますよ。",
+            "en": "\"Ossharu\" is for the other person."
+          }
+        },
+        {
+          "text": "ノアと 言われます。",
+          "awkward": {
+            "who": "hana",
+            "text": "それは ちょっと ちがうかな。",
+            "en": "That is a little off."
+          }
+        }
+      ]
+    },
+    {
+      "type": "reading",
+      "item": "k:伺",
+      "display": "伺います",
+      "answers": [
+        "うかがいます"
+      ],
+      "prompt": "Read it: the humble verb for \"visit\".",
+      "target": "伺"
+    },
+    {
+      "type": "choice",
+      "item": "g:genki-humble",
+      "who": "mori",
+      "prompt": "Say to a teacher: \"I will visit tomorrow.\"",
+      "options": [
+        {
+          "text": "あした 伺います。",
+          "correct": true
+        },
+        {
+          "text": "あした 行かれます。",
+          "awkward": {
+            "who": "mori",
+            "text": "「行かれる」は 敬語です。自分には 使いません。",
+            "en": "\"Ikareru\" is honorific. Not for yourself."
+          }
+        },
+        {
+          "text": "あした いらっしゃいます。",
+          "awkward": {
+            "who": "hana",
+            "text": "「いらっしゃる」は 相手の 行動だよ。",
+            "en": "\"Irassharu\" is for the other person."
+          }
+        }
+      ]
+    },
+    {
+      "type": "intro",
+      "item": "g:genki-gozaimasu"
+    },
+    {
+      "type": "choice",
+      "item": "g:genki-gozaimasu",
+      "who": "tomi",
+      "prompt": "Say politely: \"Today's special is this cake.\"",
+      "options": [
+        {
+          "text": "本日の おすすめは こちらの ケーキで ございます。",
+          "correct": true
+        },
+        {
+          "text": "本日の おすすめは こちらの ケーキだ。",
+          "awkward": {
+            "who": "tomi",
+            "text": "お客様に 「だ」は ちょっと…。",
+            "en": "\"Da\" to a customer is a bit much..."
+          }
+        },
+        {
+          "text": "本日の おすすめは こちらの ケーキで あります。",
+          "awkward": {
+            "who": "hana",
+            "text": "「で ございます」が お店では よく 使われるよ。",
+            "en": "\"De gozaimasu\" is typical in shops."
+          }
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "mori",
+      "text": "ノアさん、すばらしい。日本語が ずいぶん じょうずに なりましたね。",
+      "en": "Wonderful, Noa. Your Japanese has become quite good."
+    },
+    {
+      "type": "say",
+      "who": "tomi",
+      "text": "お客様が たくさん いらっしゃいました。がんばりましょう！",
+      "en": "Many customers have come. Let's do our best!"
+    },
+    {
+      "type": "affection",
+      "char": "tomi",
+      "delta": 2
+    },
+    {
+      "type": "affection",
+      "char": "hana",
+      "delta": 1
+    },
+    {
+      "type": "affection",
+      "char": "mori",
+      "delta": 1
+    },
+    {
+      "type": "cg",
+      "id": "genki-festival-cafe",
+      "title": "Festival café"
+    }
+  ]
+}

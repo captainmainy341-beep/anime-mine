@@ -1,5 +1,10 @@
 // Pure helpers that let the Genki path show up outside the Story tab (Learn home, grammar pages).
 
+// Name for the span of the path that exists (Genki I only, or both books).
+export function pathName(progress) {
+  return progress.lessons.some((row) => row.lesson > 12) ? 'Genki I & II' : 'Genki I';
+}
+
 // Where the learner is on the path: the first lesson whose primer or story is unfinished.
 export function pathProgress(data) {
   const lessons = [...(data?.lessons ?? [])].sort((a, b) => a.lesson - b.lesson);

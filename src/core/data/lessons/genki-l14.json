@@ -1,0 +1,411 @@
+{
+  "schema": 1,
+  "id": "genki-l14",
+  "lesson": 14,
+  "title": "Presents and Favours",
+  "tagline": "Say who gave what to whom, and who did a favour for whom.",
+  "hook": "A birthday is coming and everyone is plotting. Japanese cares a lot about who gives and who receives, so this lesson is about あげる, くれる, もらう, and the favour forms that go with them.",
+  "goals": [
+    "Tell あげる, くれる and もらう apart",
+    "Thank someone with 〜てくれる / 〜てもらう",
+    "Ask very politely with 〜ていただけませんか"
+  ],
+  "minutes": 12,
+  "vocab": [
+    [
+      "誕生日",
+      "たんじょうび",
+      "birthday",
+      "🎂"
+    ],
+    [
+      "プレゼント",
+      "ぷれぜんと",
+      "present",
+      "🎁"
+    ],
+    [
+      "手伝う",
+      "てつだう",
+      "to help",
+      "🤝"
+    ],
+    [
+      "教える",
+      "おしえる",
+      "to teach, tell",
+      "👩‍🏫"
+    ],
+    [
+      "貸す",
+      "かす",
+      "to lend",
+      "📤"
+    ],
+    [
+      "借りる",
+      "かりる",
+      "to borrow",
+      "📥"
+    ],
+    [
+      "送る",
+      "おくる",
+      "to send",
+      "📮"
+    ],
+    [
+      "持つ",
+      "もつ",
+      "to hold, carry",
+      "🛍️"
+    ],
+    [
+      "写真",
+      "しゃしん",
+      "photo",
+      "📷"
+    ],
+    [
+      "手紙",
+      "てがみ",
+      "letter",
+      "✉️"
+    ],
+    [
+      "花",
+      "はな",
+      "flower",
+      "💐"
+    ],
+    [
+      "お祝い",
+      "おいわい",
+      "celebration, gift",
+      "🎉"
+    ],
+    [
+      "サプライズ",
+      "さぷらいず",
+      "surprise",
+      "😲"
+    ],
+    [
+      "ロウソク",
+      "ろうそく",
+      "candle",
+      "🕯️"
+    ],
+    [
+      "けっこう",
+      "けっこう",
+      "quite",
+      "👌"
+    ],
+    [
+      "ありがたい",
+      "ありがたい",
+      "thankful, welcome",
+      "🙏"
+    ],
+    [
+      "親切",
+      "しんせつ",
+      "kind",
+      "💛"
+    ],
+    [
+      "ひみつ",
+      "ひみつ",
+      "secret",
+      "🤫"
+    ],
+    [
+      "ケーキ",
+      "けーき",
+      "cake",
+      "🍰"
+    ],
+    [
+      "たのむ",
+      "たのむ",
+      "to ask for, request",
+      "🗣️"
+    ]
+  ],
+  "points": [
+    {
+      "id": "g:genki-giving",
+      "title": "あげる / くれる / もらう",
+      "formula": "giver が/は receiver に thing を あげる・くれる・もらう",
+      "gist": "Three verbs for giving and receiving.",
+      "explain": [
+        "あげる means someone gives to another person: ハナさんに 花を あげました. くれる means someone gives to me or to my side: ハナさんは わたしに 花を くれました.",
+        "もらう looks at the same event from the receiver: わたしは ハナさんに 花を もらいました. The giver takes に (or から) with もらう."
+      ],
+      "examples": [
+        {
+          "ja": "わたしは|ハナさんに|花を|あげました。",
+          "gloss": "I (topic)|to Hana|flowers (object)|gave",
+          "en": "I gave Hana flowers."
+        },
+        {
+          "ja": "ハナさんは|わたしに|手紙を|くれました。",
+          "gloss": "Hana (topic)|to me|a letter (object)|gave",
+          "en": "Hana gave me a letter."
+        },
+        {
+          "ja": "わたしは|ハナさんに|手紙を|もらいました。",
+          "gloss": "I (topic)|from Hana|a letter (object)|received",
+          "en": "I received a letter from Hana."
+        }
+      ],
+      "tip": "Think \"direction\": あげる goes outward, くれる comes toward me, もらう is me receiving.",
+      "watch": "You do not say 「わたしに あげる」 about a gift to yourself. For gifts coming to you, use くれる."
+    },
+    {
+      "id": "g:n4-te-kureru",
+      "title": "〜てくれる / 〜てあげる",
+      "formula": "verb て-form + くれる / あげる",
+      "gist": "Do or get a favour, not just a thing.",
+      "explain": [
+        "Put the same verbs after a て-form and you describe favours. 〜てくれる: someone does something kind for me. 〜てあげる: I do something for someone else.",
+        "ハナさんが 手伝って くれました = Hana helped me, and I am grateful. わたしが ハナさんを 手伝って あげました = I helped Hana (be careful, this can sound proud)."
+      ],
+      "examples": [
+        {
+          "ja": "ハナさんが|宿題を|手伝って|くれました。",
+          "gloss": "Hana (subject)|homework (object)|helping|did for me",
+          "en": "Hana helped me with my homework."
+        },
+        {
+          "ja": "とみさんが|ごはんを|作って|くれました。",
+          "gloss": "Tomi-san (subject)|meal (object)|making|did for me",
+          "en": "Tomi-san cooked a meal for me."
+        },
+        {
+          "ja": "友だちに|地図を|書いて|あげました。",
+          "gloss": "friend (to)|map (object)|drawing|did for them",
+          "en": "I drew my friend a map."
+        }
+      ],
+      "tip": "くれる = \"thank you for doing it\", あげる = \"I did it for you\".",
+      "watch": "Use 〜てあげる carefully with people above you; it can sound like you are doing them a favour."
+    },
+    {
+      "id": "g:n4-te-morau",
+      "title": "〜てもらう",
+      "formula": "verb て-form + もらう",
+      "gist": "Have someone do something for you.",
+      "explain": [
+        "〜てもらう describes the same favour from the receiver. The person who did it takes に: ハナさんに 教えて もらいました.",
+        "It often sounds like you asked, or at least benefited. Compare ハナさんが 教えてくれました (Hana kindly taught me) with ハナさんに 教えてもらいました (I got Hana to teach me)."
+      ],
+      "examples": [
+        {
+          "ja": "ハナさんに|宿題を|手伝って|もらいました。",
+          "gloss": "by Hana|homework (object)|helping|received",
+          "en": "I had Hana help me with my homework."
+        },
+        {
+          "ja": "先生に|日本語を|教えて|もらいます。",
+          "gloss": "by teacher|Japanese (object)|teaching|will receive",
+          "en": "I'll have my teacher teach me Japanese."
+        },
+        {
+          "ja": "友だちに|写真を|とって|もらいました。",
+          "gloss": "by friend|photo (object)|taking|received",
+          "en": "I had a friend take my photo."
+        }
+      ],
+      "tip": "〜に 〜て もらう: the doer takes に, not が.",
+      "watch": "Do not use が for the person who did the favour: 「ハナさんが 教えてもらいました」 is wrong."
+    },
+    {
+      "id": "g:n4-te-itadakemasen-ka",
+      "title": "〜ていただけませんか",
+      "formula": "verb て-form + いただけませんか",
+      "gist": "A very polite request.",
+      "explain": [
+        "いただく is the humble form of もらう. 〜ていただけませんか literally asks \"could I receive the favour of ...?\". It is polite and indirect.",
+        "Use it with teachers, shop staff or people you do not know well. With friends, 〜てくれない？ or 〜てください is enough."
+      ],
+      "examples": [
+        {
+          "ja": "すみません、|写真を|とって|いただけませんか。",
+          "gloss": "excuse me|photo (object)|taking|could I receive",
+          "en": "Excuse me, could you take a photo for me?"
+        },
+        {
+          "ja": "もう少し|ゆっくり|話して|いただけませんか。",
+          "gloss": "a little more|slowly|speaking|could I receive",
+          "en": "Could you speak a little more slowly?"
+        }
+      ],
+      "tip": "Start with すみません and end with ませんか.",
+      "watch": "It is 〜いただけませんか (can-do form), not 〜いただきませんか, which sounds like an offer to receive something."
+    }
+  ],
+  "drills": [
+    {
+      "type": "gap",
+      "point": 0,
+      "ja": "わたしは ハナさん＿ 花を あげました。",
+      "options": [
+        "に",
+        "を",
+        "が",
+        "で"
+      ],
+      "answer": "に",
+      "en": "I gave Hana flowers.",
+      "why": "The receiver takes に."
+    },
+    {
+      "type": "pick",
+      "q": "Hana gave something to you. Which verb fits?",
+      "options": [
+        "ハナさんは わたしに 花を くれました。",
+        "ハナさんは わたしに 花を あげました。",
+        "ハナさんは わたしに 花を もらいました。",
+        "わたしは ハナさんに 花を くれました。"
+      ],
+      "answer": 0,
+      "why": "Toward me: くれる.",
+      "point": 0
+    },
+    {
+      "type": "gap",
+      "point": 0,
+      "ja": "わたしは ハナさん＿ 手紙を もらいました。",
+      "options": [
+        "に",
+        "を",
+        "の",
+        "で"
+      ],
+      "answer": "に",
+      "en": "I received a letter from Hana.",
+      "why": "With もらう the giver takes に or から."
+    },
+    {
+      "type": "gap",
+      "point": 1,
+      "ja": "ハナさんが 宿題を 手伝って ＿ました。",
+      "options": [
+        "くれ",
+        "あげ",
+        "もらい",
+        "いき"
+      ],
+      "answer": "くれ",
+      "en": "Hana helped me with my homework.",
+      "why": "Hana did the favour for me: くれる."
+    },
+    {
+      "type": "pick",
+      "q": "Which is \"I drew my friend a map\"?",
+      "options": [
+        "友だちに 地図を 書いて あげました。",
+        "友だちが 地図を 書いて あげました。",
+        "友だちに 地図を 書いて もらいました。",
+        "友だちを 地図を 書いて くれました。"
+      ],
+      "answer": 0,
+      "why": "I do it for them: 〜てあげる.",
+      "point": 1
+    },
+    {
+      "type": "order",
+      "point": 1,
+      "en": "Tomi-san cooked dinner for me.",
+      "chunks": [
+        "とみさんが",
+        "ばんごはんを",
+        "作って",
+        "くれました"
+      ]
+    },
+    {
+      "type": "gap",
+      "point": 2,
+      "ja": "先生＿ 日本語を 教えて もらいます。",
+      "options": [
+        "に",
+        "が",
+        "を",
+        "は"
+      ],
+      "answer": "に",
+      "en": "I'll have my teacher teach me Japanese.",
+      "why": "The doer takes に with 〜てもらう."
+    },
+    {
+      "type": "pick",
+      "q": "Which one is correct for \"I had a friend take my photo\"?",
+      "options": [
+        "友だちに 写真を とって もらいました。",
+        "友だちが 写真を とって もらいました。",
+        "友だちに 写真を とって くれました。",
+        "友だちを 写真を とって もらいました。"
+      ],
+      "answer": 0,
+      "why": "に + 〜てもらう.",
+      "point": 2
+    },
+    {
+      "type": "order",
+      "point": 2,
+      "en": "I had Hana help me with my homework.",
+      "chunks": [
+        "ハナさんに",
+        "宿題を",
+        "手伝って",
+        "もらいました"
+      ]
+    },
+    {
+      "type": "gap",
+      "point": 3,
+      "ja": "すみません、写真を とって いただけ＿か。",
+      "options": [
+        "ません",
+        "ます",
+        "たい",
+        "ない"
+      ],
+      "answer": "ません",
+      "en": "Excuse me, could you take a photo?",
+      "why": "いただけませんか."
+    },
+    {
+      "type": "pick",
+      "q": "You ask a stranger for directions very politely.",
+      "options": [
+        "道を 教えて いただけませんか。",
+        "道を 教えて いただきませんか。",
+        "道を 教えて いただくませんか。",
+        "道を 教えて いただけますか。"
+      ],
+      "answer": 0,
+      "why": "Negative question form ませんか sounds politest.",
+      "point": 3
+    },
+    {
+      "type": "type",
+      "prompt": "Type the reading of 誕生日 (birthday) in hiragana.",
+      "show": "誕生日",
+      "answers": [
+        "たんじょうび"
+      ]
+    },
+    {
+      "type": "type",
+      "prompt": "Type the reading of 手紙 (letter) in hiragana.",
+      "show": "手紙",
+      "answers": [
+        "てがみ"
+      ]
+    }
+  ]
+}

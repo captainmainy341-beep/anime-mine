@@ -1,0 +1,353 @@
+{
+  "schema": 1,
+  "id": "genki-l15",
+  "order": 115,
+  "track": "genki",
+  "lesson": 15,
+  "title": "えんそくの じゅんび",
+  "summary": "Mori-sensei's class trip is tomorrow. Make suggestions with the volitional, state your plans, and talk about what has been prepared.",
+  "covers": "〜よう（let us / I will） · 〜ようと思う · 〜ておく · 〜てある",
+  "jlpt": "N4",
+  "source": "authored",
+  "bg": "classroom-morning",
+  "characters": {
+    "mori": {
+      "name": "森先生",
+      "color": "#8e7cc3"
+    },
+    "hana": {
+      "name": "ハナ",
+      "color": "#7cc6b4"
+    },
+    "leo": {
+      "name": "レオ",
+      "color": "#f0a35e"
+    }
+  },
+  "glossary": {
+    "g:n4-volitional": {
+      "label": "〜よう",
+      "meaning": "let's / I'll (volitional)",
+      "note": "Ru-verbs: stem + よう (食べよう). U-verbs: change the last sound to the お-row and add う (行く → 行こう). する → しよう, 来る → 来よう. Used for suggestions among friends and for decisions."
+    },
+    "g:genki-youto-omou": {
+      "label": "〜ようと思う",
+      "meaning": "I am thinking of doing ...",
+      "note": "Volitional + と思う shows an intention you are forming now: 早く起きようと思います. For a fixed plan use つもり."
+    },
+    "g:n4-te-oku": {
+      "label": "〜ておく",
+      "meaning": "do in advance / leave as is",
+      "note": "て-form + おく: do something now so things are ready later. 切符を買っておきます = I will buy the ticket in advance."
+    },
+    "g:n4-te-aru": {
+      "label": "〜てある",
+      "meaning": "is in a prepared state",
+      "note": "Transitive verb て-form + ある: someone did it on purpose and the result remains. The thing takes が: まどが開けてある."
+    },
+    "k:遠": {
+      "label": "遠",
+      "meaning": "far",
+      "reading": "とお(い)"
+    },
+    "k:準": {
+      "label": "準",
+      "meaning": "level, prepare",
+      "reading": "じゅん"
+    }
+  },
+  "beats": [
+    {
+      "type": "show",
+      "char": "mori",
+      "expr": "smile",
+      "pos": "center"
+    },
+    {
+      "type": "say",
+      "who": "mori",
+      "text": "みなさん、あしたは えんそくです。じゅんびは できましたか。",
+      "en": "Everyone, tomorrow is the class trip. Are you ready?"
+    },
+    {
+      "type": "reading",
+      "item": "k:遠",
+      "display": "遠足",
+      "answers": [
+        "えんそく"
+      ],
+      "prompt": "Read it: what is happening tomorrow?",
+      "target": "遠"
+    },
+    {
+      "type": "show",
+      "char": "hana",
+      "expr": "smile",
+      "pos": "left"
+    },
+    {
+      "type": "show",
+      "char": "leo",
+      "expr": "neutral",
+      "pos": "right"
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "先生、おべんとうは 作って おきました。",
+      "en": "Sensei, I've made the lunch boxes in advance."
+    },
+    {
+      "type": "intro",
+      "item": "g:n4-te-oku"
+    },
+    {
+      "type": "choice",
+      "item": "g:n4-te-oku",
+      "who": "mori",
+      "prompt": "Say that you will buy the train ticket in advance.",
+      "options": [
+        {
+          "text": "切符を 買って おきます。",
+          "correct": true
+        },
+        {
+          "text": "切符を 買って あります。",
+          "awkward": {
+            "who": "mori",
+            "text": "それは もう 買ってある ときですよ。いま 買う つもりなら 「おきます」。",
+            "en": "That's for when it is already bought. Use \"okimasu\" for doing it ahead."
+          }
+        },
+        {
+          "text": "切符を 買って いきます。",
+          "awkward": {
+            "who": "hana",
+            "text": "「いきます」だと 行く という いみになるよ。",
+            "en": "\"Ikimasu\" would mean going."
+          }
+        }
+      ]
+    },
+    {
+      "type": "particle",
+      "item": "g:n4-te-oku",
+      "who": "leo",
+      "text": "ぼくは おかし＿ 買って おきました。",
+      "options": [
+        "を",
+        "が",
+        "に",
+        "へ"
+      ],
+      "answers": [
+        "を"
+      ],
+      "en": "I bought snacks in advance.",
+      "role": "p:wo/object",
+      "prompt": "What did Leo prepare?"
+    },
+    {
+      "type": "say",
+      "who": "mori",
+      "text": "へやの まどは あけて ありますか。",
+      "en": "Have the windows been opened?"
+    },
+    {
+      "type": "intro",
+      "item": "g:n4-te-aru"
+    },
+    {
+      "type": "choice",
+      "item": "g:n4-te-aru",
+      "who": "hana",
+      "prompt": "Report that the classroom's window has been opened.",
+      "options": [
+        {
+          "text": "まどが あけて あります。",
+          "correct": true
+        },
+        {
+          "text": "まどが あけて います。",
+          "awkward": {
+            "who": "mori",
+            "text": "「あけています」は 今 あけている 最中ですよ。",
+            "en": "\"Akete imasu\" means someone is opening it right now."
+          }
+        },
+        {
+          "text": "まどを あけて あります。",
+          "awkward": {
+            "who": "leo",
+            "text": "「ある」の ときは 「が」に なるよ。",
+            "en": "With \"aru\" the thing takes \"ga\"."
+          }
+        }
+      ]
+    },
+    {
+      "type": "particle",
+      "item": "g:n4-te-aru",
+      "who": "leo",
+      "text": "ここに 名前＿ 書いて あります。",
+      "options": [
+        "が",
+        "を",
+        "は",
+        "に"
+      ],
+      "answers": [
+        "が"
+      ],
+      "en": "Your name has been written here.",
+      "role": "p:ga/subject"
+    },
+    {
+      "type": "say",
+      "who": "mori",
+      "text": "では、あしたの 朝、みんなで えきへ 行きましょう。",
+      "en": "Then tomorrow morning let's all go to the station."
+    },
+    {
+      "type": "intro",
+      "item": "g:n4-volitional"
+    },
+    {
+      "type": "choice",
+      "item": "g:n4-volitional",
+      "who": "leo",
+      "prompt": "Suggest to your friends: \"Let's eat lunch together.\"",
+      "options": [
+        {
+          "text": "いっしょに おひるを 食べよう！",
+          "correct": true
+        },
+        {
+          "text": "いっしょに おひるを 食べるよう！",
+          "awkward": {
+            "who": "leo",
+            "text": "「食べよう」と いうんだ。「る」を とって 「よう」。",
+            "en": "Say \"tabeyou\": drop \"ru\" and add \"you\"."
+          }
+        },
+        {
+          "text": "いっしょに おひるを 食べましょう！",
+          "awkward": {
+            "who": "hana",
+            "text": "それも ていねいで いいけど、友だちには 「食べよう」だよ。",
+            "en": "That is fine too and polite, but between friends it is \"tabeyou\"."
+          }
+        }
+      ]
+    },
+    {
+      "type": "choice",
+      "item": "g:n4-volitional",
+      "who": "hana",
+      "prompt": "Suggest going: \"Let us go together.\"",
+      "options": [
+        {
+          "text": "いっしょに 行こう！",
+          "correct": true
+        },
+        {
+          "text": "いっしょに 行きよう！",
+          "awkward": {
+            "who": "hana",
+            "text": "「行く」は 「行こう」だよ。",
+            "en": "\"Iku\" becomes \"ikou\"."
+          }
+        },
+        {
+          "text": "いっしょに 行くよう！",
+          "awkward": {
+            "who": "leo",
+            "text": "「く」を 「こう」に かえよう。",
+            "en": "Change \"ku\" to \"kou\"."
+          }
+        }
+      ]
+    },
+    {
+      "type": "intro",
+      "item": "g:genki-youto-omou"
+    },
+    {
+      "type": "choice",
+      "item": "g:genki-youto-omou",
+      "who": "mori",
+      "prompt": "Say you are thinking of getting up early tomorrow.",
+      "options": [
+        {
+          "text": "あした 早く 起きようと 思います。",
+          "correct": true
+        },
+        {
+          "text": "あした 早く 起きるようと 思います。",
+          "awkward": {
+            "who": "mori",
+            "text": "「起きよう」ですよ。「る」を とって 「よう」。",
+            "en": "It is \"okiyou\"."
+          }
+        },
+        {
+          "text": "あした 早く 起きたいと 思います。",
+          "awkward": {
+            "who": "hana",
+            "text": "それも 言えるけど、「しよう」の 気もちは 「起きようと」だよ。",
+            "en": "That works too, but this one is the \"I will try\" feeling."
+          }
+        }
+      ]
+    },
+    {
+      "type": "reading",
+      "item": "k:準",
+      "display": "準備",
+      "answers": [
+        "じゅんび"
+      ],
+      "prompt": "Read it: the word for getting ready.",
+      "target": "準"
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "ノアさんも じゅんびは だいじょうぶ？",
+      "en": "Are your preparations okay too, Noa?"
+    },
+    {
+      "type": "say",
+      "who": "leo",
+      "text": "あしたは 晴れる ことを いのろう！",
+      "en": "Let's pray for good weather tomorrow!",
+      "expr": "smile"
+    },
+    {
+      "type": "say",
+      "who": "mori",
+      "text": "では、気を つけて 帰りましょう。",
+      "en": "Then let's all get home safely."
+    },
+    {
+      "type": "affection",
+      "char": "hana",
+      "delta": 1
+    },
+    {
+      "type": "affection",
+      "char": "leo",
+      "delta": 2
+    },
+    {
+      "type": "affection",
+      "char": "mori",
+      "delta": 1
+    },
+    {
+      "type": "cg",
+      "id": "genki-trip",
+      "title": "Ready for the trip"
+    }
+  ]
+}
