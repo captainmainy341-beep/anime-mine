@@ -2,7 +2,9 @@
 
 The Story tab draws its characters and backgrounds from an **art pack**. Without any setup it uses the
 built-in pack: characters and backgrounds drawn in code (SVG and CSS gradients, in
-`src/renderer/learn/vn/defaultSkin.mjs`). That art is original and released as CC0, so nothing needs
+`src/renderer/learn/vn/defaultSkin.mjs`): shaded busts with per-character hair, eyes, outfits and
+accessories, five faces each, and layered backgrounds. Characters breathe and blink, clouds drift and
+festival lanterns sway; all of that stops when the system asks for reduced motion. That art is original and released as CC0, so nothing needs
 attribution and nothing third-party ships with the app.
 
 You can replace any part of it with your own images.
@@ -92,6 +94,28 @@ whose image does not exist are skipped one by one.
 
 ## Using art you did not draw
 
-Only use art you have the right to use. Do not copy sprites or backgrounds from commercial visual novels.
-CC0 and CC-BY packs are fine (keep the attribution in the pack's `license` field or a `LICENSE` file next
-to `pack.json`).
+Only use art you have the right to use. Do not copy, trace or rip sprites or backgrounds from commercial
+visual novels, games or anime, and do not use "fan" packs made from them: that art is not yours to
+redistribute, even privately shared. The app ships none of it and never will.
+
+### Where to find free art
+
+Good places to look for art you are allowed to use (check each asset's own page, licences vary):
+
+- **OpenGameArt.org**: filter by licence (CC0, CC-BY, CC-BY-SA). Search "visual novel", "character
+  portrait", "background".
+- **itch.io game assets**: browse *Game assets* and filter by tags such as "visual novel", "sprites" or
+  "backgrounds"; many creators release free packs under CC0 or CC-BY, others under their own terms (read
+  them: some forbid redistribution or AI training, some require credit).
+- **Kenney.nl**: everything is CC0; mostly game UI and props, a few backgrounds.
+- Public-domain photo sites such as **Wikimedia Commons** (check the file's licence) for real-world
+  backgrounds you can pass through a filter.
+- Your own drawings or photos.
+
+Keep the attribution:
+
+- Put the licence in `pack.json` (`"license": "CC-BY 4.0"`, `"author": "..."`) and add a `LICENSE` or
+  `CREDITS.txt` next to it listing each asset, its author, its source URL and its licence.
+- CC-BY requires credit; CC-BY-SA also requires sharing changes under the same licence; CC0 needs nothing
+  but crediting is still kind.
+- Packs live only in your `<userData>/vn-skins` folder; they are not uploaded or shared by the app.
