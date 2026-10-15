@@ -11,6 +11,7 @@ import {
   scanSummary,
   vacationBanner,
 } from './homeModel.mjs';
+import { nextAction, pathProgress } from './genkiModel.mjs';
 
 const EXTRA_SOURCES = [
   ['recentMistakes', 'Recent mistakes'],
@@ -47,6 +48,7 @@ export function mountHome(el, ctx) {
   let seq = 0;
   let scanResult = null;
   let grammarRows = [];
+  let genki = null;
 
   load();
 
@@ -57,8 +59,9 @@ export function mountHome(el, ctx) {
   async function load() {
     const mine = ++seq;
     try {
-      const [dashboard, rows] = await Promise.all([api.learn.dashboard(), api.learn.browse({ type:'grammar', jlpt:ctx.prefs.get('grammarLevel', 'N5') })]);
+      const [dashboard, rows, path] = await Promise.all([api.learn.dashboard(), api.learn.browse({ type:'grammar', jlpt:ctx.prefs.get('grammarLevel', 'N5') }), api.story?.genki?.().catch(() => null)]);
       grammarRows = rows;
+      genki = path ? pathProgress(path) : null;
       if (disposed || mine !== seq) return;
       render(dashboard);
     } catch (err) {
@@ -79,7 +82,7 @@ export function mountHome(el, ctx) {
         lessonOption('字', 'Kanji & vocabulary', 'Start with radicals. Build up to the words you hear in your shows.', 'Kanji & vocab lessons',
           !d.packReady ? PACK_HINT : lessonsDisabledReason(d.lessons.kanji), () => ctx.go('session', { mode:'lesson', scope:'kanji' })),
         lessonOption('文', 'Grammar', 'A pattern, a real sentence, and that moment when it clicks.', 'Explore grammar', null, () => ctx.go('grammar'))),
-      grammarTrail(), srsSection(d.groups),
+      genkiCard(), grammarTrail(), srsSection(d.groups),
       h('div', { class:'home-support-grid' }, reviewsCard(d), animeCard(), extraRow(), streakCard(d)),
       h('details', { class:'home-forecast' }, h('summary', {}, 'Your upcoming reviews'), forecastSection(d)));
   }
@@ -89,6 +92,24 @@ export function mountHome(el, ctx) {
       h('div', {}, h('h2', {}, title), h('p', { class:'learn-sub' }, text),
         h('button', { type:'button', class:'learn-btn primary', disabled:disabledReason ? true : null, onclick:action }, label, icon('arrow')),
         disabledReason ? h('p', { class:'learn-hint' }, disabledReason) : null));
+  }
+  function genkiCard() {
+    if (!genki?.total) return null;
+    const action = nextAction(genki.next);
+    const open = (target) => ctx.go('story', target);
+    return h('section', { class:'home-genki' },
+      h('div', { class:'home-session-heading' }, h('h2', {}, 'Your Genki path'),
+        h('span', { class:'course-chip mint' }, genki.complete ? 'Genki I complete' : `${genki.done} of ${genki.total} lessons`)),
+      progressBar(genki.total ? genki.done / genki.total : 0),
+      action
+        ? h('div', { class:'home-genki-next' },
+            h('span', { class:'home-genki-num', 'aria-hidden':'true' }, String(genki.next.lesson)),
+            h('div', {}, h('strong', {}, genki.next.title), h('p', { class:'learn-sub' }, genki.next.tagline), h('small', {}, action.hint)),
+            h('button', { type:'button', class:'learn-btn primary', onclick:() => open(action.target) }, action.label, icon('arrow')))
+        : h('p', { class:'learn-sub' }, 'You have finished every lesson and story on the path. Replay any of them from Story.'),
+      h('div', { class:'home-genki-links' },
+        h('button', { type:'button', class:'course-link', onclick:() => ctx.go('story') }, 'See the whole path'),
+        genki.next && genki.next.learned ? null : h('small', {}, 'Each lesson’s grammar also lands in the Grammar tab and your reviews.')));
   }
   function grammarTrail() {
     return h('section', { class:'home-grammar-trail' }, h('div', { class:'home-session-heading' }, h('h2', {}, 'Your grammar trail'), h('button', { type:'button', class:'course-link', onclick:() => ctx.go('grammar') }, 'Browse grammar')),

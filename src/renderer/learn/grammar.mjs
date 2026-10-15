@@ -6,6 +6,7 @@ import { rubyNode } from './ruby.mjs';
 import { speak, canSpeak } from './speak.mjs';
 import { scanSummary } from './homeModel.mjs';
 import { icon } from './icons.mjs';
+import { lessonLabel, lessonsForPoint } from './genkiModel.mjs';
 
 const button = (label, action, className = 'learn-g-btn', props = {}) => h('button', { type:'button', class:className, onclick:action, ...props }, label);
 const chip = (text, className = '') => h('span', { class:`course-chip ${className}` }, text);
@@ -84,12 +85,16 @@ export function mountPoint(el, ctx, id, options = {}) {
   return () => { disposed = true; seq++; body.remove(); };
   async function load() {
     const mine = ++seq;
-    try { const card = await api.card(id); if (!disposed && mine === seq) render(card); }
+    try {
+      const [card, genki] = await Promise.all([api.card(id), ctx.api.story?.genki?.().catch(() => null)]);
+      if (!disposed && mine === seq) render(card, lessonsForPoint(genki, id));
+    }
     catch (err) { if (!disposed && mine === seq) fill(body, h('div', { class:'learn-card learn-error', role:'alert' }, err.message, button('Try again', load))); }
   }
-  function render(card) {
+  function render(card, genkiLessons = []) {
     const lesson = h('article', { class:'course-lesson' },
       h('div', { class:'course-tags' }, chip(`${card.jlpt} grammar`, 'pink'), chip(card.group?.label ?? 'New point'), chip(card.formality)),
+      genkiLessons.length ? h('p', { class:'course-genki' }, 'Taught in ', genkiLessons.map((entry, i) => [i ? ', ' : null, button(lessonLabel(entry), () => ctx.go('story', { lesson:entry.id }), 'course-link', { title:'Open this lesson' })])) : null,
       h('h2', { class:'course-title', lang:'ja' }, card.title), h('p', { class:'course-meaning' }, card.meaning),
       h('section', { class:'course-explanation' }, h('h3', {}, 'How it works'), h('p', { class:'course-syntax', lang:'ja' }, card.structure), card.notes ? h('p', { class:'course-note' }, card.notes) : null), examples(card),
       card.similar?.length ? h('details', { class:'course-related' }, h('summary', {}, 'Related patterns'), h('div', { class:'learn-chips' }, card.similar.map(p => p.id ? button(p.title, () => ctx.go('point', p.id)) : chip(p.title)))) : null);
