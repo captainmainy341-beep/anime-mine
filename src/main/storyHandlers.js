@@ -135,7 +135,9 @@ function createStoryHandlers({ dataDir, learn, getSettings, deps = {} }) {
   function summaryOf(scene) {
     const done = progress.state.chapters[scene.id] ?? null;
     const primer = primerOf(scene.id);
-    return { ...chapterSummary(scene), completed: (done?.plays ?? 0) > 0, plays: done?.plays ?? 0, saved: progress.hasSave(scene.id), ...(primer ? { primer } : {}) };
+    const slot = progress.hasSave(scene.id) ? progress.loadSlot(scene.id) : null;
+    const resume = slot && Number.isInteger(slot.index) ? Math.max(0, Math.min(1, slot.index / scene.beats.length)) : 0;
+    return { ...chapterSummary(scene), completed: (done?.plays ?? 0) > 0, plays: done?.plays ?? 0, saved: slot !== null, resume, ...(primer ? { primer } : {}) };
   }
 
   async function startedItems(kind, limit) {

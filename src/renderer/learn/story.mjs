@@ -5,8 +5,10 @@ import { revealAnswer, typedKana } from './vn/challenge.mjs';
 import { autoDelay, isComplete, sliceText, visibleCount } from './vn/typewriter.mjs';
 import { resolveBackground, resolveSprite } from './vn/skin.mjs';
 import { backgroundFor, backgroundSvg, characterSvg } from './vn/defaultSkin.mjs';
-import { TRANSLATE_PREF, affectionRows, backlogRows, chapterAction, completionMark, endSummary, genkiRows, guideFocus, introModel, kanjiCard, menuSections, particleParts, pendingLabel, pickSkin, reportLine, translateLabel, translationOn } from './storyModel.mjs';
+import { TRANSLATE_PREF, backlogRows, endSummary, guideFocus, introModel, kanjiCard, menuSections, particleParts, pendingLabel, pickSkin, reportLine, translateLabel, translationOn } from './storyModel.mjs';
 import { jaNodes, kanjify, renderKanjiCard, renderParticleGuide, renderPeekConfirm } from './storyGuide.mjs';
+import { mountHome } from './storyHome.mjs';
+import { mountLesson } from './lesson.mjs';
 
 const POSITIONS = ['left', 'center', 'right'];
 const PEEKED_NOTE = 'You looked this kanji up: answer now, and it will come back later.';
@@ -17,20 +19,30 @@ export function mountStory(el, ctx, arg = {}) {
   const api = ctx.api.story;
   let disposed = false;
   let teardownPlay = null;
+  let teardownMenu = null;
+  let lastList = null;
   const root = h('section', { class: 'story' });
   el.append(root);
   showMenu();
   if (arg.play) play(arg.play);
+  else if (arg.lesson) openLesson(arg.lesson);
 
   return () => {
     disposed = true;
     teardownPlay?.();
+    teardownMenu?.();
     root.remove();
   };
 
-  async function showMenu() {
+  function leaveScreens() {
     teardownPlay?.();
     teardownPlay = null;
+    teardownMenu?.();
+    teardownMenu = null;
+  }
+
+  async function showMenu() {
+    leaveScreens();
     fill(root, h('p', { class: 'learn-sub' }, 'Loading…'));
     let list;
     try {
@@ -44,72 +56,34 @@ export function mountStory(el, ctx, arg = {}) {
   }
 
   function renderMenu(list) {
+    lastList = list;
     const sections = menuSections(list);
     const skin = pickSkin(list.skins, ctx.prefs.get('storySkin', null));
-    const card = (summary) => h(
-      'article',
-      { class: `story-card${summary.upNext ? ' up-next' : ''}` },
-      h('div', { class: 'story-card-head' },
-        h('span', { class: 'story-level' }, summary.label ?? summary.jlpt),
-        summary.upNext ? h('span', { class: 'story-next-badge' }, 'Up next') : null,
-        completionMark(summary) ? h('span', { class: 'story-done' }, `✓ ${completionMark(summary)}`) : null),
-      h('h3', { lang: 'ja' }, summary.title),
-      h('p', { class: 'learn-sub' }, summary.summary || `${summary.challenges} challenges`),
-      summary.covers ? h('p', { class: 'story-covers', lang: 'ja' }, summary.covers) : null,
-      h('div', { class: 'story-card-actions' }, ...cardButtons(summary)),
-    );
-    const cardButtons = (summary) => {
-      const action = chapterAction(summary);
-      return [
-        button(action.label, () => play(summary.id), 'story-btn primary'),
-        action.secondary ? button(action.secondary, () => attempt(async () => { await api.clearSave(summary.id); play(summary.id, { fresh: true }); })) : null,
-      ];
-    };
     const skinSelect = h(
-      'select',
-      { class: 'story-select', 'aria-label': 'Art pack', onchange: (event) => { ctx.prefs.set('storySkin', event.target.value || null); } },
-      h('option', { value: '' }, 'Default (drawn in code)'),
-      list.skins.filter((p) => p.valid).map((p) => h('option', { value: p.pack, selected: p.pack === skin ? true : null }, p.title)),
-    );
-    const affection = affectionRows(list.overview);
-    fill(
-      root,
-      h('header', { class: 'course-heading' },
-        h('div', {}, h('h1', {}, 'Story'), h('p', { class: 'learn-sub' }, 'Read the story. Every kanji you read and every sentence you build counts as a review.')),
-        h('div', { class: 'course-tools' }, button('Particle guide', () => showGuide(), 'story-btn'), h('label', { class: 'story-skin-label' }, 'Art ', skinSelect)),
+      'label',
+      { class: 'story-skin-label' },
+      'Art ',
+      h(
+        'select',
+        { class: 'story-select', 'aria-label': 'Art pack', onchange: (event) => { ctx.prefs.set('storySkin', event.target.value || null); } },
+        h('option', { value: '' }, 'Default (drawn in code)'),
+        list.skins.filter((p) => p.valid).map((p) => h('option', { value: p.pack, selected: p.pack === skin ? true : null }, p.title)),
       ),
-      h('h2', {}, 'Main story'),
-      h('div', { class: 'story-grid' }, sections.chapters.map(card)),
-      list.genki?.length
-        ? [
-          h('h2', {}, 'Genki path'),
-          h('p', { class: 'learn-sub' }, 'One scene per lesson, following the grammar order of the Genki textbooks so you can play alongside them. Original story and characters; not affiliated with Genki or The Japan Times.'),
-          h('div', { class: 'story-grid' }, genkiRows(list.genki).map(card)),
-        ]
-        : null,
-      h('h2', {}, 'Anime lines'),
-      h('p', { class: 'learn-sub' }, 'Short bonus scenes built from sentences you mined. A frame from the episode becomes the background when the file is still on disk.'),
-      h('div', { class: 'story-grid' }, sections.anime.map(card)),
-      button('Build scenes from my anime', () => attempt(buildAnime), 'story-btn'),
-      sections.aiVisible
-        ? [
-          h('h2', {}, 'Side quests'),
-          h('p', { class: 'learn-sub' }, 'Your AI provider writes a new scene around kanji and grammar you are studying. Generated scenes are saved, so replays are free.'),
-          h('div', { class: 'story-grid' }, sections.ai.map(card)),
-          button('Generate a side quest', () => attempt(generate), 'story-btn'),
-        ]
-        : null,
-      h('h2', {}, 'Gallery'),
-      h('div', { class: 'story-gallery' },
-        list.overview.gallery.length ? list.overview.gallery.map((g) => h('figure', { class: 'story-cg' }, h('div', { class: 'story-cg-art', style: `background:${backgroundFor('park-day').css}` }), h('figcaption', {}, g.title))) : h('p', { class: 'learn-sub' }, 'Finish scenes to unlock pictures.'),
-      ),
-      affection.length ? h('div', { class: 'story-affection' }, h('h2', {}, 'Bonds'), affection.map((a) => h('label', { class: 'story-meter' }, h('span', {}, a.name), h('meter', { min: 0, max: 100, value: a.percent }), h('span', {}, String(a.value))))) : null,
     );
+    teardownMenu = mountHome(root, list, {
+      skinSelect,
+      aiReady: sections.aiVisible,
+      onPlay: (id) => play(id),
+      onLesson: (id) => openLesson(id),
+      onRestart: (id) => attempt(async () => { await api.clearSave(id); play(id, { fresh: true }); }),
+      onGuide: () => showGuide(),
+      onBuildAnime: () => attempt(buildAnime),
+      onGenerate: () => attempt(generate),
+    });
   }
 
   async function showGuide() {
-    teardownPlay?.();
-    teardownPlay = null;
+    leaveScreens();
     fill(root, h('p', { class: 'learn-sub' }, 'Loading…'));
     try {
       const guide = await api.particles();
@@ -132,9 +106,28 @@ export function mountStory(el, ctx, arg = {}) {
     showMenu();
   }
 
+  // The "learn first" lesson that comes before a Genki scene. Finishing it offers the story.
+  async function openLesson(id) {
+    leaveScreens();
+    fill(root, h('p', { class: 'learn-sub' }, 'Loading…'));
+    try {
+      const data = await api.lesson(id);
+      if (disposed) return;
+      const scene = lastList?.genki?.find((g) => g.id === id);
+      const lead = scene?.cast?.[0];
+      teardownPlay = mountLesson(root, ctx, {
+        data,
+        tutor: lead ? { char: lead.id, color: lead.color ?? undefined } : undefined,
+        onExit: showMenu,
+        onStory: () => play(id),
+      });
+    } catch (err) {
+      if (!disposed) fill(root, h('div', { class: 'learn-card learn-error', role: 'alert' }, h('h2', {}, 'Could not open this lesson'), h('p', {}, err.message), button('Back', showMenu)));
+    }
+  }
+
   async function play(id, { fresh = false } = {}) {
-    teardownPlay?.();
-    teardownPlay = null;
+    leaveScreens();
     fill(root, h('p', { class: 'learn-sub' }, 'Loading…'));
     try {
       const data = await api.open(id);

@@ -46,6 +46,7 @@ function chapterSummary(scene) {
     covers: scene.covers ?? '',
     bg: scene.bg ?? null,
     cast: Object.entries(scene.characters).slice(0, 3).map(([id, c]) => ({ id, name: c.name, color: c.color ?? null })),
+    pictures: scene.beats.filter((b) => b.type === 'cg').map((b) => ({ id: b.id, title: b.title ?? b.id })),
     labels: scene.items.map((id) => ({ id, label: scene.glossary?.[id]?.label ?? id.slice(2), meaning: scene.glossary?.[id]?.meaning ?? '' })),
   };
 }
