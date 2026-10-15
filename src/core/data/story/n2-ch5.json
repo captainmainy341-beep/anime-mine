@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "id": "n2-ch5",
+  "order": 23,
+  "title": "Chapter 23: すれちがい",
+  "summary": "Sora and his manager clash over a contract. Nothing but a guess, the very result of effort, success isn't everything, and bad luck on the one day that matters.",
+  "jlpt": "N2",
+  "source": "authored",
+  "bg": "night-street",
+  "characters": {
+    "sora": { "name": "そら", "color": "#a2befa" },
+    "sakai": { "name": "酒井さん", "color": "#6f8fd8" },
+    "mio": { "name": "みお", "color": "#f3a0b6" }
+  },
+  "glossary": {
+    "g:n2-ni-suginai": { "label": "〜にすぎない", "meaning": "nothing more than", "note": "Noun / plain form + にすぎない: just, merely, only." },
+    "g:n2-ni-hoka-naranai": { "label": "〜にほかならない", "meaning": "is nothing other than", "note": "Noun + にほかならない: a firm statement of the real reason or identity." },
+    "g:n2-to-iu-mono-dewa-nai": { "label": "〜というものではない", "meaning": "it's not that ... necessarily", "note": "Plain form + というものではない denies a common assumption." },
+    "g:n2-ni-kagitte": { "label": "〜に限って", "meaning": "of all ..., precisely then", "note": "Noun + に限って: bad luck or an unexpected contrast on that one occasion." },
+    "k:誤": { "label": "誤", "reading": "ご / あやま(る)", "meaning": "mistake" },
+    "k:契": { "label": "契", "reading": "けい / ちぎ(る)", "meaning": "pledge, contract" }
+  },
+  "beats": [
+    { "type": "bg", "bg": "night-street" },
+    { "type": "say", "who": null, "text": "夜の 渋谷。取材の 帰り、ゆうきは 言い争う 二人の 声を 聞いた。", "en": "Night in Shibuya. On the way back from the interview, Yuuki hears two voices arguing." },
+    { "type": "show", "char": "sora", "expr": "sad", "pos": "left" },
+    { "type": "show", "char": "sakai", "expr": "neutral", "pos": "right" },
+    { "type": "intro", "item": "k:契" },
+    { "type": "reading", "item": "k:契", "display": "契約", "target": "契", "prompt": "The paper in Sora's hand says 契約書. Read 契約.", "answers": ["けいやく"] },
+    { "type": "say", "who": "sakai", "text": "この 契約に サインしなければ、デビューの 話は なくなる。", "en": "If you don't sign this contract, the debut deal disappears." },
+    { "type": "say", "who": "sora", "text": "ぼくの 曲は、売るための 道具じゃ ない。酒井さんは 誤解して る。", "en": "My songs aren't tools for selling. You're misunderstanding." },
+    { "type": "intro", "item": "k:誤" },
+    { "type": "reading", "item": "k:誤", "display": "誤解", "target": "誤", "prompt": "Sora says it's a 誤解. Read it.", "answers": ["ごかい"] },
+    { "type": "say", "who": "sakai", "text": "誤解じゃ ない。あなたの 考えは、ただの 理想に すぎません。", "en": "It's not a misunderstanding. Your thinking is nothing more than an ideal." },
+    { "type": "intro", "item": "g:n2-ni-suginai" },
+    { "type": "choice", "item": "g:n2-ni-suginai", "who": "sakai", "prompt": "Say it as Sakai would: \"That's nothing more than your imagination.\"", "options": [
+      { "text": "それは あなたの 想像に すぎません。", "correct": true },
+      { "text": "それは あなたの 想像で すぎません。", "awkward": { "who": "sakai", "text": "「に すぎない」です。「で」じゃなくて。", "en": "\"Ni suginai\", not \"de\"." } },
+      { "text": "それは あなたの 想像の すぎません。", "awkward": { "who": "sora", "text": "「想像に」。「の」じゃなくて。", "en": "\"Souzou ni\", not \"no\"." } }
+    ] },
+    { "type": "say", "who": "sora", "text": "この 曲が 評価されたのは、みんなの 努力の 結果だ。", "en": "That this song has been recognised is the result of everyone's effort." },
+    { "type": "intro", "item": "g:n2-ni-hoka-naranai" },
+    { "type": "choice", "item": "g:n2-ni-hoka-naranai", "who": "sora", "prompt": "Insist: \"This success is nothing other than everyone's effort.\"", "options": [
+      { "text": "この 成功は、みんなの 努力に ほかなりません。", "correct": true },
+      { "text": "この 成功は、みんなの 努力に ほかありません。", "awkward": { "who": "sakai", "text": "「ほかならない」ですよ。", "en": "It's \"hoka naranai\"." } },
+      { "text": "この 成功は、みんなの 努力で ほかなりません。", "awkward": { "who": "sora", "text": "「に ほかならない」。「で」じゃない。", "en": "\"Ni hoka naranai\", not \"de\"." } }
+    ] },
+    { "type": "say", "who": "sakai", "text": "ですが、売れなければ 意味が ありません。", "en": "But if it doesn't sell, it's meaningless." },
+    { "type": "intro", "item": "g:n2-to-iu-mono-dewa-nai" },
+    { "type": "choice", "item": "g:n2-to-iu-mono-dewa-nai", "who": "sora", "prompt": "Argue back: \"It's not necessarily true that as long as it sells, it's good.\"", "options": [
+      { "text": "売れれば いいと いうものでは ありません。", "correct": true },
+      { "text": "売れれば いいと いうものでは あります。", "awkward": { "who": "mio", "text": "「ありません」。否定の 形に しよう。", "en": "\"Arimasen\" -- keep it negative." } },
+      { "text": "売れれば いいと いうものでは ません。", "awkward": { "who": "sora", "text": "「ありません」と 言おう。", "en": "Say \"arimasen\"." } }
+    ] },
+    { "type": "hide", "char": "sakai" },
+    { "type": "show", "char": "mio", "expr": "surprised", "pos": "right" },
+    { "type": "say", "who": "mio", "text": "（電話）そら、大丈夫？ ニュースで 見たよ。大事な 日に 限って、雨が 降るんだよね。", "en": "(On the phone) Sora, are you okay? I saw it on the news. It always rains on the day that matters." },
+    { "type": "intro", "item": "g:n2-ni-kagitte" },
+    { "type": "choice", "item": "g:n2-ni-kagitte", "who": "mio", "prompt": "Mio sighs: \"Of all days, it rains on the important one.\"", "options": [
+      { "text": "大事な 日に 限って、雨が 降るんだ。", "correct": true },
+      { "text": "大事な 日に 限り、雨が 降るんだ。", "awkward": { "who": "mio", "text": "「に 限り」は 「その 場合だけ」と 決まりを 言う とき。ぐうぜんの 不運なら 「に 限って」。", "en": "\"Ni kagiri\" states a rule. For bad luck on that day, \"ni kagitte\"." } },
+      { "text": "大事な 日に 限らず、雨が 降るんだ。", "awkward": { "who": "sora", "text": "「限らず」は 「〜だけで なく」。反対の 意味に なるよ。", "en": "\"Kagirazu\" means \"not only\"." } }
+    ] },
+    { "type": "affection", "char": "sora", "delta": 1 },
+    { "type": "cg", "id": "rainy-argument", "title": "The argument in the rain" },
+    { "type": "say", "who": "mio", "text": "…そら、いったん 町に 帰って こない？ 川の 音を 聞けば、きっと 答えが 見つかるよ。", "en": "...Sora, why not come back to town for a bit? If you hear the river, I'm sure you'll find the answer." }
+  ]
+}

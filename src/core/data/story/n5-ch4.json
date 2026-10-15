@@ -1,0 +1,66 @@
+{
+  "schema": 1,
+  "id": "n5-ch4",
+  "order": 4,
+  "title": "Chapter 4: かいもの",
+  "summary": "The new club needs supplies. Haggle with Ume-san at the shopping street: what you want, how much, and \"just this\".",
+  "jlpt": "N5",
+  "source": "authored",
+  "bg": "shop",
+  "characters": {
+    "mio": { "name": "みお", "color": "#f3a0b6" },
+    "ume": { "name": "うめさん", "color": "#c9a56a" },
+    "sora": { "name": "そら", "color": "#a2befa" }
+  },
+  "glossary": {
+    "g:n5-ga-hoshii": { "label": "〜がほしい", "meaning": "want (a thing)", "note": "The thing you want is marked with が: あたらしい かばんが ほしいです." },
+    "g:n5-dake": { "label": "〜だけ", "meaning": "only / just", "note": "だけ comes right after the thing it limits: これだけ ください." },
+    "g:n5-gurai-kurai": { "label": "〜ぐらい", "meaning": "about / approximately", "note": "Put ぐらい (or くらい) after an amount: 十分ぐらい." },
+    "g:n5-ya-nado": { "label": "〜や〜など", "meaning": "A and B, among others", "note": "や lists examples; など shows the list is not complete." },
+    "k:店": { "label": "店", "reading": "てん / みせ", "meaning": "shop" },
+    "k:百": { "label": "百", "reading": "ひゃく", "meaning": "hundred" },
+    "k:円": { "label": "円", "reading": "えん", "meaning": "yen, circle" }
+  },
+  "beats": [
+    { "type": "bg", "bg": "shop" },
+    { "type": "say", "who": null, "text": "土曜日の 午後。しょうてんがいは にぎやかだ。", "en": "Saturday afternoon. The shopping street is lively." },
+    { "type": "show", "char": "mio", "expr": "smile", "pos": "left" },
+    { "type": "say", "who": "mio", "text": "ここが 「うめや」！ ぶかつの どうぐは、ぜんぶ ここで かうんだよ。", "en": "This is Umeya! We buy all the club supplies here." },
+    { "type": "intro", "item": "k:店" },
+    { "type": "reading", "item": "k:店", "display": "お店", "target": "店", "prompt": "The sign above the door says お店. Read it.", "answers": ["おみせ"] },
+    { "type": "show", "char": "ume", "expr": "smile", "pos": "right" },
+    { "type": "say", "who": "ume", "text": "いらっしゃい。なにが ほしいんだい？", "en": "Welcome. What would you like?" },
+    { "type": "intro", "item": "g:n5-ga-hoshii" },
+    { "type": "choice", "item": "g:n5-ga-hoshii", "who": "ume", "prompt": "Tell Ume-san: \"I want a new tea bowl.\"", "options": [
+      { "text": "あたらしい ちゃわんが ほしいです。", "correct": true },
+      { "text": "あたらしい ちゃわんが ほしいます。", "awkward": { "who": "ume", "text": "「ほしいます」…？ 「ほしいです」だよ。", "en": "\"Hoshiimasu\"...? It's \"hoshii desu\"." } },
+      { "text": "あたらしい ちゃわんが ほしです。", "awkward": { "who": "ume", "text": "「ほし」じゃ たりないねえ。「ほしい」だよ。", "en": "\"Hoshi\" isn't enough. It's \"hoshii\"." } }
+    ] },
+    { "type": "say", "who": "ume", "text": "ちゃわんは 一つ 三百円だよ。", "en": "A bowl is three hundred yen each." },
+    { "type": "intro", "item": "k:百" },
+    { "type": "reading", "item": "k:百", "display": "三百円", "target": "百", "prompt": "The price tag says 三百円. Read the whole price.", "answers": ["さんびゃくえん"] },
+    { "type": "intro", "item": "k:円" },
+    { "type": "reading", "item": "k:円", "display": "千円", "target": "円", "prompt": "Mio pulls out a bill marked 千円. Read it.", "answers": ["せんえん"] },
+    { "type": "say", "who": "mio", "text": "ほかに コップと おさらも いるね。", "en": "We also need cups and plates." },
+    { "type": "intro", "item": "g:n5-ya-nado" },
+    { "type": "particle", "item": "g:n5-ya-nado", "who": "ume", "text": "コップ＿ おさらなどを ください。", "options": ["や", "を", "に", "で"], "answers": ["や"], "en": "Cups, plates and so on, please.", "role": "p:ya/listing", "prompt": "List two things for Ume-san, with \"and so on\" at the end." },
+    { "type": "say", "who": "ume", "text": "ぜんぶで どれぐらい かかるかねえ…。", "en": "I wonder about how much it all comes to..." },
+    { "type": "intro", "item": "g:n5-gurai-kurai" },
+    { "type": "choice", "item": "g:n5-gurai-kurai", "who": "mio", "prompt": "Mio guesses the total: \"About two thousand yen.\"", "options": [
+      { "text": "二千円ぐらいです。", "correct": true },
+      { "text": "ぐらい 二千円です。", "awkward": { "who": "ume", "text": "ことばが さかさまだよ、ふふ。", "en": "The words are backwards, hehe." } },
+      { "text": "二千円を ぐらいです。", "awkward": { "who": "mio", "text": "「を」は いらないよ。", "en": "No need for \"wo\"." } }
+    ] },
+    { "type": "show", "char": "sora", "expr": "tired", "pos": "center" },
+    { "type": "say", "who": "sora", "text": "…にもつ、これだけ？ もう ないよね？", "en": "...The bags, is that all? There's no more, right?" },
+    { "type": "intro", "item": "g:n5-dake" },
+    { "type": "choice", "item": "g:n5-dake", "who": "sora", "prompt": "Answer Sora: \"That's all (just this).\"", "options": [
+      { "text": "これだけです。", "correct": true },
+      { "text": "だけ これです。", "awkward": { "who": "sora", "text": "…？ じゅんばんが ぎゃく。", "en": "...? The order is backwards." } },
+      { "text": "これの だけです。", "awkward": { "who": "sora", "text": "「の」は いらない。", "en": "You don't need \"no\"." } }
+    ] },
+    { "type": "affection", "char": "mio", "delta": 2 },
+    { "type": "cg", "id": "shopping-street", "title": "The shopping street" },
+    { "type": "say", "who": "ume", "text": "また おいで。ぶかつ、がんばるんだよ。", "en": "Come again. Do your best with the club." }
+  ]
+}

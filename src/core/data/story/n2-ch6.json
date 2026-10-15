@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "id": "n2-ch6",
+  "order": 24,
+  "title": "Chapter 24: 川の 音",
+  "summary": "Back by the river. Nostalgia you can't help, wishes that never stop, a song you can't help singing, and a plan you follow.",
+  "jlpt": "N2",
+  "source": "authored",
+  "bg": "riverside-evening",
+  "characters": {
+    "mio": { "name": "みお", "color": "#f3a0b6" },
+    "sora": { "name": "そら", "color": "#a2befa" },
+    "kawaguchi": { "name": "川口さん", "color": "#c9a56a" }
+  },
+  "glossary": {
+    "g:n2-te-naranai": { "label": "〜てならない", "meaning": "can't help feeling", "note": "て-form + ならない: a feeling you can't suppress (なつかしくてならない)." },
+    "g:n2-te-yamanai": { "label": "〜てやまない", "meaning": "continue to (a strong wish)", "note": "て-form + やまない: used for lasting wishes and feelings, in formal speech or writing." },
+    "g:n2-zu-ni-wa-irarenai": { "label": "〜ずにはいられない", "meaning": "can't help but", "note": "ない-form (drop ない) + ずにはいられない: a natural, irrepressible reaction." },
+    "g:n2-ni-sotta": { "label": "〜に沿って", "meaning": "in line with", "note": "Noun + に沿って: following a plan, policy or river." },
+    "k:願": { "label": "願", "reading": "がん / ねが(う)", "meaning": "wish" },
+    "k:響": { "label": "響", "reading": "きょう / ひび(く)", "meaning": "echo, resound" }
+  },
+  "beats": [
+    { "type": "bg", "bg": "riverside-evening" },
+    { "type": "say", "who": null, "text": "夏の 夕暮れ。川ぞいの かわぞい珈琲は、十年前と 同じ におい がした。", "en": "A summer dusk. Kawazoi Coffee by the river smelled just like it did ten years ago." },
+    { "type": "show", "char": "mio", "expr": "smile", "pos": "left" },
+    { "type": "show", "char": "sora", "expr": "tired", "pos": "right" },
+    { "type": "say", "who": "sora", "text": "…川の 音を 聞くと、なつかしくて ならない。", "en": "...When I hear the river, I can't help feeling nostalgic." },
+    { "type": "intro", "item": "g:n2-te-naranai" },
+    { "type": "choice", "item": "g:n2-te-naranai", "who": "sora", "prompt": "Say: \"When I hear the sound of that river, I can't help feeling nostalgic.\"", "options": [
+      { "text": "あの 川の 音を 聞くと、なつかしくて なりません。", "correct": true },
+      { "text": "あの 川の 音を 聞くと、なつかしいて なりません。", "awkward": { "who": "mio", "text": "い形容詞の て形は 「なつかしくて」だよ。", "en": "The te-form of an い-adjective is \"natsukashikute\"." } },
+      { "text": "あの 川の 音を 聞くと、なつかしいで なりません。", "awkward": { "who": "sora", "text": "「なつかしくて」。「で」じゃなくて。", "en": "\"Natsukashikute\", not \"de\"." } }
+    ] },
+    { "type": "show", "char": "kawaguchi", "expr": "smile", "pos": "center" },
+    { "type": "say", "who": "kawaguchi", "text": "そら君、デビュー おめでとう。皆さんの ご活躍を、願って やまないよ。", "en": "Sora, congratulations on your debut. I'll go on wishing for all your success." },
+    { "type": "intro", "item": "k:願" },
+    { "type": "reading", "item": "k:願", "display": "願う", "target": "願", "prompt": "Kawaguchi says he 願う success. Read 願う.", "answers": ["ねがう"] },
+    { "type": "intro", "item": "g:n2-te-yamanai" },
+    { "type": "choice", "item": "g:n2-te-yamanai", "who": "kawaguchi", "prompt": "Reply formally: \"I continue to wish for your success.\"", "options": [
+      { "text": "みなさんの ご活躍を 願って やみません。", "correct": true },
+      { "text": "みなさんの ご活躍を 願って やめません。", "awkward": { "who": "kawaguchi", "text": "「やまない」だよ。「やめない」は 「やめる」の 否定。", "en": "It's \"yamanai\". \"Yamenai\" is the negative of \"yameru\"." } },
+      { "text": "みなさんの ご活躍を 願って やまないです ます。", "awkward": { "who": "mio", "text": "「やみません」で おわるよ。", "en": "It ends with \"yamimasen\"." } }
+    ] },
+    { "type": "say", "who": "mio", "text": "そら、新しい 曲、聞かせて？ 川の 音が 入った 曲。", "en": "Sora, play me the new song? The one with the river's sound in it." },
+    { "type": "say", "who": null, "text": "そらは ギターを 取り、ゆっくり 弾きはじめた。音が 川に 響いた。", "en": "Sora takes the guitar and slowly begins to play. The sound echoes across the river." },
+    { "type": "intro", "item": "k:響" },
+    { "type": "reading", "item": "k:響", "display": "響く", "target": "響", "prompt": "The lyrics say the sound will 響く. Read 響く.", "answers": ["ひびく"] },
+    { "type": "intro", "item": "g:n2-zu-ni-wa-irarenai" },
+    { "type": "choice", "item": "g:n2-zu-ni-wa-irarenai", "who": "mio", "prompt": "Say: \"When I hear this song, I can't help but sing along.\"", "options": [
+      { "text": "この 曲を 聴くと、歌わずには いられない。", "correct": true },
+      { "text": "この 曲を 聴くと、歌ずには いられない。", "awkward": { "who": "sora", "text": "「歌わ」＋「ずに」。「歌」じゃ ない。", "en": "\"Utawa\" + \"zu ni\" -- not just \"uta\"." } },
+      { "text": "この 曲を 聴くと、歌わないずには いられない。", "awkward": { "who": "mio", "text": "「ず」だけで 「ない」の 意味。「ない」は いらないよ。", "en": "\"Zu\" already means \"not\" -- no \"nai\"." } }
+    ] },
+    { "type": "say", "who": "sora", "text": "決めたよ。契約は、ぼくの 考えに 沿った 形で 結びなおす。", "en": "I've decided. I'll renegotiate the contract so that it follows my thinking." },
+    { "type": "intro", "item": "g:n2-ni-sotta" },
+    { "type": "choice", "item": "g:n2-ni-sotta", "who": "sora", "prompt": "Say: \"I'll proceed with the preparations in line with the plan.\"", "options": [
+      { "text": "計画に 沿って、準備を 進めます。", "correct": true },
+      { "text": "計画を 沿って、準備を 進めます。", "awkward": { "who": "mio", "text": "「に 沿って」だよ。「を」じゃなくて。", "en": "\"Ni sotte\", not \"wo\"." } },
+      { "text": "計画に 沿れて、準備を 進めます。", "awkward": { "who": "sora", "text": "「沿って」。「沿れて」って 言わない。", "en": "\"Sotte\" -- there's no \"sorete\"." } }
+    ] },
+    { "type": "affection", "char": "sora", "delta": 3 },
+    { "type": "affection", "char": "mio", "delta": 3 },
+    { "type": "cg", "id": "river-song", "title": "The song by the river" },
+    { "type": "say", "who": "mio", "text": "ねえ、十年後に、あの 学校の 校門で また 会おう。約束だよ。", "en": "Hey, ten years from the day we met, let's meet again at the school gate. Promise." }
+  ]
+}

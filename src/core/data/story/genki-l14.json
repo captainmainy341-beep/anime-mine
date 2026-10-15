@@ -1,0 +1,345 @@
+{
+  "schema": 1,
+  "id": "genki-l14",
+  "order": 114,
+  "track": "genki",
+  "lesson": 14,
+  "title": "ハナの たんじょう日",
+  "summary": "A surprise for Hana's birthday. Give and receive with あげる・くれる・もらう, say who did a favour for whom, and ask politely.",
+  "covers": "あげる / くれる / もらう · 〜てくれる · 〜てもらう · 〜ていただけませんか",
+  "jlpt": "N4",
+  "source": "authored",
+  "bg": "home-evening",
+  "characters": {
+    "leo": {
+      "name": "レオ",
+      "color": "#f0a35e"
+    },
+    "tomi": {
+      "name": "とみさん",
+      "color": "#c97b5a"
+    },
+    "hana": {
+      "name": "ハナ",
+      "color": "#7cc6b4"
+    }
+  },
+  "glossary": {
+    "g:genki-giving": {
+      "label": "あげる / くれる / もらう",
+      "meaning": "give / give to me / receive",
+      "note": "あげる: someone gives to another person. くれる: someone gives to me or my side. もらう: I receive. With もらう the giver takes に (or から)."
+    },
+    "g:n4-te-kureru": {
+      "label": "〜てくれる",
+      "meaning": "someone does something for me",
+      "note": "Verb て-form + くれる: the doer is kind to you. ハナさんが手伝ってくれた = Hana helped me (and I am grateful)."
+    },
+    "g:n4-te-morau": {
+      "label": "〜てもらう",
+      "meaning": "to have someone do something for me",
+      "note": "Verb て-form + もらう: you receive the favour. The person who did it takes に: ハナさんに教えてもらった."
+    },
+    "g:n4-te-itadakemasen-ka": {
+      "label": "〜ていただけませんか",
+      "meaning": "could you please do ... (very polite)",
+      "note": "A polite request: すみません、写真を撮っていただけませんか. Use it with teachers, shop staff, or people you do not know."
+    },
+    "g:n5-ni": {
+      "label": "〜に（相手）",
+      "meaning": "to (the person who receives)",
+      "note": "に marks the person who receives or is affected: ハナに あげる."
+    },
+    "k:誕": {
+      "label": "誕",
+      "meaning": "birth",
+      "reading": "たん"
+    },
+    "k:持": {
+      "label": "持",
+      "meaning": "hold, have",
+      "reading": "も(つ)"
+    }
+  },
+  "beats": [
+    {
+      "type": "show",
+      "char": "leo",
+      "expr": "smile",
+      "pos": "left"
+    },
+    {
+      "type": "show",
+      "char": "tomi",
+      "expr": "smile",
+      "pos": "right"
+    },
+    {
+      "type": "say",
+      "who": "leo",
+      "text": "ノア、らいしゅうは ハナの たんじょう日だよ。",
+      "en": "Noa, next week is Hana's birthday."
+    },
+    {
+      "type": "reading",
+      "item": "k:誕",
+      "display": "誕生日",
+      "answers": [
+        "たんじょうび"
+      ],
+      "prompt": "Read it: the word Leo just said.",
+      "target": "誕"
+    },
+    {
+      "type": "say",
+      "who": "tomi",
+      "text": "みんなで サプライズを しましょう。",
+      "en": "Let's all plan a surprise."
+    },
+    {
+      "type": "intro",
+      "item": "g:genki-giving"
+    },
+    {
+      "type": "choice",
+      "item": "g:genki-giving",
+      "who": "leo",
+      "prompt": "Say that you will give Hana a book.",
+      "options": [
+        {
+          "text": "ハナさんに 本を あげます。",
+          "correct": true
+        },
+        {
+          "text": "ハナさんに 本を くれます。",
+          "awkward": {
+            "who": "leo",
+            "text": "「くれる」は 人が ぼくたちに くれる ときだよ。",
+            "en": "\"Kureru\" is when someone gives to us."
+          }
+        },
+        {
+          "text": "ハナさんに 本を もらいます。",
+          "awkward": {
+            "who": "tomi",
+            "text": "「もらう」は うけとる ほうですよ。",
+            "en": "\"Morau\" is for the one who receives."
+          }
+        }
+      ]
+    },
+    {
+      "type": "particle",
+      "item": "g:n5-ni",
+      "who": "leo",
+      "text": "ぼくは ハナ＿ ケーキを あげます。",
+      "options": [
+        "に",
+        "を",
+        "が",
+        "で"
+      ],
+      "answers": [
+        "に"
+      ],
+      "en": "I'll give Hana a cake.",
+      "role": "p:ni/recipient",
+      "prompt": "Who receives the cake?"
+    },
+    {
+      "type": "say",
+      "who": "tomi",
+      "text": "わたしは セーターを あげるわ。ノアさんは？",
+      "en": "I'll give her a sweater. How about you, Noa?"
+    },
+    {
+      "type": "say",
+      "who": "leo",
+      "text": "きのう、ハナが しゅくだいを 手伝って くれたんだ。",
+      "en": "Yesterday Hana helped me with my homework."
+    },
+    {
+      "type": "intro",
+      "item": "g:n4-te-kureru"
+    },
+    {
+      "type": "choice",
+      "item": "g:n4-te-kureru",
+      "who": "tomi",
+      "prompt": "Say that Tomi-san cooked dinner for you.",
+      "options": [
+        {
+          "text": "とみさんが ばんごはんを 作って くれました。",
+          "correct": true
+        },
+        {
+          "text": "とみさんが ばんごはんを 作って あげました。",
+          "awkward": {
+            "who": "leo",
+            "text": "それだと ノアが とみさんに 作った ことに なるよ。",
+            "en": "That would mean you cooked for Tomi-san."
+          }
+        },
+        {
+          "text": "とみさんが ばんごはんを 作って もらいました。",
+          "awkward": {
+            "who": "tomi",
+            "text": "もらう の ときは 「とみさんに」ですよ。",
+            "en": "With morau it is \"Tomi-san ni\"."
+          }
+        }
+      ]
+    },
+    {
+      "type": "intro",
+      "item": "g:n4-te-morau"
+    },
+    {
+      "type": "choice",
+      "item": "g:n4-te-morau",
+      "who": "leo",
+      "prompt": "Say that Leo taught you how to make the cake.",
+      "options": [
+        {
+          "text": "レオさんに ケーキの 作り方を 教えて もらいました。",
+          "correct": true
+        },
+        {
+          "text": "レオさんが ケーキの 作り方を 教えて もらいました。",
+          "awkward": {
+            "who": "leo",
+            "text": "「もらう」の ときは 「に」を 使うんだ。",
+            "en": "With \"morau\" you use \"ni\"."
+          }
+        },
+        {
+          "text": "レオさんに ケーキの 作り方を 教えて あげました。",
+          "awkward": {
+            "who": "tomi",
+            "text": "それは ノアさんが 教えた ことに なりますよ。",
+            "en": "That would mean Noa taught Leo."
+          }
+        }
+      ]
+    },
+    {
+      "type": "particle",
+      "item": "g:n4-te-morau",
+      "who": "tomi",
+      "text": "わたしは 友だち＿ ケーキを 作って もらいました。",
+      "options": [
+        "に",
+        "が",
+        "を",
+        "は"
+      ],
+      "answers": [
+        "に"
+      ],
+      "en": "I had a friend make the cake for me.",
+      "role": "p:ni/agent",
+      "prompt": "Who did the favour?"
+    },
+    {
+      "type": "reading",
+      "item": "k:持",
+      "display": "持って",
+      "answers": [
+        "もって"
+      ],
+      "prompt": "Read it: Leo is carrying the present.",
+      "target": "持"
+    },
+    {
+      "type": "show",
+      "char": "hana",
+      "expr": "surprised",
+      "pos": "center"
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "ただいまー！ あれ、みんな どうしたの？",
+      "en": "I'm home! Huh, what's going on, everyone?",
+      "expr": "surprised"
+    },
+    {
+      "type": "say",
+      "who": "leo",
+      "text": "な、なんでも ない！",
+      "en": "N-nothing!"
+    },
+    {
+      "type": "say",
+      "who": "tomi",
+      "text": "ノアさん、ハナちゃんと 話して いてね。そのあいだに ロウソクを…",
+      "en": "Noa, keep Hana talking. Meanwhile, the candles..."
+    },
+    {
+      "type": "intro",
+      "item": "g:n4-te-itadakemasen-ka"
+    },
+    {
+      "type": "choice",
+      "item": "g:n4-te-itadakemasen-ka",
+      "who": null,
+      "prompt": "Ask a stranger very politely to take a photo of you all.",
+      "options": [
+        {
+          "text": "すみません、写真を とって いただけませんか。",
+          "correct": true
+        },
+        {
+          "text": "すみません、写真を とって いただきませんか。",
+          "awkward": {
+            "who": "tomi",
+            "text": "「いただけませんか」ですよ。「いただきませんか」は ちがいます。",
+            "en": "\"Itadakemasen ka\", not \"itadakimasen ka\"."
+          }
+        },
+        {
+          "text": "すみません、写真を とって あげませんか。",
+          "awkward": {
+            "who": "leo",
+            "text": "それだと こちらが とって あげる ことに なっちゃうよ！",
+            "en": "That would mean we take the photo for them!"
+          }
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "みんなが わたしの ために…？ ありがとう！",
+      "en": "Everyone did this for me...? Thank you!",
+      "expr": "smile"
+    },
+    {
+      "type": "say",
+      "who": "leo",
+      "text": "ハナ、たんじょう日 おめでとう！",
+      "en": "Happy birthday, Hana!",
+      "expr": "smile"
+    },
+    {
+      "type": "affection",
+      "char": "hana",
+      "delta": 3
+    },
+    {
+      "type": "affection",
+      "char": "leo",
+      "delta": 1
+    },
+    {
+      "type": "affection",
+      "char": "tomi",
+      "delta": 1
+    },
+    {
+      "type": "cg",
+      "id": "genki-birthday",
+      "title": "Hana's surprise"
+    }
+  ]
+}

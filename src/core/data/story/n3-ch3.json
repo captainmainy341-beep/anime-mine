@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "id": "n3-ch3",
+  "order": 15,
+  "title": "Chapter 15: 図書館で 調べる",
+  "summary": "Dig through old town records to build a case. Topics, examples, roles and following the evidence.",
+  "jlpt": "N3",
+  "source": "authored",
+  "bg": "library",
+  "characters": {
+    "mio": { "name": "みお", "color": "#f3a0b6" },
+    "sora": { "name": "そら", "color": "#a2befa" },
+    "tanaka": { "name": "田中先生", "color": "#9de3c4" }
+  },
+  "glossary": {
+    "g:n3-wo-hajime": { "label": "〜をはじめ", "meaning": "starting with / including", "note": "Noun + をはじめ introduces the main example of a group: 先生をはじめ、多くの人が…" },
+    "g:n3-toshite": { "label": "〜として", "meaning": "as (a role)", "note": "Noun + として states the role or capacity something has." },
+    "g:n3-ni-motozuite": { "label": "〜に基づいて", "meaning": "based on", "note": "Noun + に基づいて: according to a fact, rule or record." },
+    "g:n3-toori-ni": { "label": "〜とおりに", "meaning": "exactly as", "note": "Verb plain/past + とおりに: just as instructed or seen." },
+    "k:調": { "label": "調", "reading": "ちょう / しら(べる)", "meaning": "investigate, tune" },
+    "k:歴": { "label": "歴", "reading": "れき", "meaning": "history, passing of time" }
+  },
+  "beats": [
+    { "type": "bg", "bg": "library" },
+    { "type": "say", "who": null, "text": "土曜日の 市立図書館。三人は 古い 町の 記録を 調べに 来た。", "en": "Saturday at the city library. The three of you came to look through old town records." },
+    { "type": "show", "char": "mio", "expr": "neutral", "pos": "left" },
+    { "type": "show", "char": "sora", "expr": "neutral", "pos": "right" },
+    { "type": "intro", "item": "k:調" },
+    { "type": "reading", "item": "k:調", "display": "調べる", "target": "調", "prompt": "Mio rolls up her sleeves: \"さあ、調べる ぞ！\" Read 調べる.", "answers": ["しらべる"] },
+    { "type": "intro", "item": "k:歴" },
+    { "type": "reading", "item": "k:歴", "display": "歴史", "target": "歴", "prompt": "The shelf label says 歴史. Read it.", "answers": ["れきし"] },
+    { "type": "say", "who": "sora", "text": "見て。昔の 写真だ。川ぞいの 店の まえに、人が たくさん 集まってる。", "en": "Look. An old photo. Lots of people gathered in front of the riverside shop." },
+    { "type": "intro", "item": "g:n3-wo-hajime" },
+    { "type": "choice", "item": "g:n3-wo-hajime", "who": "mio", "prompt": "Describe the photo: \"Many people came, starting with the teachers.\"", "options": [
+      { "text": "先生を はじめ、たくさんの 人が 来ました。", "correct": true },
+      { "text": "先生を はじめて、たくさんの 人が 来ました。", "awkward": { "who": "sora", "text": "「はじめて」は 「初めて(first time)」に 聞こえる。「をはじめ」。", "en": "\"Hajimete\" sounds like \"for the first time\". It's \"wo hajime\"." } },
+      { "text": "先生を はじまり、たくさんの 人が 来ました。", "awkward": { "who": "mio", "text": "「はじまり」じゃなくて 「はじめ」だよ。", "en": "Not \"hajimari\" -- \"hajime\"." } }
+    ] },
+    { "type": "say", "who": "sora", "text": "この 店、昔から 町の 人たちの 集会所でも あったんだね。", "en": "So this shop was also a meeting place for the townspeople from way back." },
+    { "type": "intro", "item": "g:n3-toshite" },
+    { "type": "choice", "item": "g:n3-toshite", "who": "sora", "prompt": "Say: \"This shop has been loved as the town's meeting place.\"", "options": [
+      { "text": "この 店は 町の 集会所として 愛されて きました。", "correct": true },
+      { "text": "この 店は 町の 集会所にして 愛されて きました。", "awkward": { "who": "mio", "text": "「にして」だと ちがう 意味に なるよ。役割は 「として」。", "en": "\"Ni shite\" changes the meaning. For a role, use \"toshite\"." } },
+      { "text": "この 店は 町の 集会所とて 愛されて きました。", "awkward": { "who": "sora", "text": "「とて」…？ 「として」だ。", "en": "\"Tote\"...? It's \"toshite\"." } }
+    ] },
+    { "type": "show", "char": "tanaka", "expr": "smile", "pos": "center" },
+    { "type": "say", "who": "tanaka", "text": "おや、がんばって いますね。この 資料も 使えるかも しれません。", "en": "Oh, you're working hard. This material might be usable too." },
+    { "type": "say", "who": "tanaka", "text": "市の 古い 記録には、この 店の 建物は 「文化的に 価値が ある」と 書いて あります。", "en": "The city's old records say this shop's building has \"cultural value\"." },
+    { "type": "intro", "item": "g:n3-ni-motozuite" },
+    { "type": "choice", "item": "g:n3-ni-motozuite", "who": "tanaka", "prompt": "Propose: \"Let's write the proposal based on the old records.\"", "options": [
+      { "text": "古い 記録に 基づいて、企画書を 書きましょう。", "correct": true },
+      { "text": "古い 記録を 基づいて、企画書を 書きましょう。", "awkward": { "who": "tanaka", "text": "「に 基づいて」ですよ。「を」じゃなくて。", "en": "It's \"ni motozuite\", not \"wo\"." } },
+      { "text": "古い 記録に 基づく、企画書を 書きましょう。", "awkward": { "who": "mio", "text": "文を つなぐ ときは 「基づいて」と て-形に するよ。", "en": "To connect clauses use the て-form: \"motozuite\"." } }
+    ] },
+    { "type": "say", "who": "tanaka", "text": "手続きの しかたは、ここに 書いて ありますね。", "en": "The procedure is written right here." },
+    { "type": "intro", "item": "g:n3-toori-ni" },
+    { "type": "choice", "item": "g:n3-toori-ni", "who": "tanaka", "prompt": "Promise: \"I'll do it exactly as the note says.\"", "options": [
+      { "text": "ノートに 書いて あるとおりに やります。", "correct": true },
+      { "text": "ノートに 書いて あるとおりを やります。", "awkward": { "who": "tanaka", "text": "「とおりに」ですよ。「に」が いります。", "en": "It's \"toori ni\" -- you need \"ni\"." } },
+      { "text": "ノートに 書いて あるの とおりに やります。", "awkward": { "who": "sora", "text": "「の」は いらない。", "en": "No need for \"no\"." } }
+    ] },
+    { "type": "affection", "char": "sora", "delta": 2 },
+    { "type": "affection", "char": "mio", "delta": 1 },
+    { "type": "cg", "id": "old-photo", "title": "The old photograph" },
+    { "type": "say", "who": "mio", "text": "これで 戦える かも。市の 人に、この 記録を 見せよう！", "en": "Maybe we can fight with this. Let's show these records to the city people!" }
+  ]
+}

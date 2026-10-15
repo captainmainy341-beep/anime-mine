@@ -1,0 +1,117 @@
+{
+  "schema": 1,
+  "id": "genki-l07",
+  "lesson": 7,
+  "title": "Hana's Family",
+  "tagline": "Say what people are doing right now, describe people, and go somewhere to do something.",
+  "hook": "A photo of Hana's family sits on the café wall. Who is who, and what are they doing? You'll need ている, descriptions and a way to say \"I'm going to ... to do ...\".",
+  "goals": ["Describe actions in progress and ongoing states with ている", "Describe a person with X は Y が ...", "Link adjectives with て-form and say 〜に行く"],
+  "minutes": 10,
+  "vocab": [
+    ["家族", "かぞく", "family", "👨‍👩‍👧"],
+    ["父", "ちち", "my father", "👨"],
+    ["母", "はは", "my mother", "👩"],
+    ["兄", "あに", "my older brother", "🧔"],
+    ["姉", "あね", "my older sister", "👩‍🦰"],
+    ["弟", "おとうと", "my younger brother", "🧒"],
+    ["妹", "いもうと", "my younger sister", "👧"],
+    ["祖母", "そぼ", "my grandmother", "👵"],
+    ["仕事", "しごと", "job, work", "💼"],
+    ["住む", "すむ", "to live", "🏘️"],
+    ["背", "せ", "height (of a person)", "📏"],
+    ["かみ", "かみ", "hair", "💇"],
+    ["目", "め", "eyes", "👁️"],
+    ["やさしい", "やさしい", "kind", "💛"],
+    ["おもしろい", "おもしろい", "interesting, funny", "😄"],
+    ["ふとい", "ふとい", "thick", "📚"],
+    ["ながい", "ながい", "long", "📏"],
+    ["みじかい", "みじかい", "short (length)", "✂️"],
+    ["はたらく", "はたらく", "to work", "🛠️"],
+    ["〜人", "〜にん", "counter for people", "🧮"]
+  ],
+  "points": [
+    {
+      "id": "g:n5-te-iru",
+      "title": "〜ています",
+      "formula": "て-form + います",
+      "gist": "is doing / has been doing / state.",
+      "explain": [
+        "て-form + います does two jobs. With actions it means \"is doing\": 食べています is eating right now. With verbs of change it describes a result that still holds: 住んでいます (live), 結婚しています (is married).",
+        "The negative is ていません, and the casual spoken form drops the い: 食べてる."
+      ],
+      "examples": [
+        { "ja": "母は|台所で|はたらいています。", "gloss": "my mother (topic)|in the kitchen|is working", "en": "My mother is working in the kitchen." },
+        { "ja": "父は|大阪に|住んでいます。", "gloss": "my father (topic)|in Osaka|lives", "en": "My father lives in Osaka." },
+        { "ja": "いま|何を|していますか。", "gloss": "now|what|are you doing?", "en": "What are you doing now?" }
+      ],
+      "tip": "If the English is \"live\", \"know\", \"be married\" or \"wear\", Japanese uses ている.",
+      "watch": "住みます means \"will live\". Use 住んでいます for \"live\"."
+    },
+    {
+      "id": "g:genki-x-wa-y-ga",
+      "title": "X は Y が ...",
+      "formula": "X は Y が adjective",
+      "gist": "As for X, Y is ... (describing a part)",
+      "explain": [
+        "To describe someone, first name the person with は, then name a feature with が and say how it is: ハナさんは かみが ながいです (as for Hana, her hair is long).",
+        "This beats saying \"Hana's hair\"; it's the natural way to describe people and things."
+      ],
+      "examples": [
+        { "ja": "兄は|せが|高いです。", "gloss": "my brother (topic)|height (subject)|tall", "en": "My older brother is tall." },
+        { "ja": "妹は|目が|大きいです。", "gloss": "my sister (topic)|eyes (subject)|big", "en": "My younger sister has big eyes." },
+        { "ja": "母は|かみが|みじかいです。", "gloss": "my mother (topic)|hair (subject)|short", "en": "My mother's hair is short." }
+      ],
+      "tip": "Read the pattern as \"X is such that Y is ...\".",
+      "watch": "Use two particles in a row: は and が. This is correct, not an error."
+    },
+    {
+      "id": "g:genki-adj-te",
+      "title": "Adjective て-form: 〜くて / 〜で",
+      "formula": "い-adj: ○くて / な-adj and noun: ○で",
+      "gist": "Link descriptions: ... and ...",
+      "explain": [
+        "To join adjectives, change い to くて for い-adjectives, and add で for な-adjectives and nouns. 高くて やさしい is \"tall and kind\".",
+        "Only the last adjective carries です or the tense."
+      ],
+      "examples": [
+        { "ja": "父は|せが高くて、|やさしいです。", "gloss": "my father (topic)|tall and|kind", "en": "My father is tall and kind." },
+        { "ja": "母は|きれいで、|げんきです。", "gloss": "my mother (topic)|pretty and|energetic", "en": "My mother is pretty and lively." },
+        { "ja": "この店は|安くて、|おいしいです。", "gloss": "this shop (topic)|cheap and|delicious", "en": "This shop is cheap and the food is good." }
+      ],
+      "tip": "いい becomes よくて (and good), not いくて.",
+      "watch": "Don't use です in the middle: 高いですて is wrong."
+    },
+    {
+      "id": "g:n5-ni-iku",
+      "title": "〜に行く / 来る / 帰る",
+      "formula": "verb stem / noun + に 行きます",
+      "gist": "Go somewhere in order to do ...",
+      "explain": [
+        "To say the purpose of a trip, use the verb stem (ます-form without ます) or a noun, then に, then 行く, 来る or 帰る.",
+        "食べに 行きます means \"I'll go to eat\"."
+      ],
+      "examples": [
+        { "ja": "ごはんを|食べに|行きます。", "gloss": "a meal|to eat|go", "en": "I'm going to eat." },
+        { "ja": "海へ|およぎに|来ました。", "gloss": "to the sea|to swim|came", "en": "I came to the sea to swim." },
+        { "ja": "映画に|行きませんか。", "gloss": "to the movies|won't you go?", "en": "Won't you go to a movie?" }
+      ],
+      "tip": "Nouns for events (映画, 買い物) can go straight before に.",
+      "watch": "The verb before に is in the stem form: 食べに, not 食べるに."
+    }
+  ],
+  "drills": [
+    { "type": "gap", "point": 0, "ja": "母は はたらい＿います。", "options": ["て", "た", "ない", "ます"], "answer": "て", "en": "My mother is working.", "why": "て-form + います." },
+    { "type": "pick", "point": 0, "q": "\"My father lives in Osaka.\"", "options": ["父は 大阪に 住んでいます。", "父は 大阪に 住みます。", "父は 大阪に 住んでありません。", "父は 大阪で 住んでいます。"], "answer": 0, "why": "Living is a state: 住んでいます." },
+    { "type": "order", "point": 0, "en": "What are you doing now?", "chunks": ["いま", "何を", "していますか"] },
+    { "type": "gap", "point": 1, "ja": "兄は せ＿ 高いです。", "options": ["が", "を", "に", "で"], "answer": "が", "en": "My older brother is tall.", "why": "The feature takes が." },
+    { "type": "order", "point": 1, "en": "My younger sister has big eyes.", "chunks": ["妹は", "目が", "大きいです"] },
+    { "type": "pick", "point": 1, "q": "\"Hana's hair is long.\"", "options": ["ハナさんは かみが ながいです。", "ハナさんが かみは ながいです。", "ハナさんの かみは ながいます。", "ハナさんは かみを ながいです。"], "answer": 0, "why": "X は Y が adjective." },
+    { "type": "gap", "point": 2, "ja": "この店は 安＿、おいしいです。", "options": ["くて", "で", "い", "かった"], "answer": "くて", "en": "This shop is cheap and the food is good.", "why": "い-adjective: drop い, add くて." },
+    { "type": "gap", "point": 2, "ja": "母は きれい＿、げんきです。", "options": ["で", "くて", "に", "を"], "answer": "で", "en": "My mother is pretty and lively.", "why": "な-adjectives take で." },
+    { "type": "gap", "point": 3, "ja": "ごはんを 食べ＿ 行きます。", "options": ["に", "で", "を", "が"], "answer": "に", "en": "I'm going to eat.", "why": "Stem + に + 行く expresses purpose." },
+    { "type": "order", "point": 3, "en": "I came to the sea to swim.", "chunks": ["海へ", "およぎに", "来ました"] },
+    { "type": "type", "prompt": "Type the reading of 家族 (family) in hiragana.", "show": "家族", "answers": ["かぞく"] },
+    { "type": "type", "prompt": "Type the reading of 仕事 (work) in hiragana.", "show": "仕事", "answers": ["しごと"] },
+    { "type": "pick", "q": "Which means \"my younger brother\"?", "options": ["おとうと", "いもうと", "あに", "あね"], "answer": 0, "why": "おとうと = younger brother." }
+  ]
+}

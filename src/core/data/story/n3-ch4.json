@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "id": "n3-ch4",
+  "order": 16,
+  "title": "Chapter 16: 町の 会議",
+  "summary": "The town meeting. Disagree in public, refuse to give up, accept the unavoidable, and explain what the cafe means to people.",
+  "jlpt": "N3",
+  "source": "authored",
+  "bg": "classroom-morning",
+  "characters": {
+    "mio": { "name": "みお", "color": "#f3a0b6" },
+    "sora": { "name": "そら", "color": "#a2befa" },
+    "okada": { "name": "岡田さん", "color": "#8e7cc3" }
+  },
+  "glossary": {
+    "g:n3-ni-taishite": { "label": "〜に対して", "meaning": "toward / in response to", "note": "Noun + に対して: directed at, or in contrast with, something." },
+    "g:n3-wake-ni-wa-ikanai": { "label": "〜わけにはいかない", "meaning": "can't (for good reasons)", "note": "Dictionary form + わけにはいかない: you can't do it because of duty or consequences." },
+    "g:n3-zaru-o-enai": { "label": "〜ざるをえない", "meaning": "have no choice but to", "note": "ない-form (minus ない) + ざるをえない. する becomes せざるをえない." },
+    "g:n3-ni-totte": { "label": "〜にとって", "meaning": "for (someone)", "note": "Noun + にとって gives the standpoint from which something is judged." },
+    "k:賛": { "label": "賛", "reading": "さん", "meaning": "agree, approve" },
+    "k:反": { "label": "反", "reading": "はん / そ(る)", "meaning": "anti-, opposite" }
+  },
+  "beats": [
+    { "type": "bg", "bg": "classroom-morning" },
+    { "type": "say", "who": null, "text": "町の 会館。説明会は、予想より 多くの 人で いっぱいだ。", "en": "The town hall. The briefing is packed with more people than expected." },
+    { "type": "show", "char": "okada", "expr": "neutral", "pos": "center" },
+    { "type": "say", "who": "okada", "text": "では、再開発計画に ついて、賛成の 方、反対の 方、意見を どうぞ。", "en": "Then, regarding the redevelopment plan, those in favor and those opposed, please share your opinions." },
+    { "type": "intro", "item": "k:賛" },
+    { "type": "reading", "item": "k:賛", "display": "賛成", "target": "賛", "prompt": "The poster says 賛成. Read it.", "answers": ["さんせい"] },
+    { "type": "intro", "item": "k:反" },
+    { "type": "reading", "item": "k:反", "display": "反対", "target": "反", "prompt": "The opposite poster says 反対. Read it.", "answers": ["はんたい"] },
+    { "type": "show", "char": "mio", "expr": "neutral", "pos": "left" },
+    { "type": "say", "who": "mio", "text": "…あの、いいですか。市の 案に 対して、わたしたちから 意見が あります。", "en": "...Um, may I? We have an opinion regarding the city's plan." },
+    { "type": "intro", "item": "g:n3-ni-taishite" },
+    { "type": "choice", "item": "g:n3-ni-taishite", "who": "mio", "prompt": "Stand up and say: \"We'd like to give an opinion in response to the city's plan.\"", "options": [
+      { "text": "市の 案に 対して、意見を 言いたいです。", "correct": true },
+      { "text": "市の 案を 対して、意見を 言いたいです。", "awkward": { "who": "okada", "text": "「に 対して」ですよ。", "en": "It's \"ni taishite\"." } },
+      { "text": "市の 案に 対し、て、意見を 言いたいです。", "awkward": { "who": "sora", "text": "「対して」を ひとつに つなげよう。", "en": "Keep \"taishite\" as one word." } }
+    ] },
+    { "type": "say", "who": "mio", "text": "あの 店には、町の 歴史が つまっています。", "en": "That shop holds the history of our town." },
+    { "type": "intro", "item": "g:n3-ni-totte" },
+    { "type": "choice", "item": "g:n3-ni-totte", "who": "mio", "prompt": "Say: \"For the people of this town, this cafe is important.\"", "options": [
+      { "text": "町の 人に とって、この 店は 大切です。", "correct": true },
+      { "text": "町の 人に ついて、この 店は 大切です。", "awkward": { "who": "okada", "text": "「について」は 「〜の ことを」。「にとって」は 「〜の 立場から 見て」ですよ。", "en": "\"Ni tsuite\" means \"about\". \"Ni totte\" means \"from the standpoint of\"." } },
+      { "text": "町の 人に よって、この 店は 大切です。", "awkward": { "who": "sora", "text": "「によって」は 「〜しだいで」…ちょっと ちがう。", "en": "\"Ni yotte\" means \"depending on\"... a bit different." } }
+    ] },
+    { "type": "say", "who": "okada", "text": "お気持ちは わかります。ですが、市は もう 予算を 組んで います。", "en": "I understand your feelings. But the city has already set its budget." },
+    { "type": "show", "char": "sora", "expr": "neutral", "pos": "right" },
+    { "type": "say", "who": "sora", "text": "…予算が 決まって いても、あきらめる わけには いきません。", "en": "...Even if the budget is set, we can't give up." },
+    { "type": "intro", "item": "g:n3-wake-ni-wa-ikanai" },
+    { "type": "choice", "item": "g:n3-wake-ni-wa-ikanai", "who": "sora", "prompt": "Say with resolve: \"We can't just let this cafe disappear.\"", "options": [
+      { "text": "この 店を なくすわけには いかない。", "correct": true },
+      { "text": "この 店を なくすわけでは いかない。", "awkward": { "who": "okada", "text": "「わけには いかない」。「では」じゃなくて。", "en": "\"Wake ni wa ikanai\" -- not \"de wa\"." } },
+      { "text": "この 店を なくすわけには いけない。", "awkward": { "who": "mio", "text": "「いかない」だよ。「いけない」じゃなくて。", "en": "\"Ikanai\", not \"ikenai\"." } }
+    ] },
+    { "type": "say", "who": "okada", "text": "…市の 担当者とも 相談しました。たしかに、この 記録を 見ると…", "en": "...I've also consulted the city official. Certainly, seeing these records..." },
+    { "type": "intro", "item": "g:n3-zaru-o-enai" },
+    { "type": "choice", "item": "g:n3-zaru-o-enai", "who": "okada", "prompt": "Okada admits: \"We have no choice but to review the plan.\"", "options": [
+      { "text": "計画を 見直さざるを えません。", "correct": true },
+      { "text": "計画を 見直しざるを えません。", "awkward": { "who": "mio", "text": "「見直さ」＋「ざる」。「見直し」じゃなくて。", "en": "\"Minaosa\" + \"zaru\", not \"minaoshi\"." } },
+      { "text": "計画を 見直さないざるを えません。", "awkward": { "who": "sora", "text": "「ざる」だけで 否定の 意味が あるよ。「ない」は いらない。", "en": "\"Zaru\" already means \"not\" -- no need for \"nai\"." } }
+    ] },
+    { "type": "affection", "char": "mio", "delta": 3 },
+    { "type": "affection", "char": "sora", "delta": 2 },
+    { "type": "cg", "id": "town-meeting", "title": "The town meeting" },
+    { "type": "say", "who": "okada", "text": "二週間、時間を あげましょう。町の 声を 集めて 来て ください。", "en": "I'll give you two weeks. Please bring back the voices of the town." }
+  ]
+}

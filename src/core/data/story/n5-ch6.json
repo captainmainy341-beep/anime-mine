@@ -1,0 +1,69 @@
+{
+  "schema": 1,
+  "id": "n5-ch6",
+  "order": 6,
+  "title": "Chapter 6: なつやすみの やくそく",
+  "summary": "Summer break is almost here. Talk about the heat, what to do before and after things, and make a promise at the sea.",
+  "jlpt": "N5",
+  "source": "authored",
+  "bg": "riverside-evening",
+  "characters": {
+    "mio": { "name": "みお", "color": "#f3a0b6" },
+    "sora": { "name": "そら", "color": "#a2befa" }
+  },
+  "glossary": {
+    "g:n5-naru": { "label": "〜くなる / 〜になる", "meaning": "become", "note": "い-adjectives: drop い + くなる (あつくなる). Nouns and な-adjectives: になる (夏になる)." },
+    "g:n5-mae-ni": { "label": "〜前に", "meaning": "before (doing)", "note": "Dictionary form + 前に: 食べる前に. Even when the main verb is past, the verb before 前に stays in the dictionary form." },
+    "g:n5-te-kara": { "label": "〜てから", "meaning": "after (doing)", "note": "て-form + から means one thing happens after another." },
+    "g:n5-deshou": { "label": "〜でしょう", "meaning": "probably", "note": "Plain form + でしょう expresses a guess. With rising tone it asks for agreement." },
+    "k:夏": { "label": "夏", "reading": "か / なつ", "meaning": "summer" },
+    "k:休": { "label": "休", "reading": "きゅう / やす(む)", "meaning": "rest" },
+    "k:空": { "label": "空", "reading": "くう / そら", "meaning": "sky, empty" }
+  },
+  "beats": [
+    { "type": "bg", "bg": "riverside-evening" },
+    { "type": "say", "who": null, "text": "七月。川の かぜが やっと すずしく なった ゆうがた。", "en": "July. An evening when the river breeze has finally turned cool." },
+    { "type": "show", "char": "mio", "expr": "smile", "pos": "left" },
+    { "type": "intro", "item": "k:夏" },
+    { "type": "reading", "item": "k:夏", "display": "夏休み", "target": "夏", "prompt": "Mio holds up a flyer. It says 夏休み. Read it.", "answers": ["なつやすみ"] },
+    { "type": "say", "who": "mio", "text": "もうすぐ 夏休み！ きょうは 一日じゅう あつかったね。", "en": "Summer break soon! It was hot all day today." },
+    { "type": "intro", "item": "g:n5-naru" },
+    { "type": "choice", "item": "g:n5-naru", "who": "mio", "prompt": "Say: \"It has become hot.\"", "options": [
+      { "text": "あつく なりました。", "correct": true },
+      { "text": "あつい なりました。", "awkward": { "who": "mio", "text": "「あつい」じゃなくて 「あつく」だよ。", "en": "Not \"atsui\" -- \"atsuku\"." } },
+      { "text": "あつに なりました。", "awkward": { "who": "mio", "text": "「あつ」…？ ふふ、こたえは 「あつく」。", "en": "\"Atsu\"...? Hehe, the answer is \"atsuku\"." } }
+    ] },
+    { "type": "show", "char": "sora", "expr": "neutral", "pos": "right" },
+    { "type": "say", "who": "sora", "text": "ぼくの なまえ、空って かくだろ。夏の 空は すきだ。", "en": "My name is written with 空, right? I like the summer sky." },
+    { "type": "intro", "item": "k:空" },
+    { "type": "reading", "item": "k:空", "display": "空", "prompt": "Sora's name is written 空. How is it read?", "answers": ["そら"] },
+    { "type": "intro", "item": "k:休" },
+    { "type": "meaning", "item": "k:休", "display": "休", "prompt": "In 夏休み, the 休 part means...?", "options": ["rest / break", "summer", "sky", "river"], "correct": 0 },
+    { "type": "say", "who": "mio", "text": "夏休みの 前に、みんなで やくそくを しよう！", "en": "Before summer break, let's all make a promise!" },
+    { "type": "intro", "item": "g:n5-mae-ni" },
+    { "type": "choice", "item": "g:n5-mae-ni", "who": "sora", "prompt": "Sora reminds you: \"Wash your hands before you eat.\"", "options": [
+      { "text": "ごはんを 食べる 前に、てを あらいます。", "correct": true },
+      { "text": "ごはんを 食べた 前に、てを あらいます。", "awkward": { "who": "sora", "text": "「前に」の まえは 「食べる」だ。", "en": "Before \"mae ni\" it's \"taberu\"." } },
+      { "text": "ごはんの 食べる 前に、てを あらいます。", "awkward": { "who": "sora", "text": "「の」は いらない。", "en": "You don't need \"no\"." } }
+    ] },
+    { "type": "intro", "item": "g:n5-te-kara" },
+    { "type": "choice", "item": "g:n5-te-kara", "who": "mio", "prompt": "Make a plan: \"After I do my homework, I'll go to the river.\"", "options": [
+      { "text": "しゅくだいを してから、川に 行きます。", "correct": true },
+      { "text": "しゅくだいを するから、川に 行きます。", "awkward": { "who": "mio", "text": "「するから」だと 「するので」みたいに なっちゃうよ。", "en": "\"Suru kara\" would mean \"because I do\"." } },
+      { "text": "しゅくだいを してまえ、川に 行きます。", "awkward": { "who": "mio", "text": "「まえ」じゃなくて 「から」だよ。", "en": "It's \"kara\", not \"mae\"." } }
+    ] },
+    { "type": "bg", "bg": "beach-day" },
+    { "type": "say", "who": null, "text": "夏休みの 一日め。三人は 海に 来た。", "en": "First day of summer break. The three of you came to the sea." },
+    { "type": "say", "who": "mio", "text": "ねえ、あしたも はれるかな？", "en": "Hey, do you think it'll be sunny tomorrow too?" },
+    { "type": "intro", "item": "g:n5-deshou" },
+    { "type": "choice", "item": "g:n5-deshou", "who": "mio", "prompt": "Guess: \"It will probably be sunny tomorrow.\"", "options": [
+      { "text": "あしたも はれるでしょう。", "correct": true },
+      { "text": "あしたも はれましょう。", "awkward": { "who": "mio", "text": "「はれましょう」だと さそってる みたい！", "en": "\"Haremashou\" sounds like you're inviting someone!" } },
+      { "text": "あしたも はれるですよう。", "awkward": { "who": "sora", "text": "…「でしょう」だ。", "en": "...It's \"deshou\"." } }
+    ] },
+    { "type": "affection", "char": "mio", "delta": 2 },
+    { "type": "affection", "char": "sora", "delta": 2 },
+    { "type": "cg", "id": "summer-promise", "title": "The summer promise" },
+    { "type": "say", "who": "mio", "text": "来年の 夏も、三人で ここに 来ようね。やくそく！", "en": "Next summer too, let's come here, the three of us. Promise!" }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "schema": 1,
+  "id": "n3-ch5",
+  "order": 17,
+  "title": "Chapter 17: いそがしい 毎日",
+  "summary": "Two weeks to collect signatures. Memories triggered every time, things changing step by step, and rain at the worst moment.",
+  "jlpt": "N3",
+  "source": "authored",
+  "bg": "shop",
+  "characters": {
+    "mio": { "name": "みお", "color": "#f3a0b6" },
+    "sora": { "name": "そら", "color": "#a2befa" },
+    "ume": { "name": "うめさん", "color": "#c9a56a" }
+  },
+  "glossary": {
+    "g:n3-tabi-ni": { "label": "〜たびに", "meaning": "every time", "note": "Verb plain form + たびに: a repeated reaction each time something happens." },
+    "g:n3-ni-tsurete": { "label": "〜につれて", "meaning": "as ... (gradual change)", "note": "Two things change together gradually: 署名が増えるにつれて、関心も高まった." },
+    "g:n3-tsutsu-aru": { "label": "〜つつある", "meaning": "is gradually ...ing", "note": "ます-stem + つつある describes a change that is underway." },
+    "g:n3-saichuu-ni": { "label": "〜最中に", "meaning": "right in the middle of", "note": "ている-form or Noun の + 最中に: something interrupts an action in progress." },
+    "k:署": { "label": "署", "reading": "しょ", "meaning": "office, sign" },
+    "k:集": { "label": "集", "reading": "しゅう / あつ(める)", "meaning": "gather" }
+  },
+  "beats": [
+    { "type": "bg", "bg": "shop" },
+    { "type": "say", "who": null, "text": "署名集めの 一日目。三人は 商店街の 入り口に 立った。", "en": "Day one of the signature drive. The three of you stood at the entrance of the shopping street." },
+    { "type": "show", "char": "mio", "expr": "smile", "pos": "left" },
+    { "type": "intro", "item": "k:署" },
+    { "type": "reading", "item": "k:署", "display": "署名", "target": "署", "prompt": "Mio holds a clipboard titled 署名. Read it.", "answers": ["しょめい"] },
+    { "type": "show", "char": "ume", "expr": "smile", "pos": "right" },
+    { "type": "say", "who": "ume", "text": "あの 店ねえ。あそこの 前を 通るたびに、コーヒーの いい におい がして…。", "en": "That shop... every time I pass in front of it, there's that lovely smell of coffee..." },
+    { "type": "intro", "item": "g:n3-tabi-ni" },
+    { "type": "choice", "item": "g:n3-tabi-ni", "who": "ume", "prompt": "Say: \"Every time I pass in front of that cafe, I remember the smell of coffee.\"", "options": [
+      { "text": "あの 店の 前を 通るたびに、コーヒーの かおりを 思い出します。", "correct": true },
+      { "text": "あの 店の 前を 通ったたびに、コーヒーの かおりを 思い出します。", "awkward": { "who": "ume", "text": "「通るたびに」。くりかえす ことは じしょけいを つかうよ。", "en": "\"Tooru tabi ni\" -- repeated actions use the dictionary form." } },
+      { "text": "あの 店の 前を 通るたびで、コーヒーの かおりを 思い出します。", "awkward": { "who": "mio", "text": "「たびに」。「で」じゃなくて。", "en": "\"Tabi ni\", not \"de\"." } }
+    ] },
+    { "type": "say", "who": "ume", "text": "ええ、書きましょう。ほら、あっちの 人たちにも 聞いて みて。", "en": "Yes, I'll sign. Look, ask those people over there too." },
+    { "type": "bg", "bg": "park-day" },
+    { "type": "show", "char": "sora", "expr": "tired", "pos": "center" },
+    { "type": "say", "who": "sora", "text": "三日で もう 二百人。…こんなに 集まるとは 思わなかった。", "en": "Already two hundred in three days. ...I never thought we'd collect this many." },
+    { "type": "intro", "item": "k:集" },
+    { "type": "reading", "item": "k:集", "display": "集める", "target": "集", "prompt": "Sora says they have to 集める more. Read it.", "answers": ["あつめる"] },
+    { "type": "intro", "item": "g:n3-ni-tsurete" },
+    { "type": "choice", "item": "g:n3-ni-tsurete", "who": "sora", "prompt": "Say: \"As the signatures increased, interest in the town rose too.\"", "options": [
+      { "text": "署名が 増えるにつれて、関心も 高まりました。", "correct": true },
+      { "text": "署名が 増えるについて、関心も 高まりました。", "awkward": { "who": "mio", "text": "「について」は 「〜の ことを」。「につれて」は 「いっしょに 変わる」だよ。", "en": "\"Ni tsuite\" means \"about\". \"Ni tsurete\" means \"changing along with\"." } },
+      { "text": "署名が 増えるのつれて、関心も 高まりました。", "awkward": { "who": "sora", "text": "「の」じゃなくて 「に」。", "en": "\"Ni\", not \"no\"." } }
+    ] },
+    { "type": "say", "who": "mio", "text": "町の 空気が 変わって きた 気が する。", "en": "I feel like the mood of the town is changing." },
+    { "type": "intro", "item": "g:n3-tsutsu-aru" },
+    { "type": "choice", "item": "g:n3-tsutsu-aru", "who": "mio", "prompt": "Say: \"The mood of the town is gradually changing.\"", "options": [
+      { "text": "町の 空気が 変わりつつあります。", "correct": true },
+      { "text": "町の 空気が 変わるつつあります。", "awkward": { "who": "sora", "text": "「つつ」は ます形の 語幹に つくよ。「変わり」。", "en": "\"Tsutsu\" attaches to the ます-stem: \"kawari\"." } },
+      { "text": "町の 空気が 変わって つつあります。", "awkward": { "who": "mio", "text": "「変わりつつ」で ひとつの かたち。", "en": "\"Kawaritsutsu\" is one form." } }
+    ] },
+    { "type": "say", "who": null, "text": "ポスターを 木に はって いると、空が くらく なって きた。", "en": "As you're putting posters on the trees, the sky turns dark." },
+    { "type": "intro", "item": "g:n3-saichuu-ni" },
+    { "type": "choice", "item": "g:n3-saichuu-ni", "who": "sora", "prompt": "Say: \"Right in the middle of putting up the posters, it started to rain.\"", "options": [
+      { "text": "ポスターを はっている 最中に、雨が ふりだしました。", "correct": true },
+      { "text": "ポスターを はる 最中に、雨が ふりだしました。", "awkward": { "who": "mio", "text": "「はっている 最中に」。進んでいる ところだよ。", "en": "\"Hatte iru saichuu ni\" -- it must be in progress." } },
+      { "text": "ポスターを はっている 最中が、雨が ふりだしました。", "awkward": { "who": "sora", "text": "「最中に」。「が」じゃ つながらない。", "en": "\"Saichuu ni\" -- \"ga\" doesn't connect it." } }
+    ] },
+    { "type": "say", "who": "mio", "text": "あーあ、びしょぬれ！ …でも、笑える。なんだか、楽しい。", "en": "Ahh, I'm soaked! ...But I can't help laughing. It's kind of fun." },
+    { "type": "affection", "char": "mio", "delta": 2 },
+    { "type": "affection", "char": "sora", "delta": 2 },
+    { "type": "cg", "id": "rainy-signatures", "title": "Signatures in the rain" },
+    { "type": "say", "who": "sora", "text": "…あと 千人。花火の 夜までに、集めよう。", "en": "...A thousand more. Let's collect them before fireworks night." }
+  ]
+}

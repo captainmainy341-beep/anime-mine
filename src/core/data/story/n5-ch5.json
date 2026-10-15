@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "id": "n5-ch5",
+  "order": 5,
+  "title": "Chapter 5: たんじょうび",
+  "summary": "A secret plan for Mio's birthday. Talk about yesterday, what didn't happen, and which cake is the best.",
+  "jlpt": "N5",
+  "source": "authored",
+  "bg": "cafe",
+  "characters": {
+    "mio": { "name": "みお", "color": "#f3a0b6" },
+    "sora": { "name": "そら", "color": "#a2befa" }
+  },
+  "glossary": {
+    "g:n5-ta": { "label": "〜ました / 〜た", "meaning": "did (past)", "note": "Polite past: ます-stem + ました. Plain past: 買った, 食べた." },
+    "g:n5-nakatta": { "label": "〜ませんでした / 〜なかった", "meaning": "did not (past negative)", "note": "Polite: 会いませんでした. Plain: 会わなかった." },
+    "g:n5-yori-hou-ga": { "label": "〜より〜のほうが", "meaning": "B is more ... than A", "note": "AよりBのほうが: the thing after のほうが is the one that wins." },
+    "g:n5-naka-de-ichiban": { "label": "〜の中で〜が一番", "meaning": "the most ... among ...", "note": "Group + の中で + thing + が一番 + adjective." },
+    "k:手": { "label": "手", "reading": "しゅ / て", "meaning": "hand" },
+    "k:今": { "label": "今", "reading": "こん / いま", "meaning": "now" }
+  },
+  "beats": [
+    { "type": "bg", "bg": "cafe" },
+    { "type": "say", "who": null, "text": "みおの たんじょうびまで、あと 一日。カフェの すみで ひみつの かいぎが はじまる。", "en": "One day until Mio's birthday. A secret meeting begins in a corner of the cafe." },
+    { "type": "show", "char": "sora", "expr": "neutral", "pos": "left" },
+    { "type": "say", "who": "sora", "text": "…みおには ひみつだぞ。まず、きのうの ことから。", "en": "...Keep it secret from Mio. First, about yesterday." },
+    { "type": "intro", "item": "g:n5-ta" },
+    { "type": "choice", "item": "g:n5-ta", "who": "sora", "prompt": "Sora asks what you did yesterday. Say: \"I bought a cake.\"", "options": [
+      { "text": "きのう ケーキを 買いました。", "correct": true },
+      { "text": "きのう ケーキを 買います。", "awkward": { "who": "sora", "text": "きのうの はなし だろ。「買いました」だ。", "en": "It's about yesterday, so it's \"kaimashita\"." } },
+      { "text": "きのう ケーキを 買ました。", "awkward": { "who": "sora", "text": "「買ました」じゃなくて 「買いました」。", "en": "Not \"kamashita\" -- \"kaimashita\"." } }
+    ] },
+    { "type": "say", "who": "sora", "text": "ありがとう。ぼくは みおに 手紙を かく。", "en": "Thanks. I'll write Mio a letter." },
+    { "type": "intro", "item": "k:手" },
+    { "type": "reading", "item": "k:手", "display": "手紙", "target": "手", "prompt": "Sora says he will write a 手紙. Read it.", "answers": ["てがみ"] },
+    { "type": "say", "who": "sora", "text": "ところで、きのう、みおに 会った？", "en": "By the way, did you see Mio yesterday?" },
+    { "type": "intro", "item": "g:n5-nakatta" },
+    { "type": "choice", "item": "g:n5-nakatta", "who": "sora", "prompt": "Answer politely: \"No, I did not meet her.\"", "options": [
+      { "text": "いいえ、会いませんでした。", "correct": true },
+      { "text": "いいえ、会いません。", "awkward": { "who": "sora", "text": "「会いません」だと いまか みらいの はなしだな。", "en": "\"Aimasen\" sounds like now or the future." } },
+      { "text": "いいえ、会いましたません。", "awkward": { "who": "sora", "text": "…ことばが まざってる。", "en": "...The words got mixed up." } }
+    ] },
+    { "type": "say", "who": "sora", "text": "ケーキは なにが いいと 思う？ クッキーも あるけど。", "en": "Which cake do you think is good? There are cookies too." },
+    { "type": "intro", "item": "g:n5-yori-hou-ga" },
+    { "type": "choice", "item": "g:n5-yori-hou-ga", "who": "sora", "prompt": "You know Mio well. Say: \"Mio likes cake more than cookies.\"", "options": [
+      { "text": "みおさんは クッキーより ケーキのほうが 好きです。", "correct": true },
+      { "text": "みおさんは ケーキより クッキーのほうが 好きです。", "awkward": { "who": "sora", "text": "え？ それ、さかさまじゃ ないか？", "en": "Huh? Isn't that backwards?" } },
+      { "text": "みおさんは クッキーが ケーキのほうより 好きです。", "awkward": { "who": "sora", "text": "「より」と 「のほうが」の ばしょが ちがう。", "en": "\"Yori\" and \"no hou ga\" are in the wrong places." } }
+    ] },
+    { "type": "intro", "item": "g:n5-naka-de-ichiban" },
+    { "type": "choice", "item": "g:n5-naka-de-ichiban", "who": "sora", "prompt": "Sora asks which fruit Mio likes best. Say: \"Among fruits, she likes strawberries the most.\"", "options": [
+      { "text": "くだものの 中で いちごが 一番 好きです。", "correct": true },
+      { "text": "くだものの 中に いちごが 一番 好きです。", "awkward": { "who": "sora", "text": "「の 中で」だ。「に」じゃ ない。", "en": "It's \"no naka de\", not \"ni\"." } },
+      { "text": "くだものの 中で いちごが 一番です 好き。", "awkward": { "who": "sora", "text": "…さいごが さかさま。", "en": "...The ending is backwards." } }
+    ] },
+    { "type": "say", "who": "sora", "text": "よし、決まりだ。いちごの ケーキに しよう。", "en": "Good, it's settled. Let's go with a strawberry cake." },
+    { "type": "show", "char": "mio", "expr": "surprised", "pos": "right" },
+    { "type": "say", "who": "mio", "text": "あれ？ ふたりとも、ここで なにを して いるの？", "en": "Huh? What are you two doing here?" },
+    { "type": "say", "who": "sora", "text": "…なんでも ない。", "en": "...It's nothing." },
+    { "type": "intro", "item": "k:今" },
+    { "type": "reading", "item": "k:今", "display": "今", "prompt": "Mio checks her phone. The screen says 今. It means \"now\". Read it.", "answers": ["いま"] },
+    { "type": "say", "who": "mio", "text": "今、なんじ？ …あ、十二時 すぎてる。おたんじょうび だ、わたし！", "en": "What time is it now? ...Oh, it's past twelve. It's my birthday!" },
+    { "type": "affection", "char": "mio", "delta": 3 },
+    { "type": "affection", "char": "sora", "delta": 1 },
+    { "type": "cg", "id": "birthday-cake", "title": "Mio's birthday" },
+    { "type": "say", "who": "mio", "text": "ありがとう、ふたりとも。いちばん うれしい おたんじょうびだよ。", "en": "Thank you, both of you. It's my happiest birthday ever." }
+  ]
+}

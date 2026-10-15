@@ -1,0 +1,300 @@
+{
+  "schema": 1,
+  "id": "genki-l01",
+  "order": 101,
+  "track": "genki",
+  "lesson": 1,
+  "title": "はじめまして、みなと町",
+  "summary": "You arrive in the port town of Minato as an exchange student and meet Hana, Leo and your teacher.",
+  "covers": "〜は〜です · 〜か · 〜の · 〜さん",
+  "jlpt": "N5",
+  "source": "authored",
+  "bg": "station-day",
+  "characters": {
+    "hana": {
+      "name": "ハナ",
+      "color": "#7cc6b4"
+    },
+    "leo": {
+      "name": "レオ",
+      "color": "#f0a35e"
+    },
+    "mori": {
+      "name": "森先生",
+      "color": "#8e7cc3"
+    }
+  },
+  "glossary": {
+    "g:n5-wa-desu": {
+      "label": "〜は〜です",
+      "meaning": "X is Y (polite copula)",
+      "note": "Connects a topic (は, read wa) to a noun or description. The polite negative is じゃありません; the plain form is だ."
+    },
+    "g:n5-no": {
+      "label": "〜の",
+      "meaning": "of / 's (possession or modification)",
+      "note": "の links two nouns: the first owns or describes the second. At the end of a casual sentence, の can soften a statement or express a feeling."
+    },
+    "g:n5-ka": {
+      "label": "〜か",
+      "meaning": "question marker (yes/no question)",
+      "note": "Adding か at the end of a sentence turns it into a question. In speech it can be shown with a rising tone. In casual talk か is often dropped and only the rising tone remains."
+    },
+    "k:先": {
+      "label": "先",
+      "reading": "せん / さき",
+      "meaning": "ahead, previous"
+    }
+  },
+  "beats": [
+    {
+      "type": "say",
+      "who": null,
+      "text": "四月。ここは みなと町。",
+      "en": "April. This is Minato."
+    },
+    {
+      "type": "show",
+      "char": "hana",
+      "expr": "smile",
+      "pos": "left"
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "あ！ ノアさんですか？",
+      "en": "Oh! Are you Noa?"
+    },
+    {
+      "type": "intro",
+      "item": "g:n5-wa-desu"
+    },
+    {
+      "type": "choice",
+      "item": "g:n5-wa-desu",
+      "who": "hana",
+      "prompt": "Answer: yes, you are Noa.",
+      "options": [
+        {
+          "text": "はい、わたしは ノアです。",
+          "correct": true
+        },
+        {
+          "text": "はい、わたしを ノアです。",
+          "awkward": {
+            "who": "hana",
+            "text": "え？「を」…？ ふふ、「は」ですよ。",
+            "en": "Huh? \"wo\"...? Hehe, it's \"wa\"."
+          }
+        },
+        {
+          "text": "はい、わたし ノアですか。",
+          "awkward": {
+            "who": "hana",
+            "text": "え？ しつもん…ですか？",
+            "en": "Huh? Is that... a question?"
+          }
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "わたしは ハナです。みなと大学の 学生です。",
+      "en": "I'm Hana. I'm a student at Minato University.",
+      "expr": "smile"
+    },
+    {
+      "type": "intro",
+      "item": "g:n5-no"
+    },
+    {
+      "type": "particle",
+      "item": "g:n5-no",
+      "who": null,
+      "text": "わたしは みなと大学＿りゅうがくせいです。",
+      "options": [
+        "の",
+        "は",
+        "を",
+        "か"
+      ],
+      "answers": [
+        "の"
+      ],
+      "en": "I'm an exchange student at Minato University.",
+      "role": "p:no/possessive",
+      "prompt": "Tell Hana you are an exchange student at the same university."
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "ノアさんは アメリカ人ですか。",
+      "en": "Are you American, Noa?"
+    },
+    {
+      "type": "choice",
+      "item": "g:n5-wa-desu",
+      "who": "hana",
+      "prompt": "You are Canadian. Answer.",
+      "options": [
+        {
+          "text": "いいえ、カナダ人です。",
+          "correct": true
+        },
+        {
+          "text": "いいえ、カナダ人か。",
+          "awkward": {
+            "who": "hana",
+            "text": "あれ？ わたしに しつもん？",
+            "en": "Hm? Are you asking me?"
+          }
+        },
+        {
+          "text": "いいえ、カナダです人。",
+          "awkward": {
+            "who": "hana",
+            "text": "「カナダです人」…？ 「カナダ人です」ですね。",
+            "en": "\"Kanada desu jin\"...? You mean \"Kanada-jin desu\"."
+          }
+        }
+      ]
+    },
+    {
+      "type": "intro",
+      "item": "g:n5-ka"
+    },
+    {
+      "type": "choice",
+      "item": "g:n5-ka",
+      "who": "hana",
+      "prompt": "Ask Hana: \"Are you a first-year student?\"",
+      "options": [
+        {
+          "text": "ハナさんは 一年生ですか。",
+          "correct": true
+        },
+        {
+          "text": "ハナさんは 一年生です。",
+          "awkward": {
+            "who": "hana",
+            "text": "はい…？ それは しつもんですか？ 「か」を つけて！",
+            "en": "Yes...? Is that a question? Add \"ka\"!"
+          }
+        },
+        {
+          "text": "ハナさんか 一年生です。"
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "いいえ、二年生です。",
+      "en": "No, I'm a second-year."
+    },
+    {
+      "type": "show",
+      "char": "leo",
+      "expr": "smile",
+      "pos": "right"
+    },
+    {
+      "type": "say",
+      "who": "leo",
+      "text": "ハナさん！ あ、はじめまして。レオです。ブラジル人です。",
+      "en": "Hana! Oh, nice to meet you. I'm Leo. I'm Brazilian."
+    },
+    {
+      "type": "particle",
+      "item": "g:n5-no",
+      "who": "leo",
+      "text": "ノアさん＿ せんこうは 何ですか。",
+      "options": [
+        "の",
+        "は",
+        "を",
+        "か"
+      ],
+      "answers": [
+        "の"
+      ],
+      "en": "What is your major, Noa?",
+      "role": "p:no/possessive",
+      "prompt": "Leo asks about your major."
+    },
+    {
+      "type": "particle",
+      "item": "g:n5-wa-desu",
+      "who": null,
+      "text": "せんこう＿ 日本語です。",
+      "options": [
+        "は",
+        "を",
+        "の",
+        "か"
+      ],
+      "answers": [
+        "は"
+      ],
+      "en": "My major is Japanese.",
+      "role": "p:wa/topic",
+      "prompt": "Answer: your major is Japanese."
+    },
+    {
+      "type": "say",
+      "who": "leo",
+      "text": "へえ！ ぼくの せんこうは けいざいです。",
+      "en": "Oh! My major is economics."
+    },
+    {
+      "type": "bg",
+      "bg": "classroom-morning"
+    },
+    {
+      "type": "show",
+      "char": "mori",
+      "expr": "smile",
+      "pos": "center"
+    },
+    {
+      "type": "say",
+      "who": "mori",
+      "text": "みなさん、おはようございます。日本語の 先生の 森です。",
+      "en": "Good morning, everyone. I'm Mori, your Japanese teacher."
+    },
+    {
+      "type": "reading",
+      "item": "k:先",
+      "display": "先生",
+      "answers": [
+        "せんせい"
+      ],
+      "prompt": "Read the word on her name card.",
+      "target": "先"
+    },
+    {
+      "type": "say",
+      "who": "mori",
+      "text": "ノアさん、レオさん、ようこそ。",
+      "en": "Noa, Leo, welcome."
+    },
+    {
+      "type": "affection",
+      "char": "hana",
+      "delta": 2
+    },
+    {
+      "type": "cg",
+      "id": "genki-first-day",
+      "title": "Arrival in Minato"
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "これから よろしくね、ノアさん！",
+      "en": "Looking forward to this, Noa!",
+      "expr": "smile"
+    }
+  ]
+}

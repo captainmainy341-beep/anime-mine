@@ -1,0 +1,152 @@
+{
+  "schema": 1,
+  "id": "genki-l12",
+  "lesson": 12,
+  "title": "Sick Day",
+  "tagline": "Explain reasons softly, advise, say you did too much, and say what you have to do.",
+  "hook": "Noa has a cold, and everyone has advice. This is the lesson of explaining yourself gently, giving advice, and admitting you must do something.",
+  "goals": ["Explain with 〜んです", "Say too much with すぎる and advise with たほうがいい", "Give a soft reason with ので and say \"must\" with なければいけません"],
+  "minutes": 11,
+  "vocab": [
+    ["かぜ", "かぜ", "a cold", "🤧"],
+    ["熱", "ねつ", "fever", "🌡️"],
+    ["頭", "あたま", "head", "🧠"],
+    ["おなか", "おなか", "stomach", "🤢"],
+    ["のど", "のど", "throat", "🗣️"],
+    ["いたい", "いたい", "painful", "😣"],
+    ["体", "からだ", "body", "🧍"],
+    ["病院", "びょういん", "hospital", "🏥"],
+    ["くすり", "くすり", "medicine", "💊"],
+    ["休む", "やすむ", "to rest, be absent", "🛏️"],
+    ["ねる", "ねる", "to sleep, lie down", "😴"],
+    ["おきる", "おきる", "to get up", "⏰"],
+    ["早く", "はやく", "early, quickly", "⚡"],
+    ["むり", "むり", "impossible, too much", "🙅"],
+    ["だいじょうぶ", "だいじょうぶ", "all right", "👌"],
+    ["心配", "しんぱい", "worry", "😟"],
+    ["大事", "だいじ", "important, take care", "💝"],
+    ["しけん", "しけん", "exam", "📝"],
+    ["宿題", "しゅくだい", "homework", "📓"],
+    ["たくさん", "たくさん", "a lot", "🧺"]
+  ],
+  "points": [
+    {
+      "id": "g:genki-n-desu",
+      "title": "〜んです",
+      "formula": "short form + んです",
+      "gist": "It's that ... (explaining, asking for explanation).",
+      "explain": [
+        "んです adds a layer of explanation or interest. Use it to give a reason (\"the thing is, I have a fever\") or to ask for one (\"what's wrong?\").",
+        "With a noun or な-adjective, use なんです: しけんなんです."
+      ],
+      "examples": [
+        { "ja": "ねつが|あるんです。", "gloss": "fever|there is (explaining)", "en": "The thing is, I have a fever." },
+        { "ja": "どうしたんですか。", "gloss": "what happened? (asking)", "en": "What's wrong?" },
+        { "ja": "あたまが|いたいんです。", "gloss": "head|hurts (explaining)", "en": "My head hurts, you see." }
+      ],
+      "tip": "Use んですか to show concern. It sounds warmer than ですか.",
+      "watch": "Don't overuse it in plain statements; it asks for the listener's understanding."
+    },
+    {
+      "id": "g:n4-sugiru",
+      "title": "〜すぎる",
+      "formula": "verb stem / adjective stem + すぎる",
+      "gist": "... too much.",
+      "explain": [
+        "すぎる attaches to the verb stem or to the stem of an adjective and means \"to do too much\": 食べすぎる, 高すぎる.",
+        "For い-adjectives drop い (高い → 高すぎる); for な-adjectives drop な (しずか → しずかすぎる)."
+      ],
+      "examples": [
+        { "ja": "きのう|食べすぎました。", "gloss": "yesterday|ate too much", "en": "I ate too much yesterday." },
+        { "ja": "この|くすりは|高すぎます。", "gloss": "this|medicine (topic)|too expensive", "en": "This medicine is too expensive." },
+        { "ja": "しごとを|しすぎました。", "gloss": "work|did too much", "en": "I worked too much." }
+      ],
+      "tip": "Often hints at a problem: 食べすぎたから おなかが いたい.",
+      "watch": "Don't use 食べるすぎる. Use the stem: 食べすぎる."
+    },
+    {
+      "id": "g:n4-ta-hou-ga-ii",
+      "title": "〜たほうがいい",
+      "formula": "た-form + ほうがいい",
+      "gist": "You had better ...",
+      "explain": [
+        "Give advice with た-form + ほうがいいです. For advice against something use the ない-form: 行かないほうがいいです.",
+        "Despite the past-looking た-form, it refers to the future."
+      ],
+      "examples": [
+        { "ja": "早く|ねたほうが|いいです。", "gloss": "early|sleep (た)|better", "en": "You'd better sleep early." },
+        { "ja": "くすりを|飲んだほうが|いいですよ。", "gloss": "medicine|take (た)|better", "en": "You'd better take medicine." },
+        { "ja": "むりを|しないほうが|いいです。", "gloss": "overdoing|don't|better", "en": "You'd better not overdo it." }
+      ],
+      "tip": "For general advice with the dictionary form, ほうがいい also works: 休むほうがいい.",
+      "watch": "Positive advice: た-form. Negative advice: ない-form."
+    },
+    {
+      "id": "g:n4-node-because",
+      "title": "〜ので",
+      "formula": "short form + ので",
+      "gist": "Because ... (soft reason)",
+      "explain": [
+        "ので gives a reason in a polite, objective way, so it sounds softer than から. The part before ので uses a short form; for nouns and な-adjectives use なので.",
+        "It's great for apologies and excuses."
+      ],
+      "examples": [
+        { "ja": "かぜなので、|休みます。", "gloss": "because it's a cold|will rest", "en": "I have a cold, so I'll rest." },
+        { "ja": "ねつが|あるので、|びょういんへ|行きます。", "gloss": "fever (subject)|because there is|to the hospital|go", "en": "I have a fever, so I'm going to the hospital." },
+        { "ja": "いたいので、|早く|かえります。", "gloss": "because it hurts|early|go home", "en": "It hurts, so I'll go home early." }
+      ],
+      "tip": "Use ので when explaining to a teacher or boss.",
+      "watch": "Don't end the sentence in ので as a command."
+    },
+    {
+      "id": "g:genki-nakereba",
+      "title": "〜なければいけません",
+      "formula": "ない-form (drop い) + ければいけません",
+      "gist": "I must ...",
+      "explain": [
+        "To say \"must\", drop the い of the ない-form and add ければいけません: 行かなければいけません. The casual forms are なきゃ and なくちゃ.",
+        "It literally says \"if I don't, it won't do\"."
+      ],
+      "examples": [
+        { "ja": "くすりを|飲まなければ|いけません。", "gloss": "medicine|if I don't drink|won't do", "en": "I must take medicine." },
+        { "ja": "しゅくだいを|しなければ|いけません。", "gloss": "homework|if I don't do|won't do", "en": "I must do my homework." },
+        { "ja": "あした|早く|おきなくちゃ。", "gloss": "tomorrow|early|have to get up", "en": "I have to get up early tomorrow." }
+      ],
+      "tip": "Reply to a friend with ううん、だいじょうぶ to say no need.",
+      "watch": "Don't confuse it with なくてもいいです, which means \"don't have to\"."
+    },
+    {
+      "id": "g:n5-deshou",
+      "title": "〜でしょう",
+      "formula": "short form + でしょう",
+      "gist": "Probably ... / right?",
+      "explain": [
+        "でしょう states a guess: あしたは 雨でしょう (probably rain). With a rising tone it asks for agreement: 大変でしょう？ (it must be tough, right?).",
+        "It is the polite counterpart of だろう."
+      ],
+      "examples": [
+        { "ja": "あしたは|雨でしょう。", "gloss": "tomorrow (topic)|probably rain", "en": "It will probably rain tomorrow." },
+        { "ja": "かぜでしょう。", "gloss": "probably a cold", "en": "It's probably a cold." },
+        { "ja": "大変でしたでしょう。", "gloss": "must have been tough, right?", "en": "That must have been tough, right?" }
+      ],
+      "tip": "Use it when you can't be certain.",
+      "watch": "Don't use でしょう to describe your own facts."
+    }
+  ],
+  "drills": [
+    { "type": "gap", "point": 0, "ja": "ねつが ある＿です。", "options": ["ん", "の", "を", "が"], "answer": "ん", "en": "I have a fever, you see.", "why": "んです adds explanation." },
+    { "type": "pick", "point": 0, "q": "You want to show concern: \"What's wrong?\"", "options": ["どうしたんですか。", "どうしたですか。", "どうしますんです。", "どうしたのですます。"], "answer": 0, "why": "どうしたんですか." },
+    { "type": "gap", "point": 1, "ja": "きのう 食べ＿ました。", "options": ["すぎ", "すぎて", "すぎる", "たすぎ"], "answer": "すぎ", "en": "I ate too much yesterday.", "why": "Stem + すぎる; here the stem + すぎました." },
+    { "type": "pick", "point": 1, "q": "\"This medicine is too expensive.\"", "options": ["この くすりは 高すぎます。", "この くすりは 高いすぎます。", "この くすりは 高くすぎます。", "この くすりは 高ですぎます。"], "answer": 0, "why": "Drop い, add すぎます." },
+    { "type": "gap", "point": 2, "ja": "早く ねた＿ いいです。", "options": ["ほうが", "ほうは", "ことが", "つもりが"], "answer": "ほうが", "en": "You'd better sleep early.", "why": "た-form + ほうがいい." },
+    { "type": "order", "point": 2, "en": "You'd better not overdo it.", "chunks": ["むりを", "しないほうが", "いいです"] },
+    { "type": "gap", "point": 3, "ja": "かぜ＿ので、休みます。", "options": ["な", "の", "だ", "に"], "answer": "な", "en": "I have a cold, so I'll rest.", "why": "Noun + なので." },
+    { "type": "order", "point": 3, "en": "I have a fever, so I'm going to the hospital.", "chunks": ["ねつが", "あるので", "びょういんへ", "行きます"] },
+    { "type": "gap", "point": 4, "ja": "くすりを 飲ま＿ ければいけません。", "options": ["な", "ない", "なく", "ず"], "answer": "な", "en": "I must take medicine.", "why": "ない → なければ." },
+    { "type": "pick", "point": 4, "q": "\"I must do my homework.\"", "options": ["しゅくだいを しなければいけません。", "しゅくだいを しなくてもいいです。", "しゅくだいを しないでください。", "しゅくだいを しましょう。"], "answer": 0, "why": "なければいけません = must." },
+    { "type": "gap", "point": 5, "ja": "あしたは 雨＿しょう。", "options": ["で", "の", "は", "を"], "answer": "で", "en": "It will probably rain tomorrow.", "why": "雨でしょう." },
+    { "type": "type", "prompt": "Type the reading of 病院 (hospital) in hiragana.", "show": "病院", "answers": ["びょういん"] },
+    { "type": "type", "prompt": "Type the reading of 宿題 (homework) in hiragana.", "show": "宿題", "answers": ["しゅくだい"] },
+    { "type": "pick", "q": "Which one means \"fever\"?", "options": ["熱", "頭", "体", "薬"], "answer": 0, "why": "熱 (ねつ) = fever." }
+  ]
+}

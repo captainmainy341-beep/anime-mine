@@ -1,0 +1,297 @@
+{
+  "schema": 1,
+  "id": "genki-l21",
+  "order": 121,
+  "track": "genki",
+  "lesson": 21,
+  "title": "うわさの クラス委員",
+  "summary": "A rumour spreads at the school gate: Noa has been chosen as class representative. Use the passive, the \"affected\" passive, and らしい for what you heard.",
+  "covers": "〜られる（passive） · 迷惑の受身 · 〜らしい",
+  "jlpt": "N4",
+  "source": "authored",
+  "bg": "school-gate-evening",
+  "characters": {
+    "hana": {
+      "name": "ハナ",
+      "color": "#7cc6b4"
+    },
+    "leo": {
+      "name": "レオ",
+      "color": "#f0a35e"
+    },
+    "mori": {
+      "name": "森先生",
+      "color": "#8e7cc3"
+    }
+  },
+  "glossary": {
+    "g:n4-passive": {
+      "label": "〜られる（受身）",
+      "meaning": "to be done to",
+      "note": "Ru-verbs: stem + られる (ほめる → ほめられる). U-verbs: あ-row + れる (選ぶ → 選ばれる). する → される, 来る → 来られる. The doer takes に: 先生にほめられた."
+    },
+    "g:genki-meiwaku": {
+      "label": "迷惑の受身",
+      "meaning": "passive of being affected (to one's discomfort)",
+      "note": "The passive can show that something happened to you and you did not like it: 雨に降られた (I got rained on), 弟にケーキを食べられた (my brother ate my cake)."
+    },
+    "g:n4-rashii": {
+      "label": "〜らしい",
+      "meaning": "apparently / it seems",
+      "note": "Plain form + らしい: a conclusion from what you heard or saw. ノアが選ばれたらしい. Different from 〜みたい in that it relies on indirect information."
+    },
+    "g:n5-ni": {
+      "label": "〜に",
+      "meaning": "by (the doer in a passive)",
+      "note": "In passive sentences the doer takes に: 先生にほめられた."
+    },
+    "k:選": {
+      "label": "選",
+      "meaning": "choose",
+      "reading": "えら(ぶ)"
+    },
+    "k:噂": {
+      "label": "噂",
+      "meaning": "rumour",
+      "reading": "うわさ"
+    }
+  },
+  "beats": [
+    {
+      "type": "show",
+      "char": "hana",
+      "expr": "surprised",
+      "pos": "left"
+    },
+    {
+      "type": "show",
+      "char": "leo",
+      "expr": "smile",
+      "pos": "right"
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "ノア、聞いた？ ノアが クラス委員に えらばれたらしいよ。",
+      "en": "Noa, did you hear? Apparently you've been chosen as class representative."
+    },
+    {
+      "type": "reading",
+      "item": "k:選",
+      "display": "選ばれた",
+      "answers": [
+        "えらばれた"
+      ],
+      "prompt": "Read it: what happened to Noa.",
+      "target": "選"
+    },
+    {
+      "type": "reading",
+      "item": "k:噂",
+      "display": "噂",
+      "answers": [
+        "うわさ"
+      ],
+      "prompt": "Read the word Leo uses for this news.",
+      "target": "噂"
+    },
+    {
+      "type": "intro",
+      "item": "g:n4-passive"
+    },
+    {
+      "type": "choice",
+      "item": "g:n4-passive",
+      "who": "leo",
+      "prompt": "Say: \"I was chosen by everyone in the class.\"",
+      "options": [
+        {
+          "text": "クラスの みんなに えらばれました。",
+          "correct": true
+        },
+        {
+          "text": "クラスの みんなに えらべました。",
+          "awkward": {
+            "who": "hana",
+            "text": "「えらべました」は 「選ぶ ことが できた」 だよ。",
+            "en": "\"Erabemashita\" means \"was able to choose\"."
+          }
+        },
+        {
+          "text": "クラスの みんなに えらばせました。",
+          "awkward": {
+            "who": "leo",
+            "text": "「せ」だと 選ばせる…つまり させる だよ。",
+            "en": "\"Se\" would be \"made someone choose\"."
+          }
+        }
+      ]
+    },
+    {
+      "type": "particle",
+      "item": "g:n5-ni",
+      "who": "hana",
+      "text": "ノアは 先生＿ ほめられました。",
+      "options": [
+        "に",
+        "を",
+        "が",
+        "で"
+      ],
+      "answers": [
+        "に"
+      ],
+      "en": "Noa was praised by the teacher.",
+      "role": "p:ni/agent",
+      "prompt": "Who did the praising?"
+    },
+    {
+      "type": "show",
+      "char": "mori",
+      "expr": "smile",
+      "pos": "center"
+    },
+    {
+      "type": "say",
+      "who": "mori",
+      "text": "ノアさん、おめでとう。でも、さいしょは 大変ですよ。",
+      "en": "Congratulations, Noa. But the beginning will be hard."
+    },
+    {
+      "type": "intro",
+      "item": "g:genki-meiwaku"
+    },
+    {
+      "type": "choice",
+      "item": "g:genki-meiwaku",
+      "who": "leo",
+      "prompt": "Say: \"Yesterday I got caught in the rain (and was rained on).\"",
+      "options": [
+        {
+          "text": "きのう、雨に ふられました。",
+          "correct": true
+        },
+        {
+          "text": "きのう、雨が ふられました。",
+          "awkward": {
+            "who": "leo",
+            "text": "雨は ふる ほうだから 「に」だよ。",
+            "en": "The rain is the doer, so \"ni\"."
+          }
+        },
+        {
+          "text": "きのう、雨に ふりました。",
+          "awkward": {
+            "who": "hana",
+            "text": "「ふられました」と 受身に すると 迷惑な 気もちが つたわるよ。",
+            "en": "Use the passive \"furaremashita\" to show the annoyance."
+          }
+        }
+      ]
+    },
+    {
+      "type": "choice",
+      "item": "g:genki-meiwaku",
+      "who": "hana",
+      "prompt": "Say: \"My little brother ate my cake (and I'm upset).\"",
+      "options": [
+        {
+          "text": "おとうとに ケーキを 食べられました。",
+          "correct": true
+        },
+        {
+          "text": "おとうとが ケーキを 食べられました。",
+          "awkward": {
+            "who": "leo",
+            "text": "「に」だよ。食べた 人は 「おとうとに」。",
+            "en": "It is \"ni\": \"otouto ni\"."
+          }
+        },
+        {
+          "text": "おとうとに ケーキを 食べさせました。",
+          "awkward": {
+            "who": "mori",
+            "text": "「食べさせる」は 食べさせる という いみですよ。",
+            "en": "\"Tabesaseru\" means making him eat."
+          }
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "leo",
+      "text": "ノア、みんなに うわさされて いるよ。",
+      "en": "Noa, everyone's talking about you."
+    },
+    {
+      "type": "intro",
+      "item": "g:n4-rashii"
+    },
+    {
+      "type": "choice",
+      "item": "g:n4-rashii",
+      "who": "hana",
+      "prompt": "Say: \"Apparently Mori-sensei is going to Tokyo.\"",
+      "options": [
+        {
+          "text": "森先生は 東京へ 行くらしいです。",
+          "correct": true
+        },
+        {
+          "text": "森先生は 東京へ 行くらしくです。",
+          "awkward": {
+            "who": "hana",
+            "text": "「らしいです」で いいんだよ。",
+            "en": "\"Rashii desu\" is fine."
+          }
+        },
+        {
+          "text": "森先生は 東京へ 行くなのらしいです。",
+          "awkward": {
+            "who": "leo",
+            "text": "ちょっと 形が へんだよ。",
+            "en": "The form is odd."
+          }
+        }
+      ]
+    },
+    {
+      "type": "meaning",
+      "item": "g:n4-rashii",
+      "prompt": "Leo says: 「あしたは 休みらしい。」 What does he mean?",
+      "options": [
+        "Apparently tomorrow is a day off.",
+        "I want tomorrow off.",
+        "Tomorrow is definitely a day off; I saw the calendar."
+      ],
+      "correct": 0,
+      "display": "休みらしい"
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "ノアなら できるよ。みんなで 助けるから。",
+      "en": "You can do it, Noa. We'll all help."
+    },
+    {
+      "type": "affection",
+      "char": "hana",
+      "delta": 2
+    },
+    {
+      "type": "affection",
+      "char": "leo",
+      "delta": 1
+    },
+    {
+      "type": "affection",
+      "char": "mori",
+      "delta": 1
+    },
+    {
+      "type": "cg",
+      "id": "genki-rumor",
+      "title": "The rumour"
+    }
+  ]
+}

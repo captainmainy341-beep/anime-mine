@@ -1,0 +1,388 @@
+{
+  "schema": 1,
+  "id": "genki-l17",
+  "lesson": 17,
+  "title": "Stay or Go?",
+  "tagline": "Give advice with if, respond to what someone said, and say what you decided or what was decided.",
+  "hook": "The term is ending and Noa has to decide whether to stay in Minato. Everyone has advice, so this lesson is about 〜ば, 〜なら, and the two phrases for decisions: ことにする and ことになる.",
+  "goals": [
+    "Use 〜ば for advice and the one needed condition",
+    "Respond with 〜なら",
+    "Say your own decision with ことにする and a given one with ことになる"
+  ],
+  "minutes": 12,
+  "vocab": [
+    [
+      "決める",
+      "きめる",
+      "to decide",
+      "✅"
+    ],
+    [
+      "残る",
+      "のこる",
+      "to remain",
+      "🏠"
+    ],
+    [
+      "国",
+      "くに",
+      "country, home country",
+      "🌏"
+    ],
+    [
+      "帰国",
+      "きこく",
+      "return to home country",
+      "✈️"
+    ],
+    [
+      "学期",
+      "がっき",
+      "school term",
+      "📆"
+    ],
+    [
+      "練習",
+      "れんしゅう",
+      "practice",
+      "🎯"
+    ],
+    [
+      "上手",
+      "じょうず",
+      "skilled",
+      "⭐"
+    ],
+    [
+      "おすすめ",
+      "おすすめ",
+      "recommendation",
+      "👍"
+    ],
+    [
+      "相談",
+      "そうだん",
+      "consultation",
+      "💬"
+    ],
+    [
+      "引っ越す",
+      "ひっこす",
+      "to move house",
+      "📦"
+    ],
+    [
+      "会議",
+      "かいぎ",
+      "meeting",
+      "🪑"
+    ],
+    [
+      "続ける",
+      "つづける",
+      "to continue",
+      "➡️"
+    ],
+    [
+      "やめる",
+      "やめる",
+      "to quit",
+      "🛑"
+    ],
+    [
+      "運動",
+      "うんどう",
+      "exercise",
+      "🏋️"
+    ],
+    [
+      "毎日",
+      "まいにち",
+      "every day",
+      "📆"
+    ],
+    [
+      "京都",
+      "きょうと",
+      "Kyoto",
+      "⛩️"
+    ],
+    [
+      "コート",
+      "こーと",
+      "coat",
+      "🧥"
+    ],
+    [
+      "もし",
+      "もし",
+      "if (supposing)",
+      "🤔"
+    ],
+    [
+      "留学",
+      "りゅうがく",
+      "studying abroad",
+      "🎓"
+    ],
+    [
+      "将来",
+      "しょうらい",
+      "future",
+      "🔭"
+    ]
+  ],
+  "points": [
+    {
+      "id": "g:n4-ba-conditional",
+      "title": "〜ば",
+      "formula": "u → e + ば / い → ければ",
+      "gist": "The one condition that is enough.",
+      "explain": [
+        "Verbs change the final u to e and add ば: 行く → 行けば, 読む → 読めば, 食べる → 食べれば, する → すれば. い-adjectives change い to ければ: 安い → 安ければ.",
+        "It suggests that this one condition is enough, which makes it perfect for advice and hopes: 練習すれば、上手に なります."
+      ],
+      "examples": [
+        {
+          "ja": "毎日|練習すれば、|上手に|なります。",
+          "gloss": "every day|if you practise|skilled|you will become",
+          "en": "If you practise every day, you will get good."
+        },
+        {
+          "ja": "安ければ、|買います。",
+          "gloss": "if it is cheap|I will buy",
+          "en": "If it's cheap, I'll buy it."
+        },
+        {
+          "ja": "早く|行けば、|間に合います。",
+          "gloss": "early|if you go|you will make it",
+          "en": "If you go early, you'll make it."
+        }
+      ],
+      "tip": "Verb ending: u → e + ば. Keep that pattern in your ear: 行けば, 読めば.",
+      "watch": "The second clause is not a request or a command with 〜ば. Use 〜たら for \"when I arrive, please call\"."
+    },
+    {
+      "id": "g:n4-nara-conditional",
+      "title": "〜なら",
+      "formula": "if that's the case",
+      "gist": "Respond to what was just said.",
+      "explain": [
+        "なら picks up the other person's topic and gives advice or information about it: 日本に 行くなら、京都が いいですよ (If you are going to Japan, Kyoto is good).",
+        "It can also introduce a topic: ギターなら、ハナさんが 上手です (When it comes to guitar, Hana is good). Verbs before なら are in the plain non-past form."
+      ],
+      "examples": [
+        {
+          "ja": "日本に|行くなら、|京都が|いいですよ。",
+          "gloss": "Japan (to)|if you are going|Kyoto (subject)|is good",
+          "en": "If you are going to Japan, Kyoto is good."
+        },
+        {
+          "ja": "ギターなら、|ハナさんが|上手です。",
+          "gloss": "if it is guitar|Hana (subject)|is skilled",
+          "en": "When it comes to guitar, Hana is good."
+        }
+      ],
+      "tip": "Use なら when you hear a plan or a topic and want to react to it.",
+      "watch": "なら is not for \"when it has happened\". 行ったなら sounds odd; use 行ったら."
+    },
+    {
+      "id": "g:n4-koto-ni-suru",
+      "title": "〜ことにする",
+      "formula": "dictionary form + ことにする",
+      "gist": "Say what you have decided.",
+      "explain": [
+        "Dictionary form + ことにする shows your own decision: 毎日 運動する ことに しました (I decided to exercise every day). The negative is 〜ないことにする.",
+        "ことにしている means you have made it a rule: 毎朝 走る ことに して います."
+      ],
+      "examples": [
+        {
+          "ja": "毎日|日本語を|勉強する|ことに|しました。",
+          "gloss": "every day|Japanese (object)|to study|decision|made",
+          "en": "I decided to study Japanese every day."
+        },
+        {
+          "ja": "来年は|ここに|のこる|ことに|します。",
+          "gloss": "next year (topic)|here (at)|to stay|decision|make",
+          "en": "I've decided to stay here next year."
+        }
+      ],
+      "tip": "決めた = 自分。ことにする is the speaker's own decision.",
+      "watch": "ことにする takes に, not を."
+    },
+    {
+      "id": "g:n4-koto-ni-naru",
+      "title": "〜ことになる",
+      "formula": "dictionary form + ことになる",
+      "gist": "Say what has been decided for you.",
+      "explain": [
+        "〜ことになる says that something has been decided or has come about, often by others or by circumstances: 来月 引っこす ことに なりました (It has been decided that I will move next month).",
+        "It is also a softer way to announce your own plans, as in 結婚する ことに なりました."
+      ],
+      "examples": [
+        {
+          "ja": "来月|引っこす|ことに|なりました。",
+          "gloss": "next month|to move house|it has been decided|became",
+          "en": "It has been decided that I will move next month."
+        },
+        {
+          "ja": "あした|会議が|ある|ことに|なりました。",
+          "gloss": "tomorrow|meeting (subject)|there is|it has been decided|became",
+          "en": "It has been decided that there will be a meeting tomorrow."
+        }
+      ],
+      "tip": "することになった = \"it turned out that I would\".",
+      "watch": "Compare: 行く ことにしました (I decided) and 行く ことに なりました (it was decided)."
+    }
+  ],
+  "drills": [
+    {
+      "type": "gap",
+      "point": 0,
+      "ja": "まいにち 練習す＿、上手に なります。",
+      "options": [
+        "れば",
+        "ると",
+        "たら",
+        "るば"
+      ],
+      "answer": "れば",
+      "en": "If you practise every day, you will get good.",
+      "why": "する → すれば."
+    },
+    {
+      "type": "pick",
+      "q": "Which means \"If it is cheap, I will buy it\"?",
+      "options": [
+        "安ければ、買います。",
+        "安いば、買います。",
+        "安くば、買います。",
+        "安かれば、買います。"
+      ],
+      "answer": 0,
+      "why": "い → ければ.",
+      "point": 0
+    },
+    {
+      "type": "pick",
+      "q": "Make the ば form of 行く.",
+      "options": [
+        "行けば",
+        "行くば",
+        "行かば",
+        "行きば"
+      ],
+      "answer": 0,
+      "why": "u → e + ば.",
+      "point": 0
+    },
+    {
+      "type": "order",
+      "point": 0,
+      "en": "If you go early, you will make it.",
+      "chunks": [
+        "早く",
+        "行けば、",
+        "間に合います"
+      ]
+    },
+    {
+      "type": "gap",
+      "point": 1,
+      "ja": "日本に 行く＿、京都が いいですよ。",
+      "options": [
+        "なら",
+        "たら",
+        "と",
+        "ば"
+      ],
+      "answer": "なら",
+      "en": "If you are going to Japan, Kyoto is good.",
+      "why": "Respond to the plan with なら."
+    },
+    {
+      "type": "pick",
+      "q": "Someone says \"I am going to Kyoto.\" You reply with advice:",
+      "options": [
+        "京都へ 行くなら、コートが いりますよ。",
+        "京都へ 行ったなら、コートが いりますよ。",
+        "京都へ 行くなったら、コートが いりますよ。",
+        "京都へ 行くばなら、コートが いりますよ。"
+      ],
+      "answer": 0,
+      "why": "Plain non-past + なら.",
+      "point": 1
+    },
+    {
+      "type": "gap",
+      "point": 2,
+      "ja": "まいにち 運動する こと＿ しました。",
+      "options": [
+        "に",
+        "を",
+        "が",
+        "で"
+      ],
+      "answer": "に",
+      "en": "I decided to exercise every day.",
+      "why": "ことにする takes に."
+    },
+    {
+      "type": "pick",
+      "q": "Which says \"I decided to stay here\"?",
+      "options": [
+        "ここに のこる ことに しました。",
+        "ここに のこる ことを しました。",
+        "ここに のこる ことが しました。",
+        "ここに のこった ことに しました。"
+      ],
+      "answer": 0,
+      "why": "Dictionary form + ことにする.",
+      "point": 2
+    },
+    {
+      "type": "gap",
+      "point": 3,
+      "ja": "来月 引っこす こと＿ なりました。",
+      "options": [
+        "に",
+        "を",
+        "が",
+        "は"
+      ],
+      "answer": "に",
+      "en": "It has been decided that I will move next month.",
+      "why": "ことになる takes に."
+    },
+    {
+      "type": "pick",
+      "q": "The school decided it. Which fits?",
+      "options": [
+        "行く ことに なりました。",
+        "行く ことに しました。",
+        "行く ことを なりました。",
+        "行く ことが しました。"
+      ],
+      "answer": 0,
+      "why": "Decided by others: ことになる.",
+      "point": 3
+    },
+    {
+      "type": "type",
+      "prompt": "Type the reading of 決める (to decide) in hiragana.",
+      "show": "決める",
+      "answers": [
+        "きめる"
+      ]
+    },
+    {
+      "type": "type",
+      "prompt": "Type the reading of 残る (to remain) in hiragana.",
+      "show": "残る",
+      "answers": [
+        "のこる"
+      ]
+    }
+  ]
+}

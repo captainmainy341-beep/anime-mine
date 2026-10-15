@@ -1,0 +1,65 @@
+{
+  "schema": 1,
+  "id": "n2-ch4",
+  "order": 22,
+  "title": "Chapter 22: インタビュー",
+  "summary": "Interview Sora at the studio. Centred on, through music, based on a river, and against all expectations.",
+  "jlpt": "N2",
+  "source": "authored",
+  "bg": "studio",
+  "characters": {
+    "sora": { "name": "そら", "color": "#a2befa" },
+    "sakai": { "name": "酒井さん", "color": "#6f8fd8" }
+  },
+  "glossary": {
+    "g:n2-wo-chuushin": { "label": "〜を中心に", "meaning": "centred on", "note": "Noun + を中心に: the main place, theme or group around which something happens." },
+    "g:n2-wo-tooshite": { "label": "〜を通して", "meaning": "through (a means or period)", "note": "Noun + を通して: by means of, or throughout a span of time." },
+    "g:n2-wo-motoni": { "label": "〜をもとに", "meaning": "based on", "note": "Noun + をもとに: using something as raw material or a starting point." },
+    "g:n2-ni-hanshite": { "label": "〜に反して", "meaning": "contrary to", "note": "Noun + に反して: the result goes against expectations or rules." },
+    "k:取": { "label": "取", "reading": "しゅ / と(る)", "meaning": "take" },
+    "k:才": { "label": "才", "reading": "さい", "meaning": "talent, age" }
+  },
+  "beats": [
+    { "type": "bg", "bg": "studio" },
+    { "type": "say", "who": null, "text": "録音スタジオ。ゆうきは 初めての 取材に のぞむ。手には 質問ノート。", "en": "A recording studio. Yuuki goes into the first real interview, question notebook in hand." },
+    { "type": "intro", "item": "k:取" },
+    { "type": "reading", "item": "k:取", "display": "取材", "target": "取", "prompt": "Your press pass says 取材. Read it.", "answers": ["しゅざい"] },
+    { "type": "show", "char": "sora", "expr": "smile", "pos": "center" },
+    { "type": "say", "who": "sora", "text": "お手やわらかに ね、ゆうき「記者」。", "en": "Go easy on me, Yuuki the \"reporter\"." },
+    { "type": "say", "who": "sora", "text": "活動は、いまは 東京を 中心に ライブを して いる。", "en": "These days I'm doing live shows, centered on Tokyo." },
+    { "type": "intro", "item": "g:n2-wo-chuushin" },
+    { "type": "choice", "item": "g:n2-wo-chuushin", "who": "sora", "prompt": "Write it up: \"Sora is doing live activities centred on Tokyo.\"", "options": [
+      { "text": "そらさんは、東京を 中心に ライブ活動を して います。", "correct": true },
+      { "text": "そらさんは、東京の 中心に ライブ活動を して います。", "awkward": { "who": "sora", "text": "「東京の 中心に」だと 東京の まん中、に なるよ。", "en": "\"Tokyo no chuushin ni\" means \"in the middle of Tokyo\"." } },
+      { "text": "そらさんは、東京を 中心を ライブ活動を して います。", "awkward": { "who": "sakai", "text": "「を中心に」。あとは 「に」ですね。", "en": "\"Wo chuushin ni\" -- \"ni\" follows." } }
+    ] },
+    { "type": "say", "who": "sora", "text": "音楽を 通して、言葉に できない 気持ちを 伝えたいんだ。", "en": "Through music I want to convey feelings I can't put into words." },
+    { "type": "intro", "item": "g:n2-wo-tooshite" },
+    { "type": "choice", "item": "g:n2-wo-tooshite", "who": "sora", "prompt": "Quote him: \"Through music, I want to convey my feelings.\"", "options": [
+      { "text": "音楽を 通して、気持ちを 伝えたいです。", "correct": true },
+      { "text": "音楽を 通りて、気持ちを 伝えたいです。", "awkward": { "who": "sora", "text": "「通して」だよ。", "en": "It's \"tooshite\"." } },
+      { "text": "音楽に 通して、気持ちを 伝えたいです。", "awkward": { "who": "sakai", "text": "「を 通して」。助詞は 「を」ですね。", "en": "\"Wo tooshite\" -- the particle is \"wo\"." } }
+    ] },
+    { "type": "show", "char": "sakai", "expr": "neutral", "pos": "right" },
+    { "type": "say", "who": "sakai", "text": "新曲「川の 音」は、そらの 故郷の 川が テーマだそうですね。", "en": "I hear the new song \"The Sound of the River\" is themed on Sora's hometown river." },
+    { "type": "intro", "item": "g:n2-wo-motoni" },
+    { "type": "choice", "item": "g:n2-wo-motoni", "who": "sakai", "prompt": "Explain: \"I wrote this song based on my hometown's river.\"", "options": [
+      { "text": "故郷の 川を もとに、この 曲を 作りました。", "correct": true },
+      { "text": "故郷の 川に もとに、この 曲を 作りました。", "awkward": { "who": "sora", "text": "「を もとに」。「に」じゃなくて。", "en": "\"Wo moto ni\", not \"ni\"." } },
+      { "text": "故郷の 川を もとを、この 曲を 作りました。", "awkward": { "who": "sakai", "text": "「もとに」と 言います。", "en": "Say \"moto ni\"." } }
+    ] },
+    { "type": "intro", "item": "k:才" },
+    { "type": "reading", "item": "k:才", "display": "才能", "target": "才", "prompt": "The headline you drafted says 才能. Read it.", "answers": ["さいのう"] },
+    { "type": "say", "who": "sora", "text": "正直、才能が あるとは 思って いなかった。みんなに 助けられた。", "en": "Honestly I never thought I had talent. I was helped by everyone." },
+    { "type": "say", "who": "sakai", "text": "予想に 反して、デビュー曲は 大ヒットしましたね。", "en": "Contrary to expectations, the debut song became a huge hit." },
+    { "type": "intro", "item": "g:n2-ni-hanshite" },
+    { "type": "choice", "item": "g:n2-ni-hanshite", "who": "sora", "prompt": "Say: \"Contrary to expectations, the number of fans increased.\"", "options": [
+      { "text": "予想に 反して、ファンが 増えました。", "correct": true },
+      { "text": "予想を 反して、ファンが 増えました。", "awkward": { "who": "sakai", "text": "「に 反して」ですよ。", "en": "It's \"ni hanshite\"." } },
+      { "text": "予想に 反って、ファンが 増えました。", "awkward": { "who": "sora", "text": "「反して」。する の て-形。", "en": "\"Hanshite\" -- the te-form of suru." } }
+    ] },
+    { "type": "affection", "char": "sora", "delta": 2 },
+    { "type": "cg", "id": "studio-interview", "title": "The studio interview" },
+    { "type": "say", "who": "sora", "text": "いい 記事に して くれよ。…この 曲、まだ だれにも 聞かせて ない 部分が あるんだ。", "en": "Make it a good article. ...There's a part of this song I haven't let anyone hear yet." }
+  ]
+}
