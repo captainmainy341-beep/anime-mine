@@ -15,7 +15,7 @@ Three scene sources, one engine:
   - **Kanji reading:** type the reading in kana (romaji->kana conversion; reuse `src/core/kana.js`) to "decode" a line, sign, or letter.
   - **Kanji meaning (light):** multiple choice, used sparingly.
 - Every challenge result calls the existing SRS update path for that item (same as the review session does), so play counts as review. Unknown/unseen items are introduced with a short in-story explanation card before being tested.
-- Light game layer: affection/trust meter per character, chapter completion stars (accuracy), unlockable gallery of backgrounds/CGs. Keep it modest.
+- Light game layer: affection/trust meter per character, chapter completion (the original star rating was later removed at the user's request; see `docs/vn-notes.md`), unlockable gallery of backgrounds/CGs. Keep it modest.
 
 ## Art
 - Sprites/backgrounds are loaded from a **skins folder** in the user data dir (`<userData>/vn-skins/<pack>/` with a `pack.json` mapping character -> expression -> image, and background ids -> image). Document the format in `docs/vn-skins.md`.
