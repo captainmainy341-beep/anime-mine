@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { createEngine, starsFor } from '../src/renderer/learn/vn/engine.mjs';
-import { gradeAttempt, revealAnswer, typedKana } from '../src/renderer/learn/vn/challenge.mjs';
+import { createEngine, requeueGap } from '../src/renderer/learn/vn/engine.mjs';
+import { bridgeLine, gradeAttempt, reorder, reorderedBeat, revealAnswer, typedKana } from '../src/renderer/learn/vn/challenge.mjs';
 import { autoDelay, isComplete, sliceText, visibleCount } from '../src/renderer/learn/vn/typewriter.mjs';
 
 const choice = {
@@ -65,25 +65,23 @@ test('challenges cannot be skipped with advance()', () => {
   assert.equal(e.frame().kind, 'choice');
 });
 
-test('a wrong grammar choice branches to an awkward reaction, then retries the same challenge', () => {
+test('a wrong grammar choice shows the awkward reaction, then the story moves on instead of retrying in place', () => {
   const e = createEngine(scene, { skipIntro: ['g:n5-ka'] });
   e.advance();
-  assert.equal(e.answer(1).result, 'incorrect');
+  const out = e.answer(1);
+  assert.equal(out.result, 'incorrect');
+  assert.equal(out.requeuedIn, 3);
   assert.deepEqual(
     { kind: e.frame().kind, text: e.frame().text, name: e.frame().name },
     { kind: 'awkward', text: 'えっ？', name: 'みお' },
   );
-  assert.deepEqual(e.takeReports(), []);
+  assert.deepEqual(e.takeReports(), [], 'nothing is reported for a miss');
+  assert.equal(e.stage().cast.mio.expr, 'surprised', 'the speaker reacts on screen');
+  assert.equal(e.answer(0).result, 'invalid', 'the awkward beat has to be read first');
   e.advance();
-  assert.equal(e.frame().kind, 'choice');
-  assert.equal(e.frame().attempts, 1);
-  assert.equal(e.answer(2).result, 'incorrect');
-  assert.match(e.frame().text, /へんな/, 'options without a custom reaction use the generic one');
-  e.advance();
-  assert.equal(e.answer(0).result, 'correct');
-  assert.equal(e.frame().kind, 'reading');
-  assert.deepEqual(e.takeReports(), [{ item: 'g:n5-ka', incorrectCount: 2 }]);
-  assert.deepEqual(e.takeReports(), [], 'reports are drained once');
+  assert.equal(e.frame().kind, 'reading', 'the story continues with the next beat');
+  assert.equal(e.stage().cast.mio.expr, 'neutral', 'and the expression goes back');
+  assert.equal(e.progress().pending, 1);
 });
 
 test('kana input is graded from romaji and katakana, with no penalty for invalid input', () => {
@@ -93,10 +91,9 @@ test('kana input is graded from romaji and katakana, with no penalty for invalid
   assert.equal(e.answer('').result, 'invalid');
   assert.equal(e.answer('日本').result, 'invalid');
   assert.equal(e.frame().kind, 'reading', 'invalid input does not trigger the awkward branch');
-  assert.equal(e.answer('ひのもと').result, 'incorrect');
-  e.advance();
+  assert.equal(e.progress().pending, 0);
   assert.equal(e.answer('nippon').result, 'correct', 'romaji is converted: nippon -> にっぽん');
-  assert.deepEqual(e.takeReports().map((r) => r.incorrectCount), [0, 1]);
+  assert.deepEqual(e.takeReports().map((r) => r.incorrectCount), [0, 0]);
 });
 
 test('jumps skip beats forward, effects on the way are still applied', () => {
@@ -109,7 +106,7 @@ test('jumps skip beats forward, effects on the way are still applied', () => {
   assert.equal(e.summary().affection.mio, 2);
 });
 
-test('finishing reports accuracy, stars and the unlocked gallery', () => {
+test('finishing reports first-try count, accuracy and the unlocked gallery, with no stars', () => {
   const perfect = createEngine(scene, { skipIntro: ['g:n5-ka'] });
   perfect.advance();
   perfect.answer(0);
@@ -119,29 +116,11 @@ test('finishing reports accuracy, stars and the unlocked gallery', () => {
   assert.equal(perfect.frame().kind, 'end');
   assert.equal(perfect.isFinished(), true);
   const summary = perfect.frame().summary;
-  assert.deepEqual({ total: summary.total, firstTry: summary.firstTry, stars: summary.stars }, { total: 3, firstTry: 3, stars: 3 });
-
-  const sloppy = createEngine(scene, { skipIntro: ['g:n5-ka'] });
-  sloppy.advance();
-  sloppy.answer(2);
-  sloppy.advance();
-  sloppy.answer(0);
-  sloppy.answer('ひ');
-  sloppy.advance();
-  sloppy.answer('にほん');
-  sloppy.answer(1);
-  sloppy.advance();
-  sloppy.answer(0);
-  sloppy.advance();
-  assert.equal(sloppy.summary().firstTry, 0);
-  assert.equal(sloppy.summary().stars, 1);
+  assert.deepEqual(summary, { total: 3, firstTry: 3, accuracy: 1, affection: { mio: 2 }, gallery: [{ id: 'pic', title: 'Picture' }] });
+  assert.equal('stars' in summary, false);
 });
 
-test('stars thresholds', () => {
-  assert.deepEqual([1, 0.9, 0.89, 0.6, 0.59, 0].map(starsFor), [3, 3, 2, 2, 1, 1]);
-});
-
-test('the backlog records dialogue and awkward reactions once each', () => {
+test('the backlog records dialogue, awkward reactions and bridge lines once each', () => {
   const e = createEngine(scene, { skipIntro: ['g:n5-ka'] });
   e.advance();
   e.answer(1);
@@ -149,14 +128,130 @@ test('the backlog records dialogue and awkward reactions once each', () => {
   assert.deepEqual(e.backlog().map((b) => b.text), ['はじめまして。', 'えっ？']);
 });
 
-test('save and load restore the exact position, stage, results and mistakes', () => {
-  const e = createEngine(scene, { skipIntro: ['g:n5-ka'] });
+// A longer scene for requeue timing: c1 early, then ten lines, then c2 as the very last beat.
+const long = {
+  schema: 1,
+  id: 'long',
+  title: 'Long',
+  jlpt: 'N5',
+  source: 'authored',
+  characters: { mio: { name: 'みお' } },
+  beats: [
+    { type: 'show', char: 'mio', expr: 'neutral', pos: 'center' },
+    { type: 'say', who: 'mio', text: 'これは 本 です。', en: 'This is a book.' },
+    { ...choice, item: 'g:c1' },
+    ...Array.from({ length: 10 }, (_, i) => ({ type: 'say', who: 'mio', text: `せりふ${i + 1}`, en: `line ${i + 1}` })),
+    { type: 'meaning', item: 'k:c2', prompt: 'p', options: ['book', 'water', 'fire'], correct: 0 },
+  ],
+};
+
+// Plays forward, answering every challenge with `pick(frame)`; returns the visible frames in order.
+function playOut(e, pick, limit = 100) {
+  const seen = [];
+  for (let i = 0; i < limit && !e.isFinished(); i += 1) {
+    const f = e.frame();
+    seen.push(f.kind === 'say' ? (f.bridge ? 'bridge' : f.text) : f.kind === 'awkward' ? 'awkward' : `${f.kind}${f.requeued ? '*' : ''}:${f.beat.item}`);
+    if (f.kind === 'say' || f.kind === 'awkward' || f.kind === 'intro') e.advance();
+    else e.answer(pick(f));
+  }
+  return seen;
+}
+
+const right = (f) => (f.beat.type === 'choice' ? f.beat.options.findIndex((o) => o.correct) : f.beat.correct);
+const wrong = (f) => (f.beat.type === 'choice' ? f.beat.options.findIndex((o) => !o.correct) : (f.beat.correct + 1) % f.beat.options.length);
+
+test('a missed challenge comes back three beats later behind a bridge line, then gaps grow to 6', () => {
+  const e = createEngine(long);
+  let misses = 0;
+  const seen = playOut(e, (f) => (f.beat.item === 'g:c1' && misses++ < 2 ? wrong(f) : right(f)));
+  assert.deepEqual(seen.slice(0, 9), [
+    'これは 本 です。', 'choice:g:c1', 'awkward', 'せりふ1', 'せりふ2', 'せりふ3', 'bridge', 'choice*:g:c1', 'awkward',
+  ]);
+  // Second miss: six more beats before it is asked again.
+  assert.deepEqual(seen.slice(9, 17), ['せりふ4', 'せりふ5', 'せりふ6', 'せりふ7', 'せりふ8', 'せりふ9', 'bridge', 'choice*:g:c1']);
+  assert.deepEqual(seen.slice(17), ['せりふ10', 'meaning:k:c2']);
+  assert.equal(e.isFinished(), true);
+  assert.deepEqual(e.takeReports(), [{ item: 'g:c1', incorrectCount: 2 }, { item: 'k:c2', incorrectCount: 0 }]);
+});
+
+test('gap growth is capped', () => {
+  assert.deepEqual([1, 2, 3, 4, 9].map(requeueGap), [3, 6, 10, 10, 10]);
+});
+
+test('a scene whose last beat is a challenge drains the requeue before it can end', () => {
+  const e = createEngine(long);
+  let missed = 0;
+  const seen = playOut(e, (f) => (f.beat.item === 'k:c2' && missed++ < 3 ? wrong(f) : right(f)));
+  assert.deepEqual(seen.slice(-11), [
+    'せりふ10', 'meaning:k:c2', 'awkward',
+    'bridge', 'meaning*:k:c2', 'awkward',
+    'bridge', 'meaning*:k:c2', 'awkward',
+    'bridge', 'meaning*:k:c2',
+  ]);
+  assert.equal(e.isFinished(), true);
+  assert.equal(e.frame().kind, 'end');
+  assert.deepEqual(e.takeReports(), [{ item: 'g:c1', incorrectCount: 0 }, { item: 'k:c2', incorrectCount: 3 }]);
+  const bridge = e.backlog().filter((b) => b.bridge);
+  assert.equal(bridge.length, 3);
+  assert.equal(bridge[0].text, bridgeLine('meaning', { atEnd: true }).text, 'end-of-scene re-asks use the closing bridge');
+});
+
+test('the scene is not finished while anything is still queued, and every challenge is reported exactly once', () => {
+  const e = createEngine(long);
+  const misses = new Map();
+  playOut(e, (f) => {
+    const n = misses.get(f.beat.item) ?? 0;
+    misses.set(f.beat.item, n + 1);
+    return n < 2 ? wrong(f) : right(f);
+  });
+  assert.equal(e.isFinished(), true);
+  const reports = e.takeReports();
+  assert.deepEqual(reports.map((r) => r.item).sort(), ['g:c1', 'k:c2']);
+  assert.ok(reports.every((r) => r.incorrectCount === 2));
+  assert.deepEqual(e.summary(), { total: 2, firstTry: 0, accuracy: 0, affection: {}, gallery: [] });
+});
+
+test('re-asked choices shuffle their options and recap the line that led to them', () => {
+  const e = createEngine(long);
   e.advance();
-  e.answer(2);
+  e.answer(1);
+  e.advance();
+  for (let i = 0; i < 3; i += 1) e.advance();
+  const bridge = e.frame();
+  assert.equal(bridge.kind, 'say');
+  assert.equal(bridge.bridge, true);
+  assert.equal(bridge.who, 'mio', 'the asker says the bridge line when on stage');
+  assert.ok(bridge.en, 'bridge lines carry a translation');
+  assert.equal(e.answer(0).result, 'invalid', 'the bridge line has to be read first');
+  e.advance();
+  const ask = e.frame();
+  assert.equal(ask.requeued, true);
+  assert.equal(ask.attempts, 1);
+  assert.deepEqual(ask.recap, { who: 'mio', name: 'みお', text: 'これは 本 です。', en: 'This is a book.' });
+  assert.deepEqual(ask.beat.options.map((o) => o.text), ['ですか を。', 'か です。', 'ですか。']);
+  assert.equal(e.answer(2).result, 'correct', 'answers index into the shown order');
+  assert.deepEqual(e.takeReports(), [{ item: 'g:c1', incorrectCount: 1 }]);
+});
+
+test('reorder moves every option and remaps meaning answers', () => {
+  assert.deepEqual(reorder(3, 1), [1, 2, 0]);
+  assert.deepEqual(reorder(3, 2), [2, 0, 1]);
+  assert.deepEqual(reorder(3, 3), [1, 2, 0]);
+  assert.deepEqual(reorder(1, 1), [0]);
+  const meaning = { type: 'meaning', options: ['a', 'b', 'c'], correct: 0 };
+  const moved = reorderedBeat(meaning, reorder(3, 1));
+  assert.deepEqual(moved.options, ['b', 'c', 'a']);
+  assert.equal(moved.correct, 2);
+  assert.equal(reorderedBeat({ type: 'reading', answers: ['a'] }, [0]).answers[0], 'a');
+});
+
+test('save and load restore the exact position, stage, results and backlog', () => {
+  const e = createEngine(scene, { skipIntro: ['g:n5-ka'] });
   e.advance();
   e.answer(0);
   const snap = JSON.parse(JSON.stringify(e.snapshot()));
   assert.equal(snap.scene, 'demo');
+  assert.equal(snap.v, 2);
   const restored = createEngine(scene, { restore: snap, skipIntro: ['g:n5-ka'] });
   assert.equal(restored.frame().kind, 'reading');
   assert.deepEqual(restored.stage(), e.stage());
@@ -165,24 +260,43 @@ test('save and load restore the exact position, stage, results and mistakes', ()
   restored.answer('にほん');
   restored.answer(0);
   restored.advance();
-  assert.deepEqual(restored.summary(), { total: 3, firstTry: 2, accuracy: 2 / 3, stars: 2, affection: { mio: 2 }, gallery: [{ id: 'pic', title: 'Picture' }] });
+  assert.deepEqual(restored.summary(), { total: 3, firstTry: 3, accuracy: 1, affection: { mio: 2 }, gallery: [{ id: 'pic', title: 'Picture' }] });
 });
 
-test('a mid-retry save keeps the mistake count', () => {
-  const e = createEngine(scene, { skipIntro: ['g:n5-ka'] });
-  e.advance();
-  e.answer(2);
-  const restored = createEngine(scene, { restore: e.snapshot(), skipIntro: ['g:n5-ka'] });
+test('requeued challenges survive save and load, at every point of a re-ask', () => {
+  // Restore during the awkward reaction (2), the queue wait (4), the bridge (6), the re-ask (7), the second wait (10).
+  for (const at of [2, 4, 6, 7, 10]) {
+    const reports = [];
+    let e = createEngine(long);
+    let misses = 0;
+    for (let steps = 0; !e.isFinished() && steps < 100; steps += 1) {
+      if (steps === at) e = createEngine(long, { restore: JSON.parse(JSON.stringify(e.snapshot())) });
+      const f = e.frame();
+      if (f.kind === 'say' || f.kind === 'awkward') e.advance();
+      else e.answer(f.beat.item === 'g:c1' && misses++ < 2 ? wrong(f) : right(f));
+      reports.push(...e.takeReports());
+    }
+    assert.equal(e.isFinished(), true, `restored at ${at}`);
+    assert.deepEqual(reports, [{ item: 'g:c1', incorrectCount: 2 }, { item: 'k:c2', incorrectCount: 0 }], `restored at ${at}`);
+  }
+});
+
+test('version 1 saves still load and keep the mistakes made on the challenge they stopped at', () => {
+  const snap = { v: 1, scene: 'demo', index: 4, bg: 'classroom-morning', cast: { mio: { expr: 'neutral', pos: 'left' } }, attempts: 2, results: [], backlog: [] };
+  const restored = createEngine(scene, { restore: snap, skipIntro: ['g:n5-ka'] });
   assert.equal(restored.frame().kind, 'choice');
+  assert.equal(restored.frame().attempts, 2);
   restored.answer(0);
-  assert.deepEqual(restored.takeReports(), [{ item: 'g:n5-ka', incorrectCount: 1 }]);
+  assert.deepEqual(restored.takeReports(), [{ item: 'g:n5-ka', incorrectCount: 2 }]);
 });
 
-test('saves from another scene or damaged saves are refused', () => {
+test('saves from another scene or damaged saves are refused; bad queue entries are dropped', () => {
   const snap = createEngine(scene).snapshot();
   assert.throws(() => createEngine(scene, { restore: { ...snap, scene: 'other' } }), /different scene/);
   assert.throws(() => createEngine(scene, { restore: { ...snap, index: 999 } }), /damaged/);
   assert.throws(() => createEngine(scene, { restore: { ...snap, v: 9 } }), /different scene/);
+  const odd = createEngine(scene, { restore: { ...snap, queue: [{ at: 2 }, { at: 999 }, 'x', { at: 4, misses: 1, wrong: 1, due: 0 }] } });
+  assert.equal(odd.progress().pending, 1, 'only the entry pointing at a challenge survives');
 });
 
 test('challenge grading: grammar choices, meanings and kana', () => {

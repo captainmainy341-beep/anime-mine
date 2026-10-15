@@ -1,8 +1,31 @@
 export const STORY_SOURCES = ['authored', 'anime', 'ai'];
 
-export function starText(stars) {
-  const n = Math.max(0, Math.min(3, stars | 0));
-  return '★'.repeat(n) + '☆'.repeat(3 - n);
+export const TRANSLATE_PREF = 'storyTranslate';
+const TRANSLATED_BY_DEFAULT = ['N5', 'N4'];
+
+// Whether English shows under Japanese lines. An explicit choice wins; otherwise it is on for beginner
+// (N5/N4) scenes and off for the rest.
+export function translationOn(pref, scene) {
+  if (typeof pref === 'boolean') return pref;
+  return TRANSLATED_BY_DEFAULT.includes(scene?.jlpt);
+}
+
+// The English to render under a line, or '' when translations are hidden or the line has none.
+export function translationFor(entry, on) {
+  return on && typeof entry?.en === 'string' ? entry.en : '';
+}
+
+export function translateLabel(on) {
+  return on ? 'Translation: on' : 'Translation: off';
+}
+
+// Backlog rows with the translation applied.
+export function backlogRows(entries, on) {
+  return entries.map((e) => ({ name: e.name ?? '', text: e.text, en: translationFor(e, on), bridge: e.bridge === true }));
+}
+
+export function completionMark(summary) {
+  return summary.completed || summary.plays > 0 ? 'Completed' : '';
 }
 
 export function chapterAction(summary) {
@@ -58,11 +81,17 @@ export function pickSkin(packs, preferred) {
 }
 
 export function endSummary(summary) {
-  const percent = Math.round(summary.accuracy * 100);
   return {
-    stars: starText(summary.stars),
-    line: summary.total === 0 ? 'Story complete' : `${summary.firstTry} of ${summary.total} challenges right on the first try (${percent}%)`,
+    heading: 'Scene complete',
+    line: summary.total === 0 ? 'Story complete' : `${summary.firstTry} of ${summary.total} right first try`,
+    revisited: summary.total - summary.firstTry,
     affection: Object.entries(summary.affection).filter(([, delta]) => delta !== 0),
     gallery: summary.gallery,
   };
+}
+
+// The HUD note for challenges that are waiting to come back.
+export function pendingLabel(pending) {
+  if (!pending) return '';
+  return pending === 1 ? '1 to revisit' : `${pending} to revisit`;
 }

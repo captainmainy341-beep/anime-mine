@@ -53,7 +53,8 @@ test('chapter list ships the authored story with progress, hides AI without a pr
   const list = await handlers['story:list']();
   assert.ok(list.chapters.length >= 4);
   assert.deepEqual(list.chapters.map((c) => c.id).slice(0, 3), ['n5-ch1', 'n5-ch2', 'n5-ch3']);
-  assert.deepEqual([list.chapters[0].stars, list.chapters[0].saved], [0, false]);
+  assert.deepEqual([list.chapters[0].completed, list.chapters[0].saved], [false, false]);
+  assert.equal('stars' in list.chapters[0], false);
   assert.equal(list.ai.ready, false);
   assert.deepEqual(list.skins, []);
   const ready = await story({ settings: { ai: { provider: 'claude-cli' } } }).handlers['story:list']();
@@ -131,16 +132,15 @@ test('IPC inputs are validated like learnHandlers does', async () => {
   await bad('story:save', { id: 'n5-ch1', snapshot: { scene: 'other' } }, /does not belong/);
   await bad('story:save', { id: '../etc', snapshot: {} }, /invalid scene id/);
   await bad('story:load', 7, /invalid scene id/);
-  await bad('story:complete', { id: 'n5-ch1', stars: 4, accuracy: 1 }, /stars/);
-  await bad('story:complete', { id: 'n5-ch1', stars: 3, accuracy: 2 }, /accuracy/);
-  await bad('story:complete', { id: 'n5-ch1', stars: 3, accuracy: 1, affection: { 'BAD ID': 1 } }, /affection/);
-  await bad('story:complete', { id: 'n5-ch1', stars: 3, accuracy: 1, gallery: new Array(30).fill({ id: 'a' }) }, /gallery/);
+  await bad('story:complete', { id: 'n5-ch1', accuracy: 2 }, /accuracy/);
+  await bad('story:complete', { id: 'n5-ch1', accuracy: 1, affection: { 'BAD ID': 1 } }, /affection/);
+  await bad('story:complete', { id: 'n5-ch1', accuracy: 1, gallery: new Array(30).fill({ id: 'a' }) }, /gallery/);
   await bad('story:aiGenerate', { items: ['bad'] }, /invalid study item/);
   await bad('story:aiGenerate', { items: [] }, /1 to 6/);
   await bad('story:skinAsset', { pack: '../x', path: 'a.png' }, /invalid skin pack/);
 });
 
-test('save slots are per scene; completing a scene records stars once-up and clears the save', async () => {
+test('save slots are per scene; completing a scene marks it completed and clears the save', async () => {
   const { handlers, dir } = story();
   const snapshot = { v: 1, scene: 'n5-ch1', index: 5 };
   await handlers['story:save']({ id: 'n5-ch1', snapshot });
@@ -149,11 +149,12 @@ test('save slots are per scene; completing a scene records stars once-up and cle
   assert.equal(await handlers['story:load']('n5-ch2'), null);
   assert.equal((await handlers['story:open']('n5-ch1')).save, true);
 
-  const first = await handlers['story:complete']({ id: 'n5-ch1', stars: 2, accuracy: 0.7, affection: { mio: 3 }, gallery: [{ id: 'first-day', title: 'The first day' }] });
-  assert.deepEqual([first.stars, first.plays], [2, 1]);
+  const first = await handlers['story:complete']({ id: 'n5-ch1', accuracy: 0.7, affection: { mio: 3 }, gallery: [{ id: 'first-day', title: 'The first day' }] });
+  assert.deepEqual([first.plays, first.bestAccuracy, 'stars' in first], [1, 0.7, false]);
+  assert.equal((await handlers['story:list']()).chapters[0].completed, true);
   assert.equal(await handlers['story:load']('n5-ch1'), null, 'finishing clears the save slot');
-  const second = await handlers['story:complete']({ id: 'n5-ch1', stars: 1, accuracy: 0.5, affection: { mio: 3 }, gallery: [] });
-  assert.deepEqual([second.stars, second.plays], [2, 2], 'stars never go down');
+  const second = await handlers['story:complete']({ id: 'n5-ch1', accuracy: 0.5, affection: { mio: 3 }, gallery: [] });
+  assert.deepEqual([second.bestAccuracy, second.plays], [0.7, 2], 'best accuracy never goes down');
   assert.equal(second.overview.affection.mio.value, 3, 'affection is awarded on the first clear only');
   assert.equal(second.overview.affection.mio.name, 'みお');
   assert.deepEqual(second.overview.gallery.map((g) => g.id), ['first-day']);
@@ -165,9 +166,28 @@ test('save slots are per scene; completing a scene records stars once-up and cle
 test('affection is clamped and stored separately from the SRS data', () => {
   const dir = tmp();
   const progress = new StoryProgress(dir, { now: () => NOW });
-  progress.complete('a', { stars: 3, accuracy: 1, affection: { mio: 500 } }, { mio: { name: 'みお' } });
+  progress.complete('a', { accuracy: 1, affection: { mio: 500 } }, { mio: { name: 'みお' } });
   assert.equal(progress.overview().affection.mio.value, 100);
   assert.deepEqual(fs.readdirSync(dir), ['story.json']);
+});
+
+test('story.json files written with stars still load; the stars are dropped', async () => {
+  const dir = tmp();
+  fs.writeFileSync(path.join(dir, 'story.json'), JSON.stringify({
+    version: 1,
+    chapters: { 'n5-ch1': { stars: 3, bestAccuracy: 0.9, plays: 2, completedAt: NOW }, junk: 'x' },
+    affection: { mio: { name: 'みお', value: 3 } },
+    gallery: { 'first-day': { title: 'The first day', scene: 'n5-ch1', at: NOW } },
+    saves: {},
+  }));
+  const progress = new StoryProgress(dir);
+  assert.deepEqual(progress.overview().chapters, { 'n5-ch1': { plays: 2, bestAccuracy: 0.9, completedAt: NOW } });
+  const { handlers } = createStoryHandlers({ dataDir: dir, learn: realLearn(dir), getSettings: async () => ({ ai: {} }) });
+  const card = (await handlers['story:list']()).chapters.find((c) => c.id === 'n5-ch1');
+  assert.deepEqual([card.completed, card.plays, 'stars' in card], [true, 2, false]);
+  const done = await handlers['story:complete']({ id: 'n5-ch1', stars: 1, accuracy: 0.5 });
+  assert.equal('stars' in done, false, 'a stray stars field from an old renderer is ignored');
+  assert.equal(done.plays, 3);
 });
 
 test('anime scenes: built from a mined example with the video present, then listed and playable', async () => {
@@ -270,8 +290,10 @@ test('N5 chapter 1 is playable end to end against the real SRS: intro, answers, 
   const introducedNow = new Set();
   const lines = [];
   let guard = 0;
+  const frames = [];
   while (!engine.isFinished() && guard++ < 200) {
     const frame = engine.frame();
+    frames.push(frame.kind === 'say' && frame.bridge ? 'bridge' : frame.requeued ? `requeued:${frame.beat.item}` : frame.kind);
     if (frame.kind === 'say' || frame.kind === 'awkward') engine.advance();
     else if (frame.kind === 'intro') {
       if (data.items[frame.item].state === 'new' && (await handlers['story:learn'](frame.item)).started) introducedNow.add(frame.item);
@@ -284,15 +306,24 @@ test('N5 chapter 1 is playable end to end against the real SRS: intro, answers, 
     for (const r of engine.takeReports()) lines.push({ ...r, ...(await handlers['story:report']({ ...r, introducedNow: introducedNow.has(r.item) })) });
   }
   assert.equal(engine.isFinished(), true);
+  // The deliberate miss is not retried in place: the story moves on and the challenge comes back later.
+  const miss = frames.indexOf('awkward');
+  assert.notEqual(frames[miss + 1], 'choice');
+  const back = frames.indexOf('requeued:g:n5-no');
+  assert.ok(back > miss + 2, 'the re-ask comes a few beats after the miss');
+  assert.equal(frames[back - 1], 'bridge');
   const summary = engine.summary();
-  assert.equal(summary.total, data.scene.beats.filter((b) => ['choice', 'reading', 'meaning'].includes(b.type)).length);
+  const challenges = data.scene.beats.filter((b) => ['choice', 'reading', 'meaning'].includes(b.type));
+  assert.equal(summary.total, challenges.length);
   assert.equal(summary.firstTry, summary.total - 1, 'one deliberate mistake');
+  assert.equal(lines.length, challenges.length, 'exactly one report per challenge');
+  assert.deepEqual(lines.filter((l) => l.item === 'g:n5-no').map((l) => l.incorrectCount), [1]);
   const tracked = lines.filter((l) => l.tracked);
   assert.deepEqual(tracked.map((l) => l.item), ['g:n5-wa-desu', 'g:n5-ka', 'g:n5-no'], 'grammar is tracked; kanji are practice-only without a study pack');
   assert.ok(tracked.every((l) => l.applied === false && l.reason === 'lesson'));
   assert.equal(learn['learn:card']('g:n5-no').stage, 1);
-  const done = await handlers['story:complete']({ id: 'n5-ch1', stars: summary.stars, accuracy: summary.accuracy, affection: summary.affection, gallery: summary.gallery });
-  assert.equal(done.stars, 2);
+  const done = await handlers['story:complete']({ id: 'n5-ch1', accuracy: summary.accuracy, affection: summary.affection, gallery: summary.gallery });
+  assert.deepEqual([done.plays, done.bestAccuracy], [1, summary.accuracy]);
   assert.deepEqual(done.overview.gallery.map((g) => g.id), ['first-day']);
   assert.equal(done.overview.affection.mio.value, 3);
 });

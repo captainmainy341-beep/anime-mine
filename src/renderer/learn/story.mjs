@@ -5,7 +5,7 @@ import { revealAnswer, typedKana } from './vn/challenge.mjs';
 import { autoDelay, isComplete, sliceText, visibleCount } from './vn/typewriter.mjs';
 import { resolveBackground, resolveSprite } from './vn/skin.mjs';
 import { backgroundFor, backgroundSvg, characterSvg } from './vn/defaultSkin.mjs';
-import { affectionRows, chapterAction, endSummary, introModel, menuSections, pickSkin, reportLine, starText } from './storyModel.mjs';
+import { TRANSLATE_PREF, affectionRows, backlogRows, chapterAction, completionMark, endSummary, introModel, menuSections, pendingLabel, pickSkin, reportLine, translateLabel, translationOn } from './storyModel.mjs';
 
 const POSITIONS = ['left', 'center', 'right'];
 
@@ -47,7 +47,7 @@ export function mountStory(el, ctx, arg = {}) {
     const card = (summary) => h(
       'article',
       { class: 'story-card' },
-      h('div', { class: 'story-card-head' }, h('span', { class: 'story-level' }, summary.jlpt), h('span', { class: 'story-stars', 'aria-label': `${summary.stars} of 3 stars` }, starText(summary.stars))),
+      h('div', { class: 'story-card-head' }, h('span', { class: 'story-level' }, summary.jlpt), completionMark(summary) ? h('span', { class: 'story-done' }, `✓ ${completionMark(summary)}`) : null),
       h('h3', { lang: 'ja' }, summary.title),
       h('p', { class: 'learn-sub' }, summary.summary || `${summary.challenges} challenges`),
       h('div', { class: 'story-card-actions' }, ...cardButtons(summary)),
@@ -139,6 +139,7 @@ function mountPlayer(host, ctx, { data, manifest, restore, exit }) {
   let completed = false;
   let tracker = '';
   let overlay = null;
+  let translate = translationOn(ctx.prefs.get(TRANSLATE_PREF, null), scene);
 
   const stageBg = h('div', { class: 'story-bg' });
   const sprites = Object.fromEntries(POSITIONS.map((pos) => [pos, h('div', { class: `story-sprite story-sprite-${pos}` })]));
@@ -148,6 +149,7 @@ function mountPlayer(host, ctx, { data, manifest, restore, exit }) {
   const layer = h('div', { class: 'story-overlay', hidden: true });
   const stage = h('div', { class: 'story-stage' }, stageBg, h('div', { class: 'story-sprites' }, POSITIONS.map((pos) => sprites[pos])), panel, textBox, hud, layer);
   const view = h('div', { class: 'story-play' }, stage);
+  stage.dataset.translate = translate ? 'on' : 'off';
   host.replaceChildren(view);
 
   document.addEventListener('keydown', onKey);
@@ -225,12 +227,15 @@ function mountPlayer(host, ctx, { data, manifest, restore, exit }) {
 
   function drawHud() {
     const progress = engine.progress();
+    const pending = pendingLabel(progress.pending);
     fill(
       hud,
       h('span', { class: 'story-title', lang: 'ja' }, scene.title),
       h('span', { class: 'story-progress' }, `${Math.min(progress.index + 1, progress.total)} / ${progress.total}`),
+      pending ? h('span', { class: 'story-pending', title: 'Missed challenges come back a few lines later' }, pending) : null,
       tracker ? h('span', { class: 'story-tracker', role: 'status' }, tracker) : null,
       h('span', { class: 'story-hud-spacer' }),
+      translateButton(),
       button('Backlog', openBacklog, 'story-chip'),
       button(auto ? 'Auto: on' : 'Auto: off', () => { auto = !auto; render(); }, 'story-chip', { 'aria-pressed': String(auto) }),
       button('Save', () => attempt(save), 'story-chip'),
@@ -239,12 +244,30 @@ function mountPlayer(host, ctx, { data, manifest, restore, exit }) {
     );
   }
 
+  function translateButton() {
+    return button(translateLabel(translate), toggleTranslate, 'story-chip', { 'aria-pressed': String(translate), title: 'Show English under each line (T)' });
+  }
+
+  // English lines are always in the DOM; the stage attribute hides them, so toggling never restarts the
+  // typewriter or clears a typed answer.
+  function toggleTranslate() {
+    translate = !translate;
+    ctx.prefs.set(TRANSLATE_PREF, translate);
+    stage.dataset.translate = translate ? 'on' : 'off';
+    drawHud();
+    if (overlay === 'backlog') openBacklog();
+  }
+
+  function englishNode(en, props = {}) {
+    return en ? h('p', { class: 'story-en', lang: 'en', ...props }, en) : null;
+  }
+
   function showLine(frame) {
     textBox.hidden = false;
     const plate = frame.name ? h('div', { class: 'story-plate', style: scene.characters[frame.who]?.color ? `border-color:${scene.characters[frame.who].color}` : null }, frame.name) : null;
     const body = h('p', { class: 'story-line', lang: 'ja' });
-    const english = h('p', { class: 'story-en', hidden: true }, frame.en);
-    textBox.replaceChildren(...[plate, body, frame.en ? english : null, h('span', { class: 'story-next', 'aria-hidden': 'true' }, '▾')].filter(Boolean));
+    const english = englishNode(frame.en, { hidden: true });
+    textBox.replaceChildren(...[plate, body, english, h('span', { class: 'story-next', 'aria-hidden': 'true' }, '▾')].filter(Boolean));
     const started = performance.now();
     let done = false;
     const tick = () => {
@@ -261,7 +284,7 @@ function mountPlayer(host, ctx, { data, manifest, restore, exit }) {
       textBox.dataset.done = 'true';
       body.textContent = frame.text;
       if (furigana) rubyNode(ctx.api.learn, frame.text, { furigana }).then((node) => { if (!disposed && textBox.dataset.done === 'true') body.replaceChildren(...node.childNodes); });
-      english.hidden = false;
+      if (english) english.hidden = false;
       if (auto) autoTimer = setTimeout(next, autoDelay(frame.text));
     };
     textBox.dataset.done = 'false';
@@ -299,8 +322,14 @@ function mountPlayer(host, ctx, { data, manifest, restore, exit }) {
   function showChallenge(frame) {
     const { beat } = frame;
     panel.hidden = false;
-    const prompt = h('div', { class: 'story-prompt' }, frame.name ? h('span', { class: 'story-plate' }, frame.name) : null, beat.prompt ? h('p', { lang: 'en' }, beat.prompt) : null);
-    const feedback = h('p', { class: 'story-feedback', role: 'status', 'aria-live': 'polite' }, frame.attempts > 0 ? 'Try again.' : '');
+    const recap = frame.recap
+      ? h('div', { class: 'story-recap' },
+        h('span', { class: 'story-level' }, 'Once more'),
+        h('p', { lang: 'ja' }, frame.recap.name ? h('strong', {}, `${frame.recap.name}  `) : null, frame.recap.text),
+        englishNode(frame.recap.en))
+      : null;
+    const prompt = h('div', { class: 'story-prompt' }, recap, frame.name ? h('span', { class: 'story-plate' }, frame.name) : null, beat.prompt ? h('p', { lang: 'en' }, beat.prompt) : null);
+    const feedback = h('p', { class: 'story-feedback', role: 'status', 'aria-live': 'polite' }, frame.requeued ? 'You missed this one earlier.' : frame.attempts > 0 ? 'Try again.' : '');
     if (beat.type === 'reading') {
       const display = h('p', { class: 'story-display', lang: 'ja' }, ...displayParts(beat));
       const input = h('input', { class: 'story-input', type: 'text', lang: 'ja', autocomplete: 'off', autocapitalize: 'off', spellcheck: 'false', placeholder: 'Type the reading', 'aria-label': 'Reading in kana',
@@ -316,7 +345,8 @@ function mountPlayer(host, ctx, { data, manifest, restore, exit }) {
       return;
     }
     const options = beat.type === 'choice' ? beat.options.map((o) => o.text) : beat.options;
-    panel.replaceChildren(
+    fill(
+      panel,
       prompt,
       beat.display ? h('p', { class: 'story-display', lang: 'ja' }, beat.display) : null,
       h('div', { class: 'story-options' }, options.map((text, index) => h('button', { type: 'button', class: 'story-option', lang: beat.type === 'choice' ? 'ja' : 'en', onclick: () => submit(index, feedback) }, h('kbd', {}, String(index + 1)), ' ', text))),
@@ -365,7 +395,7 @@ function mountPlayer(host, ctx, { data, manifest, restore, exit }) {
     if (!completed) {
       completed = true;
       try {
-        await api.complete({ id: scene.id, stars: frame.summary.stars, accuracy: frame.summary.accuracy, affection: frame.summary.affection, gallery: frame.summary.gallery });
+        await api.complete({ id: scene.id, accuracy: frame.summary.accuracy, affection: frame.summary.affection, gallery: frame.summary.gallery });
       } catch (err) {
         toast(err.message, 'error');
       }
@@ -373,9 +403,10 @@ function mountPlayer(host, ctx, { data, manifest, restore, exit }) {
     if (disposed) return;
     panel.replaceChildren(
       h('div', { class: 'story-card-intro story-end' },
-        h('span', { class: 'story-level' }, 'Scene complete'),
-        h('h2', {}, summary.stars),
+        h('span', { class: 'story-level' }, 'Completed'),
+        h('h2', {}, summary.heading),
         h('p', {}, summary.line),
+        summary.revisited ? h('p', { class: 'story-foot' }, `${summary.revisited} challenge${summary.revisited === 1 ? '' : 's'} came back until you got ${summary.revisited === 1 ? 'it' : 'them'} right.`) : null,
         summary.affection.map(([char, delta]) => h('p', { class: 'story-foot' }, `${scene.characters[char]?.name ?? char}  ${delta > 0 ? '+' : ''}${delta}`)),
         summary.gallery.map((g) => h('p', { class: 'story-foot' }, `Unlocked: ${g.title}`)),
         h('div', { class: 'story-card-actions' }, button('Replay', () => { completed = false; engine = newEngine(null); tracker = ''; render(); }), button('Back to Story', exit, 'story-btn primary')),
@@ -410,6 +441,8 @@ function mountPlayer(host, ctx, { data, manifest, restore, exit }) {
       if (!textBox.hidden) onBoxClick();
     } else if (event.key.toLowerCase() === 'b') {
       openBacklog();
+    } else if (event.key.toLowerCase() === 't') {
+      toggleTranslate();
     } else if (/^[1-4]$/.test(event.key)) {
       panel.querySelectorAll('.story-option')[Number(event.key) - 1]?.click();
     }
@@ -425,8 +458,8 @@ function mountPlayer(host, ctx, { data, manifest, restore, exit }) {
     layer.hidden = false;
     layer.replaceChildren(
       h('div', { class: 'story-backlog', role: 'dialog', 'aria-label': 'Backlog' },
-        h('header', {}, h('h2', {}, 'Backlog'), button('Close', closeOverlay, 'story-chip')),
-        h('ol', {}, engine.backlog().map((e) => h('li', {}, e.name ? h('strong', {}, `${e.name}  `) : null, h('span', { lang: 'ja' }, e.text), e.en ? h('small', {}, e.en) : null))),
+        h('header', {}, h('h2', {}, 'Backlog'), h('div', { class: 'story-card-actions' }, translateButton(), button('Close', closeOverlay, 'story-chip'))),
+        h('ol', {}, backlogRows(engine.backlog(), translate).map((e) => h('li', { class: e.bridge ? 'story-bridge' : null }, e.name ? h('strong', {}, `${e.name}  `) : null, h('span', { lang: 'ja' }, e.text), e.en ? h('small', { lang: 'en' }, e.en) : null))),
       ),
     );
     layer.querySelector('ol')?.lastElementChild?.scrollIntoView?.();
