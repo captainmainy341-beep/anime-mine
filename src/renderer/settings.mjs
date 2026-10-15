@@ -7,8 +7,8 @@ function input(type, value, attrs = {}) {
   return h('input', { type, value: value ?? '', ...attrs });
 }
 
-function select(options, value) {
-  const el = h('select', {}, options.map((option) => h('option', { value: option }, option)));
+function select(options, value, labels = {}) {
+  const el = h('select', {}, options.map((option) => h('option', { value: option }, labels[option] ?? option)));
   el.value = value;
   return el;
 }
@@ -25,7 +25,7 @@ function createInputs(settings) {
     ankiModel: input('text', settings.ankiModel),
     audioPadStart: input('number', settings.audioPadStart, { step: '0.05', min: '0' }),
     audioPadEnd: input('number', settings.audioPadEnd, { step: '0.05', min: '0' }),
-    provider: select(['anthropic', 'openai'], settings.ai.provider),
+    provider: select(['claude-cli', 'anthropic', 'openai'], settings.ai.provider),
     apiKey: input('password', settings.ai.apiKey, { autocomplete: 'off' }),
     model: input('text', settings.ai.model),
     baseUrl: input('text', settings.ai.baseUrl, { placeholder: 'Empty for the provider default' }),
@@ -34,9 +34,16 @@ function createInputs(settings) {
     showFurigana: checkbox(settings.showFurigana),
     autoPause: checkbox(settings.autoPause),
     quickMine: checkbox(settings.quickMine),
+    removeBurnedSubs: checkbox(settings.removeBurnedSubs),
+    burnedSubsMode: select(['blur', 'ai'], settings.burnedSubsMode === 'ai' ? 'ai' : 'blur', {
+      blur: 'Fast blur, about 12 min per episode, no install',
+      ai: 'AI fill, about 1 hour per episode, installs ~1 GB',
+    }),
     knownDeck: input('text', settings.knownDeck, { list: 'known-decks', placeholder: 'Deck name in Anki' }),
     knownField: select(settings.knownField ? [settings.knownField] : [], settings.knownField),
     knownMatureOnly: checkbox(settings.knownMatureOnly),
+    jimakuEnabled: checkbox(settings.jimaku.enabled),
+    jimakuApiKey: input('password', settings.jimaku.apiKey, { autocomplete: 'off' }),
   };
 }
 
@@ -64,9 +71,12 @@ function readPatch(f) {
     showFurigana: f.showFurigana.checked,
     autoPause: f.autoPause.checked,
     quickMine: f.quickMine.checked,
+    removeBurnedSubs: f.removeBurnedSubs.checked,
+    burnedSubsMode: f.burnedSubsMode.value,
     knownDeck: f.knownDeck.value.trim(),
     knownField: f.knownField.value,
     knownMatureOnly: f.knownMatureOnly.checked,
+    jimaku: { enabled: f.jimakuEnabled.checked, apiKey: f.jimakuApiKey.value.trim() },
   };
 }
 
@@ -90,7 +100,12 @@ function fieldset(legend, ...fields) {
 
 function sections(f) {
   return [
-    fieldset('Library', field('Downloads folder', f.downloadsDir, 'Subtitle downloads in this folder are linked automatically.', true)),
+    fieldset(
+      'Library',
+      field('Downloads folder', f.downloadsDir, 'Subtitle downloads in this folder are linked automatically.', true),
+      toggle(f.jimakuEnabled, 'Jimaku auto-subtitles'),
+      field('Jimaku API key', f.jimakuApiKey, 'Free key from jimaku.cc → Account. Missing subtitles for new episodes are fetched automatically.', true),
+    ),
     fieldset(
       'Anki',
       field('AnkiConnect URL', f.ankiUrl),
@@ -102,7 +117,7 @@ function sections(f) {
     fieldset(
       'AI lookup',
       field('Provider', f.provider),
-      field('API key', f.apiKey, 'Stored locally in plain text in settings.json.'),
+      field('API key', f.apiKey, 'Stored locally in plain text in settings.json. Not needed for claude-cli, which uses your Claude Code login.'),
       field('Model', f.model),
       field('Base URL', f.baseUrl, 'Optional. Leave empty for the provider default.', true),
     ),
@@ -185,6 +200,36 @@ function knownSection(f) {
   };
 }
 
+function desubLabel({ installed, installing, current, bytes }, mode) {
+  if (installing) return 'Installing tools…';
+  if (!installed && mode === 'ai') return 'Tools not installed';
+  if (current) return `Cleaning: ${Math.round(current.fraction * 100)}%`;
+  return `Idle, ${formatBytes(bytes)} cached`;
+}
+
+function subtitlesSection(f) {
+  const hint = h('p', { class: 'hint full' }, 'Checking…');
+
+  async function refresh() {
+    hint.textContent = desubLabel(await api.desub.status(), f.burnedSubsMode.value);
+  }
+
+  f.burnedSubsMode.addEventListener('change', () => attempt(refresh));
+  const onEvent = () => attempt(refresh);
+  const stops = [api.desub.onProgress(onEvent), api.desub.onDone(onEvent), api.desub.onError(onEvent)];
+
+  return {
+    el: fieldset(
+      'Subtitles',
+      toggle(f.removeBurnedSubs, 'Remove burned-in subtitles (runs in the background)'),
+      field('Method', f.burnedSubsMode),
+      hint,
+    ),
+    load: () => attempt(refresh),
+    stop: () => stops.forEach((stop) => stop()),
+  };
+}
+
 function pitchSection() {
   const status = h('span', { class: 'hint' }, 'Checking…');
   const download = h('button', { type: 'button', class: 'ghost', onclick: () => attempt(downloadPitch) }, 'Download');
@@ -247,32 +292,72 @@ function mediaSection() {
   };
 }
 
+function webSection() {
+  const port = input('text', '', { readonly: true, placeholder: 'Starting…' });
+  const token = input('text', '', { readonly: true, placeholder: 'Starting…' });
+  const copy = h('button', { type: 'button', class: 'ghost', onclick: () => attempt(copyToken) }, 'Copy token');
+
+  async function refresh() {
+    const info = await api.web.info();
+    port.value = info.port ?? 'Unavailable';
+    token.value = info.token ?? '';
+  }
+
+  async function copyToken() {
+    await navigator.clipboard.writeText((await api.web.info()).token ?? '');
+    toast('Token copied', 'success');
+  }
+
+  return {
+    el: fieldset(
+      'Browser extension',
+      field('Port', port),
+      field('Token', token, '', true),
+      h(
+        'div',
+        { class: 'row-actions' },
+        h('span', { class: 'hint' }, 'Paste the port and token into the Anime Mine browser extension.'),
+        copy,
+      ),
+    ),
+    load: () => attempt(refresh),
+  };
+}
+
 export function mountSettings(container) {
   const form = h('form', { class: 'settings-form', onsubmit: save });
   container.append(h('section', { class: 'page' }, h('h1', {}, 'Settings'), form));
   let inputs = null;
   let disposed = false;
   let stopPitch = null;
+  let stopSubtitles = null;
 
   attempt(async () => {
     const settings = await api.settings.get();
     if (disposed) return;
     inputs = createInputs(settings);
+    const subtitles = subtitlesSection(inputs);
     const known = knownSection(inputs);
     const pitch = pitchSection();
     const media = mediaSection();
+    const web = webSection();
+    stopSubtitles = subtitles.stop;
     stopPitch = pitch.stop;
     fill(
       form,
       ...sections(inputs),
+      subtitles.el,
       known.el,
       pitch.el,
       media.el,
+      web.el,
       h('div', { class: 'form-foot' }, h('button', { class: 'primary', type: 'submit' }, 'Save settings')),
     );
+    subtitles.load();
     known.load();
     pitch.load();
     media.load();
+    web.load();
   });
 
   function save(e) {
@@ -285,6 +370,7 @@ export function mountSettings(container) {
 
   return () => {
     disposed = true;
+    stopSubtitles?.();
     stopPitch?.();
   };
 }

@@ -1,0 +1,333 @@
+{
+  "version": "fixture",
+  "words": [
+    {
+      "id": "1001",
+      "kanji": [{ "common": true, "text": "好き", "tags": [] }],
+      "kana": [{ "common": true, "text": "すき", "tags": [], "appliesToKanji": ["*"] }],
+      "sense": [
+        {
+          "partOfSpeech": ["adj-na"],
+          "misc": [],
+          "gloss": [{ "lang": "eng", "text": "liking" }, { "lang": "eng", "text": "fond" }],
+          "examples": [
+            {
+              "text": "好きです",
+              "sentences": [
+                { "lang": "jpn", "text": "私は犬が好きです。" },
+                { "lang": "eng", "text": "I like dogs." }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "1002",
+      "kanji": [{ "common": true, "text": "日本", "tags": [] }],
+      "kana": [{ "common": true, "text": "にほん", "tags": [], "appliesToKanji": ["*"] }],
+      "sense": [
+        {
+          "partOfSpeech": ["n"],
+          "misc": [],
+          "gloss": [{ "lang": "eng", "text": "Japan" }],
+          "examples": [
+            {
+              "text": "日本",
+              "sentences": [
+                { "lang": "jpn", "text": "日本に行きたい。" },
+                { "lang": "eng", "text": "I want to go to Japan." }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "1003",
+      "kanji": [{ "common": true, "text": "明日", "tags": [] }],
+      "kana": [
+        { "common": true, "text": "あした", "tags": [], "appliesToKanji": ["*"] },
+        { "common": false, "text": "みょうにち", "tags": [], "appliesToKanji": ["明日"] },
+        { "common": false, "text": "あす", "tags": [], "appliesToKanji": ["別"] }
+      ],
+      "sense": [
+        {
+          "partOfSpeech": ["n", "adv"],
+          "misc": [],
+          "gloss": [{ "lang": "eng", "text": "tomorrow" }],
+          "examples": [
+            {
+              "text": "明日は雨",
+              "sentences": [
+                { "lang": "jpn", "text": "明日は雨です。" },
+                { "lang": "eng", "text": "It will rain tomorrow." }
+              ]
+            },
+            {
+              "text": "明日また",
+              "sentences": [
+                { "lang": "jpn", "text": "明日また来てください。" },
+                { "lang": "eng", "text": "Please come again tomorrow." }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "1004",
+      "kanji": [{ "common": false, "text": "林", "tags": [] }],
+      "kana": [{ "common": false, "text": "はやし", "tags": [], "appliesToKanji": ["*"] }],
+      "sense": [
+        {
+          "partOfSpeech": ["n"],
+          "misc": [],
+          "gloss": [{ "lang": "eng", "text": "grove" }],
+          "examples": [
+            {
+              "text": "林",
+              "sentences": [
+                { "lang": "jpn", "text": "林の中を歩く。" },
+                { "lang": "eng", "text": "I walk in the grove." }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "1005",
+      "kanji": [{ "common": true, "text": "男", "tags": [] }],
+      "kana": [{ "common": true, "text": "おとこ", "tags": [], "appliesToKanji": ["*"] }],
+      "sense": [{ "partOfSpeech": ["n"], "misc": [], "gloss": [{ "lang": "eng", "text": "man" }], "examples": [] }]
+    },
+    {
+      "id": "1006",
+      "kanji": [{ "common": true, "text": "木", "tags": [] }],
+      "kana": [{ "common": true, "text": "き", "tags": [], "appliesToKanji": ["*"] }],
+      "sense": [
+        {
+          "partOfSpeech": ["n"],
+          "misc": ["uk"],
+          "gloss": [{ "lang": "eng", "text": "tree" }],
+          "examples": [
+            {
+              "text": "木の下",
+              "sentences": [
+                { "lang": "jpn", "text": "木の下で休む。" },
+                { "lang": "eng", "text": "I rest under a tree." }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "1007",
+      "kanji": [{ "common": true, "text": "休日", "tags": [] }],
+      "kana": [{ "common": true, "text": "きゅうじつ", "tags": [], "appliesToKanji": ["*"] }],
+      "sense": [
+        {
+          "partOfSpeech": ["n"],
+          "misc": [],
+          "gloss": [{ "lang": "eng", "text": "day off" }],
+          "examples": [
+            {
+              "text": "休日だ",
+              "sentences": [
+                { "lang": "jpn", "text": "明日は休日だ。" },
+                { "lang": "eng", "text": "Tomorrow is a day off." }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "1008",
+      "kanji": [{ "common": true, "text": "女子", "tags": [] }],
+      "kana": [{ "common": true, "text": "じょし", "tags": [], "appliesToKanji": ["*"] }],
+      "sense": [
+        {
+          "partOfSpeech": ["n"],
+          "misc": [],
+          "gloss": [{ "lang": "eng", "text": "girl" }],
+          "examples": [
+            {
+              "text": "女子",
+              "sentences": [
+                { "lang": "jpn", "text": "女子が走っている。" },
+                { "lang": "eng", "text": "A girl is running." }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "1009",
+      "kanji": [{ "common": true, "text": "森林", "tags": [] }],
+      "kana": [{ "common": true, "text": "しんりん", "tags": [], "appliesToKanji": ["*"] }],
+      "sense": [
+        {
+          "partOfSpeech": ["n"],
+          "misc": [],
+          "gloss": [{ "lang": "eng", "text": "forest" }],
+          "examples": [
+            {
+              "text": "森林を歩く",
+              "sentences": [
+                { "lang": "jpn", "text": "森林を歩く。" },
+                { "lang": "eng", "text": "I walk through the forest." }
+              ]
+            },
+            {
+              "text": "森林は大切",
+              "sentences": [
+                { "lang": "jpn", "text": "森林は大切だ。" },
+                { "lang": "eng", "text": "Forests are important." }
+              ]
+            },
+            {
+              "text": "長い時間",
+              "sentences": [
+                { "lang": "jpn", "text": "この広い森林は、長い時間をかけて育ってきたものだ。" },
+                { "lang": "eng", "text": "This wide forest grew over a long time." }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "1010",
+      "kanji": [{ "common": true, "text": "男女", "tags": [] }],
+      "kana": [{ "common": true, "text": "だんじょ", "tags": [], "appliesToKanji": ["*"] }],
+      "sense": [
+        {
+          "partOfSpeech": ["n"],
+          "misc": [],
+          "gloss": [{ "lang": "eng", "text": "man and woman" }],
+          "examples": [
+            {
+              "text": "男女",
+              "sentences": [
+                { "lang": "jpn", "text": "男女が集まった。" },
+                { "lang": "eng", "text": "Men and women gathered." }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "1011",
+      "kanji": [{ "common": true, "text": "田んぼ", "tags": [] }],
+      "kana": [{ "common": true, "text": "たんぼ", "tags": [], "appliesToKanji": ["*"] }],
+      "sense": [
+        {
+          "partOfSpeech": ["n"],
+          "misc": [],
+          "gloss": [{ "lang": "eng", "text": "rice paddy" }],
+          "examples": [
+            {
+              "text": "田んぼ",
+              "sentences": [
+                { "lang": "jpn", "text": "田んぼで遊んでいた子供たちが、夕方になってもまだ家に帰らずに、大きな声で笑っていました。" },
+                { "lang": "eng", "text": "The children playing in the rice paddy kept laughing loudly even at dusk." }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "1012",
+      "kanji": [{ "common": true, "text": "蛍", "tags": [] }],
+      "kana": [{ "common": true, "text": "ほたる", "tags": [], "appliesToKanji": ["*"] }],
+      "sense": [
+        {
+          "partOfSpeech": ["n"],
+          "misc": [],
+          "gloss": [{ "lang": "eng", "text": "firefly" }],
+          "examples": [
+            {
+              "text": "蛍",
+              "sentences": [{ "lang": "jpn", "text": "蛍が光る。" }]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "1013",
+      "kanji": [{ "common": true, "text": "猫", "tags": [] }],
+      "kana": [{ "common": true, "text": "ねこ", "tags": [], "appliesToKanji": ["*"] }],
+      "sense": [
+        {
+          "partOfSpeech": ["n"],
+          "misc": [],
+          "gloss": [{ "lang": "eng", "text": "cat" }],
+          "examples": [
+            {
+              "text": "猫",
+              "sentences": [
+                { "lang": "jpn", "text": "猫が寝ている。" },
+                { "lang": "eng", "text": "The cat is sleeping." }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "1014",
+      "kanji": [],
+      "kana": [{ "common": true, "text": "すごい", "tags": [], "appliesToKanji": ["*"] }],
+      "sense": [
+        {
+          "partOfSpeech": ["adj-i"],
+          "misc": [],
+          "gloss": [{ "lang": "eng", "text": "amazing" }],
+          "examples": [
+            {
+              "text": "すごい",
+              "sentences": [
+                { "lang": "jpn", "text": "すごい！" },
+                { "lang": "eng", "text": "Amazing!" }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "1015",
+      "kanji": [{ "common": true, "text": "木", "tags": [] }],
+      "kana": [{ "common": true, "text": "き", "tags": [], "appliesToKanji": ["*"] }],
+      "sense": [
+        {
+          "partOfSpeech": ["n"],
+          "misc": ["uk"],
+          "gloss": [{ "lang": "eng", "text": "tree (kana-only sense)" }],
+          "examples": []
+        },
+        {
+          "partOfSpeech": ["n"],
+          "misc": [],
+          "gloss": [{ "lang": "eng", "text": "wood" }],
+          "examples": [
+            {
+              "text": "木材",
+              "sentences": [
+                { "lang": "jpn", "text": "木で家を作る。" },
+                { "lang": "eng", "text": "They build a house with wood." }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,985 @@
+[
+  {
+    "id": "g:n3-koto-ni-natte-iru",
+    "jlpt": "N3",
+    "title": "〜ことになっている",
+    "meaning": "it is arranged / supposed to (by rule, custom or plan)",
+    "structure": "Verb dictionary or ない form + ことになっている",
+    "formality": "neutral",
+    "notes": "Describes a rule, custom or arrangement set by others, not a personal decision. Compare 〜ことになる, which marks a decision or outcome reached at some point. Common with school and workplace rules and schedules.",
+    "similar": [
+      "〜ことになる"
+    ],
+    "detect": [
+      "ことになって(い|る)"
+    ],
+    "examples": [
+      {
+        "ja": "ここでは写真を{{撮らないことになっています|撮らないことになっている}}んですよ。",
+        "en": "Photos are not supposed to be taken here, you know.",
+        "hint": "撮る + ことになっている"
+      },
+      {
+        "ja": "明日の会議は九時に{{始まることになっている|始まることになってる}}。",
+        "en": "The meeting is scheduled to start at nine tomorrow.",
+        "hint": "始まる + ことになっている"
+      },
+      {
+        "ja": "うちの学校では、月曜日に全員で{{掃除をすることになっています|掃除をすることになっている}}。",
+        "en": "At our school, everyone is supposed to clean on Monday.",
+        "hint": "する + ことになっている"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-wake-da",
+    "jlpt": "N3",
+    "title": "〜わけだ",
+    "meaning": "no wonder / that explains why; it follows that ...",
+    "structure": "Plain form + わけだ",
+    "formality": "neutral",
+    "notes": "Expresses a logical conclusion: the speaker now understands the reason behind something. Use it when the reason has just become clear, not for plain facts. Polite form is わけです.",
+    "similar": [],
+    "detect": [
+      "わけ(だ|です)"
+    ],
+    "examples": [
+      {
+        "ja": "毎日練習していたのか。だから{{上手なわけだ}}ね。",
+        "en": "So you practised every day. No wonder you are so good.",
+        "hint": "上手だ + わけだ"
+      },
+      {
+        "ja": "駅まで走ったから、{{息が切れているわけだ}}。",
+        "en": "No wonder I am out of breath. I ran all the way to the station.",
+        "hint": "息が切れる + わけだ"
+      },
+      {
+        "ja": "なるほど、今日は店が{{休みなわけだ}}。張り紙に書いてあったね。",
+        "en": "I see, so the shop is closed today. It was on the notice.",
+        "hint": "休み + わけだ"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-wake-dewa-nai",
+    "jlpt": "N3",
+    "title": "〜わけではない",
+    "meaning": "it is not that ...; not necessarily",
+    "structure": "Plain form + わけではない",
+    "formality": "neutral",
+    "notes": "Softens a denial: it says the situation is not entirely the case, rather than that it is the opposite. Used to correct a misunderstanding or add nuance. Often follows a statement that would otherwise sound too strong.",
+    "similar": [
+      "〜わけがない",
+      "〜わけだ"
+    ],
+    "detect": [
+      "わけ(では|じゃ)ない"
+    ],
+    "examples": [
+      {
+        "ja": "{{嫌いなわけではない|嫌いなわけじゃない}}んですが、今日はちょっと疲れていて。",
+        "en": "It is not that I dislike it, but I am a bit tired today.",
+        "hint": "嫌いだ + わけではない"
+      },
+      {
+        "ja": "{{怒っているわけではないよ|怒ってるわけじゃないよ}}。ただ、少し驚いただけ。",
+        "en": "I am not angry. I was just a little surprised.",
+        "hint": "怒る + わけではない"
+      },
+      {
+        "ja": "その案は{{悪いわけではない|悪いわけじゃない}}が、予算が足りない。",
+        "en": "It is not that the plan is bad, but there is not enough budget.",
+        "hint": "悪い + わけではない"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-wake-ni-wa-ikanai",
+    "jlpt": "N3",
+    "title": "〜わけにはいかない",
+    "meaning": "cannot (do) for reasons of duty, social norms or consequences",
+    "structure": "Verb dictionary form + わけにはいかない",
+    "formality": "neutral",
+    "notes": "Means one cannot do something because of circumstances, duty or social expectations, not because of ability. Contrast 〜ことができない for inability. Often used to politely refuse or to express obligation.",
+    "similar": [
+      "〜ことができる"
+    ],
+    "detect": [
+      "わけには(いか|行か|いき)(な|ま)"
+    ],
+    "examples": [
+      {
+        "ja": "今、仕事を{{投げ出すわけにはいかない}}。最後までやり遂げるつもりだ。",
+        "en": "I cannot abandon the work now. I plan to see it through to the end.",
+        "hint": "投げ出す + わけにはいかない"
+      },
+      {
+        "ja": "先輩の頼みなんだから、{{断るわけにはいかない}}よ。",
+        "en": "It is a favour from a senior, so I cannot refuse.",
+        "hint": "断る + わけにはいかない"
+      },
+      {
+        "ja": "こんな大事な会議を{{欠席するわけにはいきません}}。",
+        "en": "I cannot miss such an important meeting.",
+        "hint": "欠席する + わけにはいかない"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-wake-ga-nai",
+    "jlpt": "N3",
+    "title": "〜わけがない",
+    "meaning": "there is no way that ...; impossible",
+    "structure": "Plain form + わけがない",
+    "formality": "neutral",
+    "notes": "Expresses strong conviction that something is impossible, based on what the speaker knows. Stronger than 〜はずがない. Often used to dismiss a claim or to express disbelief.",
+    "similar": [
+      "〜はずがない",
+      "〜わけではない"
+    ],
+    "detect": [
+      "わけがな(い|かった)"
+    ],
+    "examples": [
+      {
+        "ja": "彼が約束を{{忘れるわけがない}}。絶対に来るよ。",
+        "en": "There is no way he would forget the promise. He will definitely come.",
+        "hint": "忘れる + わけがない"
+      },
+      {
+        "ja": "こんな簡単な問題を{{間違えるわけがない}}でしょう？",
+        "en": "There is no way you would get such an easy question wrong, right?",
+        "hint": "間違える + わけがない"
+      },
+      {
+        "ja": "あんなに練習したんだから、{{失敗したわけがなかった}}。",
+        "en": "After practising that much, I could not possibly have failed.",
+        "hint": "失敗する + わけがない"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-mono-da",
+    "jlpt": "N3",
+    "title": "〜ものだ",
+    "meaning": "it is natural that; (general truth, nostalgia or gentle advice)",
+    "structure": "Verb plain form + ものだ / 〜たものだ (past habit)",
+    "formality": "neutral",
+    "notes": "Used for general truths or typical reactions (people tend to ...), for nostalgic past habits with 〜たものだ, and for gentle advice (you should ...). Not for a specific one-time event. Avoid 〜ものだから, which is a different reason expression.",
+    "similar": [
+      "〜ものか",
+      "〜ものの"
+    ],
+    "detect": [
+      "ものだ(?!から)"
+    ],
+    "examples": [
+      {
+        "ja": "子どものころは、よくこの川で{{泳いだものだ}}。",
+        "en": "When I was a child, I used to swim in this river all the time.",
+        "hint": "泳ぐ + ものだ"
+      },
+      {
+        "ja": "疲れると、甘いものが{{食べたくなるものだ}}。",
+        "en": "When people get tired, they tend to crave sweets.",
+        "hint": "食べる + ものだ"
+      },
+      {
+        "ja": "年上の人には、{{敬語を使うものだ}}よ。",
+        "en": "You should use polite language with people older than you.",
+        "hint": "使う + ものだ"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-mono-ka",
+    "jlpt": "N3",
+    "title": "〜ものか",
+    "meaning": "no way I would ...!",
+    "structure": "Verb plain form + ものか",
+    "formality": "casual",
+    "notes": "Expresses a strong, emotional refusal, roughly no way I will ...! Used in angry or defiant speech, mostly spoken. Do not confuse with 〜ものだ, which states a general truth.",
+    "similar": [
+      "〜ものだ",
+      "〜わけがない"
+    ],
+    "detect": [
+      "ものか"
+    ],
+    "examples": [
+      {
+        "ja": "誰があんな奴に{{謝るものか}}！",
+        "en": "No way am I apologising to that guy!",
+        "hint": "謝る + ものか"
+      },
+      {
+        "ja": "{{諦めるものか}}！ 最後まで戦ってやる。",
+        "en": "No way I am giving up! I will keep fighting to the end.",
+        "hint": "諦める + ものか"
+      },
+      {
+        "ja": "あんたの言うことなんか、{{信じるものか}}。",
+        "en": "I am not going to believe a word you say.",
+        "hint": "信じる + ものか"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-mono-no",
+    "jlpt": "N3",
+    "title": "〜ものの",
+    "meaning": "although; even though (a contrasting result follows)",
+    "structure": "Plain form + ものの",
+    "formality": "neutral",
+    "notes": "Marks a contrast where the second clause describes a result that does not match what was expected. More formal and literary than けど. Spoken casual speech usually uses けど instead.",
+    "similar": [
+      "〜けど / が (but)"
+    ],
+    "detect": [
+      "ものの"
+    ],
+    "examples": [
+      {
+        "ja": "{{努力したものの}}、結果は出なかった。",
+        "en": "I made an effort, but the results did not come.",
+        "hint": "努力する + ものの"
+      },
+      {
+        "ja": "{{頼んだものの}}、なかなか返事が来ない。",
+        "en": "I asked him, but a reply just will not come.",
+        "hint": "頼む + ものの"
+      },
+      {
+        "ja": "{{分かっていたものの}}、どうしても言い出せなかった。",
+        "en": "I knew, but I just could not bring myself to say it.",
+        "hint": "分かる + ものの"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-tokoro-ni",
+    "jlpt": "N3",
+    "title": "〜ところに / ところへ",
+    "meaning": "just as; right when (something happens at that moment)",
+    "structure": "Verb plain form (present) + ところに / ところへ",
+    "formality": "neutral",
+    "notes": "Describes an event happening at the exact moment another occurs, often an interruption or an arrival. Use ところへ for movement toward a place. Not the same as 〜たところ, which means that doing something led to a result.",
+    "similar": [
+      "〜たところ",
+      "〜ところだ (about to / in the middle / just did)"
+    ],
+    "detect": [
+      "ところ(に|へ)"
+    ],
+    "examples": [
+      {
+        "ja": "{{出かけようとしたところに}}、友達から電話がかかってきた。",
+        "en": "Just as I was about to leave, a call came from a friend.",
+        "hint": "出かける + ところに"
+      },
+      {
+        "ja": "{{帰ってきたところへ}}、母が荷物を届けに来た。",
+        "en": "Just as I got back, my mother came by to drop off a package.",
+        "hint": "帰る + ところへ"
+      },
+      {
+        "ja": "ちょうど{{寝ようとしたところに}}、ゲームの通知が鳴った。",
+        "en": "Just as I was about to go to sleep, a game notification went off.",
+        "hint": "寝る + ところに"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-tokoro-ta",
+    "jlpt": "N3",
+    "title": "〜たところ",
+    "meaning": "when (I) did ...; it turned out that ...",
+    "structure": "Verb past form + ところ",
+    "formality": "neutral",
+    "notes": "Used when an action leads to an unexpected result or discovery, often followed by a finding. Different from 〜たところだ (just did) and from 〜ところに (at the moment of).",
+    "similar": [
+      "〜ところに / ところへ",
+      "〜たばかり"
+    ],
+    "detect": [
+      "たところ、"
+    ],
+    "examples": [
+      {
+        "ja": "言われたとおりに{{やってみたところ}}、うまく動いた。",
+        "en": "When I tried it the way I was told, it worked well.",
+        "hint": "やってみる + たところ"
+      },
+      {
+        "ja": "念のため病院に{{行ったところ}}、ただの風邪だと言われた。",
+        "en": "I went to the hospital just to be safe, and they said it was only a cold.",
+        "hint": "行く + たところ"
+      },
+      {
+        "ja": "商品を{{調べたところ}}、在庫がなかった。",
+        "en": "When I checked the product, it turned out there was no stock.",
+        "hint": "調べる + たところ"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-tabakari",
+    "jlpt": "N3",
+    "title": "〜たばかり",
+    "meaning": "having only just done ...",
+    "structure": "Verb past form + ばかり / noun + したばかり",
+    "formality": "neutral",
+    "notes": "Indicates an action that finished very recently, usually within a few days. Focuses on how recent the event is, unlike 〜ところだ, which focuses on the exact moment. Also used with nouns: 来たばかり, 入社したばかり.",
+    "similar": [
+      "〜ところだ (about to / in the middle / just did)",
+      "〜たところ"
+    ],
+    "detect": [
+      "たばかり"
+    ],
+    "examples": [
+      {
+        "ja": "この{{買ったばかりなのに}}、もう壊れてしまった。",
+        "en": "Even though I had only just bought it, it has already broken.",
+        "hint": "買う + たばかり"
+      },
+      {
+        "ja": "{{引っ越してきたばかり}}で、まだこの辺りのことがよく分からない。",
+        "en": "I have only just moved here, so I still do not know the area well.",
+        "hint": "引っ越す + たばかり"
+      },
+      {
+        "ja": "先月{{入社したばかり}}の新人です。",
+        "en": "I am a new hire who joined the company just last month.",
+        "hint": "入社する + たばかり"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-toori-ni",
+    "jlpt": "N3",
+    "title": "〜とおりに",
+    "meaning": "exactly as; just as (following instructions, a plan or what was seen)",
+    "structure": "Verb plain / past form + とおりに / 名詞 + どおりに",
+    "formality": "neutral",
+    "notes": "Means doing something exactly according to instructions, a plan, or a model. After a noun, use 〜どおりに (予定どおり). Common with 言う, 書く, 教える and 見る.",
+    "similar": [
+      "〜ように (purpose)"
+    ],
+    "detect": [
+      "(とおり|どおり)に"
+    ],
+    "examples": [
+      {
+        "ja": "{{言われたとおりに}}やってみたら、うまくいった。",
+        "en": "I tried it exactly as the teacher said, and it worked.",
+        "hint": "言う + とおりに"
+      },
+      {
+        "ja": "説明書に{{書いてあるとおりに}}組み立てた。",
+        "en": "I assembled it exactly as the manual says.",
+        "hint": "書く + とおりに"
+      },
+      {
+        "ja": "{{予定どおりに}}進んでいる。",
+        "en": "Things are going according to plan.",
+        "hint": "予定 + どおりに"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-mitai-da",
+    "jlpt": "N3",
+    "title": "〜みたいだ",
+    "meaning": "seems like; looks like; like (a comparison)",
+    "structure": "Plain form / noun + みたいだ",
+    "formality": "casual",
+    "notes": "Casual equivalent of 〜ようだ, used for impressions, guesses from appearance, or comparisons (like a ...). In polite speech use 〜みたいです or 〜ようです. In formal writing, use 〜ようだ.",
+    "similar": [
+      "〜ようだ",
+      "〜らしい"
+    ],
+    "detect": [
+      "みたい(だ|です|な|に)"
+    ],
+    "examples": [
+      {
+        "ja": "もう{{夜みたいだ}}ね。外がすっかり暗くなった。",
+        "en": "It already looks like night. It has gotten completely dark outside.",
+        "hint": "夜 + みたいだ"
+      },
+      {
+        "ja": "彼女は{{子どもみたいに}}はしゃいでいた。",
+        "en": "She was carrying on like a child.",
+        "hint": "子ども + みたいだ"
+      },
+      {
+        "ja": "あの人、{{怒っているみたいだ}}よ。",
+        "en": "He looks angry, doesn't he?",
+        "hint": "怒る + みたいだ"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-ppoi",
+    "jlpt": "N3",
+    "title": "〜っぽい",
+    "meaning": "has the feel of; tends to; looks like (often a casual or negative impression)",
+    "structure": "Noun / verb ます-stem + っぽい",
+    "formality": "casual",
+    "notes": "Attaches to nouns or verb stems to describe a quality, tendency, or look: 怒りっぽい (quick to anger), 大人っぽい (looks mature). Often about personality or appearance. Can sound rude if used carelessly about people.",
+    "similar": [
+      "〜がち",
+      "〜気味"
+    ],
+    "detect": [
+      "っぽ(い|く|かった)"
+    ],
+    "examples": [
+      {
+        "ja": "あの子は{{怒りっぽい}}から、気をつけてね。",
+        "en": "That kid gets angry easily, so be careful.",
+        "hint": "怒る + っぽい"
+      },
+      {
+        "ja": "彼女は見た目より{{大人っぽい}}。",
+        "en": "She looks more mature than her age.",
+        "hint": "大人 + っぽい"
+      },
+      {
+        "ja": "この服、少し{{子どもっぽい}}かな。",
+        "en": "Is this outfit a bit too childish?",
+        "hint": "子ども + っぽい"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-gachi",
+    "jlpt": "N3",
+    "title": "〜がち",
+    "meaning": "tends to; apt to (usually something undesirable)",
+    "structure": "Verb ます-stem + がち",
+    "formality": "neutral",
+    "notes": "Describes a habitual tendency toward something that happens often, usually negative: 忘れがち, 遅れがち, 風邪を引きがち. Not for one-off events. Compare 〜っぽい, which describes a personality or look.",
+    "similar": [
+      "〜っぽい",
+      "〜気味"
+    ],
+    "detect": [
+      "がち"
+    ],
+    "examples": [
+      {
+        "ja": "最近、{{忘れがち}}なので、メモを取るようにしている。",
+        "en": "I have been forgetting things lately, so I have started taking notes.",
+        "hint": "忘れる + がち"
+      },
+      {
+        "ja": "寒い季節は風邪を{{引きがち}}だ。",
+        "en": "I tend to catch colds in cold seasons.",
+        "hint": "引く + がち"
+      },
+      {
+        "ja": "彼は約束の時間に{{遅れがち}}だ。",
+        "en": "He tends to be late for appointments.",
+        "hint": "遅れる + がち"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-kimi",
+    "jlpt": "N3",
+    "title": "〜気味",
+    "meaning": "slightly; a bit (a mild tendency or feeling)",
+    "structure": "Noun / verb ます-stem + 気味",
+    "formality": "neutral",
+    "notes": "Expresses a slight or mild state, often a symptom or feeling: 風邪気味 (feeling a bit under the weather), 疲れ気味. Usually used for negative states. Compare 〜がち, which describes a habitual tendency.",
+    "similar": [
+      "〜がち",
+      "〜っぽい"
+    ],
+    "detect": [
+      "気味"
+    ],
+    "examples": [
+      {
+        "ja": "最近、少し{{風邪気味}}なんです。",
+        "en": "I have been feeling a little under the weather lately.",
+        "hint": "風邪 + 気味"
+      },
+      {
+        "ja": "仕事が忙しくて、{{疲れ気味}}だ。",
+        "en": "With work so busy, I am feeling a bit tired.",
+        "hint": "疲れる + 気味"
+      },
+      {
+        "ja": "会議が{{長引き気味}}で、まだ終わらない。",
+        "en": "The meeting is running a little long and has not finished yet.",
+        "hint": "長引く + 気味"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-ni-chigainai",
+    "jlpt": "N3",
+    "title": "〜に違いない",
+    "meaning": "must be; there is no doubt that",
+    "structure": "Plain form / noun + に違いない",
+    "formality": "neutral",
+    "notes": "Expresses a strong conviction, based on evidence or reasoning, that something is true. Stronger than 〜だろう. Do not use it for guesses with no basis; that calls for 〜かもしれない.",
+    "similar": [
+      "〜はずだ",
+      "〜に決まっている"
+    ],
+    "detect": [
+      "に(違い|ちが)ない"
+    ],
+    "examples": [
+      {
+        "ja": "彼女は今、{{怒っているに違いない}}。",
+        "en": "She must be angry right now.",
+        "hint": "怒る + に違いない"
+      },
+      {
+        "ja": "このケーキは、きっと{{おいしいに違いない}}。",
+        "en": "This cake must be delicious.",
+        "hint": "おいしい + に違いない"
+      },
+      {
+        "ja": "足跡がある。誰かがここを{{通ったに違いない}}。",
+        "en": "There are footprints. Someone must have passed through here.",
+        "hint": "通る + に違いない"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-ni-kimatte-iru",
+    "jlpt": "N3",
+    "title": "〜に決まっている",
+    "meaning": "obviously; it is certain that",
+    "structure": "Plain form / noun + に決まっている",
+    "formality": "neutral",
+    "notes": "Expresses that something is obvious or certain, often with a tone of of course or mild exasperation. Stronger and more casual than 〜に違いない. Do not use it for things that are only probable.",
+    "similar": [
+      "〜に違いない",
+      "〜わけがない"
+    ],
+    "detect": [
+      "に決まって(い|る)"
+    ],
+    "examples": [
+      {
+        "ja": "そんなの、{{無理に決まっている}}。",
+        "en": "Obviously that is impossible.",
+        "hint": "無理 + に決まっている"
+      },
+      {
+        "ja": "彼が勝つ{{に決まっている}}。練習量が違うから。",
+        "en": "Of course he will win. His training is on another level.",
+        "hint": "勝つ + に決まっている"
+      },
+      {
+        "ja": "こんなに降っていたら、{{中止に決まっている}}よ。",
+        "en": "With rain like this, it is obviously going to be cancelled.",
+        "hint": "中止 + に決まっている"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-kanenai",
+    "jlpt": "N3",
+    "title": "〜かねない",
+    "meaning": "might well; could possibly (end up doing something bad)",
+    "structure": "Verb ます-stem + かねない",
+    "formality": "neutral",
+    "notes": "Warns that an undesirable outcome could easily happen, such as trouble, an accident, or someone getting angry. Describes a real risk, unlike the neutral 〜かもしれない. Often in warnings.",
+    "similar": [
+      "〜かもしれない",
+      "〜かねる"
+    ],
+    "detect": [
+      "かねな(い|かった)"
+    ],
+    "examples": [
+      {
+        "ja": "このままでは、会社が{{倒産しかねない}}。",
+        "en": "If things continue like this, the company could go bankrupt.",
+        "hint": "倒産する + かねない"
+      },
+      {
+        "ja": "そんなことを言ったら、彼は{{怒りかねない}}よ。",
+        "en": "If you say something like that, he might well get angry.",
+        "hint": "怒る + かねない"
+      },
+      {
+        "ja": "この道は事故が{{起きかねない}}から、気をつけて。",
+        "en": "This road could easily see an accident, so be careful.",
+        "hint": "起きる + かねない"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-kaneru",
+    "jlpt": "N3",
+    "title": "〜かねる",
+    "meaning": "cannot (bring oneself to); unable to, due to feelings or circumstances",
+    "structure": "Verb ます-stem + かねる",
+    "formality": "polite",
+    "notes": "Expresses that one is unable to do something, usually for reasons of feeling, policy or circumstance rather than ability. Commonly used to refuse politely, as in お答えしかねます. Stronger and more formal than 〜にくい.",
+    "similar": [
+      "〜わけにはいかない",
+      "〜にくい"
+    ],
+    "detect": [
+      "かね(る|ます|ません)"
+    ],
+    "examples": [
+      {
+        "ja": "その件については、{{お答えしかねます}}。",
+        "en": "I am afraid I cannot answer that question.",
+        "hint": "答える + かねる"
+      },
+      {
+        "ja": "申し訳ありませんが、ご希望には{{添いかねます}}。",
+        "en": "I am sorry, but I am unable to meet your request.",
+        "hint": "添う + かねる"
+      },
+      {
+        "ja": "正直なところ、彼の考えには{{賛成しかねる}}。",
+        "en": "Honestly, I cannot agree with his view.",
+        "hint": "賛成する + かねる"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-zu-ni-irarenai",
+    "jlpt": "N3",
+    "title": "〜ずにいられない / 〜ないではいられない",
+    "meaning": "cannot help but; cannot stop oneself from (doing)",
+    "structure": "Verb ない-stem + ずにはいられない / ないではいられない",
+    "formality": "neutral",
+    "notes": "Expresses an involuntary feeling that makes the speaker act, such as laughing, crying or worrying. The longer form ないではいられない has the same meaning. Usually used with emotions.",
+    "similar": [
+      "〜てたまらない",
+      "〜てしかたがない"
+    ],
+    "detect": [
+      "ずに(は)?いられ",
+      "ないではいられ"
+    ],
+    "examples": [
+      {
+        "ja": "その映画は面白くて、{{笑わずにはいられなかった}}。",
+        "en": "The film was so funny I could not help laughing.",
+        "hint": "笑う + ずにはいられない"
+      },
+      {
+        "ja": "あの話は感動的で、{{泣かずにはいられない}}。",
+        "en": "That story is so moving that I cannot help but cry.",
+        "hint": "泣く + ずにはいられない"
+      },
+      {
+        "ja": "本当のことを、{{言わないではいられなかった}}。",
+        "en": "I could not help but tell the truth.",
+        "hint": "言う + ないではいられない"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-sei-de",
+    "jlpt": "N3",
+    "title": "〜せいで",
+    "meaning": "because of (something bad); due to (often implying blame)",
+    "structure": "Plain form / noun + の + せいで",
+    "formality": "neutral",
+    "notes": "Attributes a negative result to a cause, often implying blame. For positive results use 〜おかげで. Often used for mishaps and inconveniences the speaker did not want.",
+    "similar": [
+      "〜おかげで",
+      "〜によって"
+    ],
+    "detect": [
+      "せいで"
+    ],
+    "examples": [
+      {
+        "ja": "雨が{{降ったせいで}}、試合が中止になった。",
+        "en": "Because of the rain, the match was cancelled.",
+        "hint": "降る + せいで"
+      },
+      {
+        "ja": "{{寝坊したせいで}}、電車に乗り遅れた。",
+        "en": "Because I overslept, I missed the train.",
+        "hint": "寝坊する + せいで"
+      },
+      {
+        "ja": "彼が{{余計なことを言ったせいで}}、空気が悪くなった。",
+        "en": "Because he said something unnecessary, the atmosphere turned awkward.",
+        "hint": "言う + せいで"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-okage-de",
+    "jlpt": "N3",
+    "title": "〜おかげで",
+    "meaning": "thanks to; because of (a positive result)",
+    "structure": "Plain form / noun + おかげで",
+    "formality": "neutral",
+    "notes": "Expresses that a positive result is due to someone or something. Use 〜せいで for negative results. The polite form is お陰様で. Can be sarcastic when the outcome is bad.",
+    "similar": [
+      "〜せいで",
+      "〜によって"
+    ],
+    "detect": [
+      "おかげ(で|さま)"
+    ],
+    "examples": [
+      {
+        "ja": "皆さんが{{応援してくれたおかげで}}、優勝できた。",
+        "en": "Thanks to your support, we were able to win the championship.",
+        "hint": "応援する + おかげで"
+      },
+      {
+        "ja": "{{薬が効いたおかげで}}、熱が下がった。",
+        "en": "Thanks to the medicine working, my fever went down.",
+        "hint": "効く + おかげで"
+      },
+      {
+        "ja": "{{先生のおかげで}}、試験に合格できました。",
+        "en": "Thanks to my teacher, I passed the exam.",
+        "hint": "先生 + おかげで"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-ni-yotte",
+    "jlpt": "N3",
+    "title": "〜によって",
+    "meaning": "depending on; by means of; because of; by (passive agent)",
+    "structure": "Noun + によって / によっては",
+    "formality": "neutral",
+    "notes": "Has several uses: depending on (results differ by case), by means of, and the agent in a passive sentence. 〜によっては means in some cases. Common in writing and formal speech.",
+    "similar": [
+      "〜によると",
+      "〜に関して"
+    ],
+    "detect": [
+      "によって"
+    ],
+    "examples": [
+      {
+        "ja": "考え方は、{{人によって}}違う。",
+        "en": "Ways of thinking differ from person to person.",
+        "hint": "人 + によって"
+      },
+      {
+        "ja": "この本は、{{作家によって書かれた}}ものだ。",
+        "en": "This book was written by a famous author.",
+        "hint": "書く + によって"
+      },
+      {
+        "ja": "値段は{{店によっては}}、かなり高いこともある。",
+        "en": "Prices can be quite high at some shops.",
+        "hint": "店 + によっては"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-ni-taishite",
+    "jlpt": "N3",
+    "title": "〜に対して",
+    "meaning": "toward; in response to; in contrast with",
+    "structure": "Noun + に対して",
+    "formality": "neutral",
+    "notes": "Marks the target of an attitude or action (怒る相手に対して), or a contrast between two things. 〜に対し is the more formal variant. Common in writing and formal speech.",
+    "similar": [
+      "〜に関して",
+      "〜にとって"
+    ],
+    "detect": [
+      "に対(し|して)"
+    ],
+    "examples": [
+      {
+        "ja": "先生は{{質問に対して}}丁寧に答えた。",
+        "en": "The teacher answered the question politely.",
+        "hint": "質問 + に対して"
+      },
+      {
+        "ja": "{{お客さんに対して}}、失礼な態度をとってはいけない。",
+        "en": "You must not treat customers rudely.",
+        "hint": "客 + に対して"
+      },
+      {
+        "ja": "{{兄に対して}}、弟はとても真面目だ。",
+        "en": "Compared with his older brother, the younger one is very serious.",
+        "hint": "兄 + に対して"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-ni-totte",
+    "jlpt": "N3",
+    "title": "〜にとって",
+    "meaning": "for (someone); from the standpoint of",
+    "structure": "Noun + にとって",
+    "formality": "neutral",
+    "notes": "Gives the viewpoint from which something is judged: how it affects someone or what it means to them. Often used with 大切, 重要 and 難しい. Compare 〜に対して (toward).",
+    "similar": [
+      "〜に対して",
+      "〜に関して"
+    ],
+    "detect": [
+      "にとって"
+    ],
+    "examples": [
+      {
+        "ja": "{{私にとって}}、家族は一番大切だ。",
+        "en": "For me, family is the most important thing.",
+        "hint": "私 + にとって"
+      },
+      {
+        "ja": "{{外国人にとって}}、漢字は難しい。",
+        "en": "Kanji are difficult for foreigners.",
+        "hint": "外国人 + にとって"
+      },
+      {
+        "ja": "{{子どもにとって}}、夏休みはとても楽しい時間だ。",
+        "en": "For children, summer break is a very fun time.",
+        "hint": "子ども + にとって"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-ni-kanshite",
+    "jlpt": "N3",
+    "title": "〜に関して",
+    "meaning": "regarding; concerning (a topic)",
+    "structure": "Noun + に関して",
+    "formality": "polite",
+    "notes": "Introduces the topic a statement or question concerns. Common in formal writing, announcements and business speech. Casual speech uses について instead.",
+    "similar": [
+      "〜について",
+      "〜に対して"
+    ],
+    "detect": [
+      "に関(し|して)"
+    ],
+    "examples": [
+      {
+        "ja": "{{このプロジェクトに関して}}、ご質問はありますか。",
+        "en": "Do you have any questions about this project?",
+        "hint": "プロジェクト + に関して"
+      },
+      {
+        "ja": "{{その件に関して}}は、後日改めてご連絡します。",
+        "en": "I will contact you again later regarding that matter.",
+        "hint": "件 + に関して"
+      },
+      {
+        "ja": "{{健康に関して}}、医者に相談した。",
+        "en": "I consulted a doctor about my health.",
+        "hint": "健康 + に関して"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-wo-hajime",
+    "jlpt": "N3",
+    "title": "〜をはじめ",
+    "meaning": "starting with; including (as a representative example)",
+    "structure": "Noun + をはじめ / をはじめとして / をはじめとする",
+    "formality": "neutral",
+    "notes": "Names a representative example first, implying there are many more. Used for lists of people or things. Not the same as まず (first of all).",
+    "similar": [
+      "〜や〜 (など)"
+    ],
+    "detect": [
+      "をはじめ"
+    ],
+    "examples": [
+      {
+        "ja": "{{社長をはじめ}}、社員全員が集まった。",
+        "en": "Everyone gathered, starting with the president.",
+        "hint": "社長 + をはじめ"
+      },
+      {
+        "ja": "{{家族をはじめとして}}、多くの人がお祝いに来てくれた。",
+        "en": "Many people, starting with my family, came to celebrate.",
+        "hint": "家族 + をはじめとして"
+      },
+      {
+        "ja": "{{日本をはじめ}}、アジア各国で桜が咲く。",
+        "en": "Cherry blossoms bloom across Asia, starting with Japan.",
+        "hint": "日本 + をはじめ"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-toshite",
+    "jlpt": "N3",
+    "title": "〜として",
+    "meaning": "as (a role, status or capacity); as (a treatment of something)",
+    "structure": "Noun + として",
+    "formality": "neutral",
+    "notes": "Marks the role, position or status that someone or something holds: 教師として, 代表として. Also used for treating something in a certain way, as in 参考資料として.",
+    "similar": [
+      "〜にとって",
+      "〜をはじめ"
+    ],
+    "detect": [
+      "として"
+    ],
+    "examples": [
+      {
+        "ja": "彼は{{教師として}}、生徒に人気がある。",
+        "en": "As a teacher, he is popular with his students.",
+        "hint": "教師 + として"
+      },
+      {
+        "ja": "{{日本代表として}}、オリンピックに出場する。",
+        "en": "He will compete at the Olympics as a representative of Japan.",
+        "hint": "代表 + として"
+      },
+      {
+        "ja": "これは{{参考資料として}}使ってください。",
+        "en": "Please use this as reference material.",
+        "hint": "参考資料 + として"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-to-ieba",
+    "jlpt": "N3",
+    "title": "〜といえば",
+    "meaning": "speaking of; when it comes to",
+    "structure": "Noun + といえば",
+    "formality": "neutral",
+    "notes": "Brings up a topic prompted by a mention of something and names what is most associated with it: 日本といえば富士山. Often used as 〜といえば〜だ. Casual speech often drops the second clause.",
+    "similar": [
+      "〜について",
+      "〜として"
+    ],
+    "detect": [
+      "といえば"
+    ],
+    "examples": [
+      {
+        "ja": "{{夏といえば}}、やっぱり花火だよね。",
+        "en": "Speaking of summer, fireworks are the best, right?",
+        "hint": "夏 + といえば"
+      },
+      {
+        "ja": "{{日本料理といえば}}、寿司が有名です。",
+        "en": "When it comes to Japanese food, sushi is famous.",
+        "hint": "日本料理 + といえば"
+      },
+      {
+        "ja": "{{ラーメンといえば}}、あのお店がおいしいらしい。",
+        "en": "Speaking of ramen, I hear that shop is delicious.",
+        "hint": "ラーメン + といえば"
+      }
+    ]
+  }
+]

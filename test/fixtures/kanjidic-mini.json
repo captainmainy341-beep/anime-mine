@@ -1,0 +1,112 @@
+{
+  "version": "3.6.2",
+  "languages": ["en"],
+  "characters": [
+    {
+      "literal": "日",
+      "codepoints": [{ "type": "ucs", "value": "65e5" }],
+      "radicals": [{ "type": "classical", "value": 72 }],
+      "misc": { "grade": 1, "strokeCounts": [4], "variants": [], "frequency": 1, "radicalNames": [], "jlptLevel": 4 },
+      "dictionaryReferences": [
+        { "type": "heisig", "morohashi": null, "value": "12" },
+        { "type": "heisig6", "morohashi": null, "value": "12" }
+      ],
+      "queryCodes": [],
+      "readingMeaning": {
+        "groups": [
+          {
+            "readings": [
+              { "type": "ja_on", "onType": null, "status": null, "value": "ニチ" },
+              { "type": "ja_on", "onType": null, "status": null, "value": "ジツ" },
+              { "type": "ja_kun", "onType": null, "status": null, "value": "ひ" },
+              { "type": "ja_kun", "onType": null, "status": null, "value": "-び" }
+            ],
+            "meanings": [
+              { "lang": "en", "value": "day" },
+              { "lang": "en", "value": "sun" },
+              { "lang": "en", "value": "Japan" }
+            ]
+          }
+        ],
+        "nanori": ["あきら"]
+      }
+    },
+    {
+      "literal": "食",
+      "codepoints": [{ "type": "ucs", "value": "98df" }],
+      "radicals": [{ "type": "classical", "value": 184 }],
+      "misc": { "grade": 2, "strokeCounts": [9], "variants": [], "frequency": 328, "radicalNames": [], "jlptLevel": 4 },
+      "dictionaryReferences": [
+        { "type": "heisig", "morohashi": null, "value": "1472" },
+        { "type": "heisig6", "morohashi": null, "value": "1582" }
+      ],
+      "queryCodes": [],
+      "readingMeaning": {
+        "groups": [
+          {
+            "readings": [
+              { "type": "ja_on", "onType": null, "status": null, "value": "ショク" },
+              { "type": "ja_on", "onType": null, "status": null, "value": "ジキ" },
+              { "type": "ja_kun", "onType": null, "status": null, "value": "た.べる" },
+              { "type": "ja_kun", "onType": null, "status": null, "value": "く.う" }
+            ],
+            "meanings": [
+              { "lang": "en", "value": "eat" },
+              { "lang": "en", "value": "food" }
+            ]
+          }
+        ],
+        "nanori": []
+      }
+    },
+    {
+      "literal": "海",
+      "codepoints": [{ "type": "ucs", "value": "6d77" }],
+      "radicals": [{ "type": "classical", "value": 85 }],
+      "misc": { "grade": 2, "strokeCounts": [9], "variants": [], "frequency": 425, "radicalNames": [], "jlptLevel": 3 },
+      "dictionaryReferences": [{ "type": "heisig", "morohashi": null, "value": "1046" }],
+      "queryCodes": [],
+      "readingMeaning": {
+        "groups": [
+          {
+            "readings": [
+              { "type": "ja_on", "onType": null, "status": null, "value": "カイ" },
+              { "type": "ja_kun", "onType": null, "status": null, "value": "うみ" }
+            ],
+            "meanings": [{ "lang": "en", "value": "sea" }]
+          }
+        ],
+        "nanori": []
+      }
+    },
+    {
+      "literal": "氵",
+      "codepoints": [{ "type": "ucs", "value": "6c35" }],
+      "radicals": [{ "type": "classical", "value": 85 }],
+      "misc": { "grade": null, "strokeCounts": [3], "variants": [], "frequency": null, "radicalNames": ["みず"], "jlptLevel": null },
+      "dictionaryReferences": [],
+      "queryCodes": [],
+      "readingMeaning": { "groups": [{ "readings": [], "meanings": [] }], "nanori": [] }
+    },
+    {
+      "literal": "亜",
+      "codepoints": [{ "type": "ucs", "value": "4e9c" }],
+      "radicals": [{ "type": "classical", "value": 7 }],
+      "misc": { "grade": 8, "strokeCounts": [7], "variants": [], "frequency": 1509, "radicalNames": [], "jlptLevel": 1 },
+      "dictionaryReferences": [{ "type": "nelson_c", "morohashi": null, "value": "43" }],
+      "queryCodes": [],
+      "readingMeaning": {
+        "groups": [
+          {
+            "readings": [
+              { "type": "ja_on", "onType": null, "status": null, "value": "ア" },
+              { "type": "ja_kun", "onType": null, "status": null, "value": "つ.ぐ" }
+            ],
+            "meanings": [{ "lang": "en", "value": "Asia" }]
+          }
+        ],
+        "nanori": []
+      }
+    }
+  ]
+}

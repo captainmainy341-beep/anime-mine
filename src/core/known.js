@@ -1,7 +1,8 @@
 const fs = require('node:fs');
 const path = require('node:path');
 
-const STATUSES = ['known', 'learning'];
+const STATUSES = ['known', 'learning', 'never-forget', 'suspended', 'blacklisted'];
+const KNOWN_STATUSES = new Set(['known', 'never-forget']);
 const SKIP_POS = ['助詞', '助動詞', '記号', 'フィラー', '接頭詞'];
 const VERB_ADJ_POS = ['動詞', '形容詞'];
 const DEPENDENT_POS2 = ['非自立', '接尾'];
@@ -56,6 +57,13 @@ function cleanField(value) {
     .replace(/&gt;/gi, '>')
     .replace(/&amp;/gi, '&')
     .replace(/\s*\[[^[\]]*\]/g, '');
+}
+
+function classifiedStatus(status) {
+  if (status === 'never-forget') return 'known';
+  if (status === 'blacklisted') return 'skip';
+  if (status === 'suspended') return 'new';
+  return status;
 }
 
 function splitWords(text) {
@@ -146,7 +154,7 @@ class KnownWords {
     let added = 0;
     let skipped = 0;
     for (const word of words) {
-      if (status === 'learning' && this.status(word) === 'known') {
+      if (status === 'learning' && KNOWN_STATUSES.has(this.status(word))) {
         skipped++;
       } else if (this.mark(word, status, source)) {
         added++;
@@ -158,22 +166,30 @@ class KnownWords {
   }
 
   stats() {
-    const counts = { known: 0, learning: 0 };
+    const counts = Object.fromEntries(STATUSES.map((status) => [status, 0]));
     for (const entry of Object.values(this.words)) {
       if (entry.status in counts) counts[entry.status]++;
     }
     return counts;
   }
 
-  classify(token) {
-    if (!token || !token.isWord || isSkippedToken(token)) return 'skip';
+  #matchedEntry(token) {
     const candidates = [token.base, token.surface];
     if (KANA_RE.test(token.reading ?? '')) candidates.push(token.reading);
     for (const candidate of candidates) {
       const entry = this.entry(candidate);
-      if (entry) return entry.status;
+      if (entry) return entry;
     }
-    return 'new';
+    return null;
+  }
+
+  classify(token) {
+    if (!token || !token.isWord || isSkippedToken(token)) return 'skip';
+    return classifiedStatus(this.#matchedEntry(token)?.status ?? 'new');
+  }
+
+  isSuspended(token) {
+    return this.classify(token) === 'new' && this.#matchedEntry(token)?.status === 'suspended';
   }
 
   classifyTokens(tokens) {
@@ -182,6 +198,7 @@ class KnownWords {
 
   sentenceInfo(tokens) {
     const newByKey = new Map();
+    const unknownKeys = new Set();
     let contentCount = 0;
     let unknownCount = 0;
     for (const token of tokens) {
@@ -191,13 +208,14 @@ class KnownWords {
       if (status !== 'new') continue;
       unknownCount++;
       const key = contentKey(token);
-      if (!newByKey.has(key)) newByKey.set(key, token);
+      unknownKeys.add(key);
+      if (!this.isSuspended(token) && !newByKey.has(key)) newByKey.set(key, token);
     }
     const newWords = [...newByKey.values()];
     return {
       newWords,
       unknownCount,
-      isIPlusOne: newWords.length === 1 && contentCount >= 3,
+      isIPlusOne: unknownKeys.size === 1 && newWords.length === 1 && contentCount >= 3,
     };
   }
 
@@ -245,10 +263,12 @@ async function episodeCoverage(cues, tokenize, known) {
   let learningWords = 0;
   let newWords = 0;
   const newCounts = new Map();
+  const tokenized = new Map();
   for (const cue of cues) {
     const text = typeof cue === 'string' ? cue : (cue.text ?? '');
     if (!text.trim()) continue;
-    for (const token of await tokenize(text)) {
+    if (!tokenized.has(text)) tokenized.set(text, await tokenize(text));
+    for (const token of tokenized.get(text)) {
       const status = known.classify(token);
       if (status === 'skip') continue;
       totalWords++;
@@ -258,6 +278,7 @@ async function episodeCoverage(cues, tokenize, known) {
         learningWords++;
       } else {
         newWords++;
+        if (known.isSuspended?.(token)) continue;
         const key = contentKey(token);
         newCounts.set(key, (newCounts.get(key) ?? 0) + 1);
       }

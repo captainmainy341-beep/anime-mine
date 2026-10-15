@@ -1,0 +1,84 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Native Anki controls · Isolated fixture</title><link rel="stylesheet" href="../../src/renderer/styles.css"><link rel="stylesheet" href="../../src/renderer/css/anki-options.css"><link rel="stylesheet" href="../../src/renderer/css/grammar-guide.css"><link rel="stylesheet" href="../../src/renderer/css/anki-browse.css"></head><body><header class="topbar"><div class="brand">anime<span>-mine</span></div><nav><button>Library</button><button>Learn</button><button class="active">Anki</button><button>Settings</button></nav></header><main id="view"></main><div id="toasts"></div><script type="module">
+window.confirm=()=>true;
+const decks=['Anime Mining','Anime Mining::Expressions'];
+window.fixture={writes:[],answers:[],mode:'live',loads:0,index:0,slow:false,actions:[],browseRequests:[],noteWrites:[],openedNotes:[]};
+const models=new Map(decks.map(deck=>[deck,{deck,native:true,preset:'Anime Mining preset',presetId:2,presets:[{id:1,name:'Default',useCount:1},{id:2,name:'Anime Mining preset',useCount:2},{id:3,name:'Grammar sprint',useCount:1}],sharedPreset:true,revision:'r1',permanent:{newPerDay:20,reviewsPerDay:200,newMix:1,interdayLearningMix:0,newGatherOrder:0,newSortOrder:0,reviewOrder:0,buryNew:true,buryReviews:true,buryLearning:true,learnSteps:[1,10,1440],relearnSteps:[10],graduatingInterval:1,easyInterval:4,startingEase:250,maxInterval:36500,easyBonus:130,intervalModifier:100,hardInterval:120,lapseNewInterval:0,lapseMinInterval:1,leechThreshold:8,leechAction:0,disableAutoplay:false,skipQuestionWhenReplayingAnswer:false,maxAnswerSecs:60,showTimer:false,stopTimerOnAnswer:false,fsrs:false,desiredRetention:0.9},today:{newPerDay:null,reviewsPerDay:null},completed:{new:8,reviews:36,learning:0},remaining:{new:12,reviews:64,learning:3},rollover:Math.round(Date.now()/1000)+3600}]));
+const clone=x=>structuredClone(x);
+const DAY=86400000,NOW=Date.now();
+const JP=[['約束','やくそく','promise','絶対に約束を破らない。','n5'],['勉強','べんきょう','study','毎日勉強している。','n5'],['見つける','みつける','to find','鍵を見つけた。','n4'],['大丈夫','だいじょうぶ','all right','もう大丈夫です。','n4'],['気持ち','きもち','feeling','その気持ちはわかる。','n4'],['走る','はしる','to run','朝から走る。','n5'],['諦める','あきらめる','to give up','彼は夢を諦めなかった。','n4'],['嘘','うそ','lie','それは嘘だ。','n5'],['世界','せかい','world','世界が変わった。','n5'],['手紙','てがみ','letter','母から手紙が届いた。','n5'],['思い出','おもいで','memory','昔の思い出を話す。','n4'],['追いかける','おいかける','to chase','猫を追いかける。','n4']];
+const KINDS=['review','new','learn','review','suspended','review','review','learn','review','new'];
+let browseCards=Array.from({length:120},(_,i)=>{
+  const [word,reading,meaning,sentence,level]=JP[i%JP.length];
+  const kind=KINDS[i%KINDS.length];
+  const tags=[level,'anime',...(i%5===0?['leech']:[]),...(i%7===3?['marked']:[]),...(i%4===1?['grammar']:[])];
+  const due=kind==='review'&&i%4===0;
+  const dueDay=kind==='review'?(due?0:1+(i*11)%60):0;
+  const factor=kind==='new'?null:1900+((i*130)%900);
+  const buried=i%23===5;
+  const dueText=kind==='suspended'?'suspended':buried?'buried':kind==='new'?`new #${i+1}`:kind==='learn'?'learning':due?'today':`in ${dueDay}d`;
+  const createdTs=NOW-i*6*3600000;
+  return {id:1000+i,noteId:5000+i,word,reading,meaning,sentence,source:`Episode ${1+i%12}`,state:kind,due,dueDay,dueText,interval:kind==='review'?1+(i*37)%240:0,ease:factor?factor/1000:0,easePct:factor?Math.round(factor/10):null,reps:kind==='new'?0:kind==='learn'?1+i%4:3+(i*7)%40,lapses:kind==='new'?0:(i*3)%7,audio:null,picture:null,deck:i%3===0?'Anime Mining::Expressions':'Anime Mining',noteType:i%3===0?'Anime Sentence':'Anime Vocab',fields:{Expression:word,Reading:reading,Meaning:meaning,Sentence:sentence,SentenceTranslation:`Translation ${i+1}`,Notes:'',Source:`Episode ${1+i%12}`},tags,flag:i%9===2?1+(i%4):0,marked:tags.includes('marked'),suspended:kind==='suspended',buried,createdTs,modifiedTs:NOW-i*2*3600000};
+});
+const SAVED=[['today','Today','added:1'],['week','Added this week','added:7'],['due','Due today','is:due'],['flagged','Flagged','-flag:0'],['marked','Marked','tag:marked'],['suspended','Suspended','is:suspended'],['buried','Buried','is:buried'],['leeches','Leeches','tag:leech'],['failed','Failed today','rated:1:1']];
+const SORT_KEY={created:c=>c.createdTs,modified:c=>c.modifiedTs,word:c=>c.word,deck:c=>c.deck,due:c=>c.dueDay,interval:c=>c.interval,ease:c=>c.easePct??0,lapses:c=>c.lapses,reps:c=>c.reps};
+const tokensOf=q=>(q??'').replace(/[()]/g,' ').match(/[\w-]*:?"[^"]*"|\S+/g)??[];
+function hasTerm(c,t){
+  const neg=t.length>1&&t.startsWith('-');
+  const body=neg?t.slice(1):t;
+  const [key,...rest]=body.split(':');
+  const val=rest.join(':').replace(/"/g,'');
+  let hit;
+  switch(key){
+    case 'is': hit=val==='due'?c.due:val==='suspended'?c.suspended:val==='buried'?c.buried:val==='new'?c.state==='new':false; break;
+    case 'tag': hit=c.tags.includes(val); break;
+    case 'flag': hit=c.flag===Number(val); break;
+    case 'added': hit=c.createdTs>=NOW-Number(val)*DAY; break;
+    case 'note': hit=c.noteType===val; break;
+    default: hit=[c.word,c.reading,c.meaning,c.sentence].some(x=>x.includes(body.replace(/"/g,'')));
+  }
+  return neg?!hit:hit;
+}
+const matchesQuery=(c,q)=>tokensOf(q).every(t=>hasTerm(c,t));
+function sortCards(list,sort='created',desc=false){
+  const key=SORT_KEY[sort]??SORT_KEY.created;
+  return [...list].sort((a,b)=>{const x=key(a),y=key(b);const r=typeof x==='string'?x.localeCompare(y):x-y;return (desc?-r:r)||a.id-b.id;});
+}
+function countBy(list,key){const m=new Map();for(const c of list)for(const k of [].concat(key(c)))m.set(k,(m.get(k)??0)+1);return m;}
+const sortedCounts=m=>[...m].map(([name,count])=>({name,count})).sort((a,b)=>b.count-a.count||a.name.localeCompare(b.name));
+function applyAction(c,action,args){
+  const setTags=tags=>{c.tags=tags;c.marked=tags.includes('marked');};
+  switch(action){
+    case 'suspend': Object.assign(c,{suspended:true,state:'suspended',due:false,dueText:'suspended'}); break;
+    case 'unsuspend': Object.assign(c,{suspended:false,state:'review',dueText:'in 2d'}); break;
+    case 'flag': c.flag=args.flag; break;
+    case 'mark': setTags([...new Set([...c.tags,'marked'])]); break;
+    case 'unmark': setTags(c.tags.filter(t=>t!=='marked')); break;
+    case 'bury': Object.assign(c,{buried:true,dueText:'buried'}); break;
+    case 'unbury': Object.assign(c,{buried:false,dueText:'in 2d'}); break;
+    case 'changeDeck': c.deck=args.deck; break;
+    case 'forget': Object.assign(c,{state:'new',interval:0,dueText:'new'}); break;
+    case 'addTags': setTags([...new Set([...c.tags,...args.tags])]); break;
+    case 'removeTags': setTags(c.tags.filter(t=>!args.tags.includes(t))); break;
+  }
+}
+window.api={anki:{
+ getView:async()=>({mode:fixture.mode,connected:true,visibleDecks:decks}),
+ setView:async({mode})=>{fixture.mode=mode;return {};},
+ overview:async()=>({decks:decks.map(name=>({name,new:100,learn:3,due:180})),today:{new:100,learning:3,due:180},retention30:92,streak:7,forecast:[],mined:[{id:99,word:'約束',reading:'やくそく',meaning:'promise',deck:decks[0],sentence:'絶対に約束を破らない。'}],minedThisWeek:4}),
+ deckOptions:async({deck})=>{fixture.loads++;if(fixture.slow)await new Promise(r=>setTimeout(r,400));return {...clone(models.get(deck)),sample:fixture.mode==='sample'};},
+ setDeckOptions:async({deck,patch,revision})=>{fixture.writes.push({deck,patch,revision});let m=models.get(deck);if(patch.scope==='permanent'){for(const [k,v] of Object.entries(patch))if(!['scope','presetId','newPreset','renamePreset','removePreset','applyToChildren'].includes(k))m.permanent[k]=v;if(patch.newPreset){const id=Math.max(...m.presets.map(p=>p.id))+1;m.presets.push({id,name:patch.newPreset.name,useCount:1});m.presets.find(p=>p.id===m.presetId).useCount--;m.presetId=id;}if(patch.presetId)m.presetId=patch.presetId;if(patch.renamePreset)m.presets.find(p=>p.id===patch.renamePreset.id).name=patch.renamePreset.name;}else if(patch.clearToday){m.today={newPerDay:null,reviewsPerDay:null};}else{m.today.newPerDay=patch.newPerDay;m.today.reviewsPerDay=patch.reviewsPerDay;}m.revision='r'+(fixture.writes.length+1);return clone(m);},
+ openDeckOptions:async({deck})=>{fixture.opened=deck;return {ok:true};},
+ studyQueue:async()=>{const i=fixture.index;return {native:true,token:'t'+i,remaining:{new:Math.max(0,3-i),reviews:0,learning:0},cards:i<3?[{id:10+i,deck:decks[0],question:'<div class="word">約束</div><div class="sentence">絶対に約束を破らない。</div>',answer:'<div class="word">約束</div><div class="reading">やくそく</div><hr><div class="meaning">promise</div>',css:'.card{font-size:24px}',sentence:'絶対に約束を破らない。',intervals:['1m','6m','1d','4d']}]:[]};},
+ studyAnswer:async x=>{fixture.answers.push(x);fixture.index++;return {ok:true};},
+ media:async()=>null,
+ browse:async(args={})=>{fixture.browseRequests.push(args);const names=args.deck?[args.deck]:args.decks??[];const list=browseCards.filter(c=>names.includes(c.deck)&&tokensOf(args.query).every(t=>hasTerm(c,t)));const offset=args.offset??0;return {cards:sortCards(list,args.sort,args.desc).slice(offset,offset+(args.limit??100)).map(clone),total:list.length};},
+ facets:async({decks:names})=>{const scoped=browseCards.filter(c=>names.includes(c.deck));return {decks:names.map(name=>{const own=browseCards.filter(c=>c.deck===name);return {name,total:own.length,due:own.filter(c=>c.due).length,new:own.filter(c=>c.state==='new').length};}),tags:sortedCounts(countBy(scoped,c=>c.tags)),noteTypes:sortedCounts(countBy(scoped,c=>c.noteType)),saved:SAVED.map(([id,label,query])=>({id,label,query,count:scoped.filter(c=>tokensOf(query).every(t=>hasTerm(c,t))).length}))};},
+ cardInfo:async({cardId})=>{const card=browseCards.find(c=>c.id===cardId);if(!card) throw new Error('Card not found');const times=[8200,5400,6100,3900,4300];const history=[[1,3,1,0,0],[2,2,1,1,0],[3,3,3,1,1],[4,4,6,3,1],[5,3,12,6,1]].map(([day,ease,interval,lastInterval,type],i)=>({ts:NOW-(6-day)*DAY,ease,interval,lastInterval,type,timeMs:times[i]}));return {card:clone(card),history,created:card.createdTs,firstReview:history[0].ts,lastReview:history.at(-1).ts,averageTimeMs:Math.round(times.reduce((a,b)=>a+b,0)/times.length),totalTimeMs:times.reduce((a,b)=>a+b,0),note:{id:card.noteId,fields:clone(card.fields),tags:[...card.tags]}};},
+ cardAction:async({action,cardIds,args={},decks})=>{fixture.actions.push({action,cardIds:[...cardIds],args:clone(args),decks:[...decks]});const hit=browseCards.filter(c=>cardIds.includes(c.id));if(action==='deleteNotes')browseCards=browseCards.filter(c=>!hit.some(h=>h.noteId===c.noteId));else hit.forEach(c=>applyAction(c,action,args));return {ok:true,count:hit.length};},
+ updateNote:async({noteId,fields})=>{fixture.noteWrites.push({noteId,fields:clone(fields)});for(const c of browseCards)if(c.noteId===noteId){Object.assign(c.fields,fields);if('Meaning' in fields)c.meaning=fields.Meaning;}return {ok:true};},
+ openInAnki:async noteId=>{fixture.openedNotes.push(noteId);return {ok:true};},
+ listDecks:async()=>decks,
+},settings:{get:async()=>({})}};
+window.api.grammar??={analyze:async text=>{fixture.analyzed=(fixture.analyzed??[]).concat(text);return {chunks:[{text:'約束',kind:'content',start:3,end:5},{text:'を',kind:'particle',start:5,end:6}],particles:[{id:'p:wo',surface:'を',name:'object marker',role:'object',explanation:'marks the thing acted on',example:{ja:'本を読む。',en:'I read a book.'},level:'N5',start:5,end:6}],conjugations:[],patterns:[],notes:[]};}};
+const {mountAnki}=await import('../../src/renderer/anki.mjs');window.unmount=mountAnki(document.querySelector('#view'));
+</script></body></html>

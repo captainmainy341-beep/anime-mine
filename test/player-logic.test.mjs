@@ -96,3 +96,11 @@ test('loopSeekTarget returns the shifted cue start only when looping and past th
   assert.equal(loopSeekTarget({ loopLine: false, cue, time: 12, subOffset: 0 }), null);
   assert.equal(loopSeekTarget({ loopLine: true, cue, time: 11, subOffset: 0 }), null);
 });
+
+test('shiftCues returns the same array for zero offset and shifts start and end otherwise', async () => {
+  const { shiftCues } = await import('../src/renderer/lib/playerLogic.mjs');
+  const cues = [{ start: 1, end: 2, text: 'a' }];
+  assert.equal(shiftCues(cues, 0), cues);
+  assert.deepEqual(shiftCues(cues, -0.5), [{ start: 0.5, end: 1.5, text: 'a' }]);
+  assert.deepEqual(cues, [{ start: 1, end: 2, text: 'a' }]);
+});

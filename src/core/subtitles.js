@@ -40,9 +40,17 @@ function parseDialogue(value, format) {
   const cue = {
     start: parseTime(field('start').trim()),
     end: parseTime(field('end').trim()),
-    text: field('text').replace(/\{[^}]*\}/g, '').replace(/\\[Nn]/g, '\n').trim(),
+    style: (field('style') ?? '').trim(),
+    text: field('text').replace(/\{[^}]*\}/g, '').replace(/\\[Nn]/g, '\n').replace(/\\h/g, ' ').trim(),
   };
   return isValidCue(cue.start, cue.end) ? cue : null;
+}
+
+const JAPANESE_STYLE = /(^|[^a-z])(jp|jpn|ja|japanese)([^a-z]|$)|日本語|日文/i;
+
+function keepJapaneseCues(cues) {
+  if (!cues.some(cue => JAPANESE_STYLE.test(cue.style))) return cues;
+  return cues.filter(cue => JAPANESE_STYLE.test(cue.style));
 }
 
 function parseAss(text) {
@@ -63,12 +71,18 @@ function parseAss(text) {
     const cue = parseDialogue(entry[2], format);
     if (cue) cues.push(cue);
   }
-  return cues;
+  return keepJapaneseCues(cues.filter(cue => cue.text && !isCreditBanner(cue))).map(cue => ({ start: cue.start, end: cue.end, text: cue.text }));
+}
+
+const CREDIT_TEXT = /編集|同期|字幕|翻訳|提供|制作/;
+
+function isCreditBanner(cue) {
+  return cue.start < 1 && cue.end - cue.start >= 8 && CREDIT_TEXT.test(cue.text);
 }
 
 function parseSubtitles(text, ext) {
   const cues = ['.ass', '.ssa'].includes(ext.toLowerCase()) ? parseAss(text) : parseBlocks(text);
-  return cues.filter(cue => cue.text).sort((a, b) => a.start - b.start);
+  return cues.filter(cue => cue.text && !isCreditBanner(cue)).sort((a, b) => a.start - b.start);
 }
 
 async function parseSubtitleFile(file) {
@@ -76,4 +90,17 @@ async function parseSubtitleFile(file) {
   return parseSubtitles(text.replace(/^\uFEFF/, ''), path.extname(file));
 }
 
-module.exports = { parseSubtitles, parseSubtitleFile };
+function srtTime(seconds) {
+  const ms = Math.round(seconds * 1000);
+  const pad = (value, width = 2) => String(value).padStart(width, '0');
+  const h = Math.floor(ms / 3600000);
+  const m = Math.floor(ms / 60000) % 60;
+  const s = Math.floor(ms / 1000) % 60;
+  return `${pad(h)}:${pad(m)}:${pad(s)},${pad(ms % 1000, 3)}`;
+}
+
+function toSrt(cues) {
+  return cues.map((cue, index) => `${index + 1}\n${srtTime(cue.start)} --> ${srtTime(cue.end)}\n${cue.text}\n`).join('\n');
+}
+
+module.exports = { parseSubtitles, parseSubtitleFile, toSrt };

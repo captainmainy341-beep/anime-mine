@@ -1,0 +1,934 @@
+[
+  {
+    "id": "g:n3-nai-koto-wa-nai",
+    "jlpt": "N3",
+    "title": "〜ないことはない",
+    "meaning": "it is not impossible / one could possibly ... (though it is not ideal)",
+    "structure": "Verb ない-form + ことはない (なくはない)",
+    "formality": "neutral",
+    "notes": "Softens a statement: it is not that it cannot be done, though it may be difficult or unwelcome. Often followed by けど or が. The speaker hedges: it is possible, but not ideal or not certain.",
+    "similar": [],
+    "detect": [
+      "ないことはない|なくはない"
+    ],
+    "examples": [
+      {
+        "ja": "この辛いカレー、{{食べられないことはないけど|食べられなくはないけど}}、ちょっと無理かな。",
+        "en": "I suppose I could eat this spicy curry, but it's a bit much.",
+        "hint": "食べる + ないことはない"
+      },
+      {
+        "ja": "今からでも{{行けないことはない}}よ。",
+        "en": "We could still go, I suppose, even now.",
+        "hint": "行く + ないことはない"
+      },
+      {
+        "ja": "あの人の言い分も、{{分からないことはない}}。",
+        "en": "I can understand his point of view, I suppose.",
+        "hint": "分かる + ないことはない"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-zaru-o-enai",
+    "jlpt": "N3",
+    "title": "〜ざるをえない",
+    "meaning": "cannot help but / have no choice but to",
+    "structure": "Verb ない-form + ざるを得ない (する → せざるを得ない)",
+    "formality": "formal",
+    "notes": "Expresses being forced by circumstances rather than by one's own will. Written 得ない or えない; both are accepted. Used in news, formal speech and writing. In casual speech 〜ないといけない or 〜ずにはいられない is more common.",
+    "similar": [
+      "〜わけにはいかない"
+    ],
+    "detect": [
+      "ざるを(得|え)(な|ない)"
+    ],
+    "examples": [
+      {
+        "ja": "予算が足りないので、計画を{{変更せざるをえない}}。",
+        "en": "Since the budget is short, we have no choice but to change the plan.",
+        "hint": "変更する + ざるを得ない"
+      },
+      {
+        "ja": "雨で試合が中止になり、家で{{待たざるをえなかった}}。",
+        "en": "The game was called off because of the rain, so I had no choice but to wait at home.",
+        "hint": "待つ + ざるを得ない"
+      },
+      {
+        "ja": "悔しいけど、負けを{{認めざるを得ない}}。",
+        "en": "It's frustrating, but I have no choice but to admit defeat.",
+        "hint": "認める + ざるを得ない"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-koto-wa-ga",
+    "jlpt": "N3",
+    "title": "〜ことは〜が",
+    "meaning": "it is true that ... but ...",
+    "structure": "Verb dictionary form + ことは + Verb/adj + が",
+    "formality": "neutral",
+    "notes": "Concedes a point before contrasting it with a reservation. The same verb is repeated after ことは. Often used for ability or quality: 'can do, but...'. The second clause carries the real opinion.",
+    "similar": [],
+    "detect": [],
+    "examples": [
+      {
+        "ja": "確かに{{高いことは高いが}}、品質を考えれば妥当な値段だ。",
+        "en": "It is true that it's expensive, but given the quality the price is reasonable.",
+        "hint": "高い + ことは〜が"
+      },
+      {
+        "ja": "{{行くことは行った}}が、すぐ帰ってしまった。",
+        "en": "I did go, but I left right away.",
+        "hint": "行く + ことは〜が"
+      },
+      {
+        "ja": "料理は{{できることはできるが}}、得意とは言えない。",
+        "en": "I can cook, but I wouldn't say I'm good at it.",
+        "hint": "できる + ことはできるが"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-kurai-extent",
+    "jlpt": "N3",
+    "title": "〜くらい / 〜ぐらい（程度）",
+    "meaning": "to the point that / so ... that",
+    "structure": "Verb (plain or potential/ない form) + くらい／ぐらい",
+    "formality": "neutral",
+    "notes": "Describes an extreme degree shown by a concrete example, often emotional or physical. Usually paired with a vivid state such as 泣きたいくらい or 声が出ないくらい. Not the same as the N5 'approximately' sense of くらい.",
+    "similar": [
+      "〜ほど"
+    ],
+    "detect": [
+      "(たい|ない)(くらい|ぐらい)"
+    ],
+    "examples": [
+      {
+        "ja": "{{泣きたいくらい|泣きたいぐらい}}悔しかった。",
+        "en": "I was so frustrated I could have cried.",
+        "hint": "泣く + たいくらい"
+      },
+      {
+        "ja": "{{声が出ないくらい}}驚いた。",
+        "en": "I was so surprised I couldn't speak.",
+        "hint": "出る + ないくらい"
+      },
+      {
+        "ja": "今すぐ{{帰りたいくらい}}だ。",
+        "en": "I feel like going home right now.",
+        "hint": "帰る + たいくらい"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-made-even",
+    "jlpt": "N3",
+    "title": "〜まで（極端な例）",
+    "meaning": "even / going as far as",
+    "structure": "Noun or Verb plain + まで",
+    "formality": "neutral",
+    "notes": "Shows that something surprising or extreme is included, as in 'even X'. Different from the N5 まで meaning 'until' or 'up to'; context and the speaker's surprise tell them apart. Often paired with 〜さえ and 〜でも.",
+    "similar": [
+      "〜さえ"
+    ],
+    "detect": [],
+    "examples": [
+      {
+        "ja": "{{先生まで}}遅刻するなんて、驚いた。",
+        "en": "I was surprised that even the teacher was late.",
+        "hint": "先生 + まで"
+      },
+      {
+        "ja": "そんなこと、{{子供にまで}}言われたくない。",
+        "en": "I don't want even children to say such a thing to me.",
+        "hint": "子供 + まで"
+      },
+      {
+        "ja": "{{雨の日まで}}練習するなんて、すごいね。",
+        "en": "Wow, practising even on rainy days, that's impressive.",
+        "hint": "雨の日 + まで"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-ijou",
+    "jlpt": "N3",
+    "title": "〜以上（は）",
+    "meaning": "now that / since / as long as",
+    "structure": "Verb ている/た-form or ない-form + 以上（は）",
+    "formality": "neutral",
+    "notes": "Gives a reason that makes the following conclusion necessary: once something has happened or been decided, the consequence follows. Usually followed by 〜なければならない or a volitional statement. Not the same as 〜以上 meaning 'more than'.",
+    "similar": [],
+    "detect": [
+      "(た|る|ない)以上"
+    ],
+    "examples": [
+      {
+        "ja": "やると{{決めた以上}}、最後までやり抜こう。",
+        "en": "Now that I've decided to do it, I'll see it through to the end.",
+        "hint": "決める + 以上"
+      },
+      {
+        "ja": "{{約束した以上}}、守らなければならない。",
+        "en": "Since we made a promise, we have to keep it.",
+        "hint": "約束する + 以上"
+      },
+      {
+        "ja": "{{こうなった以上}}、仕方がない。",
+        "en": "Now that it has come to this, there's nothing to be done.",
+        "hint": "なる + 以上"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-sai-ni",
+    "jlpt": "N3",
+    "title": "〜際に",
+    "meaning": "when / at the time of",
+    "structure": "Verb plain + 際（に）／ Noun + の際（に）",
+    "formality": "formal",
+    "notes": "Marks a specific moment or occasion, often a formal or procedural one. Common in instructions, announcements and written text. Written with kana さい in casual speech is rare; in conversation 〜とき is more natural.",
+    "similar": [
+      "〜とき"
+    ],
+    "detect": [
+      "(る|た|の)際"
+    ],
+    "examples": [
+      {
+        "ja": "ご注文の{{際に}}、クーポンコードを入力してください。",
+        "en": "Please enter the coupon code when you place your order.",
+        "hint": "注文 + の際に"
+      },
+      {
+        "ja": "帰国する{{際に}}、お土産を買った。",
+        "en": "I bought souvenirs when I was returning home.",
+        "hint": "帰国する + 際に"
+      },
+      {
+        "ja": "入院した{{際には}}、家族が世話をしてくれた。",
+        "en": "When I was hospitalized, my family looked after me.",
+        "hint": "入院する + 際には"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-baai-wa",
+    "jlpt": "N3",
+    "title": "〜場合は",
+    "meaning": "in case of / if (in the event that)",
+    "structure": "Verb or i-adj plain + 場合は／ Noun + の場合は",
+    "formality": "formal",
+    "notes": "Sets a condition or situation and states what applies in it. Common in rules, manuals and polite notices. In casual speech 〜時 or 〜たら is more typical.",
+    "similar": [
+      "〜際に"
+    ],
+    "detect": [
+      "場合(は|には|、)"
+    ],
+    "examples": [
+      {
+        "ja": "{{雨の場合は}}、試合が延期になります。",
+        "en": "In case of rain, the match will be postponed.",
+        "hint": "雨 + の場合は"
+      },
+      {
+        "ja": "{{遅れる場合は}}、事前に連絡してください。",
+        "en": "If you are going to be late, please contact us in advance.",
+        "hint": "遅れる + 場合は"
+      },
+      {
+        "ja": "体調が{{悪い場合には}}、無理をしないでください。",
+        "en": "If you're feeling unwell, please don't push yourself.",
+        "hint": "悪い + 場合には"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-ue-de",
+    "jlpt": "N3",
+    "title": "〜上で",
+    "meaning": "after / in (doing) / on the basis of",
+    "structure": "Verb た-form or dictionary form + 上で／ Noun + の上で",
+    "formality": "formal",
+    "notes": "Means that the following action is taken after, or on the basis of, the preceding one. Typical in business, legal and polite requests. Do not confuse with 上 meaning 'on top'; the grammar form is usually written in kana.",
+    "similar": [],
+    "detect": [
+      "うえで"
+    ],
+    "examples": [
+      {
+        "ja": "契約を{{結ぶうえで}}、注意すべき点がある。",
+        "en": "There are points to be careful about when concluding the contract.",
+        "hint": "結ぶ + うえで"
+      },
+      {
+        "ja": "事実を{{確認したうえで}}、判断します。",
+        "en": "I will decide after confirming the facts.",
+        "hint": "確認する + うえで"
+      },
+      {
+        "ja": "詳しく説明を{{聞いたうえで}}決めたい。",
+        "en": "I'd like to decide after hearing a detailed explanation.",
+        "hint": "聞く + うえで"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-ue-ni",
+    "jlpt": "N3",
+    "title": "〜うえに",
+    "meaning": "on top of that / in addition",
+    "structure": "Adjective plain or Verb plain + うえに",
+    "formality": "neutral",
+    "notes": "Adds a second point in the same direction, usually a positive or negative one that strengthens the first. Often used in complaints or praise. Compare 〜だけでなく, which adds a point of similar weight.",
+    "similar": [
+      "〜だけでなく"
+    ],
+    "detect": [
+      "うえに"
+    ],
+    "examples": [
+      {
+        "ja": "彼は頭が{{いいうえに}}、努力家だ。",
+        "en": "He is smart and, on top of that, hardworking.",
+        "hint": "良い + うえに"
+      },
+      {
+        "ja": "この店は料理が{{美味しいうえに}}、値段も安い。",
+        "en": "This shop's food is delicious and, what's more, the prices are cheap.",
+        "hint": "美味しい + うえに"
+      },
+      {
+        "ja": "雨が{{降っているうえに}}、風も強い。",
+        "en": "It's raining and, on top of that, the wind is strong.",
+        "hint": "降る + うえに"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-ka-no-you-ni",
+    "jlpt": "N3",
+    "title": "〜かのように",
+    "meaning": "as if / as though",
+    "structure": "Plain form + かのように（まるで〜かのように）",
+    "formality": "neutral",
+    "notes": "Describes a manner or appearance that is not real: the speaker is comparing with something untrue. Often paired with まるで. Use ようだ for real or likely situations; かのように is for clearly imagined comparisons.",
+    "similar": [
+      "〜ようだ"
+    ],
+    "detect": [
+      "かのように"
+    ],
+    "examples": [
+      {
+        "ja": "まるで{{知っているかのように}}話す。",
+        "en": "He talks as if he knows everything.",
+        "hint": "知る + かのように"
+      },
+      {
+        "ja": "雨が{{降り出したかのように}}、空が暗くなった。",
+        "en": "The sky grew dark as if it were about to start raining.",
+        "hint": "降り出す + かのように"
+      },
+      {
+        "ja": "彼女は{{別人であるかのように}}振る舞った。",
+        "en": "She behaved as if she were a different person.",
+        "hint": "別人だ + かのように"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-dokoro-ka",
+    "jlpt": "N3",
+    "title": "〜どころか",
+    "meaning": "far from ... ; not only ... but even (the opposite is true)",
+    "structure": "Plain form (verb/adj/noun) + どころか",
+    "formality": "neutral",
+    "notes": "Rejects an expectation by stating that the actual situation is the opposite or much more extreme. Often follows a negative expectation and is followed by the real outcome. Do not confuse with 〜どころではない, which means there is no room for something.",
+    "similar": [
+      "〜どころではない"
+    ],
+    "detect": [
+      "どころか"
+    ],
+    "examples": [
+      {
+        "ja": "彼は{{怒るどころか}}、笑って許してくれた。",
+        "en": "Far from getting angry, he smiled and forgave me.",
+        "hint": "怒る + どころか"
+      },
+      {
+        "ja": "{{疲れたどころか}}、むしろ元気になった。",
+        "en": "Far from being tired, I actually feel more energetic.",
+        "hint": "疲れる + どころか"
+      },
+      {
+        "ja": "{{安いどころか}}、思ったより高かった。",
+        "en": "Far from being cheap, it was more expensive than I thought.",
+        "hint": "安い + どころか"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-dokoro-de-wa-nai",
+    "jlpt": "N3",
+    "title": "〜どころではない",
+    "meaning": "far from being in a position to / cannot afford to think about",
+    "structure": "Verb dictionary form + どころではない／ Noun + どころではない",
+    "formality": "neutral",
+    "notes": "Says that the situation is too urgent or busy for something else. Often in the form どころじゃない in casual speech. The thing being declined is usually a pleasant or leisurely activity.",
+    "similar": [
+      "〜どころか"
+    ],
+    "detect": [
+      "どころ(では|じゃ)な"
+    ],
+    "examples": [
+      {
+        "ja": "試験前だから{{遊ぶどころではない}}。",
+        "en": "With exams coming up, I can't afford to play around.",
+        "hint": "遊ぶ + どころではない"
+      },
+      {
+        "ja": "忙しくて、{{休むどころではないよ}}。",
+        "en": "I'm so busy I can't even think about resting.",
+        "hint": "休む + どころではない"
+      },
+      {
+        "ja": "今は{{お金どころではない}}。",
+        "en": "Right now, money is the last thing on my mind.",
+        "hint": "お金 + どころではない"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-ni-shite-wa",
+    "jlpt": "N3",
+    "title": "〜にしては",
+    "meaning": "for (someone or something), considering",
+    "structure": "Noun + にしては／ Plain adj or verb + にしては",
+    "formality": "neutral",
+    "notes": "Gives a standard of comparison and states that the result is more or less than expected for that standard. Typical for judging people's skill or the weather. The following clause often comments on the surprising result.",
+    "similar": [
+      "〜わりに"
+    ],
+    "detect": [
+      "にしては"
+    ],
+    "examples": [
+      {
+        "ja": "{{初心者にしては}}、上手に描けている。",
+        "en": "For a beginner, it's drawn really well.",
+        "hint": "初心者 + にしては"
+      },
+      {
+        "ja": "この時期{{にしては}}、暖かいね。",
+        "en": "It's warm for this time of year, isn't it?",
+        "hint": "時期 + にしては"
+      },
+      {
+        "ja": "{{冬にしては}}、雪が少ない。",
+        "en": "For winter, there isn't much snow.",
+        "hint": "冬 + にしては"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-wari-ni",
+    "jlpt": "N3",
+    "title": "〜わりに（は）",
+    "meaning": "considering / for (the amount or quality)",
+    "structure": "Noun + のわりに／ Plain adj or verb + わりに（は）",
+    "formality": "neutral",
+    "notes": "Compares an expected standard with the actual result, and the result is not what the standard would predict. The clause after わりに usually contains the unexpected point. Compare 〜にしては, which uses a more general standard.",
+    "similar": [
+      "〜にしては"
+    ],
+    "detect": [
+      "わりに"
+    ],
+    "examples": [
+      {
+        "ja": "{{値段のわりに}}、味がいい。",
+        "en": "For the price, it tastes good.",
+        "hint": "値段 + のわりに"
+      },
+      {
+        "ja": "彼は{{若いわりに}}、しっかりしている。",
+        "en": "For being young, he is quite reliable.",
+        "hint": "若い + わりに"
+      },
+      {
+        "ja": "この映画は{{有名なわりに}}、つまらなかった。",
+        "en": "For such a famous film, it was boring.",
+        "hint": "有名だ + わりに"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-kuse-ni",
+    "jlpt": "N3",
+    "title": "〜くせに",
+    "meaning": "even though / despite (criticism)",
+    "structure": "Plain form (verb/adj/noun) + くせに",
+    "formality": "casual",
+    "notes": "Criticizes someone for doing or being something while failing to meet the standard implied. Clearly rude or belittling; avoid in polite speech. Used in arguments and teasing.",
+    "similar": [],
+    "detect": [
+      "くせに"
+    ],
+    "examples": [
+      {
+        "ja": "{{知らないくせに}}、偉そうに言うな。",
+        "en": "Don't talk so smugly when you don't even know!",
+        "hint": "知る + くせに"
+      },
+      {
+        "ja": "自分は{{食べないくせに}}、人には勧める。",
+        "en": "He never eats it himself, yet he keeps recommending it to others.",
+        "hint": "食べる + くせに"
+      },
+      {
+        "ja": "{{子供のくせに}}、生意気だ。",
+        "en": "For a kid, you're really cheeky.",
+        "hint": "子供 + くせに"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-ni-oite",
+    "jlpt": "N3",
+    "title": "〜において",
+    "meaning": "in / at / within (a field, place, or time)",
+    "structure": "Noun + において",
+    "formality": "formal",
+    "notes": "Marks the field, place or time where something happens. Used in writing, speeches, and formal announcements. Spoken casually, では or で is more natural.",
+    "similar": [
+      "〜について"
+    ],
+    "detect": [
+      "において"
+    ],
+    "examples": [
+      {
+        "ja": "この分野{{において}}、彼は第一人者だ。",
+        "en": "He is a leading figure in this field.",
+        "hint": "分野 + において"
+      },
+      {
+        "ja": "会議{{において}}、新しい方針が決まった。",
+        "en": "A new policy was decided at the meeting.",
+        "hint": "会議 + において"
+      },
+      {
+        "ja": "日本{{において}}、この問題は深刻だ。",
+        "en": "This problem is serious in Japan.",
+        "hint": "日本 + において"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-ni-kansuru",
+    "jlpt": "N3",
+    "title": "〜に関する",
+    "meaning": "concerning / regarding / about",
+    "structure": "Noun + に関する",
+    "formality": "formal",
+    "notes": "Attaches a topic to a noun, often in titles, notices, and written text. Modifies the noun that follows, like a relative clause. Spoken as に関して when used at the end of a sentence.",
+    "similar": [
+      "〜に関して"
+    ],
+    "detect": [
+      "に関する"
+    ],
+    "examples": [
+      {
+        "ja": "{{環境問題に関する}}本を読んだ。",
+        "en": "I read a book about environmental issues.",
+        "hint": "環境問題 + に関する"
+      },
+      {
+        "ja": "{{料金に関する}}質問は、こちらへどうぞ。",
+        "en": "For questions about fees, please come this way.",
+        "hint": "料金 + に関する"
+      },
+      {
+        "ja": "{{歴史に関する}}ドキュメンタリーが好きだ。",
+        "en": "I like documentaries about history.",
+        "hint": "歴史 + に関する"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-ni-watatte",
+    "jlpt": "N3",
+    "title": "〜にわたって",
+    "meaning": "throughout / over (a long period or wide area)",
+    "structure": "Noun (period or area) + にわたって",
+    "formality": "formal",
+    "notes": "Emphasizes that something continues across the whole span of a time period or area. Typical for long meetings, weather, and surveys. Shortened forms にわたり and にわたる modify nouns.",
+    "similar": [],
+    "detect": [
+      "にわたって|にわたり"
+    ],
+    "examples": [
+      {
+        "ja": "{{三日間にわたって}}、会議が続いた。",
+        "en": "The meeting continued for three days.",
+        "hint": "三日間 + にわたって"
+      },
+      {
+        "ja": "{{全国にわたって}}、大雨が降った。",
+        "en": "Heavy rain fell across the whole country.",
+        "hint": "全国 + にわたって"
+      },
+      {
+        "ja": "{{数年にわたって}}、交渉が続いている。",
+        "en": "Negotiations have continued for several years.",
+        "hint": "数年 + にわたって"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-wo-tsuujite",
+    "jlpt": "N3",
+    "title": "〜を通じて／〜を通して",
+    "meaning": "through / via / over the course of",
+    "structure": "Noun + を通じて／ を通して",
+    "formality": "neutral",
+    "notes": "Indicates a medium, channel, or process by which something happens. 通じて and 通して are interchangeable here. Can also mean 'throughout' a period, as in 長い間を通して.",
+    "similar": [
+      "〜によって"
+    ],
+    "detect": [
+      "を(通じて|通して)"
+    ],
+    "examples": [
+      {
+        "ja": "インターネット{{を通じて|を通して}}、海外の友達と話す。",
+        "en": "I talk with friends overseas through the internet.",
+        "hint": "インターネット + を通じて"
+      },
+      {
+        "ja": "長い{{経験を通して|経験を通じて}}、学んだことがある。",
+        "en": "Over a long time, I have learned something through experience.",
+        "hint": "経験 + を通して"
+      },
+      {
+        "ja": "ボランティア{{を通じて}}、多くの人と出会った。",
+        "en": "Through volunteering, I met many people.",
+        "hint": "ボランティア + を通じて"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-wo-kikkake-ni",
+    "jlpt": "N3",
+    "title": "〜をきっかけに（して）",
+    "meaning": "triggered by / starting from (an event)",
+    "structure": "Noun or Verb plain + をきっかけに（して）",
+    "formality": "neutral",
+    "notes": "Marks an event that started a change in behaviour or situation. The event is the trigger; the change follows. Often in narratives about life changes. Not the same as 〜をきっかけにして, which is nearly identical.",
+    "similar": [],
+    "detect": [
+      "をきっかけに"
+    ],
+    "examples": [
+      {
+        "ja": "{{留学をきっかけに}}、毎日英語を勉強するようになった。",
+        "en": "Starting with my time studying abroad, I began studying English every day.",
+        "hint": "留学 + をきっかけに"
+      },
+      {
+        "ja": "友達の一言{{をきっかけに}}、絵を描き始めた。",
+        "en": "After a single remark from a friend, I started drawing.",
+        "hint": "一言 + をきっかけに"
+      },
+      {
+        "ja": "{{病気をきっかけに}}、生活を見直した。",
+        "en": "Prompted by an illness, I reconsidered how I live.",
+        "hint": "病気 + をきっかけに"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-wo-meguutte",
+    "jlpt": "N3",
+    "title": "〜をめぐって",
+    "meaning": "over / about (a dispute, debate, or issue)",
+    "structure": "Noun + をめぐって／ をめぐる",
+    "formality": "formal",
+    "notes": "Names the subject of a dispute, debate, or conflict. Typical in news and written reports. The noun phrase after をめぐって is the source of the argument.",
+    "similar": [
+      "〜に関する"
+    ],
+    "detect": [
+      "をめぐ(って|る)"
+    ],
+    "examples": [
+      {
+        "ja": "その土地の所有権{{をめぐって}}、争いが起きた。",
+        "en": "A dispute broke out over the ownership of that land.",
+        "hint": "所有権 + をめぐって"
+      },
+      {
+        "ja": "{{政治をめぐる}}議論が続いている。",
+        "en": "Debate about politics continues.",
+        "hint": "政治 + をめぐる"
+      },
+      {
+        "ja": "新しい法律{{をめぐって}}、意見が分かれた。",
+        "en": "Opinions split over the new law.",
+        "hint": "法律 + をめぐって"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-ni-motozuite",
+    "jlpt": "N3",
+    "title": "〜に基づいて",
+    "meaning": "based on / according to",
+    "structure": "Noun + に基づいて／ に基づく／ に基づき",
+    "formality": "formal",
+    "notes": "Shows the basis or standard on which something is done or made. Used in reports, rules and formal decisions. に基づく modifies nouns, and に基づき is a formal connective.",
+    "similar": [
+      "〜によって"
+    ],
+    "detect": [
+      "に基づ(い|く|き)"
+    ],
+    "examples": [
+      {
+        "ja": "{{事実に基づいて}}、映画が作られた。",
+        "en": "The film was made based on real events.",
+        "hint": "事実 + に基づいて"
+      },
+      {
+        "ja": "{{データに基づいた}}判断が必要だ。",
+        "en": "A decision based on data is needed.",
+        "hint": "データ + に基づいた"
+      },
+      {
+        "ja": "{{規則に基づいて}}、処理を行う。",
+        "en": "We will carry out the procedure according to the rules.",
+        "hint": "規則 + に基づいて"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-ni-sotte",
+    "jlpt": "N3",
+    "title": "〜に沿って",
+    "meaning": "along / in line with (a plan, wish, or course)",
+    "structure": "Noun + に沿って／ に沿った",
+    "formality": "neutral",
+    "notes": "Means either following a physical path (along a river) or conforming to a plan, instruction, or wish. Figurative use with 計画 or 希望 is common in business. に沿った modifies the noun that follows.",
+    "similar": [],
+    "detect": [
+      "に沿っ(て|た)"
+    ],
+    "examples": [
+      {
+        "ja": "川{{に沿って}}、散歩した。",
+        "en": "I took a walk along the river.",
+        "hint": "川 + に沿って"
+      },
+      {
+        "ja": "計画{{に沿って}}、作業を進めている。",
+        "en": "We are proceeding with the work in line with the plan.",
+        "hint": "計画 + に沿って"
+      },
+      {
+        "ja": "お客様の{{希望に沿った}}提案をする。",
+        "en": "I will make a proposal that meets the customer's wishes.",
+        "hint": "希望 + に沿った"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-muke-muki",
+    "jlpt": "N3",
+    "title": "〜向け／〜向き",
+    "meaning": "aimed at (向け) / suited for (向き)",
+    "structure": "Noun + 向け／ 向き",
+    "formality": "neutral",
+    "notes": "向け means designed or made for a particular group of people. 向き means suitable for a type of person or purpose. The two are not interchangeable: 向け describes the intended target, 向き describes suitability.",
+    "similar": [],
+    "detect": [
+      "(初心者|子供|若者|学生|家族|大人|女性|男性)(向け|向き)"
+    ],
+    "examples": [
+      {
+        "ja": "この本は初心者{{向けに}}書かれている。",
+        "en": "This book is written for beginners.",
+        "hint": "初心者 + 向け"
+      },
+      {
+        "ja": "{{子供向けの}}アニメを見る。",
+        "en": "I watch anime made for children.",
+        "hint": "子供 + 向け"
+      },
+      {
+        "ja": "この仕事は{{若者向きだ}}。",
+        "en": "This job suits young people.",
+        "hint": "若者 + 向き"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-ppanashi",
+    "jlpt": "N3",
+    "title": "〜っぱなし",
+    "meaning": "left in the same state / continuously doing",
+    "structure": "Verb ます-stem + っぱなし",
+    "formality": "neutral",
+    "notes": "Describes something left in one state with no change, often as a complaint: left on, left open, or standing all the time. Sometimes implies carelessness on the part of the doer.",
+    "similar": [],
+    "detect": [
+      "っぱなし"
+    ],
+    "examples": [
+      {
+        "ja": "テレビを{{つけっぱなしで}}寝てしまった。",
+        "en": "I fell asleep with the TV left on.",
+        "hint": "付ける + っぱなし"
+      },
+      {
+        "ja": "ドアを{{開けっぱなし}}にしないでください。",
+        "en": "Please don't leave the door open.",
+        "hint": "開ける + っぱなし"
+      },
+      {
+        "ja": "彼は一日中、{{立ちっぱなし}}だった。",
+        "en": "He was on his feet all day long.",
+        "hint": "立つ + っぱなし"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-darake",
+    "jlpt": "N3",
+    "title": "〜だらけ",
+    "meaning": "full of / covered in (usually something negative)",
+    "structure": "Noun + だらけ",
+    "formality": "neutral",
+    "notes": "Describes a surface or thing covered with many of something, usually unpleasant. Typical with 泥, ミス, and 傷. Not used for pleasant things.",
+    "similar": [],
+    "detect": [
+      "だらけ"
+    ],
+    "examples": [
+      {
+        "ja": "{{泥だらけ}}の靴で家に入るな。",
+        "en": "Don't come into the house in those muddy shoes.",
+        "hint": "泥 + だらけ"
+      },
+      {
+        "ja": "{{ミスだらけ}}の報告書を書いてしまった。",
+        "en": "I ended up writing a report full of mistakes.",
+        "hint": "ミス + だらけ"
+      },
+      {
+        "ja": "部屋が{{本だらけ}}で、足の踏み場もない。",
+        "en": "The room is so full of books there's no place to step.",
+        "hint": "本 + だらけ"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-gimi",
+    "jlpt": "N3",
+    "title": "〜ぎみ",
+    "meaning": "slightly / tending to (be in a certain condition)",
+    "structure": "Noun or Verb ます-stem + ぎみ",
+    "formality": "neutral",
+    "notes": "Describes a slight tendency or mild state, usually of one's health or mood. Typical with 風邪, 疲れ, and 緊張. Different from 〜がち, which describes a frequent tendency.",
+    "similar": [
+      "〜がち"
+    ],
+    "detect": [
+      "(疲れ|風邪|緊張|食べ過ぎ|遅れ)(ぎみ|気味)"
+    ],
+    "examples": [
+      {
+        "ja": "最近、{{疲れ気味}}だ。",
+        "en": "I've been feeling a bit tired lately.",
+        "hint": "疲れる + 気味"
+      },
+      {
+        "ja": "彼は{{風邪気味}}で、今日は休んでいる。",
+        "en": "He has a slight cold, so he is off today.",
+        "hint": "風邪 + 気味"
+      },
+      {
+        "ja": "食べ過ぎ{{気味}}だから、気をつけよう。",
+        "en": "I've been eating a bit too much, so I'll be careful.",
+        "hint": "食べ過ぎる + 気味"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-mai",
+    "jlpt": "N3",
+    "title": "〜まい",
+    "meaning": "will not / won't (negative volition) / probably not",
+    "structure": "Verb dictionary form + まい（する → するまい）",
+    "formality": "formal",
+    "notes": "Expresses a firm resolve not to do something, or a supposition that something will not happen. Mainly found in writing and formal speech. Spoken more often as 〜ないようにしよう in everyday speech.",
+    "similar": [],
+    "detect": [
+      "[るくうすつぶむぬぐ]まい(と|だ|か|よ|。|、|！|？|ね)"
+    ],
+    "examples": [
+      {
+        "ja": "もう二度と{{負けるまい}}と決めた。",
+        "en": "I decided I would never lose again.",
+        "hint": "負ける + まい"
+      },
+      {
+        "ja": "あんな店には二度と{{行くまい}}。",
+        "en": "I won't go to a place like that ever again.",
+        "hint": "行く + まい"
+      },
+      {
+        "ja": "彼は{{泣くまい}}として、唇をかんだ。",
+        "en": "He bit his lip, determined not to cry.",
+        "hint": "泣く + まい"
+      }
+    ]
+  },
+  {
+    "id": "g:n3-you-ga-nai",
+    "jlpt": "N3",
+    "title": "〜ようがない",
+    "meaning": "there is no way to / cannot possibly",
+    "structure": "Verb ます-stem + ようがない",
+    "formality": "neutral",
+    "notes": "States that an action is impossible because of circumstances, such as lack of information or means. Sounds more objective than 〜ことができない. Often used to express helplessness.",
+    "similar": [
+      "〜わけがない"
+    ],
+    "detect": [
+      "ようがな"
+    ],
+    "examples": [
+      {
+        "ja": "原因が分からないので、{{直しようがない}}。",
+        "en": "Since we don't know the cause, there's no way to fix it.",
+        "hint": "直す + ようがない"
+      },
+      {
+        "ja": "この状況では、{{連絡しようがなかった}}。",
+        "en": "In that situation, there was no way to get in touch.",
+        "hint": "連絡する + ようがない"
+      },
+      {
+        "ja": "あまりに急な話で、{{断りようがなかった}}。",
+        "en": "It came on so suddenly that there was no way to refuse.",
+        "hint": "断る + ようがない"
+      }
+    ]
+  }
+]

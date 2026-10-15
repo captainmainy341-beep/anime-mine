@@ -48,6 +48,8 @@ function harness() {
     subs: {},
     externalCues: [{ start: 0, end: 1, text: '雨 降る' }],
     parsed: [],
+    syncCalls: [],
+    synced: null,
     extracts: [],
     words: new Map(),
     saves: 0,
@@ -65,6 +67,11 @@ function harness() {
     translateCalls: [],
     media: [],
     revision: 0,
+    cleaned: {},
+    desubFails: false,
+    enqueues: [],
+    cleanedCalls: [],
+    infoFor: {},
   };
 
   class FakeConverter {
@@ -238,7 +245,7 @@ function harness() {
   const deps = {
     probe: async (video) => {
       log.probes.push(video);
-      return INFO;
+      return log.infoFor[video] ?? INFO;
     },
     Converter: FakeConverter,
     KnownWords: FakeKnown,
@@ -262,6 +269,22 @@ function harness() {
       log.parsed.push(file);
       return log.externalCues;
     },
+    syncCues: async (args) => {
+      log.syncCalls.push(args);
+      if (typeof log.synced === 'function') return log.synced(args);
+      return log.synced ?? { cues: args.cues, applied: false, segments: [] };
+    },
+    desubber: {
+      async cleanedPath(video, mode) {
+        log.cleanedCalls.push({ video, mode });
+        if (log.desubFails) throw new Error('stat failed');
+        return log.cleaned[video] ?? null;
+      },
+      async enqueue(video, handlers, mode) {
+        log.enqueues.push({ video, handlers, mode });
+      },
+      stop() {},
+    },
   };
   const features = createFeatureHandlers({
     dataDir: dir,
@@ -284,6 +307,10 @@ test('exposes every feature channel', () => {
   assert.deepEqual(Object.keys(features.handlers).sort(), [
     'ai:translate',
     'anki:preview',
+    'desub:clearCache',
+    'desub:install',
+    'desub:isClean',
+    'desub:status',
     'known:ankiFields',
     'known:classify',
     'known:coverage',
@@ -335,6 +362,7 @@ test('media:prepare returns the converted file, emits progress and uses dataDir/
   assert.deepEqual(await call('media:prepare', { videoPath: '/v/a.mkv', audioStreamIndex: 2 }), {
     path: '/cache/2.mp4',
     mode: 'remux',
+    cleaned: false,
   });
   assert.deepEqual(log.converters, [{ cacheDir: path.join(dir, 'converted') }]);
   assert.deepEqual(notified, [{ channel: 'media:progress', payload: { videoPath: '/v/a.mkv', fraction: 0.5 } }]);
@@ -358,7 +386,7 @@ test('a forced prepare does not share a running job for the same track', async (
   const plain = call('media:prepare', { videoPath: '/v/a.mkv', audioStreamIndex: 1 }).catch((err) => err);
   const forced = await call('media:prepare', { videoPath: '/v/a.mkv', audioStreamIndex: 1, force: true });
 
-  assert.deepEqual(forced, { path: '/cache/1.mp4', mode: 'remux' });
+  assert.deepEqual(forced, { path: '/cache/1.mp4', mode: 'remux', cleaned: false });
   assert.equal((await plain).name, 'AbortError');
 });
 
@@ -369,7 +397,7 @@ test('a new prepare for the same video with another audio track aborts the previ
   const first = call('media:prepare', { videoPath: '/v/a.mkv', audioStreamIndex: 1 }).catch((err) => err);
   const second = await call('media:prepare', { videoPath: '/v/a.mkv', audioStreamIndex: 2 });
 
-  assert.deepEqual(second, { path: '/cache/2.mp4', mode: 'remux' });
+  assert.deepEqual(second, { path: '/cache/2.mp4', mode: 'remux', cleaned: false });
   assert.equal((await first).name, 'AbortError');
   assert.equal(log.prepares[0].signal.aborted, true);
   assert.equal(log.prepares[1].signal.aborted, false);
@@ -381,6 +409,7 @@ test('repeat prepares for the same audio track share one job, and media:cancel s
 
   const a = call('media:prepare', { videoPath: '/v/a.mkv', audioStreamIndex: 1 }).catch((err) => err);
   const b = call('media:prepare', { videoPath: '/v/a.mkv', audioStreamIndex: 1 }).catch((err) => err);
+  await flush();
   assert.equal(log.prepares.length, 1);
 
   assert.deepEqual(await call('media:cancel', '/v/a.mkv'), { ok: true });
@@ -408,6 +437,94 @@ test('media:cacheInfo and media:clearCache delegate to the converter cache', asy
   assert.equal(log.cleared, 1);
 });
 
+const flush = () => new Promise((resolve) => setImmediate(resolve));
+
+test('playbackSource returns the cleaned file only when removeBurnedSubs is on and the cleaned file exists', async () => {
+  const { log, features } = harness();
+  const video = '/v/a.mkv';
+  log.cleaned[video] = '/clean/a.mp4';
+  assert.equal(await features.playbackSource(video), video);
+  log.settings.removeBurnedSubs = true;
+  assert.equal(await features.playbackSource(video), '/clean/a.mp4');
+  assert.equal(await features.playbackSource('/v/b.mkv'), '/v/b.mkv');
+  log.desubFails = true;
+  assert.equal(await features.playbackSource(video), video);
+});
+
+test('media:prepare feeds the cleaned file to the converter with its own audio index and keeps progress on the original path', async () => {
+  const { dir, log, notified, call } = harness();
+  const video = '/v/a.mkv';
+  const clean = path.join(dir, 'clean.mp4');
+  log.cleaned[video] = clean;
+  log.settings.removeBurnedSubs = true;
+  log.settings.burnedSubsMode = 'ai';
+  log.infoFor[video] = {
+    duration: 1320,
+    streams: [
+      { index: 0, type: 'video', codec: 'h264', bitDepth: 8 },
+      { index: 1, type: 'subtitle', codec: 'subrip' },
+      { index: 2, type: 'audio', codec: 'aac', lang: 'en' },
+      { index: 3, type: 'audio', codec: 'aac', lang: 'ja' },
+    ],
+  };
+  log.infoFor[clean] = {
+    duration: 1320,
+    streams: [
+      { index: 0, type: 'video', codec: 'h264', bitDepth: 8 },
+      { index: 1, type: 'audio', codec: 'aac', lang: 'en' },
+      { index: 2, type: 'audio', codec: 'aac', lang: 'ja' },
+    ],
+  };
+
+  assert.deepEqual(await call('media:prepare', { videoPath: video, audioStreamIndex: 3 }), { path: '/cache/2.mp4', mode: 'remux', cleaned: true });
+  assert.equal(log.prepares.at(-1).video, clean);
+  assert.equal(log.prepares.at(-1).audioStreamIndex, 2);
+  const progress = notified.filter((n) => n.channel === 'media:progress');
+  assert.ok(progress.length > 0);
+  assert.ok(progress.every((n) => n.payload.videoPath === video));
+});
+
+test('desub:isClean is true only when removeBurnedSubs is on and a cleaned file exists', async () => {
+  const { log, call } = harness();
+  const video = '/v/a.mkv';
+  log.cleaned[video] = '/v/a.clean.mp4';
+  assert.equal(await call('desub:isClean', video), false);
+
+  log.settings.removeBurnedSubs = true;
+  delete log.cleaned[video];
+  assert.equal(await call('desub:isClean', video), false);
+
+  log.cleaned[video] = '/v/a.clean.mp4';
+  assert.equal(await call('desub:isClean', video), true);
+});
+
+test('media:probe queues the cleanup only when removeBurnedSubs is on and no cleaned file exists', async () => {
+  const { log, notified, call } = harness();
+  const video = '/v/a.mkv';
+  await call('media:probe', video);
+  await flush();
+  assert.deepEqual(log.enqueues, []);
+
+  log.settings.removeBurnedSubs = true;
+  await call('media:probe', video);
+  await flush();
+  assert.deepEqual(log.enqueues.map((job) => job.video), [video]);
+  const { handlers } = log.enqueues[0];
+  handlers.onProgress(0.4);
+  handlers.onDone('/clean.mp4');
+  handlers.onError(new Error('boom'));
+  assert.deepEqual(notified.filter((n) => n.channel.startsWith('desub:')), [
+    { channel: 'desub:progress', payload: { videoPath: video, fraction: 0.4 } },
+    { channel: 'desub:done', payload: { videoPath: video } },
+    { channel: 'desub:error', payload: { videoPath: video, message: 'boom' } },
+  ]);
+
+  log.cleaned[video] = '/clean.mp4';
+  await call('media:probe', video);
+  await flush();
+  assert.equal(log.enqueues.length, 1);
+});
+
 test('player:loadCues prefers the linked subtitle and reports source none when nothing is available', async () => {
   const { log, call } = harness();
   log.subs['/v/a.mkv'] = '/subs/a.srt';
@@ -417,14 +534,33 @@ test('player:loadCues prefers the linked subtitle and reports source none when n
     subtitlePath: '/subs/a.srt',
     source: 'external',
     embeddedIndex: null,
+    synced: false,
   });
   assert.deepEqual(await call('player:loadCues', '/v/b.mkv'), {
     cues: [],
     subtitlePath: null,
     source: 'none',
     embeddedIndex: null,
+    synced: false,
   });
   assert.equal(log.extracts.length, 0);
+});
+
+test('player:loadCues returns auto-synced external cues and only syncs external subtitles', async () => {
+  const { log, call } = harness();
+  log.subs['/v/a.mkv'] = '/subs/a.srt';
+  const shifted = [{ start: 2, end: 3, text: '雨 降る' }];
+  log.synced = { cues: shifted, applied: true, segments: [{ from: 0, offset: 1 }] };
+
+  assert.deepEqual(await call('player:loadCues', '/v/a.mkv'), {
+    cues: shifted,
+    subtitlePath: '/subs/a.srt',
+    source: 'external',
+    embeddedIndex: null,
+    synced: true,
+  });
+  assert.equal(log.syncCalls[0].subtitlePath, '/subs/a.srt');
+  assert.equal(log.syncCalls.length, 1);
 });
 
 test('player:loadCues with embeddedIndex extracts once and caches the cues as JSON in embedded-subs', async () => {
@@ -435,7 +571,7 @@ test('player:loadCues with embeddedIndex extracts once and caches the cues as JS
   const first = await call('player:loadCues', video, { embeddedIndex: 4 });
   const second = await call('player:loadCues', video, { embeddedIndex: 4 });
 
-  assert.deepEqual(first, { cues: EMBEDDED, subtitlePath: null, source: 'embedded', embeddedIndex: 4 });
+  assert.deepEqual(first, { cues: EMBEDDED, subtitlePath: null, source: 'embedded', embeddedIndex: 4, synced: false });
   assert.deepEqual(second, first);
   assert.deepEqual(log.extracts, [{ video, streamIndex: 4 }]);
   const stat = await fs.stat(video);
@@ -451,8 +587,42 @@ test('player:loadCues with auto picks the default Japanese subtitle track when n
 
   const result = await call('player:loadCues', video, { auto: true });
 
-  assert.deepEqual(result, { cues: EMBEDDED, subtitlePath: null, source: 'embedded', embeddedIndex: 4 });
+  assert.deepEqual(result, { cues: EMBEDDED, subtitlePath: null, source: 'embedded', embeddedIndex: 4, synced: false });
   assert.deepEqual(log.extracts, [{ video, streamIndex: 4 }]);
+});
+
+test('player:loadCues returns Colab-corrected text and JLPT tags from sidecar files', async () => {
+  const { dir, log, call } = harness();
+  const video = path.join(dir, 'ep.mkv');
+  const subtitle = await subtitleFile(dir, 'ep.srt', '');
+  await fs.writeFile(video, 'video');
+  log.subs[video] = subtitle;
+  log.externalCues = [{ start: 0, end: 1, text: '雨 降る' }, { start: 1, end: 2, text: '行く' }];
+  await fs.writeFile(path.join(dir, 'ep.fix.json'), JSON.stringify({ task: 'fix', changes: [{ n: 1, text: '雨が降る' }], errors: [] }));
+  await fs.writeFile(path.join(dir, 'ep.tag.json'), JSON.stringify({ task: 'tag', cues: [{ n: 1, jlpt: 'N4', words: ['雨'] }, { n: 2, jlpt: 'none', words: [] }], errors: [] }));
+
+  const result = await call('player:loadCues', video);
+
+  assert.equal(result.source, 'external');
+  assert.deepEqual(result.cues, [
+    { start: 0, end: 1, text: '雨が降る', originalText: '雨 降る', jlpt: 'N4', words: ['雨'] },
+    { start: 1, end: 2, text: '行く' },
+  ]);
+});
+
+test('player:loadCues attaches Colab sidecars by original cue number even when sync drops cues', async () => {
+  const { dir, log, call } = harness();
+  const video = path.join(dir, 'ep.mkv');
+  const subtitle = await subtitleFile(dir, 'ep.srt', '');
+  await fs.writeFile(video, 'video');
+  log.subs[video] = subtitle;
+  log.externalCues = [{ start: 0, end: 1, text: '一' }, { start: 1, end: 2, text: '二' }];
+  log.synced = (args) => ({ applied: true, segments: [], cues: args.cues.slice(1) });
+  await fs.writeFile(path.join(dir, 'ep.fix.json'), JSON.stringify({ task: 'fix', changes: [{ n: 2, text: '二番' }], errors: [] }));
+
+  const result = await call('player:loadCues', video);
+
+  assert.deepEqual(result.cues, [{ start: 1, end: 2, text: '二番', originalText: '二' }]);
 });
 
 test('known:stats and known:mark report word counts and save changes', async () => {
@@ -733,7 +903,7 @@ test('anki:preview returns the clip audio and frame as data URLs using clamped p
   });
   assert.deepEqual(log.media.map((item) => item.args), [
     { video: '/v/a.mkv', start: 10, end: 14, padStart: 5, padEnd: 0.4, audioStream: 1 },
-    { video: '/v/a.mkv', time: 12 },
+    { video: '/v/a.mkv', time: 12, censorSubs: true, cover: null },
   ]);
   await assert.rejects(call('anki:preview', { videoPath: '/v/a.mkv', cue: { start: 5, end: 2 } }), /0 <= start < end/);
   assert.equal(log.media.length, 2);
@@ -746,4 +916,61 @@ test('markMined adds the base form as learning through addMany and saves', async
 
   assert.deepEqual(log.addManyCalls, [{ words: ['降る'], status: 'learning', source: 'mined' }]);
   assert.equal(log.saves, 1);
+});
+
+test('burnedSubsMode defaults to blur and only ai selects the ai cache', async () => {
+  const { log, call, features } = harness();
+  const video = '/v/a.mkv';
+  log.settings.removeBurnedSubs = true;
+  await features.playbackSource(video);
+  log.settings.burnedSubsMode = 'ai';
+  await features.playbackSource(video);
+  log.settings.burnedSubsMode = 'something-else';
+  await features.playbackSource(video);
+  assert.deepEqual(log.cleanedCalls.map((call) => call.mode), ['blur', 'ai', 'blur']);
+
+  await call('media:probe', video);
+  await flush();
+  assert.equal(log.enqueues.at(-1).mode, 'blur');
+  log.settings.burnedSubsMode = 'ai';
+  await call('media:probe', '/v/b.mkv');
+  await flush();
+  assert.equal(log.enqueues.at(-1).mode, 'ai');
+});
+
+test('media:prepare remaps the audio index by ordinal for blur output too', async () => {
+  const { dir, log, call } = harness();
+  const video = '/v/a.mkv';
+  const clean = path.join(dir, 'clean.mp4');
+  log.cleaned[video] = clean;
+  log.settings.removeBurnedSubs = true;
+  log.infoFor[video] = {
+    duration: 1320,
+    streams: [
+      { index: 0, type: 'video', codec: 'h264', bitDepth: 8 },
+      { index: 1, type: 'subtitle', codec: 'subrip' },
+      { index: 2, type: 'audio', codec: 'aac', lang: 'en' },
+      { index: 3, type: 'audio', codec: 'aac', lang: 'ja' },
+    ],
+  };
+  log.infoFor[clean] = {
+    duration: 1320,
+    streams: [
+      { index: 0, type: 'video', codec: 'h264', bitDepth: 8 },
+      { index: 1, type: 'audio', codec: 'aac', lang: 'en' },
+      { index: 2, type: 'audio', codec: 'aac', lang: 'ja' },
+    ],
+  };
+
+  await call('media:prepare', { videoPath: video, audioStreamIndex: 3 });
+  assert.equal(log.prepares.at(-1).video, clean);
+  assert.equal(log.prepares.at(-1).audioStreamIndex, 2);
+});
+
+
+test('media:prepare reports when playback uses the subtitle-free copy', async () => {
+  const { log, call } = harness();
+  log.settings.removeBurnedSubs = true;
+  log.cleaned['/v/a.mkv'] = '/clean/a.mp4';
+  assert.equal((await call('media:prepare', { videoPath: '/v/a.mkv', audioStreamIndex: 2 })).cleaned, true);
 });

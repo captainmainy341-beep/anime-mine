@@ -17,6 +17,10 @@ function stubAnki(t, handlers = {}) {
 }
 
 const actions = calls => calls.map(call => call.req.action)
+const paramsOf = (calls, action) => calls.find(call => call.req.action === action).req.params
+
+const OLD_FIELDS = ['Word', 'Reading', 'Meaning', 'Sentence', 'SentenceTranslation', 'Notes', 'Audio', 'Picture', 'Source']
+const CURRENT_FIELDS = [...OLD_FIELDS, 'WordFurigana', 'SentenceFurigana']
 
 test('defaults to the local AnkiConnect URL', () => {
   assert.equal(new AnkiClient().url, 'http://127.0.0.1:8765')
@@ -54,14 +58,131 @@ test('ping is true when AnkiConnect answers and false when unreachable', async t
   assert.equal(await new AnkiClient().ping(), false)
 })
 
-test('ensureSetup does not recreate a model that already exists', async t => {
+const LEGACY_CSS = `.card { font-family: arial, sans-serif; font-size: 22px; text-align: center; color: #222; background-color: #fff; }
+.word { font-size: 36px; }
+.sentence { font-size: 26px; }
+.meaning, .translation { margin-top: 0.5em; }
+.source { color: #888; font-size: 14px; margin-top: 1em; }`
+
+const V2_CSS = `/* animemine-template:2 */
+.card {
+  font-family: "Hiragino Sans","Noto Sans JP","Yu Gothic","Meiryo",sans-serif;
+  font-size: 20px;
+  line-height: 1.6;
+  text-align: center;
+  color: #1f2430;
+  background-color: #f6f6f2;
+}
+.nightMode.card, .nightMode .card {
+  color: #e8e8ee;
+  background-color: #1b1d26;
+}
+.card-wrap { max-width: 680px; margin: 0 auto; padding: 8px 14px; }
+.word { font-size: 44px; }
+.jp { line-height: 1.8; }
+.jp ruby rt { font-size: 0.5em; color: #6b7280; }
+.nightMode .jp ruby rt { color: #9ca3af; }
+.sentence { font-size: 28px; line-height: 1.9; }
+.sentence b { color: #d6336c; }
+.nightMode .sentence b { color: #ff7aa8; }
+.reading { font-size: 22px; color: #6b7280; }
+.meaning { margin: .6em 0; font-size: 19px; text-align: left; display: inline-block; max-width: 100%; }
+.translation { font-size: 18px; color: #4b5563; margin: .8em 0; }
+.nightMode .translation { color: #aab; }
+.pic img { max-width: 100%; max-height: 260px; border-radius: 10px; }
+.audio { margin: .5em 0; }
+.vocab { margin-top: 1em; padding-top: .8em; border-top: 1px dashed rgba(128,128,128,.4); }
+.vocab-word { font-size: 24px; margin-right: .4em; }
+.notes { font-size: 15px; color: #6b7280; margin-top: .6em; }
+.source { font-size: 12px; color: #9ca3af; margin-top: 1.2em; letter-spacing: .04em; }
+hr#answer { border: 0; border-top: 1px solid rgba(128,128,128,.35); margin: 1em 0; }`
+
+test('ensureSetup migrates an existing old model instead of recreating it', async t => {
   const calls = stubAnki(t, {
     createDeck: () => ok(1),
     modelNames: () => ok(['Basic', 'AnimeMine']),
+    modelFieldNames: () => ok(OLD_FIELDS),
+    modelFieldAdd: () => ok(null),
+    modelStyling: () => ok({css: LEGACY_CSS}),
+    modelTemplates: () => ok({Recognition: {Front: '', Back: ''}, Sentence: {Front: '', Back: ''}}),
+    updateModelTemplates: () => ok(null),
+    updateModelStyling: () => ok(null),
   })
   await new AnkiClient().ensureSetup('Anime Mining', 'AnimeMine')
-  assert.deepEqual(actions(calls), ['createDeck', 'modelNames'])
+
+  assert.deepEqual(actions(calls), [
+    'createDeck', 'modelNames', 'modelFieldNames', 'modelFieldAdd', 'modelFieldAdd',
+    'modelStyling', 'modelTemplates', 'updateModelTemplates', 'updateModelStyling',
+  ])
   assert.deepEqual(calls[0].req.params, {deck: 'Anime Mining'})
+  assert.deepEqual(calls[3].req.params, {modelName: 'AnimeMine', fieldName: 'WordFurigana', index: 9})
+  assert.deepEqual(calls[4].req.params, {modelName: 'AnimeMine', fieldName: 'SentenceFurigana', index: 10})
+
+  const {templates} = paramsOf(calls, 'updateModelTemplates').model
+  assert.deepEqual(Object.keys(templates), ['Recognition', 'Sentence'])
+  assert.match(templates.Recognition.Back, /\{\{FrontSide\}\}/)
+  assert.match(templates.Sentence.Front, /\{\{Sentence\}\}/)
+
+  const {name, css} = paramsOf(calls, 'updateModelStyling').model
+  assert.equal(name, 'AnimeMine')
+  assert.match(css, /^\/\* animemine-template:3 \*\//)
+})
+
+test('ensureSetup upgrades an untouched v2 model to the current templates and styling', async t => {
+  const calls = stubAnki(t, {
+    createDeck: () => ok(1),
+    modelNames: () => ok(['AnimeMine']),
+    modelFieldNames: () => ok(CURRENT_FIELDS),
+    modelStyling: () => ok({css: V2_CSS}),
+    modelTemplates: () => ok({Recognition: {Front: '', Back: ''}, Sentence: {Front: '', Back: ''}}),
+    updateModelTemplates: () => ok(null),
+    updateModelStyling: () => ok(null),
+  })
+  await new AnkiClient().ensureSetup('Anime Mining', 'AnimeMine')
+
+  assert.deepEqual(actions(calls), [
+    'createDeck', 'modelNames', 'modelFieldNames', 'modelStyling', 'modelTemplates', 'updateModelTemplates', 'updateModelStyling',
+  ])
+  const {templates} = paramsOf(calls, 'updateModelTemplates').model
+  assert.match(templates.Recognition.Back, /\{\{SentenceTranslation\}\}/)
+  assert.match(paramsOf(calls, 'updateModelStyling').model.css, /^\/\* animemine-template:3 \*\//)
+})
+
+test('ensureSetup adds fields but keeps templates and styling of a customised model', async t => {
+  const calls = stubAnki(t, {
+    createDeck: () => ok(1),
+    modelNames: () => ok(['AnimeMine']),
+    modelFieldNames: () => ok(OLD_FIELDS),
+    modelFieldAdd: () => ok(null),
+    modelStyling: () => ok({css: '.card { color: hotpink; }'}),
+  })
+  await new AnkiClient().ensureSetup('Anime Mining', 'AnimeMine')
+
+  assert.deepEqual(actions(calls), [
+    'createDeck', 'modelNames', 'modelFieldNames', 'modelFieldAdd', 'modelFieldAdd', 'modelStyling',
+  ])
+})
+
+test('ensureSetup leaves a model alone when its styling already carries the template marker', async t => {
+  const calls = stubAnki(t, {
+    createDeck: () => ok(1),
+    modelNames: () => ok(['AnimeMine']),
+    modelFieldNames: () => ok(CURRENT_FIELDS),
+    modelStyling: () => ok({css: '/* animemine-template:2 */\n.card { color: #1f2430; }'}),
+  })
+  await new AnkiClient().ensureSetup('Anime Mining', 'AnimeMine')
+
+  assert.deepEqual(actions(calls), ['createDeck', 'modelNames', 'modelFieldNames', 'modelStyling'])
+})
+
+test('ensureSetup still resolves when the migration fails', async t => {
+  stubAnki(t, {
+    createDeck: () => ok(1),
+    modelNames: () => ok(['AnimeMine']),
+    modelFieldNames: () => ok(CURRENT_FIELDS),
+    modelStyling: () => fail('styling unavailable'),
+  })
+  await assert.doesNotReject(new AnkiClient().ensureSetup('Anime Mining', 'AnimeMine'))
 })
 
 test('ensureSetup creates a missing model with the mining fields and two templates', async t => {
@@ -75,20 +196,31 @@ test('ensureSetup creates a missing model with the mining fields and two templat
   assert.deepEqual(actions(calls), ['createDeck', 'modelNames', 'createModel'])
   const {modelName, inOrderFields, isCloze, cardTemplates, css} = calls[2].req.params
   assert.equal(modelName, 'AnimeMine')
-  assert.deepEqual(inOrderFields, [
-    'Word', 'Reading', 'Meaning', 'Sentence', 'SentenceTranslation',
-    'Notes', 'Audio', 'Picture', 'Source',
-  ])
+  assert.deepEqual(inOrderFields, CURRENT_FIELDS)
   assert.equal(isCloze, false)
-  assert.equal(typeof css, 'string')
+  assert.match(css, /^\/\* animemine-template:3 \*\//)
   assert.deepEqual(cardTemplates.map(tpl => tpl.Name), ['Recognition', 'Sentence'])
   for (const tpl of cardTemplates) {
     assert.equal(typeof tpl.Front, 'string')
     assert.equal(typeof tpl.Back, 'string')
-    assert.match(tpl.Back, /\{\{FrontSide\}\}/)
   }
+  assert.match(cardTemplates[0].Back, /\{\{FrontSide\}\}/)
+  assert.match(cardTemplates[1].Back, /\{\{FrontSide\}\}/)
   assert.match(cardTemplates[0].Front, /\{\{Word\}\}/)
   assert.match(cardTemplates[1].Front, /\{\{Sentence\}\}/)
+})
+
+test('model templates both show the sentence translation', async t => {
+  const calls = stubAnki(t, {
+    createDeck: () => ok(1),
+    modelNames: () => ok([]),
+    createModel: () => ok(null),
+  })
+  await new AnkiClient().ensureSetup('Anime Mining', 'AnimeMine')
+
+  for (const tpl of calls[2].req.params.cardTemplates) {
+    assert.match(tpl.Back, /\{\{#SentenceTranslation\}\}<div class="translation">\{\{SentenceTranslation\}\}/)
+  }
 })
 
 test('Recognition front is only generated for notes that have a Reading', async t => {
@@ -100,10 +232,10 @@ test('Recognition front is only generated for notes that have a Reading', async 
   await new AnkiClient().ensureSetup('Anime Mining', 'AnimeMine')
 
   const [recognition] = calls[2].req.params.cardTemplates
-  assert.equal(
-    recognition.Front,
-    '{{#Reading}}{{Picture}}<div class="word">{{Word}}</div>{{Audio}}{{/Reading}}',
-  )
+  assert.match(recognition.Front, /^\{\{#Reading\}\}<div class="card-wrap">/)
+  assert.match(recognition.Front, /\{\{#WordFurigana\}\}\{\{furigana:WordFurigana\}\}\{\{\/WordFurigana\}\}\{\{\^WordFurigana\}\}\{\{Word\}\}/)
+  assert.match(recognition.Front, /\{\{Sentence\}\}/)
+  assert.match(recognition.Front, /\{\{\/Reading\}\}$/)
 })
 
 test('addCard stores media first, then adds the note with sound and image fields', async t => {
@@ -138,6 +270,18 @@ test('addCard stores media first, then adds the note with sound and image fields
       },
       options: {allowDuplicate: false, duplicateScope: 'deck'},
     },
+  })
+})
+
+test('addCard with duplicateRoot checks for duplicates across the root deck and its subdecks', async t => {
+  const calls = stubAnki(t, {addNote: () => ok(42)})
+  await new AnkiClient().addCard({deck: 'Anime Mining::Frieren', duplicateRoot: 'Anime Mining', model: 'M', fields: {Word: 'a'}})
+
+  assert.deepEqual(calls[0].req.params.note.deckName, 'Anime Mining::Frieren')
+  assert.deepEqual(calls[0].req.params.note.options, {
+    allowDuplicate: false,
+    duplicateScope: 'deck',
+    duplicateScopeOptions: {deckName: 'Anime Mining', checkChildren: true},
   })
 })
 

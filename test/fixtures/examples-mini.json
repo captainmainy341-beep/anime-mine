@@ -1,0 +1,72 @@
+{
+  "version": "3.6.2",
+  "languages": ["eng"],
+  "commonOnly": false,
+  "words": [
+    {
+      "id": "1358280",
+      "kanji": [{ "common": true, "text": "食べる", "tags": [] }],
+      "kana": [{ "common": true, "text": "たべる", "tags": [], "appliesToKanji": ["*"] }],
+      "sense": [
+        {
+          "partOfSpeech": ["v1", "vt"],
+          "appliesToKanji": ["*"],
+          "appliesToKana": ["*"],
+          "gloss": [{ "lang": "eng", "text": "to eat" }],
+          "examples": [
+            {
+              "source": { "type": "tatoeba", "value": "1001" },
+              "text": "食べる",
+              "sentences": [
+                { "lang": "jpn", "text": "私は毎日りんごを食べる。" },
+                { "lang": "eng", "text": "I eat an apple every day." }
+              ]
+            },
+            {
+              "source": { "type": "tatoeba", "value": "1003" },
+              "text": "食べた",
+              "sentences": [
+                { "lang": "jpn", "text": "昼ご飯を食べた。" },
+                { "lang": "eng", "text": "I ate lunch." }
+              ]
+            },
+            {
+              "source": { "type": "tatoeba", "value": "1005" },
+              "text": "食べる",
+              "sentences": [{ "lang": "jpn", "text": "食べるのが好き。" }]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "1398020",
+      "kanji": [{ "common": true, "text": "勉強", "tags": [] }],
+      "kana": [{ "common": true, "text": "べんきょう", "tags": [], "appliesToKanji": ["*"] }],
+      "sense": [
+        {
+          "partOfSpeech": ["vs", "n"],
+          "appliesToKanji": ["*"],
+          "appliesToKana": ["*"],
+          "gloss": [{ "lang": "eng", "text": "study" }],
+          "examples": [
+            {
+              "source": { "type": "tatoeba", "value": "1004" },
+              "text": "勉強",
+              "sentences": [
+                { "lang": "jpn", "text": "毎日勉強します。" },
+                { "lang": "eng", "text": "I study every day." }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "9999",
+      "kanji": [{ "common": false, "text": "無例", "tags": [] }],
+      "kana": [{ "common": false, "text": "むれい", "tags": [], "appliesToKanji": ["*"] }],
+      "sense": [{ "partOfSpeech": ["n"], "appliesToKanji": ["*"], "appliesToKana": ["*"], "gloss": [{ "lang": "eng", "text": "no examples" }], "examples": [] }]
+    }
+  ]
+}

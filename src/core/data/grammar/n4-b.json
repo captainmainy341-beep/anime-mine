@@ -1,0 +1,1175 @@
+[
+  {
+    "id": "g:n4-ba-conditional",
+    "jlpt": "N4",
+    "title": "〜ば (conditional)",
+    "meaning": "if / when (conditional)",
+    "structure": "Verb e-row + ば / い-adj stem + ければ / な-adj・noun + なら (general conditional)",
+    "formality": "neutral",
+    "notes": "States a condition that leads to a natural or expected result. The result clause cannot be a request, command or volitional. Use 〜たら when the result is a specific, one-off event.",
+    "similar": [
+      "〜たら",
+      "〜なら"
+    ],
+    "detect": [
+      "けれ?ば",
+      "えば",
+      "せば",
+      "れば"
+    ],
+    "examples": [
+      {
+        "ja": "この時計は{{安ければ}}、買います。",
+        "en": "If this watch is cheap, I'll buy it.",
+        "hint": "安い + ければ"
+      },
+      {
+        "ja": "明日雨が{{降れば}}、試合は中止になります。",
+        "en": "If it rains tomorrow, the game will be cancelled.",
+        "hint": "降る + ば"
+      },
+      {
+        "ja": "もっと早く{{起きれば}}、朝ごはんを食べられるよ。",
+        "en": "If you wake up earlier, you'll be able to eat breakfast.",
+        "hint": "起きる + ば"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-tara-conditional",
+    "jlpt": "N4",
+    "title": "〜たら",
+    "meaning": "if / when / after (conditional)",
+    "structure": "Verb/adj past stem + ら (行ったら, 高かったら, 休みだったら)",
+    "formality": "neutral",
+    "notes": "The most flexible conditional: hypothetical 'if', 'when' and 'after doing'. Unlike 〜ば, the result can be a request, command or volitional. Often describes an action that happens once the condition is met.",
+    "similar": [
+      "〜ば (conditional)",
+      "〜なら"
+    ],
+    "detect": [
+      "たら"
+    ],
+    "examples": [
+      {
+        "ja": "雨が{{止んだら}}、散歩に行こう。",
+        "en": "When the rain stops, let's go for a walk.",
+        "hint": "止む + たら"
+      },
+      {
+        "ja": "駅に{{着いたら}}、電話してください。",
+        "en": "Please call me when you arrive at the station.",
+        "hint": "着く + たら"
+      },
+      {
+        "ja": "宿題が{{終わったら}}、ゲームをしてもいい？",
+        "en": "Can I play games once I finish my homework?",
+        "hint": "終わる + たら"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-to-conditional",
+    "jlpt": "N4",
+    "title": "〜と (conditional)",
+    "meaning": "when / whenever (natural result)",
+    "structure": "Dictionary form + と",
+    "formality": "neutral",
+    "notes": "Expresses an automatic or natural result: whenever the first thing happens, the second always follows. Common for directions, instructions and machines. The result clause cannot be a volitional, request or command.",
+    "similar": [
+      "〜ば (conditional)",
+      "〜たら"
+    ],
+    "detect": [],
+    "examples": [
+      {
+        "ja": "このボタンを{{押すと}}、ドアが開きます。",
+        "en": "When you press this button, the door opens.",
+        "hint": "押す + と"
+      },
+      {
+        "ja": "春に{{なると}}、桜が咲く。",
+        "en": "When spring comes, the cherry blossoms bloom.",
+        "hint": "なる + と"
+      },
+      {
+        "ja": "右に{{曲がると}}、コンビニがあるよ。",
+        "en": "If you turn right, there's a convenience store.",
+        "hint": "曲がる + と"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-nara-conditional",
+    "jlpt": "N4",
+    "title": "〜なら",
+    "meaning": "if (that's the case) / speaking of",
+    "structure": "Plain form + なら (verb・い-adj・な-adj・noun)",
+    "formality": "neutral",
+    "notes": "Takes a premise the speaker has heard, inferred or been given, then offers advice or a judgement about it. Often means 'if that's so'. Used more for the speaker's reaction to someone else's situation than for a neutral condition.",
+    "similar": [
+      "〜ば (conditional)",
+      "〜たら"
+    ],
+    "detect": [
+      "(?<!な)なら(?!ない)"
+    ],
+    "examples": [
+      {
+        "ja": "東京に{{行くなら}}、ぜひこの店に寄ってね。",
+        "en": "If you're going to Tokyo, be sure to stop by this shop.",
+        "hint": "行く + なら"
+      },
+      {
+        "ja": "{{寒いなら}}、窓を閉めましょうか。",
+        "en": "If you're cold, shall I close the window?",
+        "hint": "寒い + なら"
+      },
+      {
+        "ja": "明日{{休むなら}}、先に連絡してください。",
+        "en": "If you're going to take the day off tomorrow, please contact me first.",
+        "hint": "休む + なら"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-te-mo-even-if",
+    "jlpt": "N4",
+    "title": "〜ても (even if)",
+    "meaning": "even if / even though",
+    "structure": "Verb て-form / い-adj くて・な-adj で + も",
+    "formality": "neutral",
+    "notes": "Concession: the result does not depend on the condition, so 'even if X, Y'. Often paired with negative results such as 〜ない. Do not confuse with 〜てもいい, which means permission.",
+    "similar": [
+      "〜のに",
+      "〜てもいい"
+    ],
+    "detect": [
+      "[てで]も(?!いい|よい)"
+    ],
+    "examples": [
+      {
+        "ja": "雨が{{降っても}}、試合は行われます。",
+        "en": "Even if it rains, the game will go ahead.",
+        "hint": "降る + ても"
+      },
+      {
+        "ja": "いくら{{呼んでも}}、返事がない。",
+        "en": "No matter how many times I call, there's no answer.",
+        "hint": "呼ぶ + ても"
+      },
+      {
+        "ja": "どんなに{{疲れても}}、毎朝走っている。",
+        "en": "No matter how tired I am, I run every morning.",
+        "hint": "疲れる + ても"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-noni-despite",
+    "jlpt": "N4",
+    "title": "〜のに",
+    "meaning": "even though / despite (contrary to expectation)",
+    "structure": "Plain form + のに (verb・い-adj・な-adj・noun + なのに)",
+    "formality": "neutral",
+    "notes": "The outcome is contrary to what was expected, and the speaker often feels surprise, regret or irritation. Cannot be followed by a volitional or command. Stronger emotional tone than 〜けど.",
+    "similar": [
+      "〜ても (even if)",
+      "〜けど / が (but)"
+    ],
+    "detect": [
+      "のに"
+    ],
+    "examples": [
+      {
+        "ja": "たくさん勉強{{したのに}}、テストは悪かった。",
+        "en": "Even though I studied a lot, the test went badly.",
+        "hint": "する + のに"
+      },
+      {
+        "ja": "こんなに{{寒いのに}}、窓を開けているの？",
+        "en": "It's this cold, and you still have the window open?",
+        "hint": "寒い + のに"
+      },
+      {
+        "ja": "何度も{{言ったのに}}、まだ分からないの？",
+        "en": "I told you many times, and you still don't understand?",
+        "hint": "言う + のに"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-node-because",
+    "jlpt": "N4",
+    "title": "〜ので",
+    "meaning": "because / since (polite reason)",
+    "structure": "Plain form + ので (verb・い-adj・な-adj・noun + なので)",
+    "formality": "polite",
+    "notes": "Gives a reason in a softer, more objective way than 〜から, so it suits polite speech, announcements and explanations. Often used before a polite request. Avoid it for strong personal assertions or commands.",
+    "similar": [
+      "〜から (reason)",
+      "〜ために (reason)"
+    ],
+    "detect": [
+      "ので"
+    ],
+    "examples": [
+      {
+        "ja": "雨が{{降っているので}}、傘を持って行きます。",
+        "en": "Because it's raining, I'll take an umbrella.",
+        "hint": "降る + ので"
+      },
+      {
+        "ja": "時間が{{ないので}}、手短に説明しますね。",
+        "en": "Since there isn't much time, I'll explain briefly.",
+        "hint": "ない + ので"
+      },
+      {
+        "ja": "荷物が{{重いので}}、手伝ってもらえますか。",
+        "en": "Because the luggage is heavy, could you help me?",
+        "hint": "重い + ので"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-tame-purpose",
+    "jlpt": "N4",
+    "title": "〜ために (purpose)",
+    "meaning": "in order to / for the purpose of",
+    "structure": "Verb dictionary form + ために",
+    "formality": "neutral",
+    "notes": "States the deliberate goal of an action, so the main clause is something the subject chooses to do. Use のために for a beneficiary, not a verb. Not used for a state the subject cannot control.",
+    "similar": [
+      "〜ように (purpose)",
+      "〜ために (reason)"
+    ],
+    "detect": [
+      "[るうくぐすつぬぶむ]ために"
+    ],
+    "examples": [
+      {
+        "ja": "日本語を上手に{{話すために}}、毎日練習しています。",
+        "en": "I practice every day in order to speak Japanese well.",
+        "hint": "話す + ために"
+      },
+      {
+        "ja": "お金を{{稼ぐために}}、アルバイトを始めた。",
+        "en": "I started a part-time job in order to earn money.",
+        "hint": "稼ぐ + ために"
+      },
+      {
+        "ja": "試験に{{合格するために}}、夜遅くまで勉強した。",
+        "en": "I studied until late at night to pass the exam.",
+        "hint": "合格する + ために"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-tame-reason",
+    "jlpt": "N4",
+    "title": "〜ために (reason)",
+    "meaning": "because of / due to (usually a negative result)",
+    "structure": "Noun + のために / Plain past + ために",
+    "formality": "neutral",
+    "notes": "Gives a cause, usually an unwanted or unexpected outcome, rather than a goal. Compare 〜ので, which is a neutral reason. Common in news and written explanations.",
+    "similar": [
+      "〜ので",
+      "〜ために (purpose)"
+    ],
+    "detect": [
+      "(の|た|だ)ために"
+    ],
+    "examples": [
+      {
+        "ja": "大雨{{のために}}、電車が止まった。",
+        "en": "Because of the heavy rain, the trains stopped.",
+        "hint": "大雨 + のために"
+      },
+      {
+        "ja": "事故が{{あったために}}、道が混んでいる。",
+        "en": "Because there was an accident, the road is congested.",
+        "hint": "ある + ために"
+      },
+      {
+        "ja": "寝坊{{したために}}、朝ごはんを食べられなかった。",
+        "en": "Because I overslept, I couldn't eat breakfast.",
+        "hint": "寝坊する + ために"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-you-ni-purpose",
+    "jlpt": "N4",
+    "title": "〜ように (purpose)",
+    "meaning": "so that / in order that",
+    "structure": "Plain non-past or negative verb + ように (忘れないように)",
+    "formality": "neutral",
+    "notes": "Gives the aim of an effort, often a state or something not fully under the subject's control, such as 忘れないように. Use 〜ために when the goal is a deliberate action the subject chooses. Often paired with 〜ようにする.",
+    "similar": [
+      "〜ために (purpose)",
+      "〜ようにする"
+    ],
+    "detect": [
+      "ように(?!な|す)"
+    ],
+    "examples": [
+      {
+        "ja": "遅刻{{しないように}}、早めに家を出ます。",
+        "en": "I'll leave home early so that I don't get late.",
+        "hint": "遅刻する + ように"
+      },
+      {
+        "ja": "忘れ{{ないように}}、メモを取っておこう。",
+        "en": "I'll take a note so that I don't forget.",
+        "hint": "忘れる + ように"
+      },
+      {
+        "ja": "風邪を{{引かないように}}、暖かくしてね。",
+        "en": "Keep warm so you don't catch a cold.",
+        "hint": "引く + ように"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-you-ni-suru",
+    "jlpt": "N4",
+    "title": "〜ようにする",
+    "meaning": "try to / make a point of (habit or effort)",
+    "structure": "Verb plain non-past or negative + ようにする",
+    "formality": "neutral",
+    "notes": "Expresses a conscious effort to keep doing something or to avoid something. The subject makes the effort. Use 〜ようになる for changes that happen over time without the speaker's effort.",
+    "similar": [
+      "〜ように (purpose)",
+      "〜ようになる"
+    ],
+    "detect": [
+      "ようにし"
+    ],
+    "examples": [
+      {
+        "ja": "毎日野菜を{{食べるようにしています}}。",
+        "en": "I make a point of eating vegetables every day.",
+        "hint": "食べる + ようにする"
+      },
+      {
+        "ja": "今夜は夜更かし{{しないようにする}}。",
+        "en": "I'll try not to stay up late tonight.",
+        "hint": "夜更かしする + ようにする"
+      },
+      {
+        "ja": "毎朝、ちゃんと挨拶を{{するようにしています}}。",
+        "en": "I make sure to greet people properly every morning.",
+        "hint": "する + ようにする"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-you-ni-naru",
+    "jlpt": "N4",
+    "title": "〜ようになる",
+    "meaning": "come to / end up (gradual change)",
+    "structure": "Verb dictionary form or potential form + ようになる",
+    "formality": "neutral",
+    "notes": "Describes a gradual change in ability or habit that develops over time, often 'come to be able to'. Usually follows a potential verb (泳げるようになった). For a decision, use 〜ことにする instead.",
+    "similar": [
+      "〜ようにする",
+      "〜ことになる"
+    ],
+    "detect": [
+      "ようにな"
+    ],
+    "examples": [
+      {
+        "ja": "日本語が{{話せるようになりました}}。",
+        "en": "I've come to be able to speak Japanese.",
+        "hint": "話せる + ようになる"
+      },
+      {
+        "ja": "最近、早く{{起きられるようになった}}。",
+        "en": "Recently I've come to be able to wake up early.",
+        "hint": "起きる + ようになる"
+      },
+      {
+        "ja": "子どもが一人で服を{{着るようになった}}。",
+        "en": "The child has started getting dressed on their own.",
+        "hint": "着る + ようになる"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-koto-ni-suru",
+    "jlpt": "N4",
+    "title": "〜ことにする",
+    "meaning": "decide to (the speaker's own decision)",
+    "structure": "Verb plain form + ことにする",
+    "formality": "neutral",
+    "notes": "Expresses a decision the speaker made by their own choice. Use 〜ことになる when the decision was made by others or by circumstances. Often in the past form 〜ことにした.",
+    "similar": [
+      "〜ことになる"
+    ],
+    "detect": [
+      "ことにし"
+    ],
+    "examples": [
+      {
+        "ja": "来年、日本語の勉強を{{始めることにしました}}。",
+        "en": "I've decided to start studying Japanese next year.",
+        "hint": "始める + ことにする"
+      },
+      {
+        "ja": "今日は家で{{休むことにする}}。",
+        "en": "I've decided to rest at home today.",
+        "hint": "休む + ことにする"
+      },
+      {
+        "ja": "旅行は{{取りやめることにした}}。",
+        "en": "I decided to cancel the trip.",
+        "hint": "取りやめる + ことにする"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-koto-ni-naru",
+    "jlpt": "N4",
+    "title": "〜ことになる",
+    "meaning": "it has been decided that / it turns out that",
+    "structure": "Verb plain form + ことになる",
+    "formality": "neutral",
+    "notes": "Describes a decision, arrangement or result made by others, a company, or circumstances, not the speaker's own will. Common for transfers, schedules and rules. Use 〜ことにする when the speaker chooses.",
+    "similar": [
+      "〜ことにする"
+    ],
+    "detect": [
+      "ことにな"
+    ],
+    "examples": [
+      {
+        "ja": "来月、大阪に転勤{{することになりました}}。",
+        "en": "It has been decided that I'll be transferred to Osaka next month.",
+        "hint": "転勤する + ことになる"
+      },
+      {
+        "ja": "明日から新しいルールに{{従うことになった}}。",
+        "en": "It's been decided that we'll follow the new rules from tomorrow.",
+        "hint": "従う + ことになる"
+      },
+      {
+        "ja": "来年から学校でも英語を{{習うことになります}}。",
+        "en": "Starting next year, we will be learning English at school as well.",
+        "hint": "習う + ことになる"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-te-ageru",
+    "jlpt": "N4",
+    "title": "〜てあげる",
+    "meaning": "do something for someone (as a favour)",
+    "structure": "Verb て-form + あげる",
+    "formality": "neutral",
+    "notes": "The speaker does something for someone else. It can sound presumptuous toward superiors, so use 〜ていただく or 〜てくださる-style phrasing instead. Polite form: 〜てあげます.",
+    "similar": [
+      "〜てくれる",
+      "〜てもらう"
+    ],
+    "detect": [
+      "てあげ|であげ"
+    ],
+    "examples": [
+      {
+        "ja": "重そうだから、荷物を{{持ってあげるよ}}。",
+        "en": "That looks heavy, so I'll carry your bag for you.",
+        "hint": "持つ + てあげる"
+      },
+      {
+        "ja": "妹に宿題を{{教えてあげました}}。",
+        "en": "I helped my younger sister with her homework.",
+        "hint": "教える + てあげる"
+      },
+      {
+        "ja": "道に迷っていた人に、駅までの道を{{教えてあげた}}。",
+        "en": "I showed the person who was lost the way to the station.",
+        "hint": "教える + てあげる"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-te-kureru",
+    "jlpt": "N4",
+    "title": "〜てくれる",
+    "meaning": "someone does something for me / us",
+    "structure": "Verb て-form + くれる",
+    "formality": "neutral",
+    "notes": "Someone else does something for the speaker or their group, and the speaker is the receiver. The giver is the subject. Politer forms: 〜てくださる (giver), 〜ていただく (receiver).",
+    "similar": [
+      "〜てもらう",
+      "〜てあげる"
+    ],
+    "detect": [
+      "てくれ|でくれ"
+    ],
+    "examples": [
+      {
+        "ja": "友達が駅まで迎えに{{来てくれた}}。",
+        "en": "My friend came to pick me up at the station.",
+        "hint": "来る + てくれる"
+      },
+      {
+        "ja": "先生が丁寧に{{説明してくれました}}。",
+        "en": "The teacher explained it carefully for me.",
+        "hint": "説明する + てくれる"
+      },
+      {
+        "ja": "母が毎朝お弁当を{{作ってくれる}}。",
+        "en": "My mother makes my lunch box every morning.",
+        "hint": "作る + てくれる"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-te-morau",
+    "jlpt": "N4",
+    "title": "〜てもらう",
+    "meaning": "to have someone do something for me",
+    "structure": "Verb て-form + もらう",
+    "formality": "neutral",
+    "notes": "The speaker receives an action from someone else, and the speaker is the beneficiary. Often used when asking for help or arranging something. For a politer request, use 〜ていただけませんか.",
+    "similar": [
+      "〜てくれる",
+      "〜ていただけませんか"
+    ],
+    "detect": [
+      "てもら|でもら"
+    ],
+    "examples": [
+      {
+        "ja": "友達に写真を{{撮ってもらった}}。",
+        "en": "I had my friend take a photo of me.",
+        "hint": "撮る + てもらう"
+      },
+      {
+        "ja": "先生にレポートを{{見てもらいました}}。",
+        "en": "I had the teacher look over my report.",
+        "hint": "見る + てもらう"
+      },
+      {
+        "ja": "来週までに資料を{{送ってもらえますか}}。",
+        "en": "Could you send me the materials by next week?",
+        "hint": "送る + てもらう"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-passive",
+    "jlpt": "N4",
+    "title": "〜られる (passive)",
+    "meaning": "to be done to / to be affected by an action",
+    "structure": "Verb ない-form + れる / られる (呼ばれる, 食べられる)",
+    "formality": "neutral",
+    "notes": "The subject receives an action from someone, or is affected by an event outside their control. Group 1 verbs take 〜れる (書かれる), group 2 and irregular verbs take 〜られる (食べられる, 来られる). Not detected by pattern because it overlaps with the potential form.",
+    "similar": [
+      "〜させられる (causative-passive)",
+      "〜られる / 〜える (potential)"
+    ],
+    "detect": [],
+    "examples": [
+      {
+        "ja": "先生に名前を{{呼ばれた}}。",
+        "en": "I was called by name by the teacher.",
+        "hint": "呼ぶ + れる (passive)"
+      },
+      {
+        "ja": "昨日、雨に{{降られて}}濡れてしまった。",
+        "en": "Yesterday I got caught in the rain and got soaked.",
+        "hint": "降る + られる (passive)"
+      },
+      {
+        "ja": "新しい本が多くの人に{{読まれている}}。",
+        "en": "The new book is being read by many people.",
+        "hint": "読む + れる (passive)"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-saseru",
+    "jlpt": "N4",
+    "title": "〜させる (causative)",
+    "meaning": "make / let someone do something",
+    "structure": "Verb ない-form + せる / させる (食べさせる, 行かせる)",
+    "formality": "neutral",
+    "notes": "One person causes or allows another to perform an action. Used by parents, teachers and bosses giving direction, or when letting someone do something. Group 1 verbs take 〜せる (書かせる), group 2 take 〜させる (食べさせる).",
+    "similar": [
+      "〜させられる (causative-passive)"
+    ],
+    "detect": [
+      "させ(る|た|て|ます|ない)|(か|が|さ|た|な|ば|ま|ら|わ)せ(る|た|て|ます|ない)"
+    ],
+    "examples": [
+      {
+        "ja": "子どもに野菜を{{食べさせる}}のは大変だ。",
+        "en": "Getting kids to eat vegetables is hard.",
+        "hint": "食べる + させる"
+      },
+      {
+        "ja": "先生は学生に新しい漢字を{{覚えさせた}}。",
+        "en": "The teacher had the students memorize the new kanji.",
+        "hint": "覚える + させる"
+      },
+      {
+        "ja": "母は弟に部屋を{{掃除させた}}。",
+        "en": "Mom made my younger brother clean his room.",
+        "hint": "掃除する + させる"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-saserareru",
+    "jlpt": "N4",
+    "title": "〜させられる (causative-passive)",
+    "meaning": "be made to do (against one's will)",
+    "structure": "Verb ない-form + せられる / させられる (残業させられる)",
+    "formality": "neutral",
+    "notes": "The subject is forced or made to do something, often unwillingly. Common in complaints such as 残業させられる. Group 1 verbs can also use the shortened 〜される form (行かされる, 書かされる).",
+    "similar": [
+      "〜させる (causative)",
+      "〜られる (passive)"
+    ],
+    "detect": [
+      "させられ|せられ"
+    ],
+    "examples": [
+      {
+        "ja": "毎日遅くまで残業{{させられる}}。",
+        "en": "I'm made to work overtime until late every day.",
+        "hint": "残業する + させられる"
+      },
+      {
+        "ja": "子どもの頃、毎日ピアノを{{練習させられた}}。",
+        "en": "When I was a child, I was made to practice the piano every day.",
+        "hint": "練習する + させられる"
+      },
+      {
+        "ja": "急に会議の資料を{{作らせられた}}。",
+        "en": "I was suddenly made to prepare the meeting materials.",
+        "hint": "作る + させられる"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-potential",
+    "jlpt": "N4",
+    "title": "〜られる / 〜える (potential)",
+    "meaning": "can / be able to",
+    "structure": "Group 1: e-row + る (書ける); Group 2 and 来る: stem + られる (食べられる, 来られる)",
+    "formality": "neutral",
+    "notes": "Expresses ability or possibility. Group 1 verbs change the final u-sound to an e-sound (書く → 書ける). Group 2 verbs and 来る add られる. The potential of する is できる, and the object takes が or は instead of を.",
+    "similar": [
+      "〜ことができる",
+      "〜られる (passive)"
+    ],
+    "detect": [],
+    "examples": [
+      {
+        "ja": "朝は早く{{起きられます}}。",
+        "en": "I can wake up early in the morning.",
+        "hint": "起きる + 〜られる (potential)"
+      },
+      {
+        "ja": "私は漢字で名前が{{書けます}}。",
+        "en": "I can write my name in kanji.",
+        "hint": "書く + 〜える (potential)"
+      },
+      {
+        "ja": "明日は一緒に{{来られる}}？",
+        "en": "Can you come with us tomorrow?",
+        "hint": "来る + 〜られる (potential)"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-volitional",
+    "jlpt": "N4",
+    "title": "〜よう (volitional)",
+    "meaning": "let's / I'll (volitional)",
+    "structure": "Plain volitional: 食べよう, 行こう, 帰ろう, しよう, 来よう",
+    "formality": "casual",
+    "notes": "The plain volitional expresses the speaker's intention or an invitation to act together. Polite equivalent is 〜ましょう. It is used in casual speech and for personal resolutions, not for asking someone else to do something.",
+    "similar": [
+      "〜ましょう"
+    ],
+    "detect": [
+      "(?<!だ)[こそとのぼごろ]う(?=[、。！？\\s]|$)",
+      "よう(?=[、。！？\\s]|$)"
+    ],
+    "examples": [
+      {
+        "ja": "もう{{帰ろう}}。",
+        "en": "Let's go home now.",
+        "hint": "帰る + 〜よう (volitional)"
+      },
+      {
+        "ja": "明日、一緒に映画を{{見よう}}。",
+        "en": "Let's watch a movie together tomorrow.",
+        "hint": "見る + 〜よう (volitional)"
+      },
+      {
+        "ja": "明日は朝早く{{起きよう}}。",
+        "en": "I'll get up early tomorrow.",
+        "hint": "起きる + 〜よう (volitional)"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-te-oku",
+    "jlpt": "N4",
+    "title": "〜ておく",
+    "meaning": "do in advance / leave in a state",
+    "structure": "Verb て-form + おく (casual contraction: 〜とく)",
+    "formality": "neutral",
+    "notes": "Does something in preparation for later, or leaves something in a particular state. Casual contractions: 〜とく (食べとく), 〜どく (読んどく). Often used with 〜ておいて as a request.",
+    "similar": [
+      "〜てしまう",
+      "〜てある"
+    ],
+    "detect": [
+      "[てで](お|と)[くいけ]"
+    ],
+    "examples": [
+      {
+        "ja": "旅行の前に、ホテルを{{予約しておいた}}。",
+        "en": "I booked the hotel in advance before the trip.",
+        "hint": "予約する + ておく"
+      },
+      {
+        "ja": "明日のテストのために、単語を{{覚えておこう}}。",
+        "en": "I'll memorize the vocabulary for tomorrow's test.",
+        "hint": "覚える + ておく"
+      },
+      {
+        "ja": "冷蔵庫に飲み物を{{入れておいて}}ください。",
+        "en": "Please put the drinks in the fridge beforehand.",
+        "hint": "入れる + ておく"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-te-aru",
+    "jlpt": "N4",
+    "title": "〜てある",
+    "meaning": "is in a state (someone deliberately did it)",
+    "structure": "Transitive verb て-form + ある",
+    "formality": "neutral",
+    "notes": "Describes the resulting state of something someone deliberately did, using a transitive verb. The focus is on the object's state. Contrast 〜ておく, which describes an action done in advance by a person.",
+    "similar": [
+      "〜ておく"
+    ],
+    "detect": [
+      "てあ(る|った|ります|りま)"
+    ],
+    "examples": [
+      {
+        "ja": "机の上に花が{{飾ってある}}。",
+        "en": "Flowers are arranged on the desk.",
+        "hint": "飾る + てある"
+      },
+      {
+        "ja": "ドアは鍵が{{かけてありました}}。",
+        "en": "The door had been locked.",
+        "hint": "かける + てある"
+      },
+      {
+        "ja": "冷蔵庫に、夕飯のおかずが{{作ってある}}よ。",
+        "en": "Some side dishes for dinner have been made and are in the fridge.",
+        "hint": "作る + てある"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-te-shimau",
+    "jlpt": "N4",
+    "title": "〜てしまう",
+    "meaning": "end up / completely do (often regret)",
+    "structure": "Verb て-form + しまう (casual: 〜ちゃう, 〜じゃう)",
+    "formality": "neutral",
+    "notes": "Shows that an action is completed, or that an unfortunate result happened and the speaker regrets it. Casual contractions: 〜ちゃう (食べちゃった), 〜じゃう (読んじゃった). Polite: 〜てしまいました.",
+    "similar": [
+      "〜ておく"
+    ],
+    "detect": [
+      "てしま|でしま|ちゃう|ちゃった|じゃう|じゃった"
+    ],
+    "examples": [
+      {
+        "ja": "財布を家に忘れ{{てしまった}}。",
+        "en": "I ended up forgetting my wallet at home.",
+        "hint": "忘れる + てしまう"
+      },
+      {
+        "ja": "ケーキを全部{{食べちゃった}}。",
+        "en": "I went and ate all the cake.",
+        "hint": "食べる + てしまう"
+      },
+      {
+        "ja": "大事な書類を{{捨ててしまった}}。",
+        "en": "I went and threw away an important document.",
+        "hint": "捨てる + てしまう"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-te-miru",
+    "jlpt": "N4",
+    "title": "〜てみる",
+    "meaning": "try doing (to see what happens)",
+    "structure": "Verb て-form + みる",
+    "formality": "neutral",
+    "notes": "Tries an action to find out the result or whether it suits. Often 〜てみたい (want to try) or 〜てみてください (please try). Here みる is not 'to look' but 'to try'.",
+    "similar": [
+      "〜たことがある"
+    ],
+    "detect": [
+      "てみ|でみ"
+    ],
+    "examples": [
+      {
+        "ja": "新しいラーメン屋に{{行ってみた}}。",
+        "en": "I went to try the new ramen shop.",
+        "hint": "行く + てみる"
+      },
+      {
+        "ja": "この服を{{試着してみたいです}}。",
+        "en": "I'd like to try on this outfit.",
+        "hint": "試着する + てみる"
+      },
+      {
+        "ja": "まずは一口{{食べてみて}}ください。",
+        "en": "Please try one bite first.",
+        "hint": "食べる + てみる"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-te-iku",
+    "jlpt": "N4",
+    "title": "〜ていく",
+    "meaning": "go on doing / do and go away",
+    "structure": "Verb て-form + いく",
+    "formality": "neutral",
+    "notes": "Shows an action moving away from the speaker or continuing into the future. The opposite direction is 〜てくる. Often used for gradual changes such as 増えていく.",
+    "similar": [
+      "〜てくる"
+    ],
+    "detect": [
+      "ていき|でいき|ていく|でいく"
+    ],
+    "examples": [
+      {
+        "ja": "これからも日本語の勉強を{{続けていきたい}}です。",
+        "en": "I want to keep studying Japanese from now on.",
+        "hint": "続ける + いく"
+      },
+      {
+        "ja": "荷物を先に車に{{運んでいく}}。",
+        "en": "I'll carry the luggage to the car first and go.",
+        "hint": "運ぶ + いく"
+      },
+      {
+        "ja": "人口はこれからも{{増えていくと}}思う。",
+        "en": "I think the population will keep growing.",
+        "hint": "増える + いく"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-te-kuru",
+    "jlpt": "N4",
+    "title": "〜てくる",
+    "meaning": "come to do / be coming (toward the speaker)",
+    "structure": "Verb て-form + くる",
+    "formality": "neutral",
+    "notes": "Shows an action moving toward the speaker, or a change developing up to the present (好きになってきた). The opposite direction is 〜ていく. Use with a gradual change to describe something new arising.",
+    "similar": [
+      "〜ていく"
+    ],
+    "detect": [
+      "てく(る|ります)|てき(た|ます|ました|て)"
+    ],
+    "examples": [
+      {
+        "ja": "雨が{{降ってきた}}。",
+        "en": "It has started to rain.",
+        "hint": "降る + てくる"
+      },
+      {
+        "ja": "最近、日本のアニメが好きに{{なってきた}}。",
+        "en": "Recently I've been coming to like Japanese anime.",
+        "hint": "なる + てくる"
+      },
+      {
+        "ja": "先生が教室に{{入ってきた}}。",
+        "en": "The teacher came into the classroom.",
+        "hint": "入る + てくる"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-hajimeru",
+    "jlpt": "N4",
+    "title": "〜始める",
+    "meaning": "begin to do / start doing",
+    "structure": "Verb ます-stem + 始める",
+    "formality": "neutral",
+    "notes": "Attaches to the ます-stem of a verb to mean 'begin doing'. Often in the past form 〜始めた. Contrast with 〜続ける (keep doing) and 〜終わる (finish doing).",
+    "similar": [
+      "〜続ける",
+      "〜終わる"
+    ],
+    "detect": [
+      "(始め|はじめ)(る|た|て|ま)"
+    ],
+    "examples": [
+      {
+        "ja": "来月から、ジムに{{通い始める}}つもりだ。",
+        "en": "I plan to start going to the gym next month.",
+        "hint": "通う + 始める"
+      },
+      {
+        "ja": "子どもが急に{{泣き始めた}}。",
+        "en": "The child suddenly started crying.",
+        "hint": "泣く + 始める"
+      },
+      {
+        "ja": "来週から日本語を{{習い始めます}}。",
+        "en": "I'll start learning Japanese from next week.",
+        "hint": "習う + 始める"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-tsuzukeru",
+    "jlpt": "N4",
+    "title": "〜続ける",
+    "meaning": "keep doing / continue to do",
+    "structure": "Verb ます-stem + 続ける",
+    "formality": "neutral",
+    "notes": "Keeps an action going without stopping, often a habit or long-term effort. Attaches to the ます-stem of a verb. Contrast with 〜始める (start) and 〜終わる (finish).",
+    "similar": [
+      "〜始める",
+      "〜終わる"
+    ],
+    "detect": [
+      "(続け|つづけ)(る|た|て|ま)"
+    ],
+    "examples": [
+      {
+        "ja": "毎日日記を{{書き続けている}}。",
+        "en": "I keep writing a diary every day.",
+        "hint": "書く + 続ける"
+      },
+      {
+        "ja": "大雨が一晩中{{降り続けた}}。",
+        "en": "The heavy rain kept falling all night.",
+        "hint": "降る + 続ける"
+      },
+      {
+        "ja": "彼女は歌手になる夢を{{追い続けて}}いる。",
+        "en": "She keeps pursuing her dream of becoming a singer.",
+        "hint": "追う + 続ける"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-owaru",
+    "jlpt": "N4",
+    "title": "〜終わる",
+    "meaning": "finish doing / have finished doing",
+    "structure": "Verb ます-stem + 終わる",
+    "formality": "neutral",
+    "notes": "Completes an action, often one that takes time or effort. Attaches to the ます-stem of a verb. Contrast with 〜始める (start) and 〜続ける (keep doing). The transitive 〜終える is similar in meaning.",
+    "similar": [
+      "〜始める",
+      "〜続ける"
+    ],
+    "detect": [
+      "[いきぎしじちにびみりえけげせてねべめれ\\p{Script=Han}](終わ|おわ)(る|った|って|りま)"
+    ],
+    "examples": [
+      {
+        "ja": "レポートを{{書き終わった}}。",
+        "en": "I finished writing the report.",
+        "hint": "書く + 終わる"
+      },
+      {
+        "ja": "やっと本を{{読み終わりました}}。",
+        "en": "I've finally finished reading the book.",
+        "hint": "読む + 終わる"
+      },
+      {
+        "ja": "食事を{{食べ終わったら}}、一緒に散歩に行こう。",
+        "en": "Once you finish eating, let's go for a walk together.",
+        "hint": "食べる + 終わる"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-o-ni-naru",
+    "jlpt": "N4",
+    "title": "お〜になる (honorific)",
+    "meaning": "(someone) does (honorific)",
+    "structure": "お + ます-stem + になる",
+    "formality": "polite",
+    "notes": "Honorific way to describe the action of a person you respect, such as a teacher or customer: お読みになる. Only for other people's actions. For your own actions toward someone else, use お〜する (humble).",
+    "similar": [
+      "お〜する (humble)",
+      "〜(ら)れる (honorific passive form)"
+    ],
+    "detect": [
+      "お[\\p{Script=Han}ぁ-ゖ]+になり"
+    ],
+    "examples": [
+      {
+        "ja": "先生はもうお{{帰りになりました}}。",
+        "en": "The teacher has already gone home.",
+        "hint": "帰る + お〜になる"
+      },
+      {
+        "ja": "社長がこちらの資料を{{お読みになります}}。",
+        "en": "The president will read these materials.",
+        "hint": "読む + お〜になる"
+      },
+      {
+        "ja": "お客様が{{お座りになる}}まで、少々お待ちください。",
+        "en": "Please wait a moment until the guest takes a seat.",
+        "hint": "座る + お〜になる"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-o-suru",
+    "jlpt": "N4",
+    "title": "お〜する (humble)",
+    "meaning": "I do (humble, for someone above me)",
+    "structure": "お + ます-stem + する / いたします",
+    "formality": "polite",
+    "notes": "Humble form for the speaker's own action toward someone of higher status: お持ちします (I'll carry it). Use it only for your own actions. For someone else's action, use お〜になる (honorific).",
+    "similar": [
+      "お〜になる (honorific)"
+    ],
+    "detect": [
+      "お[\\p{Script=Han}ぁ-ゖ]+(いた)?しま"
+    ],
+    "examples": [
+      {
+        "ja": "荷物は私が{{お持ちします}}。",
+        "en": "I'll carry your luggage.",
+        "hint": "持つ + お〜する"
+      },
+      {
+        "ja": "当日は駅で{{お待ちしております}}。",
+        "en": "On the day, I'll be waiting for you at the station.",
+        "hint": "待つ + お〜する"
+      },
+      {
+        "ja": "資料は後で{{お送りします}}。",
+        "en": "I'll send you the materials later.",
+        "hint": "送る + お〜する"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-te-itadakemasen-ka",
+    "jlpt": "N4",
+    "title": "〜ていただけませんか",
+    "meaning": "could you please do (polite request)",
+    "structure": "Verb て-form + いただけませんか",
+    "formality": "polite",
+    "notes": "A polite way to ask someone to do something for you, using the humble 〜ていただく. Softer than 〜てください. 〜ていただけますか is slightly less formal; 〜ていただけないでしょうか is more formal.",
+    "similar": [
+      "〜てもらう",
+      "〜でしょうか (polite uncertainty)"
+    ],
+    "detect": [
+      "ていただ|でいただ"
+    ],
+    "examples": [
+      {
+        "ja": "少し{{待っていただけませんか}}。",
+        "en": "Could you wait a little, please?",
+        "hint": "待つ + ていただけませんか"
+      },
+      {
+        "ja": "資料を{{送っていただけませんか}}。",
+        "en": "Would you mind sending me the materials?",
+        "hint": "送る + ていただけませんか"
+      },
+      {
+        "ja": "この書類に名前を{{書いていただけませんか}}。",
+        "en": "Could you please write your name on this form?",
+        "hint": "書く + ていただけませんか"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-rareru-honorific",
+    "jlpt": "N4",
+    "title": "〜(ら)れる (honorific passive form)",
+    "meaning": "(someone) does (honorific, using the passive/potential form)",
+    "structure": "Verb ない-form + れる / られる (来られる, 言われる)",
+    "formality": "polite",
+    "notes": "Honorific use of the れる/られる form for the actions of a respected person, such as 先生が来られる. Milder than お〜になる. Group 1 takes れる (言われる), group 2 and 来る take られる (来られる). Context shows whether it is honorific or passive.",
+    "similar": [
+      "〜られる (passive)",
+      "お〜になる (honorific)"
+    ],
+    "detect": [],
+    "examples": [
+      {
+        "ja": "先生は明日、来{{られます}}か。",
+        "en": "Will the teacher come tomorrow?",
+        "hint": "来る + られる (honorific)"
+      },
+      {
+        "ja": "社長は、もう帰{{られました}}。",
+        "en": "The president has already gone home.",
+        "hint": "帰る + れる (honorific)"
+      },
+      {
+        "ja": "お客様に何を{{言われた}}か、覚えていますか。",
+        "en": "Do you remember what the customer said?",
+        "hint": "言う + れる (honorific)"
+      }
+    ]
+  },
+  {
+    "id": "g:n4-deshou-ka",
+    "jlpt": "N4",
+    "title": "〜でしょうか (polite uncertainty)",
+    "meaning": "I wonder / would it be... (polite uncertainty)",
+    "structure": "Plain form + でしょうか (な-adj・noun + でしょうか)",
+    "formality": "polite",
+    "notes": "A polite way to express uncertainty or ask politely, used in service and business settings: 明日は雨でしょうか. Plain だろうか is a private musing. For a possibility rather than a question, 〜かもしれない is used.",
+    "similar": [
+      "〜かもしれない"
+    ],
+    "detect": [
+      "でしょうか"
+    ],
+    "examples": [
+      {
+        "ja": "明日は雨が{{降るでしょうか}}。",
+        "en": "I wonder if it will rain tomorrow.",
+        "hint": "降る + でしょうか"
+      },
+      {
+        "ja": "この料金で{{大丈夫でしょうか}}。",
+        "en": "Would this price be all right?",
+        "hint": "大丈夫だ + でしょうか"
+      },
+      {
+        "ja": "次の電車は何時に{{着くでしょうか}}。",
+        "en": "I wonder what time the next train arrives.",
+        "hint": "着く + でしょうか"
+      }
+    ]
+  }
+]

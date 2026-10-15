@@ -5,7 +5,8 @@
   "main": "src/main/main.js",
   "scripts": {
     "start": "electron .",
-    "test": "node --test \"test/**/*.test.js\" \"test/**/*.test.mjs\""
+    "test": "node --test \"test/**/*.test.js\" \"test/**/*.test.mjs\"",
+    "test:learn": "electron scripts/learn-smoke.cjs"
   },
   "license": "MIT",
   "dependencies": {

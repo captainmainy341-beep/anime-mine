@@ -1,5 +1,7 @@
 import { tokenizeCached } from './lib/nlp.mjs';
 import { fill, h, toast } from './lib/ui.mjs';
+import { grammarChipLabel, learnWordInput } from './lib/learnChips.mjs';
+import { renderGrammarGuide } from './lib/grammarGuide.mjs';
 import {
   NUDGE_SECONDS,
   buildMineRequest,
@@ -21,10 +23,10 @@ const KNOWN_ACTIONS = [
 ];
 const KNOWN_LABELS = { known: 'Known', learning: 'Learning', new: 'New' };
 const FIELD_ROWS = [
+  ['SentenceTranslation', 'English translation', true],
   ['Word', 'Word', false],
   ['Reading', 'Reading', false],
   ['Meaning', 'Meaning', true],
-  ['SentenceTranslation', 'Sentence translation', true],
   ['Notes', 'Notes', true],
 ];
 
@@ -116,11 +118,15 @@ export function createPopup(slot, { videoPath, getAudioStreamIndex, onOpenSettin
   let lookups = null;
   let selected = 0;
   let knownStatus = 'new';
+  let learnAdded = false;
   let ai = { status: 'idle' };
+  let grammarState = null;
+  let grammarSeq = 0;
   let preview = null;
   let wantPreview = false;
   let mediaSeq = 0;
   let mediaTimer = null;
+  const grammarByText = new Map();
   const dict = { ready: true, downloading: false, progress: 0 };
   const pitch = { ready: true, downloading: false, progress: 0 };
 
@@ -138,12 +144,15 @@ export function createPopup(slot, { videoPath, getAudioStreamIndex, onOpenSettin
     lookups = null;
     selected = 0;
     knownStatus = 'new';
+    learnAdded = false;
     ai = { status: 'idle' };
+    grammarState = null;
     preview = null;
     wantPreview = withPreview;
     slot.hidden = false;
     render();
     load();
+    loadGrammarGuide(next);
   }
 
   function close() {
@@ -156,6 +165,12 @@ export function createPopup(slot, { videoPath, getAudioStreamIndex, onOpenSettin
 
   async function load() {
     const current = target;
+    const grammarText = current.cues[current.index].text;
+    if (!grammarByText.has(grammarText)) {
+      grammarFor(grammarText).then(() => {
+        if (target === current && lookups) render();
+      });
+    }
     const [dictStatus, pitchStatus] = await Promise.all([api.dict.status(), api.pitch.status()]);
     if (target !== current) return;
     dict.ready = dictStatus.ready;
@@ -175,6 +190,43 @@ export function createPopup(slot, { videoPath, getAudioStreamIndex, onOpenSettin
     }
   }
 
+  async function grammarFor(text) {
+    if (!grammarByText.has(text)) {
+      try {
+        grammarByText.set(text, await api.learn.grammarIn(text));
+      } catch {
+        return [];
+      }
+    }
+    return grammarByText.get(text);
+  }
+
+  async function loadGrammarGuide(current) {
+    if (current.mode !== 'sentence') return;
+    const seq = ++grammarSeq;
+    grammarState = { status: 'loading' };
+    render();
+    try {
+      const analysis = await api.grammar.analyze(current.cues[current.index].text);
+      if (target !== current || seq !== grammarSeq) return;
+      grammarState = { status: 'ready', analysis };
+    } catch (err) {
+      if (target !== current || seq !== grammarSeq) return;
+      grammarState = { status: 'error', message: err.message };
+    }
+    render();
+  }
+
+  function grammarSection() {
+    if (target.mode !== 'sentence') return null;
+    const state = grammarState;
+    let body;
+    if (state?.status === 'ready') body = renderGrammarGuide(state.analysis, { compact: true });
+    else if (state?.status === 'error') body = h('p', { class: 'muted grammar-hint' }, `Grammar guide unavailable: ${state.message}`);
+    else body = h('p', { class: 'muted grammar-hint' }, 'Analysing grammar…');
+    return h('section', { class: 'popup-grammar' }, h('div', { class: 'label muted' }, 'Grammar'), body);
+  }
+
   function render() {
     if (!target) return;
     fill(
@@ -182,7 +234,13 @@ export function createPopup(slot, { videoPath, getAudioStreamIndex, onOpenSettin
       head(),
       dict.ready ? null : dictBanner(),
       tabs(),
-      h('div', { class: 'popup-body' }, tab === 'dictionary' ? dictionaryPanel() : aiPanel()),
+      h(
+        'div',
+        { class: 'popup-body' },
+        grammarSection(),
+        tab === 'dictionary' ? dictionaryPanel() : aiPanel(),
+        tab === 'dictionary' ? grammarRow() : null,
+      ),
       preview ? previewPanel(preview) : null,
       footer(),
     );
@@ -284,6 +342,16 @@ export function createPopup(slot, { videoPath, getAudioStreamIndex, onOpenSettin
     return target.mode === 'word' ? wordPanel() : sentenceWords();
   }
 
+  function grammarRow() {
+    const hits = grammarByText.get(target.cues[target.index].text) ?? [];
+    if (!hits.length) return null;
+    return h(
+      'div',
+      { class: 'grammar-row' },
+      hits.map((hit) => h('span', { class: 'chip grammar-chip', title: hit.meaning }, grammarChipLabel(hit))),
+    );
+  }
+
   function wordPanel() {
     const result = lookups[0];
     return h(
@@ -357,7 +425,35 @@ export function createPopup(slot, { videoPath, getAudioStreamIndex, onOpenSettin
           label,
         ),
       ),
+      result.entries.length ? learnButton(result) : null,
     );
+  }
+
+  function learnButton(result) {
+    return h(
+      'button',
+      { class: 'small', disabled: learnAdded, onclick: () => addToLearn(result) },
+      learnAdded ? 'In Learn' : 'Add to Learn',
+    );
+  }
+
+  async function addToLearn(result) {
+    const current = target;
+    const input = learnWordInput({
+      dictForm: result.dictForm,
+      entry: result.entries[selected],
+      sentenceText: current.cues[current.index].text,
+    });
+    try {
+      await api.learn.addWord(input);
+    } catch (err) {
+      toast(err.message, 'error');
+      return;
+    }
+    toast('Added to Learn', 'success');
+    if (target !== current) return;
+    learnAdded = true;
+    render();
   }
 
   async function markKnown(word, status) {
@@ -574,23 +670,52 @@ export function createPopup(slot, { videoPath, getAudioStreamIndex, onOpenSettin
           }
         },
       },
-      h('p', { class: 'sentence-head' }, cue.text),
-      mediaBlock(p),
       h(
         'div',
-        { class: 'mine-timing' },
-        nudgeGroup('Start', 'start', p.timing.start),
-        nudgeGroup('End', 'end', p.timing.end),
-        h('button', { class: 'small ghost', disabled: p.range.from === 0, onclick: () => extendPreview('previous') }, 'Add previous line'),
-        h('button', { class: 'small ghost', disabled: p.range.to === p.range.cues.length - 1, onclick: () => extendPreview('next') }, 'Add next line'),
+        { class: 'mine-head' },
+        h('span', { class: 'mine-title' }, p.mode === 'word' ? 'Word card' : 'Sentence card'),
+        h(
+          'button',
+          {
+            class: 'ghost small',
+            title: 'Cancel',
+            'aria-label': 'Cancel',
+            disabled: p.mining,
+            onclick: () => {
+              preview = null;
+              render();
+            },
+          },
+          '×',
+        ),
       ),
+      mediaBlock(p),
+      h('p', { class: 'sentence-head' }, cue.text),
       ...FIELD_ROWS.map(([key, label, multiline]) => fieldRow(p, key, label, multiline)),
+      h(
+        'details',
+        {
+          class: 'mine-adjust',
+          open: p.adjustOpen === true,
+          ontoggle: (event) => {
+            p.adjustOpen = event.target.open;
+          },
+        },
+        h('summary', {}, 'Adjust clip'),
+        h(
+          'div',
+          { class: 'mine-timing' },
+          nudgeGroup('Start', 'start', p.timing.start),
+          nudgeGroup('End', 'end', p.timing.end),
+          h('button', { class: 'small ghost', disabled: p.range.from === 0, onclick: () => extendPreview('previous') }, 'Add previous line'),
+          h('button', { class: 'small ghost', disabled: p.range.to === p.range.cues.length - 1, onclick: () => extendPreview('next') }, 'Add next line'),
+        ),
+      ),
       p.error ? h('div', { class: 'banner' }, p.error) : null,
       h(
         'div',
         { class: 'mine-actions' },
         h('button', { class: 'primary', disabled: p.mining, onclick: confirmMine }, p.mining ? 'Adding…' : 'Confirm'),
-        h('button', { class: 'ghost', disabled: p.mining, onclick: () => { preview = null; render(); } }, 'Cancel'),
       ),
     );
   }
@@ -620,12 +745,20 @@ export function createPopup(slot, { videoPath, getAudioStreamIndex, onOpenSettin
     const onInput = (event) => {
       p.fields[key] = event.target.value;
     };
-    const shared = { value: p.fields[key], oninput: onInput, disabled: p.mining };
-    const control = multiline ? h('textarea', { rows: 2, ...shared }) : h('input', { type: 'text', ...shared });
+    const translating = key === 'SentenceTranslation' && p.translating;
+    const shared = {
+      value: p.fields[key],
+      oninput: onInput,
+      disabled: p.mining,
+      placeholder: translating ? 'Translating…' : null,
+    };
+    const control = multiline
+      ? h('textarea', { rows: key === 'SentenceTranslation' ? 3 : 2, ...shared })
+      : h('input', { type: 'text', ...shared });
     return h(
       'label',
       { class: 'mine-field' },
-      h('span', { class: 'label muted' }, key === 'SentenceTranslation' && p.translating ? 'Translating…' : label),
+      h('span', { class: 'label muted' }, translating ? 'Translating…' : label),
       control,
     );
   }

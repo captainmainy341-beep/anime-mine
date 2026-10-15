@@ -1,13 +1,11 @@
 import { attempt, fill, h, toast } from './lib/ui.mjs';
-import {
-  forecastBars,
-  formatHistory,
-  formatRetention,
-  formatStreak,
-  highlightParts,
-  modeSummary,
-  stateBadge,
-} from './lib/ankiView.mjs';
+import { mountDeckOptions } from './lib/ankiDeckOptions.mjs';
+import { currentPreset } from './lib/ankiOptionsModel.mjs';
+import { grammarPanel } from './lib/grammarPanel.mjs';
+import { forecastBars, formatRetention, formatStreak, modeSummary } from './lib/ankiView.mjs';
+import { mountBrowse } from './anki/browse.mjs';
+import { createCardDocumentCache, deckLabel, easeForKey, gradeButtons, plainSentence, sessionSummary } from './lib/study.mjs';
+import { studyDocument } from './lib/studyPresentation.mjs';
 
 const api = window.api;
 
@@ -20,16 +18,10 @@ const TABS = [
   ['overview', 'Overview'],
   ['mined', 'Mined'],
   ['browse', 'Browse'],
+  ['study', 'Study'],
+  ['options', 'Deck options'],
 ];
-const FILTERS = [
-  ['all', 'All'],
-  ['due', 'Due'],
-  ['new', 'New'],
-  ['learn', 'Learning'],
-  ['suspended', 'Suspended'],
-];
-const SEARCH_DELAY_MS = 250;
-const BROWSE_LIMIT = 300;
+const GRAMMAR_PREF = 'animeMine.anki.studyGrammar';
 
 const button = (label, onclick, cls) => h('button', { type: 'button', class: cls, onclick }, label);
 
@@ -47,17 +39,25 @@ const emptyBox = (title, text) => h('div', { class: 'empty' }, h('h2', {}, title
 export function mountAnki(container) {
   let disposed = false;
   let loadSeq = 0;
-  let searchTimer = null;
+  let browseDispose = null;
   let requestedMode = null;
   let setViewChain = Promise.resolve();
-  let refs = null; // DOM handles for the Browse tab, rebuilt each time it opens
+  let optionsDispose = null;
+  let optionRows = new Map();
   const state = {
     view: null,
     summary: 'loading',
     overview: null,
     tab: 'overview',
-    browse: { deck: null, filter: 'all', query: '', cards: [], selectedId: null, loading: false, seq: 0 },
+    optionsDeck: null,
+    deckPlans: new Map(),
+    initial: null,
+    study: { deck: null, cards: [], index: 0, side: 'question', phase: 'pick', busy: false, reviewed: 0, again: 0, reloaded: false, seq: 0 },
   };
+  let studyAudio = null;
+  let studyUI = null;
+  let studyGrammarOpen = localStorage.getItem(GRAMMAR_PREF) === 'open';
+  const studyDoc = createCardDocumentCache(studyDocument);
   const mediaCache = new Map();
   const lazyLoads = new WeakMap();
   const observer =
@@ -82,7 +82,8 @@ export function mountAnki(container) {
 
   return () => {
     disposed = true;
-    clearTimeout(searchTimer);
+    disposeTabs();
+    stopStudyAudio();
     document.removeEventListener('keydown', onKeydown);
     observer?.disconnect();
   };
@@ -109,15 +110,19 @@ export function mountAnki(container) {
   // Everything tied to the current mode / deck allow-list; stale pending loads are dropped via the seq counters.
   function resetScope() {
     loadSeq++;
-    clearTimeout(searchTimer);
-    Object.assign(state.browse, { deck: null, filter: 'all', query: '', cards: [], selectedId: null, loading: false });
-    state.browse.seq++;
     state.overview = null;
+    disposeTabs();
+    state.optionsDeck = null;
+    state.deckPlans.clear();
+    optionRows.clear();
     mediaCache.clear();
+    Object.assign(state.study, { deck: null, cards: [], index: 0, side: 'question', phase: 'pick', busy: false, reviewed: 0, again: 0, reloaded: false });
+    state.study.seq++;
   }
 
   function setMode(mode) {
     if ((requestedMode ?? state.view?.mode) === mode) return;
+    if (!leaveAllowed()) return;
     requestedMode = mode;
     resetScope();
     setViewChain = setViewChain.catch(() => {}).then(() => api.anki.setView({ mode }));
@@ -182,6 +187,10 @@ export function mountAnki(container) {
 
   async function renderPicker({ back = false } = {}) {
     const pickerSeq = loadSeq;
+    disposeTabs();
+    stopStudyAudio();
+    state.study.seq++;
+    Object.assign(state.study, { phase: 'pick', cards: [], index: 0, side: 'question', busy: false });
     const checked = new Set(back ? state.view?.visibleDecks ?? [] : []);
     fill(body, h('p', { class: 'anki-sub anki-loading' }, 'Loading decks…'));
     let names;
@@ -248,6 +257,9 @@ export function mountAnki(container) {
   // Tabs
 
   function renderSection() {
+    disposeTabs();
+    optionRows = new Map();
+    studyUI = null;
     if (!state.overview) {
       fill(body, h('p', { class: 'anki-sub anki-loading' }, 'Loading…'));
       return;
@@ -269,20 +281,39 @@ export function mountAnki(container) {
         ),
       ),
       state.summary === 'ready'
-        ? button('Choose decks', () => renderPicker({ back: true }), 'ghost small anki-choose')
+        ? button('Choose decks', () => { if (leaveAllowed()) renderPicker({ back: true }); }, 'ghost small anki-choose')
         : null,
     );
-    const content = h('div', { class: state.tab === 'browse' ? 'anki-tab-body is-browse' : 'anki-tab-body' });
+    const content = h('div', { class: state.tab === 'browse' ? 'anki-tab-body is-browse' : state.tab === 'options' ? 'anki-tab-body is-options' : 'anki-tab-body' });
     fill(body, state.summary === 'sample' ? sampleBanner() : null, tabs, content);
 
     if (state.tab === 'mined') fill(content, renderMined());
-    else if (state.tab === 'browse') renderBrowse(content);
+    else if (state.tab === 'browse') browseDispose = mountBrowse(content, browseCtx());
+    else if (state.tab === 'study') renderStudy(content);
+    else if (state.tab === 'options') fill(content, renderOptionsTab());
     else fill(content, renderOverview());
   }
 
   function switchTab(id) {
+    if (!leaveAllowed()) return;
+    goTab(id);
+  }
+
+  function goTab(id) {
+    if (id !== 'study') stopStudyAudio();
     state.tab = id;
     renderSection();
+  }
+
+  function leaveAllowed() {
+    return !(optionsDispose?.isDirty() || browseDispose?.isDirty()) || window.confirm('Discard unsaved changes?');
+  }
+
+  function disposeTabs() {
+    optionsDispose?.();
+    optionsDispose = null;
+    browseDispose?.();
+    browseDispose = null;
   }
 
   function sampleBanner() {
@@ -290,35 +321,127 @@ export function mountAnki(container) {
   }
 
   function openDeck(name) {
-    Object.assign(state.browse, { deck: name, filter: 'all', query: '', selectedId: null });
+    state.initial = { deck: name };
     switchTab('browse');
   }
 
   function openCard(card) {
-    Object.assign(state.browse, { deck: card.deck ?? null, filter: 'all', query: '', selectedId: card.id });
+    state.initial = { deck: card.deck ?? null, cardId: card.id };
     switchTab('browse');
+  }
+
+  function browseCtx() {
+    const initial = state.initial ?? {};
+    state.initial = null;
+    return {
+      decks: (state.overview?.decks ?? []).map((d) => d.name),
+      readOnly: state.summary === 'sample',
+      initial,
+    };
   }
 
   // Overview
 
   function renderOverview() {
     const o = state.overview;
-    const today = o.today ?? {};
-    return h(
-      'div',
-      { class: 'anki-overview' },
-      h(
-        'div',
-        { class: 'stats' },
-        stat('Due today', today.due ?? 0, 'n-due'),
-        stat('Learning', today.learning ?? 0, 'n-learn'),
-        stat('New', today.new ?? 0, 'n-new'),
-        stat('Retention 30d', formatRetention(o.retention30)),
-        stat('Streak', formatStreak(o.streak)),
-      ),
-      h('div', { class: 'overview-grid' }, forecastCard(o.forecast), minedWeekCard(o)),
-      deckCard(o.decks ?? []),
-    );
+    const decks = o.decks ?? [];
+    syncOptionsDeck(decks);
+    const table = deckCard(decks);
+    return h('div', { class: 'anki-overview' },
+      h('div', { class: 'anki-collection-summary' },
+        h('span', {}, `Retention 30d: ${formatRetention(o.retention30)}`),
+        h('span', {}, `Streak: ${formatStreak(o.streak)}`),
+        h('span', {}, `${o.minedThisWeek ?? 0} mined this week`)),
+      table, mountOptionsEditor(),
+      h('details', { class: 'anki-forecast-details' }, h('summary', {}, 'Review forecast and mining activity'),
+        h('div', { class: 'overview-grid' }, forecastCard(o.forecast), minedWeekCard(o))));
+  }
+
+  function renderOptionsTab() {
+    const decks = state.overview.decks ?? [];
+    if (!decks.length) return emptyBox('No decks to show', 'None of the decks you chose are in Anki right now.');
+    syncOptionsDeck(decks);
+    const pane = deckPane(decks);
+    return h('div', { class: 'anki-options-split' }, pane, h('div', { class: 'anki-options-editor' }, mountOptionsEditor()));
+  }
+
+  function syncOptionsDeck(decks) {
+    if (!decks.some(d => d.name === state.optionsDeck)) state.optionsDeck = decks[0]?.name ?? null;
+  }
+
+  function mountOptionsEditor() {
+    const editor = h('div', { class: 'deck-options-host' });
+    if (state.optionsDeck) {
+      const deck = state.optionsDeck;
+      optionsDispose = mountDeckOptions(editor, { api: api.anki, deck, sample: state.summary === 'sample',
+        onLoaded: (plan) => {
+          state.deckPlans.set(deck, plan);
+          updateOptionRow(deck, plan);
+        },
+        onSaved: () => toast('Deck options saved in Anki'),
+      });
+    }
+    return editor;
+  }
+
+  function deckPane(decks) {
+    const rows = decks.map((d) => {
+      const { name, parent } = deckLabel(d.name);
+      const selected = d.name === state.optionsDeck;
+      const row = {
+        new: h('b', { class: 'n-new' }, String(d.new ?? 0)),
+        learn: h('b', { class: 'n-learn' }, String(d.learn ?? 0)),
+        due: h('b', { class: 'n-due' }, String(d.due ?? 0)),
+        limits: h('small', { class: 'anki-options-deck-limits' }),
+        counts: h('small', { class: 'anki-options-deck-source' }),
+        preset: h('small', { class: 'anki-options-deck-preset' }),
+      };
+      optionRows.set(d.name, row);
+      const cached = state.deckPlans.get(d.name);
+      if (cached) updateOptionRow(d.name, cached);
+      return h('li', {},
+        h('button', { type: 'button', class: selected ? 'anki-options-deck selected' : 'anki-options-deck', 'aria-current': selected ? 'true' : null,
+          onclick: () => chooseOptionsDeck(d.name) },
+        h('span', { class: 'anki-options-deck-name' }, name),
+        parent ? h('span', { class: 'anki-options-deck-parent' }, parent) : null,
+        h('span', { class: 'anki-options-deck-stats' }, row.new, ' new · ', row.learn, ' learning · ', row.due, ' due'),
+        row.limits, row.preset, row.counts));
+    });
+    return h('aside', { class: 'anki-options-decks' },
+      h('div', { class: 'anki-options-decks-head' },
+        h('span', { class: 'anki-lab' }, 'Decks'),
+        h('div', { class: 'anki-options-deck-actions' },
+          button('Study', () => {
+            if (!leaveAllowed()) return;
+            state.study.deck = state.optionsDeck;
+            goTab('study');
+          }, 'primary small'),
+          button('Browse', () => openDeck(state.optionsDeck), 'ghost small'))),
+      h('select', { class: 'anki-options-select', 'aria-label': 'Deck',
+        onchange: (e) => { if (!chooseOptionsDeck(e.currentTarget.value)) e.currentTarget.value = state.optionsDeck; } },
+        decks.map((d) => h('option', { value: d.name, selected: d.name === state.optionsDeck }, d.name))),
+      h('ul', { class: 'anki-options-deck-list' }, rows));
+  }
+
+  function chooseOptionsDeck(deck) {
+    if (!leaveAllowed()) return false;
+    state.optionsDeck = deck;
+    state.tab = 'options';
+    renderSection();
+    return true;
+  }
+
+  function updateOptionRow(deck, plan) {
+    const row = optionRows.get(deck);
+    if (!row) return;
+    row.new.textContent = String(plan.remaining.new);
+    row.learn.textContent = String(plan.remaining.learning);
+    row.due.textContent = String(plan.remaining.reviews);
+    const n = plan.today.newPerDay ?? plan.permanent.newPerDay;
+    const r = plan.today.reviewsPerDay ?? plan.permanent.reviewsPerDay;
+    row.limits.textContent = `${n} new / ${r} reviews${plan.today.newPerDay != null || plan.today.reviewsPerDay != null ? ' · Today only' : ''}`;
+    row.counts.textContent = plan.sample ? 'Sample' : 'Anki remaining';
+    if (row.preset) row.preset.textContent = currentPreset(plan)?.name ?? '';
   }
 
   function stat(label, value, tone) {
@@ -377,28 +500,36 @@ export function mountAnki(container) {
     return h(
       'section',
       { class: 'anki-card deck-card' },
+      h('div', { class: 'deck-table-head' }, h('h2', {}, 'Decks'),
+        button('Study selected deck', () => { state.study.deck = state.optionsDeck; switchTab('study'); }, 'primary')),
+      h('div', { class: 'anki-sub deck-table-help' }, 'Native remaining counts load when you select a deck. Other rows show raw card counts, not a daily allowance.'),
       h(
         'table',
         { class: 'anki-table' },
         h(
           'thead',
           {},
-          h('tr', {}, h('th', {}, 'Deck'), h('th', { class: 'num-col' }, 'New'), h('th', { class: 'num-col' }, 'Learn'), h('th', { class: 'num-col' }, 'Due'), h('th', {}, '')),
+          h('tr', {}, h('th', {}, 'Deck'), h('th', { class: 'num-col' }, 'New'), h('th', { class: 'num-col' }, 'Learn'), h('th', { class: 'num-col' }, 'Reviews'), h('th', {}, 'Daily limits'), h('th', {}, '')),
         ),
         h(
           'tbody',
           {},
-          decks.map((d) =>
-            h(
-              'tr',
-              {},
-              h('td', {}, d.name),
-              h('td', { class: 'num-col n-new' }, String(d.new ?? 0)),
-              h('td', { class: 'num-col n-learn' }, d.learn ? String(d.learn) : '–'),
-              h('td', { class: 'num-col n-due' }, String(d.due ?? 0)),
-              h('td', { class: 'act' }, button('details ▸', () => openDeck(d.name), 'ghost small')),
-            ),
-          ),
+          decks.map((d) => {
+            const row = {
+              new: h('td', { class: 'num-col n-new' }, String(d.new ?? 0)),
+              learn: h('td', { class: 'num-col n-learn' }, String(d.learn ?? 0)),
+              due: h('td', { class: 'num-col n-due' }, String(d.due ?? 0)),
+              limits: h('td', { class: 'deck-limit-summary' }, 'Select to read Anki'),
+              counts: h('small', { class: 'deck-count-source' }, 'Raw counts'),
+            };
+            optionRows.set(d.name, row);
+            const cached = state.deckPlans.get(d.name);
+            if (cached) updateOptionRow(d.name, cached);
+            return h('tr', { class: d.name === state.optionsDeck ? 'selected' : '' },
+              h('td', {}, button(d.name, () => chooseOptionsDeck(d.name), 'ghost deck-name-button'), row.counts),
+              row.new, row.learn, row.due, row.limits,
+              h('td', { class: 'act' }, button('Options', () => chooseOptionsDeck(d.name), 'small'), button('Browse', () => openDeck(d.name), 'ghost small')));
+          }),
         ),
       ),
     );
@@ -434,242 +565,334 @@ export function mountAnki(container) {
           h('div', { class: 'mined-reading' }, card.reading ?? ''),
           h('div', { class: 'mined-meaning' }, card.meaning ?? ''),
           h('div', { class: 'mined-deck' }, card.deck ?? ''),
+          grammarDisclosure(card.sentence),
         );
       }),
     );
   }
 
-  // Browse
+  function grammarDisclosure(sentence) {
+    const text = plainSentence(sentence);
+    if (!text) return null;
+    const stop = (e) => e.stopPropagation();
+    const body = h('div', { class: 'grammar-disclosure-body' });
+    let loaded = false;
+    return h(
+      'details',
+      {
+        class: 'grammar-disclosure',
+        onclick: stop,
+        onkeydown: stop,
+        ontoggle: (e) => {
+          if (!e.currentTarget.open || loaded) return;
+          loaded = true;
+          fill(body, grammarPanel({ api, text, compact: true }));
+        },
+      },
+      h('summary', {}, 'Grammar guide'),
+      body,
+    );
+  }
 
-  function renderBrowse(content) {
-    clearTimeout(searchTimer);
-    const b = state.browse;
-    refs = {
-      side: h('aside', { class: 'browse-side' }),
-      title: h('h2', { class: 'browse-title' }),
-      table: h('div', { class: 'table-wrap', tabindex: '0' }),
-      detail: h('aside', { class: 'browse-detail' }),
-      rows: new Map(),
-    };
+  // Study
+
+  function renderStudy(content) {
+    const s = state.study;
+    if (state.summary !== 'ready') {
+      fill(content, emptyBox('Study needs Live mode', 'Switch to Live mode and connect Anki to review cards here.'));
+      return;
+    }
+    if (s.phase === 'pick') renderStudyStart(content);
+    else if (s.phase === 'loading') fill(content, h('p', { class: 'anki-sub anki-loading' }, 'Loading cards…'));
+    else if (s.phase === 'done') {
+      fill(
+        content,
+        h(
+          'section',
+          { class: 'anki-panel study-start' },
+          h('h2', {}, 'No cards ready now'),
+          h('p', { class: 'anki-sub' }, sessionSummary(s)),
+          h('p', { class: 'anki-sub' }, 'Anki’s daily limits, sibling burying and learning timings decide what is ready. You may still have cards scheduled for later.'),
+          h(
+            'div',
+            { class: 'panel-actions' },
+            button('Study again', () => startStudy(s.deck), 'primary'),
+            button('Change deck', endStudy, 'ghost'),
+          ),
+        ),
+      );
+    }
+    else renderStudyCard(content);
+  }
+
+  function renderStudyStart(content) {
+    const s = state.study;
+    const decks = state.view.visibleDecks;
+    const selected = decks.includes(s.deck) ? s.deck : decks[0];
+    const select = h(
+      'select',
+      { 'aria-label': 'Deck' },
+      decks.map((d) => h('option', { value: d, selected: d === selected }, d)),
+    );
     fill(
       content,
       h(
-        'div',
-        { class: 'browse' },
-        refs.side,
-        h(
-          'div',
-          { class: 'browse-main' },
-          h(
-            'div',
-            { class: 'browse-head' },
-            refs.title,
-            h('input', {
-              type: 'search',
-              class: 'browse-search',
-              placeholder: 'Search cards…',
-              'aria-label': 'Search cards',
-              value: b.query,
-              oninput: (e) => onSearch(e.target.value),
-            }),
-          ),
-          refs.table,
-        ),
-        refs.detail,
+        'section',
+        { class: 'anki-panel study-start' },
+        h('h2', {}, 'Study'),
+        h('p', { class: 'anki-sub' }, 'Review due, learning and new cards from one deck without leaving the app.'),
+        h('label', { class: 'study-deck-pick' }, select),
+        h('div', { class: 'panel-actions' }, button('Start', () => startStudy(select.value), 'primary')),
       ),
     );
-    renderSide();
-    renderTable();
-    renderDetail();
-    loadBrowse();
   }
 
-  function onSearch(value) {
-    state.browse.query = value.trim();
-    clearTimeout(searchTimer);
-    searchTimer = setTimeout(() => {
-      if (!disposed && state.tab === 'browse') loadBrowse();
-    }, SEARCH_DELAY_MS);
+  function renderStudyCard(content) {
+    const s = state.study;
+    const deck = deckLabel(s.deck);
+    studyUI = {
+      frame: h('iframe', { class: 'study-card', sandbox: '', title: 'Study card', tabindex: '-1' }),
+      remaining: h('span', { class: 'anki-sub study-remaining' }),
+      replay: button('▶ Replay', () => {
+        const audio = state.study.cards[state.study.index]?.audio;
+        if (audio) playStudyAudio(audio);
+      }, 'ghost small'),
+      flip: button('Hide answer', hideAnswer, 'ghost small'),
+      grammar: button('Grammar', toggleStudyGrammar, 'ghost small'),
+      grammarSlot: h('div', { class: 'study-grammar', hidden: true }),
+      style: button('Original style', toggleStudyStyle, 'ghost small'),
+      controls: h('div', { class: 'study-controls' }),
+      status: h('span', { role: 'status', 'aria-live': 'polite' }),
+      reviewed: h('span'),
+    };
+    fill(content, h('section', { class: 'study' },
+      h('div', { class: 'study-head' },
+        h('div', { class: 'study-deck-path', title: s.deck },
+          deck.parent ? h('div', { class: 'study-parent' }, deck.parent) : null,
+          h('div', { class: 'study-deck' }, deck.name)),
+        studyUI.remaining,
+        h('div', { class: 'study-head-actions' }, studyUI.replay, studyUI.flip, studyUI.grammar, studyUI.style,
+          button('Deck options', () => { const deck = s.deck; endStudy(); chooseOptionsDeck(deck); }, 'ghost small'),
+          button('End session', endStudy, 'ghost small'))),
+      h('div', { class: 'study-workspace' }, studyUI.frame),
+      studyUI.grammarSlot,
+      studyUI.controls,
+      h('div', { class: 'study-hints' }, studyUI.status, studyUI.reviewed)));
+    updateStudyCard();
   }
 
-  async function loadBrowse() {
-    const b = state.browse;
-    const seq = ++b.seq;
-    b.loading = true;
-    renderTable();
+  function updateStudyCard() {
+    if (!studyUI?.frame.isConnected || state.study.phase !== 'card') return;
+    const s = state.study;
+    const card = s.cards[s.index];
+    const theme = s.style ?? 'app';
+    const doc = studyDoc(card, s.side, theme);
+    if (studyUI.document !== doc) {
+      studyUI.document = doc;
+      studyUI.frame.srcdoc = doc;
+    }
+    studyUI.frame.classList.toggle('is-original', theme === 'original');
+    studyUI.remaining.textContent = s.remaining ? `${s.remaining.new} new · ${s.remaining.reviews} reviews · ${s.remaining.learning} learning` : `${s.cards.length - s.index} left`;
+    studyUI.replay.hidden = !card.audio;
+    studyUI.flip.hidden = s.side !== 'answer';
+    studyUI.grammar.hidden = s.side !== 'answer' || !plainSentence(card.sentence);
+    studyUI.style.textContent = theme === 'app' ? 'Original style' : 'App style';
+    studyUI.reviewed.textContent = `${s.reviewed} reviewed this session`;
+    const controls = s.side === 'answer'
+      ? h('div', { class: 'study-grades' }, gradeButtons(card).map(g => h('button',
+          { type: 'button', class: `grade grade-${g.label.toLowerCase()}`, 'aria-label': `${g.label} (${g.ease}), ${g.interval}`, onclick: () => grade(g.ease) },
+          h('span', {}, h('span', { class: 'grade-label' }, g.label), h('small', { class: 'grade-interval' }, g.interval)),
+          h('kbd', {}, String(g.ease)))))
+      : h('div', { class: 'panel-actions' }, button('Show answer', showAnswer, 'primary study-reveal'));
+    fill(studyUI.controls, controls);
+    syncStudyGrammar(card);
+    updateStudyBusy();
+  }
+
+  function updateStudyBusy() {
+    if (!studyUI?.frame.isConnected) return;
+    const s = state.study;
+    studyUI.controls.setAttribute('aria-busy', String(s.busy));
+    studyUI.controls.querySelectorAll('button').forEach(b => b.disabled = s.busy);
+    studyUI.flip.disabled = s.busy;
+    studyUI.style.disabled = s.busy;
+    studyUI.status.textContent = s.busy ? 'Saving review…' : s.side === 'answer' ? '1–4 to rate' : 'Space or Enter to show answer';
+  }
+
+  function syncStudyGrammar(card) {
+    const slot = studyUI.grammarSlot;
+    const text = plainSentence(card.sentence);
+    studyUI.grammar.setAttribute('aria-pressed', String(studyGrammarOpen));
+    const show = state.study.side === 'answer' && text && studyGrammarOpen;
+    if (!show) {
+      slot.hidden = true;
+      slot.dataset.card = '';
+      fill(slot);
+      return;
+    }
+    if (slot.dataset.card !== String(card.id)) {
+      slot.dataset.card = String(card.id);
+      fill(slot, grammarPanel({ api, text, compact: true }));
+    }
+    slot.hidden = false;
+  }
+
+  function toggleStudyGrammar() {
+    if (!studyUI?.grammar || studyUI.grammar.hidden) return;
+    studyGrammarOpen = !studyGrammarOpen;
+    localStorage.setItem(GRAMMAR_PREF, studyGrammarOpen ? 'open' : 'closed');
+    syncStudyGrammar(state.study.cards[state.study.index]);
+  }
+
+  function hideAnswer() {
+    const s = state.study;
+    if (s.phase !== 'card' || s.busy) return;
+    s.side = 'question';
+    updateStudyCard();
+  }
+
+  function toggleStudyStyle() {
+    if (state.study.busy) return;
+    state.study.style = (state.study.style ?? 'app') === 'app' ? 'original' : 'app';
+    updateStudyCard();
+  }
+
+  function startStudy(deck) {
+    Object.assign(state.study, { deck, reviewed: 0, again: 0, reloaded: false });
+    loadStudyQueue();
+  }
+
+  function renderStudyIfActive(seq) {
+    if (state.tab === 'study' && seq === state.study.seq) renderSection();
+  }
+
+  async function loadStudyQueue() {
+    const s = state.study;
+    const seq = ++s.seq;
+    Object.assign(s, { phase: 'loading', cards: [], index: 0, side: 'question', busy: false });
+    renderStudyIfActive(seq);
     try {
-      const request = (deck) =>
-        api.anki.browse({
-          deck,
-          query: b.query || undefined,
-          state: b.filter === 'all' ? undefined : b.filter,
-          limit: BROWSE_LIMIT,
-        });
-      // The backend browses one deck at a time, so "All decks" merges every visible deck.
-      const names = b.deck != null ? [b.deck] : (state.overview?.decks ?? []).map((d) => d.name);
-      const results = await Promise.all(names.map(request));
-      if (disposed || seq !== b.seq) return;
-      b.cards = results.flatMap((res, i) => (res?.cards ?? []).map((c) => ({ deck: names[i], ...c }))).slice(0, BROWSE_LIMIT);
+      const res = await api.anki.studyQueue({ deck: s.deck });
+      if (disposed || seq !== s.seq) return;
+      s.cards = res?.cards ?? [];
+      s.token = res?.token;
+      s.remaining = res?.remaining;
     } catch (err) {
-      if (disposed || seq !== b.seq) return;
-      b.cards = [];
+      if (disposed || seq !== s.seq) return;
       toast(err.message, 'error');
+      s.phase = 'pick';
+      renderStudyIfActive(seq);
+      return;
     }
-    b.loading = false;
-    if (!b.cards.some((c) => c.id === b.selectedId)) b.selectedId = b.cards[0]?.id ?? null;
-    renderSide();
-    renderTable();
-    renderDetail();
+    s.phase = s.cards.length ? 'card' : 'done';
+    renderStudyIfActive(seq);
+    playCurrentAudio();
   }
 
-  function setDeck(name) {
-    state.browse.deck = name;
-    renderSide();
-    loadBrowse();
+  function endStudy() {
+    const s = state.study;
+    stopStudyAudio();
+    s.seq++;
+    Object.assign(s, { phase: 'pick', cards: [], index: 0, side: 'question', busy: false });
+    renderSection();
   }
 
-  function setFilter(id) {
-    state.browse.filter = id;
-    renderSide();
-    loadBrowse();
+  function endStudyQueue() {
+    // Fetch the next native queue item after every answer. Never cap a day at two batches.
+    loadStudyQueue();
   }
 
-  function renderSide() {
-    const b = state.browse;
-    const decks = state.overview?.decks ?? [];
-    const totalDue = decks.reduce((n, d) => n + (d.due ?? 0), 0);
-    const item = (active, label, count, onclick) =>
-      h(
-        'li',
-        {},
-        h(
-          'button',
-          { type: 'button', class: active ? 'side-item active' : 'side-item', 'aria-pressed': String(active), onclick },
-          h('span', {}, label),
-          count == null ? null : h('span', { class: 'n-due' }, String(count)),
-        ),
-      );
-    fill(
-      refs.side,
-      h('div', { class: 'anki-lab side-label' }, 'Decks'),
-      h(
-        'ul',
-        { class: 'side-list' },
-        item(b.deck == null, 'All decks', totalDue, () => setDeck(null)),
-        decks.map((d) => item(b.deck === d.name, d.name, d.due ?? 0, () => setDeck(d.name))),
-      ),
-      h('div', { class: 'anki-lab side-label' }, 'Filters'),
-      h(
-        'ul',
-        { class: 'side-list' },
-        FILTERS.map(([id, label]) => item(b.filter === id, label, null, () => setFilter(id))),
-      ),
+  function showAnswer() {
+    const s = state.study;
+    if (s.phase !== 'card' || s.side === 'answer' || s.busy) return;
+    s.side = 'answer';
+    updateStudyCard();
+  }
+
+  function grade(ease) {
+    const s = state.study;
+    if (s.phase !== 'card' || s.side !== 'answer' || s.busy) return;
+    const seq = s.seq;
+    const card = s.cards[s.index];
+    s.busy = true;
+    updateStudyBusy();
+    api.anki.studyAnswer({ cardId: card.id, ease, deck: s.deck, token: s.token }).then(
+      () => {
+        if (disposed || seq !== s.seq) return;
+        s.reviewed++;
+        if (ease === 1) s.again++;
+        stopStudyAudio();
+        s.index++;
+        s.side = 'question';
+        s.busy = false;
+        if (s.index < s.cards.length) {
+          updateStudyCard();
+          playCurrentAudio();
+        } else {
+          endStudyQueue();
+        }
+      },
+      (err) => {
+        if (disposed || seq !== s.seq) return;
+        s.busy = false;
+        toast(err.message, 'error');
+        updateStudyBusy();
+      },
     );
   }
 
-  function renderTable() {
-    const b = state.browse;
-    const count = `${b.cards.length} ${b.cards.length === 1 ? 'card' : 'cards'}`;
-    const deckName = b.deck ?? 'All decks';
-    fill(refs.title, b.loading ? deckName : `${deckName} · ${count}`);
-    refs.rows = new Map();
-
-    if (b.loading && !b.cards.length) {
-      fill(refs.table, h('p', { class: 'anki-sub anki-loading' }, 'Searching…'));
-      return;
-    }
-    if (!b.cards.length) {
-      fill(
-        refs.table,
-        emptyBox(b.query ? `No cards match “${b.query}”` : 'No cards here', 'Try another deck or filter.'),
-      );
-      return;
-    }
-    fill(
-      refs.table,
-      h(
-        'table',
-        { class: 'anki-table browse-table' },
-        h(
-          'thead',
-          {},
-          h('tr', {}, h('th', {}, 'Word'), h('th', { class: 'col-reading' }, 'Reading'), h('th', {}, 'Meaning'), h('th', { class: 'col-source' }, 'Source'), h('th', {}, 'State')),
-        ),
-        h(
-          'tbody',
-          {},
-          b.cards.map((card) => {
-            const badge = stateBadge(card);
-            const row = h(
-              'tr',
-              { class: card.id === b.selectedId ? 'selected' : null, onclick: () => selectCard(card.id) },
-              h('td', { class: 'anki-word' }, card.word),
-              h('td', { class: 'col-reading' }, card.reading ?? ''),
-              h('td', {}, card.meaning ?? ''),
-              h('td', { class: 'col-source muted' }, card.source ?? ''),
-              h('td', {}, h('span', { class: `anki-badge tone-${badge.tone}` }, badge.label)),
-            );
-            refs.rows.set(card.id, row);
-            return row;
-          }),
-        ),
-      ),
-    );
+  function playCurrentAudio() {
+    const s = state.study;
+    const card = s.cards[s.index];
+    if (state.tab === 'study' && s.side === 'question' && card?.audio) playStudyAudio(card.audio);
   }
 
-  function selectCard(id) {
-    const b = state.browse;
-    if (id === b.selectedId) return;
-    refs.rows.get(b.selectedId)?.classList.remove('selected');
-    b.selectedId = id;
-    const row = refs.rows.get(id);
-    row?.classList.add('selected');
-    row?.scrollIntoView({ block: 'nearest' });
-    renderDetail();
+  function stopStudyAudio() {
+    studyAudio?.pause();
+    studyAudio = null;
   }
 
-  function renderDetail() {
-    const card = state.browse.cards.find((c) => c.id === state.browse.selectedId);
-    if (!card) {
-      fill(refs.detail, h('div', { class: 'anki-lab' }, 'Card info'), h('p', { class: 'anki-sub detail-empty' }, 'Select a card to see its details.'));
-      return;
-    }
-    const parts = highlightParts(card.sentence, card.word);
-    fill(
-      refs.detail,
-      h('div', { class: 'anki-lab' }, 'Card info'),
-      shot(card.picture, false, 'shot detail-shot'),
-      h('div', { class: 'detail-word' }, card.word),
-      h('div', { class: 'anki-sub' }, [card.reading, card.meaning].filter(Boolean).join(' · ')),
-      h('p', { class: 'sentence' }, parts.length ? parts.map((p) => (p.hit ? h('mark', {}, p.text) : p.text)) : h('span', { class: 'anki-sub' }, 'No sentence saved.')),
-      h('div', { class: 'anki-sub' }, card.source ?? ''),
-      h('div', { class: 'detail-actions' }, h('button', { type: 'button', disabled: !card.audio, onclick: () => playAudio(card.audio) }, '▶ Audio')),
-      h('div', { class: 'anki-card history' }, h('div', { class: 'anki-lab' }, 'History'), h('div', { class: 'anki-sub' }, formatHistory(card))),
-    );
-  }
-
-  function playAudio(name) {
+  function playStudyAudio(name) {
+    const s = state.study;
+    const seq = s.seq;
+    const card = s.cards[s.index];
     return attempt(async () => {
       const url = await mediaUrl(name);
-      if (!url) {
-        toast('No audio file for this card');
-        return;
-      }
-      await new Audio(url).play();
+      const current = s.cards[s.index];
+      if (!url || disposed || seq !== s.seq || state.tab !== 'study' || s.phase !== 'card' || current !== card) return;
+      stopStudyAudio();
+      studyAudio = new Audio(url);
+      await studyAudio.play();
     });
   }
 
-  function onKeydown(e) {
-    const b = state.browse;
-    if (state.tab !== 'browse' || !refs?.table.isConnected) return;
-    if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+  function onStudyKey(e) {
+    const s = state.study;
     if (['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target?.tagName)) return;
-    if (!b.cards.length) return;
-    e.preventDefault();
-    const index = b.cards.findIndex((c) => c.id === b.selectedId);
-    const step = e.key === 'ArrowDown' ? 1 : -1;
-    const next = index < 0 ? 0 : Math.min(b.cards.length - 1, Math.max(0, index + step));
-    selectCard(b.cards[next].id);
+    if (e.metaKey || e.ctrlKey || e.altKey || s.phase !== 'card') return;
+    const confirm = e.key === ' ' || e.key === 'Enter';
+    if (confirm && e.target?.tagName === 'BUTTON') return;
+    if (e.key.toLowerCase() === 'g' && s.side === 'answer') {
+      e.preventDefault();
+      toggleStudyGrammar();
+      return;
+    }
+    if (s.side === 'question' && confirm) {
+      e.preventDefault();
+      showAnswer();
+      return;
+    }
+    const ease = easeForKey(e.key);
+    if (s.side === 'answer' && ease) {
+      e.preventDefault();
+      grade(ease);
+    }
+  }
+
+  // Browse
+
+  function onKeydown(e) {
+    if (state.tab === 'study') return onStudyKey(e);
   }
 
   // Media: screenshots and audio arrive as data URLs, cached per mount

@@ -1,6 +1,8 @@
 const crypto = require('crypto');
 const fs = require('fs/promises');
 const path = require('path');
+const { Desubber } = require('../core/desubber');
+const { loadColabSidecars, applyColabSidecars } = require('../core/colabSidecar');
 
 const MAX_CUE_SECONDS = 120;
 const MAX_PAD_SECONDS = 5;
@@ -114,8 +116,10 @@ function createFeatureHandlers({ dataDir, getSettings, library, dictionary, toke
   const media = deps.media || require('../core/media');
   const AnkiClient = deps.AnkiClient || require('../core/anki').AnkiClient;
   const parseSubtitleFile = deps.parseSubtitleFile || require('../core/subtitles').parseSubtitleFile;
+  const syncCues = deps.syncCues || require('../core/subSync').syncCues;
 
   const converter = new Converter({ cacheDir: path.join(dataDir, 'converted') });
+  const desubber = deps.desubber || new Desubber({ dataDir });
   const watch = new WatchProgress(dataDir);
   const pitchAccent = new PitchAccent(dataDir);
   const coverageFile = path.join(dataDir, 'coverage.json');
@@ -142,6 +146,7 @@ function createFeatureHandlers({ dataDir, getSettings, library, dictionary, toke
       subOffset: entry.subOffset,
     };
     const audioStreamIndex = saved?.audioStreamIndex ?? defaults.audioStreamIndex;
+    queueCleanup(videoPath).catch(() => {});
     return {
       duration: info.duration,
       streams: info.streams,
@@ -149,6 +154,37 @@ function createFeatureHandlers({ dataDir, getSettings, library, dictionary, toke
       defaults,
       saved,
     };
+  }
+
+  async function burnedSubsMode() {
+    return (await getSettings()).burnedSubsMode === 'ai' ? 'ai' : 'blur';
+  }
+
+  async function playbackSource(videoPath) {
+    try {
+      if ((await getSettings()).removeBurnedSubs !== true) return videoPath;
+      return (await desubber.cleanedPath(videoPath, await burnedSubsMode())) ?? videoPath;
+    } catch {
+      return videoPath;
+    }
+  }
+
+  // desub.py renumbers audio streams from 1, so find the cleaned file's index for the same track.
+  async function cleanedAudioIndex(videoPath, cleanPath, audioStreamIndex) {
+    const audioIndexes = (info) => info.streams.filter((stream) => stream.type === 'audio').map((stream) => stream.index);
+    const ordinal = audioIndexes(await probe(videoPath)).indexOf(audioStreamIndex);
+    return audioIndexes(await probe(cleanPath))[ordinal] ?? audioStreamIndex;
+  }
+
+  async function queueCleanup(videoPath) {
+    if ((await getSettings()).removeBurnedSubs !== true) return;
+    const mode = await burnedSubsMode();
+    if (await desubber.cleanedPath(videoPath, mode)) return;
+    await desubber.enqueue(videoPath, {
+      onProgress: (fraction) => notify('desub:progress', { videoPath, fraction }),
+      onDone: () => notify('desub:done', { videoPath }),
+      onError: (error) => notify('desub:error', { videoPath, message: error.message }),
+    }, mode);
   }
 
   // One running job per video: a different audio track or mode aborts the previous one; an identical request shares it.
@@ -165,13 +201,20 @@ function createFeatureHandlers({ dataDir, getSettings, library, dictionary, toke
     current?.controller.abort();
     const controller = new AbortController();
     const job = { audioStreamIndex, force: forced, controller };
-    job.promise = converter.prepare(videoPath, {
-      audioStreamIndex,
-      force: forced,
-      signal: controller.signal,
-      onProgress: (fraction) => notify('media:progress', { videoPath, fraction }),
-    });
     activePrepares.set(videoPath, job);
+    job.promise = (async () => {
+      const source = await playbackSource(videoPath);
+      const sourceAudio = source === videoPath
+        ? audioStreamIndex
+        : await cleanedAudioIndex(videoPath, source, audioStreamIndex);
+      const prepared = await converter.prepare(source, {
+        audioStreamIndex: sourceAudio,
+        force: forced,
+        signal: controller.signal,
+        onProgress: (fraction) => notify('media:progress', { videoPath, fraction }),
+      });
+      return { ...prepared, cleaned: source !== videoPath };
+    })();
     try {
       return await job.promise;
     } finally {
@@ -202,7 +245,8 @@ function createFeatureHandlers({ dataDir, getSettings, library, dictionary, toke
       padEnd: clampPad(audioPadEnd),
       ...(audioStream === undefined ? {} : { audioStream }),
     });
-    const picture = await media.screenshot({ video: videoPath, time: (cue.start + cue.end) / 2 });
+    const source = await playbackSource(videoPath);
+    const picture = await media.screenshot({ video: source, time: (cue.start + cue.end) / 2, censorSubs: source === videoPath, cover: source === videoPath ? ((await getSettings()).subtitleCover ?? null) : null });
     return {
       audio: `data:audio/mpeg;base64,${audio.toString('base64')}`,
       picture: `data:image/jpeg;base64,${picture.toString('base64')}`,
@@ -249,11 +293,19 @@ function createFeatureHandlers({ dataDir, getSettings, library, dictionary, toke
       embeddedIndex: optionalIndex(embeddedIndex, 'embeddedIndex') ?? null,
       auto: auto === true,
     });
+    const sidecars = await loadColabSidecars({ videoPath, subtitlePath: subtitle.subtitlePath })
+      .catch(() => ({ fix: new Map(), tag: new Map() }));
+    // Sidecar numbers refer to the original cue order, so apply them before sync can drop or reorder cues.
+    const annotated = applyColabSidecars(subtitle.cues, sidecars);
+    const synced = subtitle.source === 'external'
+      ? await syncCues({ video: videoPath, cues: annotated, subtitlePath: subtitle.subtitlePath, dataDir })
+      : { cues: annotated, applied: false };
     return {
-      cues: subtitle.cues,
+      cues: synced.cues,
       subtitlePath: subtitle.subtitlePath,
       source: subtitle.source,
       embeddedIndex: subtitle.embeddedIndex,
+      synced: synced.applied,
     };
   }
 
@@ -330,6 +382,23 @@ function createFeatureHandlers({ dataDir, getSettings, library, dictionary, toke
     return result;
   }
 
+  async function episodeCues(req) {
+    const { videoPath, embeddedIndex } = req ?? {};
+    assertVideoPath(videoPath);
+    const subtitle = await resolveSubtitle(videoPath, { embeddedIndex: optionalIndex(embeddedIndex, 'embeddedIndex') ?? null });
+    if (subtitle.source === 'none') return null;
+    return { cues: subtitle.cues };
+  }
+
+  async function glossFor(word) {
+    if (!dictionary.isReady()) return { meanings: [], reading: '' };
+    await dictionary.load();
+    const [entry] = dictionary.lookup(word);
+    if (!entry) return { meanings: [], reading: '' };
+    const meanings = [...new Set(entry.senses.flatMap((sense) => sense.glosses))].slice(0, 6);
+    return { meanings, reading: entry.kana[0] ?? '' };
+  }
+
   // ---- lookup and pitch ----
 
   async function pitchFor(entries) {
@@ -404,6 +473,7 @@ function createFeatureHandlers({ dataDir, getSettings, library, dictionary, toke
   function stop() {
     for (const job of activePrepares.values()) job.controller.abort();
     activePrepares.clear();
+    desubber.stop();
   }
 
   // Called after a word mine succeeds; the card is already saved, so a failed vocabulary write is ignored.
@@ -448,9 +518,23 @@ function createFeatureHandlers({ dataDir, getSettings, library, dictionary, toke
     },
     'ai:translate': translateSentence,
     'anki:preview': previewClip,
+    'desub:status': async () => ({ ...desubber.status(), bytes: await desubber.cacheSize() }),
+    'desub:isClean': async (videoPath) => {
+      assertVideoPath(videoPath);
+      if ((await getSettings()).removeBurnedSubs !== true) return false;
+      return (await desubber.cleanedPath(videoPath, await burnedSubsMode())) !== null;
+    },
+    'desub:clearCache': async () => {
+      await desubber.clearCache();
+      return { ok: true };
+    },
+    'desub:install': async () => {
+      await desubber.install((step) => notify('desub:install', { step }));
+      return { ok: true };
+    },
   };
 
-  return { handlers, stop, markMined };
+  return { handlers, stop, markMined, knownWords, episodeCues, glossFor, pitchAccent, playbackSource };
 }
 
 module.exports = { createFeatureHandlers, assertMineInput, assertContext, clampPad, optionalIndex };

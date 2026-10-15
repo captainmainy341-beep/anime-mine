@@ -1,0 +1,744 @@
+[
+  {
+    "id": "g:n2-ni-tomonatte",
+    "jlpt": "N2",
+    "title": "〜に伴って",
+    "meaning": "along with / as ... changes (one change accompanies another)",
+    "structure": "Noun + に伴って / に伴い",
+    "formality": "neutral",
+    "notes": "Describes a change that happens alongside or as a result of another change. Used with nouns about change or development, such as 人口, 技術, 物価. 〜に伴い is the more formal, written form, and 〜に伴う is used before a noun. It does not mean simply 'together with a person'; use 〜と一緒に for that.",
+    "similar": [],
+    "detect": [
+      "に伴(って|い|う)"
+    ],
+    "examples": [
+      {
+        "ja": "人口の減少{{に伴って}}、地方の税収も落ち込んでいる。",
+        "en": "As the population declines, local tax revenue is also falling.",
+        "hint": "伴う + に伴って"
+      },
+      {
+        "ja": "技術の進歩{{に伴い}}、仕事の内容も大きく変わってきた。",
+        "en": "As technology advances, the content of work has changed greatly too.",
+        "hint": "伴う + に伴い"
+      },
+      {
+        "ja": "物価の上昇{{に伴って}}、給料も少しずつ上がってほしい。",
+        "en": "I hope salaries will rise little by little along with prices.",
+        "hint": "伴う + に伴って"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-ni-hanshite",
+    "jlpt": "N2",
+    "title": "〜に反して",
+    "meaning": "contrary to / against (expectations, wishes, rules)",
+    "structure": "Noun + に反して / に反する",
+    "formality": "neutral",
+    "notes": "〜に反して means the outcome went against an expectation or someone's wishes. 〜に反する (before a noun) means the thing goes against a rule, principle or standard. Typical pairs are 予想, 期待, 忠告 with に反して, and 規則, 法律 with に反する.",
+    "similar": [
+      "〜にもかかわらず"
+    ],
+    "detect": [
+      "に反(して|する)"
+    ],
+    "examples": [
+      {
+        "ja": "予想{{に反して}}、試合は雨で中止になった。",
+        "en": "Contrary to expectations, the match was cancelled because of rain.",
+        "hint": "反する + に反して"
+      },
+      {
+        "ja": "親の忠告{{に反して}}、彼は一人で海外へ行ってしまった。",
+        "en": "Against his parents' advice, he went overseas alone.",
+        "hint": "反する + に反して"
+      },
+      {
+        "ja": "規則{{に反する}}行為は、すべて禁止されている。",
+        "en": "All acts that go against the rules are prohibited.",
+        "hint": "反する + に反する"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-ni-sotta",
+    "jlpt": "N2",
+    "title": "〜に沿って / 〜に沿った",
+    "meaning": "in line with / following (a plan, policy, instruction)",
+    "structure": "Noun + に沿って / に沿った + Noun",
+    "formality": "neutral",
+    "notes": "Means acting in accordance with something that already exists, such as a plan, a policy, a guideline or someone's instructions. 〜に沿った modifies a following noun. It is common in business settings. The same form can mean physically 'along' (川に沿って歩く), but this point is the abstract sense of following a plan or rule.",
+    "similar": [],
+    "detect": [
+      "に沿(って|った|い)"
+    ],
+    "examples": [
+      {
+        "ja": "会社の方針{{に沿った}}提案を、来週までに出してください。",
+        "en": "Please submit a proposal in line with company policy by next week.",
+        "hint": "沿う + に沿った"
+      },
+      {
+        "ja": "計画{{に沿って}}、準備を進めている。",
+        "en": "We are preparing according to the plan.",
+        "hint": "沿う + に沿って"
+      },
+      {
+        "ja": "指示{{に沿って}}作業すれば、失敗はないはずだ。",
+        "en": "If you work according to the instructions, there should be no mistakes.",
+        "hint": "沿う + に沿って"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-ni-soi-nai",
+    "jlpt": "N2",
+    "title": "〜に相違ない",
+    "meaning": "there is no doubt that / must be (a firm conclusion)",
+    "structure": "Noun + に相違ない / Plain form + に相違ない",
+    "formality": "formal",
+    "notes": "Expresses strong confidence that something is true, based on evidence or reasoning. It is more certain than 〜にちがいない and sounds written or formal. The polite form is 〜に相違ありません. It is not used for asking about the future or for personal wishes.",
+    "similar": [],
+    "detect": [
+      "に相違(ない|ありません)"
+    ],
+    "examples": [
+      {
+        "ja": "この時間なら、彼はもう家に着いている{{に相違ない}}。",
+        "en": "At this hour, he must already be home.",
+        "hint": "着く + に相違ない"
+      },
+      {
+        "ja": "あの店のケーキは、美味しい{{に相違ありません}}。",
+        "en": "The cake at that shop is certainly delicious.",
+        "hint": "美味しい + に相違ない"
+      },
+      {
+        "ja": "犯人は彼女{{に相違ない}}と、刑事は確信していた。",
+        "en": "The detective was convinced that the culprit was undoubtedly her.",
+        "hint": "彼女 + に相違ない"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-wo-zenteini",
+    "jlpt": "N2",
+    "title": "〜を前提に / 〜を前提として",
+    "meaning": "on the premise / assumption that ...",
+    "structure": "Noun or Verb (plain form) + ことを前提に / を前提に(して)",
+    "formality": "formal",
+    "notes": "Sets a condition or assumption that a plan, discussion or calculation depends on. Usually used in written or business language. The thing after を前提に is often a verb phrase with こと, such as 〜ことを前提に. Use it when the premise is stated openly, not for personal guesses.",
+    "similar": [],
+    "detect": [
+      "を前提(に|として)"
+    ],
+    "examples": [
+      {
+        "ja": "二人が協力すること{{を前提に}}、話を進めよう。",
+        "en": "Let's move the discussion forward on the premise that the two of them will cooperate.",
+        "hint": "前提 + を前提に"
+      },
+      {
+        "ja": "景気が回復すること{{を前提に}}、来年度の予算が組まれた。",
+        "en": "The next fiscal year's budget was drawn up on the premise that the economy will recover.",
+        "hint": "前提 + を前提に"
+      },
+      {
+        "ja": "彼の経験{{を前提として}}考えれば、答えはすぐに出る。",
+        "en": "If we think on the premise of his experience, the answer is easy to find.",
+        "hint": "前提 + を前提として"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-wo-chuushin",
+    "jlpt": "N2",
+    "title": "〜を中心に / 〜を中心として",
+    "meaning": "centered on / focusing on",
+    "structure": "Noun + を中心に / を中心として",
+    "formality": "neutral",
+    "notes": "Indicates the main focus or the place or person at the center of an activity or event. It can be physical (a location) or abstract (a theme). 〜を中心として is a slightly more formal version. 〜を中心に is used for the focus of a discussion or a story as well as for a physical center.",
+    "similar": [],
+    "detect": [
+      "を中心(に|として)"
+    ],
+    "examples": [
+      {
+        "ja": "駅前{{を中心に}}、新しい店が次々とオープンしている。",
+        "en": "New shops keep opening one after another, centered on the area in front of the station.",
+        "hint": "中心 + を中心に"
+      },
+      {
+        "ja": "この映画は、若い女性の恋愛{{を中心に}}描かれている。",
+        "en": "This movie focuses on the romance of young women.",
+        "hint": "中心 + を中心に"
+      },
+      {
+        "ja": "彼女の生活{{を中心として}}、物語が進んでいく。",
+        "en": "The story unfolds centered on her daily life.",
+        "hint": "中心 + を中心として"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-wo-motoni",
+    "jlpt": "N2",
+    "title": "〜をもとに / 〜をもとにして",
+    "meaning": "based on / using ... as the basis",
+    "structure": "Noun + をもとに / をもとにして",
+    "formality": "neutral",
+    "notes": "Shows that something is built on a source, such as data, a real event, or a previous version. It is often used for works based on real events and for decisions based on evidence. 〜をもとに can also be written 〜を基に. It is not used for a simple cause; 〜ので fits better there.",
+    "similar": [],
+    "detect": [
+      "をもとに"
+    ],
+    "examples": [
+      {
+        "ja": "実際の事件{{をもとに}}した小説が話題になっている。",
+        "en": "A novel based on a real incident is attracting attention.",
+        "hint": "基 + をもとに"
+      },
+      {
+        "ja": "アンケートの結果{{をもとに}}、新しい商品を開発した。",
+        "en": "Based on the survey results, we developed a new product.",
+        "hint": "基 + をもとに"
+      },
+      {
+        "ja": "過去のデータ{{をもとにして}}、今後の売り上げを予測する。",
+        "en": "We forecast future sales based on past data.",
+        "hint": "基 + をもとにして"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-wo-tooshite",
+    "jlpt": "N2",
+    "title": "〜を通して",
+    "meaning": "through / via (a person or means) / throughout (a period)",
+    "structure": "Noun + を通して",
+    "formality": "neutral",
+    "notes": "Marks an intermediary person, method or channel through which something happens, or a whole period during which something continues. For the period meaning, it means 'throughout'. 〜を通じて has nearly the same meaning and is also common.",
+    "similar": [],
+    "detect": [
+      "を通(し|じ)て"
+    ],
+    "examples": [
+      {
+        "ja": "友人{{を通して}}、彼女と知り合った。",
+        "en": "I got to know her through a friend.",
+        "hint": "通す + を通して"
+      },
+      {
+        "ja": "インターネット{{を通して}}、世界中の人と交流できる。",
+        "en": "You can interact with people all over the world through the internet.",
+        "hint": "通す + を通して"
+      },
+      {
+        "ja": "長い年月{{を通して}}、彼はずっと努力を続けてきた。",
+        "en": "Throughout many years, he has kept up his efforts.",
+        "hint": "通す + を通して"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-nuki-de",
+    "jlpt": "N2",
+    "title": "〜抜きで",
+    "meaning": "without (something or someone normally included)",
+    "structure": "Noun + 抜きで / 抜きに / 抜きの",
+    "formality": "neutral",
+    "notes": "Means doing something while leaving out a usual element, such as a person, a food ingredient or a step. It is often used in casual speech and in menus or orders. The nuance is that something normally expected is missing.",
+    "similar": [],
+    "detect": [
+      "抜き(で|に|の)"
+    ],
+    "examples": [
+      {
+        "ja": "彼{{抜きで}}話を進めてしまって、申し訳ない。",
+        "en": "I'm sorry we went ahead with the discussion without him.",
+        "hint": "抜く + 抜きで"
+      },
+      {
+        "ja": "夜はごはん{{抜きで}}、ダイエットをしている。",
+        "en": "I'm on a diet, skipping rice at dinner.",
+        "hint": "抜く + 抜きで"
+      },
+      {
+        "ja": "ネギ{{抜きで}}ラーメンを頼んだ。",
+        "en": "I ordered ramen without green onions.",
+        "hint": "抜く + 抜きで"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-ni-atari",
+    "jlpt": "N2",
+    "title": "〜にあたり / 〜にあたって",
+    "meaning": "on the occasion of / when doing ... (formal)",
+    "structure": "Verb (dictionary form) or Noun + にあたり / にあたって",
+    "formality": "formal",
+    "notes": "Used for a formal occasion such as a launch, an admission, or the start of a project. It is common in announcements, speeches, and written notices. 〜にあたって is slightly more conversational than 〜にあたり, but both are formal.",
+    "similar": [
+      "〜に際して"
+    ],
+    "detect": [
+      "にあた(り|って)"
+    ],
+    "examples": [
+      {
+        "ja": "留学する{{にあたって}}、奨学金を申請した。",
+        "en": "When I was about to study abroad, I applied for a scholarship.",
+        "hint": "留学する + にあたって"
+      },
+      {
+        "ja": "新製品を発売する{{にあたり}}、記者会見を開いた。",
+        "en": "A press conference was held on the occasion of the new product's launch.",
+        "hint": "発売する + にあたり"
+      },
+      {
+        "ja": "ご入学{{にあたり}}、注意事項をお伝えします。",
+        "en": "On the occasion of your admission, we would like to inform you of some notes.",
+        "hint": "入学 + にあたり"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-ni-itatte",
+    "jlpt": "N2",
+    "title": "〜に至って",
+    "meaning": "only after reaching (a state or stage) / finally came to ...",
+    "structure": "Noun or Verb (dictionary form) + に至って",
+    "formality": "neutral",
+    "notes": "Describes reaching a point after a long process, often a state the speaker did not expect or wanted to avoid. It is typically followed by a verb showing a result or reaction. 〜に至る is the plain form. Do not use it for a simple arrival at a place.",
+    "similar": [
+      "〜に至るまで"
+    ],
+    "detect": [
+      "に至(って|った|る)"
+    ],
+    "examples": [
+      {
+        "ja": "事件は解決{{に至って}}、ようやく彼の無実が証明された。",
+        "en": "Only when the case was finally solved was his innocence proven.",
+        "hint": "至る + に至って"
+      },
+      {
+        "ja": "何度も話し合いを重ねた末、ついに合意{{に至った}}。",
+        "en": "After repeated discussions, they finally reached an agreement.",
+        "hint": "至る + に至った"
+      },
+      {
+        "ja": "国が破産寸前{{に至って}}、ようやく改革が始まった。",
+        "en": "Only when the country reached the brink of bankruptcy did reform finally begin.",
+        "hint": "至る + に至って"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-ni-itaru-made",
+    "jlpt": "N2",
+    "title": "〜に至るまで",
+    "meaning": "even down to / all the way to (emphasizing even small details)",
+    "structure": "Noun or Verb (dictionary form) + に至るまで",
+    "formality": "neutral",
+    "notes": "Emphasizes that something extends to every detail, including minor or unexpected ones. It usually sounds like 'everything, even ...'. It is used in both praise and criticism. Do not confuse it with 〜に至って, which marks the point when something finally happened.",
+    "similar": [
+      "〜に至って"
+    ],
+    "detect": [
+      "に至るまで"
+    ],
+    "examples": [
+      {
+        "ja": "準備{{に至るまで}}、彼女が一人でこなした。",
+        "en": "She handled everything alone, right down to the preparations.",
+        "hint": "至る + に至るまで"
+      },
+      {
+        "ja": "犯人は、動機{{に至るまで}}すべてを正直に話した。",
+        "en": "The culprit honestly told everything, even down to the motive.",
+        "hint": "至る + に至るまで"
+      },
+      {
+        "ja": "細部{{に至るまで}}、丁寧に作られている。",
+        "en": "It is carefully made, right down to the smallest details.",
+        "hint": "至る + に至るまで"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-ni-hoka-naranai",
+    "jlpt": "N2",
+    "title": "〜にほかならない",
+    "meaning": "is nothing other than / is none other than",
+    "structure": "Noun / Plain form + にほかならない",
+    "formality": "formal",
+    "notes": "Emphasizes that something is exactly the thing named, with no other explanation possible. It is often used to state a conclusion or to stress the true cause of a result. The polite form is 〜にほかなりません. It sounds written or formal, so it is less common in casual speech.",
+    "similar": [
+      "〜にすぎない"
+    ],
+    "detect": [
+      "にほかな(らない|りません)"
+    ],
+    "examples": [
+      {
+        "ja": "彼の成功は、努力の結果{{にほかならない}}。",
+        "en": "His success is nothing other than the result of his effort.",
+        "hint": "結果 + にほかならない"
+      },
+      {
+        "ja": "それは、ただの偶然{{にほかならない}}よ。",
+        "en": "That is nothing but a coincidence, you know.",
+        "hint": "偶然 + にほかならない"
+      },
+      {
+        "ja": "これこそ、あの人の優しさ{{にほかなりません}}。",
+        "en": "This is nothing other than that person's kindness.",
+        "hint": "優しさ + にほかならない"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-ni-suginai",
+    "jlpt": "N2",
+    "title": "〜にすぎない",
+    "meaning": "nothing more than / merely / just",
+    "structure": "Noun / Plain form + にすぎない",
+    "formality": "neutral",
+    "notes": "Downplays something as small, minor or limited, often to reject an exaggerated view. It can sound dismissive, so use it carefully when talking about someone else. The polite form is 〜にすぎません. It is close to 〜だけだ but sounds more formal and more critical.",
+    "similar": [
+      "〜にほかならない"
+    ],
+    "detect": [
+      "にすぎ(ない|ません)"
+    ],
+    "examples": [
+      {
+        "ja": "それは、ほんの噂{{にすぎない}}。",
+        "en": "That's just a rumor, nothing more.",
+        "hint": "噂 + にすぎない"
+      },
+      {
+        "ja": "私はただの会社員{{にすぎません}}。",
+        "en": "I'm nothing more than an ordinary office worker.",
+        "hint": "会社員 + にすぎない"
+      },
+      {
+        "ja": "彼女はまだ子ども{{にすぎない}}のに、大人のふりをしている。",
+        "en": "She's still just a child, yet she pretends to be an adult.",
+        "hint": "子ども + にすぎない"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-nara-de",
+    "jlpt": "N2",
+    "title": "〜ならでは",
+    "meaning": "only / unique to (something only this place, person or situation can offer)",
+    "structure": "Noun + ならでは (の)",
+    "formality": "neutral",
+    "notes": "Praises something as uniquely characteristic of a particular place, time, person or experience. It is used in a positive way, mostly with ならではの + noun. It cannot be used to describe something negative or ordinary.",
+    "similar": [],
+    "detect": [
+      "ならでは"
+    ],
+    "examples": [
+      {
+        "ja": "この店{{ならでは}}の料理を楽しんでください。",
+        "en": "Please enjoy the dishes that only this restaurant can offer.",
+        "hint": "店 + ならでは"
+      },
+      {
+        "ja": "夏の京都{{ならでは}}の風景がある。",
+        "en": "There is a scene that only summertime Kyoto can offer.",
+        "hint": "京都 + ならでは"
+      },
+      {
+        "ja": "田舎{{ならでは}}の静けさが好きだ。",
+        "en": "I love the kind of quiet that only the countryside has.",
+        "hint": "田舎 + ならでは"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-mono-dakara",
+    "jlpt": "N2",
+    "title": "〜ものだから",
+    "meaning": "because (it happened that way); used to explain a reason, often an excuse",
+    "structure": "Plain form + ものだから",
+    "formality": "neutral",
+    "notes": "Gives a subjective reason, usually for a result the speaker feels they could not avoid. It often appears in excuses or apologies, such as 遅れてしまって. It sounds slightly more personal than 〜ので and is not used for objective or scientific reasons.",
+    "similar": [
+      "〜ので"
+    ],
+    "detect": [
+      "ものだから"
+    ],
+    "examples": [
+      {
+        "ja": "急いで走った{{ものだから}}、息が切れてしまった。",
+        "en": "Because I had run in a hurry, I ended up out of breath.",
+        "hint": "走る + ものだから"
+      },
+      {
+        "ja": "子どもが泣いた{{ものだから}}、つい甘やかしてしまった。",
+        "en": "Because the child kept crying, I ended up spoiling them.",
+        "hint": "泣く + ものだから"
+      },
+      {
+        "ja": "彼が遅れてきた{{ものだから}}、会議が始まらなかった。",
+        "en": "Because he arrived late, the meeting couldn't start.",
+        "hint": "遅れる + ものだから"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-koto-dakara",
+    "jlpt": "N2",
+    "title": "〜ことだから",
+    "meaning": "knowing (someone) as they are, it is likely that ...",
+    "structure": "Noun + のことだから / Plain form + ことだから",
+    "formality": "neutral",
+    "notes": "Makes a guess about what someone will do, based on what you know of their character or habits. It is mostly used about people the speaker knows well. It is usually followed by a conclusion such as きっと or 〜に違いない.",
+    "similar": [
+      "〜だけに"
+    ],
+    "detect": [
+      "ことだから"
+    ],
+    "examples": [
+      {
+        "ja": "彼{{のことだから}}、また遅刻するに違いない。",
+        "en": "Knowing him, he's sure to be late again.",
+        "hint": "彼 + ことだから"
+      },
+      {
+        "ja": "田中さん{{のことだから}}、もう準備を終えているだろう。",
+        "en": "Knowing Mr. Tanaka, he's probably already finished preparing.",
+        "hint": "田中さん + ことだから"
+      },
+      {
+        "ja": "君{{のことだから}}、きっと失敗しても諦めないと思っていた。",
+        "en": "Knowing you, I thought you wouldn't give up even if you failed.",
+        "hint": "君 + ことだから"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-sekkaku-noni",
+    "jlpt": "N2",
+    "title": "〜せっかく〜のに",
+    "meaning": "after going to the trouble of ..., (yet / unfortunately) ...",
+    "structure": "せっかく + Verb / Adjective / Noun + のに",
+    "formality": "neutral",
+    "notes": "Expresses disappointment that the effort or opportunity was wasted. せっかく marks the effort, and のに marks the unexpected or disappointing result. It is often followed by a sentence about what went wrong or what was missed.",
+    "similar": [
+      "〜のに"
+    ],
+    "detect": [
+      "せっかく.{1,15}のに"
+    ],
+    "examples": [
+      {
+        "ja": "{{せっかく来たのに}}、店は閉まっていた。",
+        "en": "I came all this way, but the shop was closed.",
+        "hint": "来る + せっかく〜のに"
+      },
+      {
+        "ja": "{{せっかく作ったのに}}、誰も食べてくれなかった。",
+        "en": "I went to the trouble of making it, yet nobody ate it.",
+        "hint": "作る + せっかく〜のに"
+      },
+      {
+        "ja": "{{せっかくの休みなのに}}、一日中寝てしまった。",
+        "en": "It was a rare day off, yet I ended up sleeping all day.",
+        "hint": "休み + せっかく〜のに"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-dake-mashi-da",
+    "jlpt": "N2",
+    "title": "〜だけましだ",
+    "meaning": "at least it is better than (it could have been worse)",
+    "structure": "Plain form + だけましだ",
+    "formality": "neutral",
+    "notes": "Consoles oneself or someone else by pointing out that the actual situation, though bad, was better than the worst case. It is used in casual spoken Japanese and in personal reflection. The subject is usually a situation the speaker has already accepted.",
+    "similar": [],
+    "detect": [
+      "だけまし"
+    ],
+    "examples": [
+      {
+        "ja": "大きな怪我はなかった{{だけましだ}}よ。",
+        "en": "At least there were no serious injuries, you know.",
+        "hint": "ない + だけましだ"
+      },
+      {
+        "ja": "遅刻{{しただけましだ}}。欠席していたら、もっと大変だった。",
+        "en": "At least I only arrived late. If I had been absent, it would have been much worse.",
+        "hint": "する + だけましだ"
+      },
+      {
+        "ja": "全部は失わなかった{{だけましだ}}。",
+        "en": "At least I didn't lose everything.",
+        "hint": "失う + だけましだ"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-to-itta",
+    "jlpt": "N2",
+    "title": "〜といった",
+    "meaning": "such as / things like (giving examples)",
+    "structure": "Noun + といった + Noun",
+    "formality": "neutral",
+    "notes": "Introduces one or more examples from a broader category, similar to 〜などの or 〜のような. It is often used before a noun that names the category. It is neutral in tone and common in both speech and writing.",
+    "similar": [],
+    "detect": [
+      "といった"
+    ],
+    "examples": [
+      {
+        "ja": "犬や猫{{といった}}ペットを飼っている家庭は多い。",
+        "en": "Many households keep pets such as dogs and cats.",
+        "hint": "言う + といった"
+      },
+      {
+        "ja": "寿司{{といった}}日本料理は、外国人にも人気がある。",
+        "en": "Japanese dishes such as sushi are popular even with foreigners.",
+        "hint": "言う + といった"
+      },
+      {
+        "ja": "「愛」{{といった}}言葉は、簡単には説明できない。",
+        "en": "Words such as 'love' cannot be explained easily.",
+        "hint": "言う + といった"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-kara-to-itte",
+    "jlpt": "N2",
+    "title": "〜からといって",
+    "meaning": "just because ... (does not mean that ...)",
+    "structure": "Plain form + からといって (+ negative)",
+    "formality": "neutral",
+    "notes": "Rejects a conclusion that someone might draw from a reason, usually followed by a negative such as 〜わけではない or 〜とは限らない. It is used to argue against a common assumption. The reason part is a plain form, including な-adjectives and nouns with だ.",
+    "similar": [
+      "〜からには"
+    ],
+    "detect": [
+      "からといって"
+    ],
+    "examples": [
+      {
+        "ja": "高い{{からといって}}、必ずしも品質がいいとは限らない。",
+        "en": "Just because something is expensive doesn't necessarily mean it's of good quality.",
+        "hint": "高い + からといって"
+      },
+      {
+        "ja": "忙しい{{からといって}}、連絡を忘れていいわけではない。",
+        "en": "Just because you're busy doesn't mean you can forget to get in touch.",
+        "hint": "忙しい + からといって"
+      },
+      {
+        "ja": "親友{{だからといって}}、何でも話す必要はない。",
+        "en": "Just because they're a close friend, you don't have to tell them everything.",
+        "hint": "親友 + からといって"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-ni-kakete-wa",
+    "jlpt": "N2",
+    "title": "〜にかけては",
+    "meaning": "when it comes to / as far as ... is concerned (surpassing others)",
+    "structure": "Noun + にかけては",
+    "formality": "neutral",
+    "notes": "States that someone is the best or very strong in a particular field. It is used to praise or boast about skill or ability in one area. The phrase is usually followed by a negative like 〜者はいない or 〜勝てる人はいない.",
+    "similar": [],
+    "detect": [
+      "にかけては"
+    ],
+    "examples": [
+      {
+        "ja": "料理{{にかけては}}、母に勝てる人はいない。",
+        "en": "When it comes to cooking, no one can beat my mother.",
+        "hint": "料理 + にかけては"
+      },
+      {
+        "ja": "値段の交渉{{にかけては}}、彼の右に出る者はいない。",
+        "en": "When it comes to price negotiations, nobody can match him.",
+        "hint": "交渉 + にかけては"
+      },
+      {
+        "ja": "記憶力{{にかけては}}、誰にも負けない自信がある。",
+        "en": "When it comes to memory, I'm confident I don't lose to anyone.",
+        "hint": "記憶力 + にかけては"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-ue-ni",
+    "jlpt": "N2",
+    "title": "〜上(に)",
+    "meaning": "on top of / in addition to (adding a further point)",
+    "structure": "Plain form (い-adjective, な-adjective, or verb) + 上(に)",
+    "formality": "neutral",
+    "notes": "Adds a second point that supports or strengthens the first, often when both are the same kind of judgment. It can be positive (安い上に美味しい) or negative (雨が降っている上に風も強い). The 上 must follow a plain form, so 机の上 is a different use.",
+    "similar": [
+      "〜のみならず"
+    ],
+    "detect": [
+      "[いるたな]上に"
+    ],
+    "examples": [
+      {
+        "ja": "この部屋は広い{{上に}}、日当たりもいい。",
+        "en": "This room is spacious, and it also gets plenty of sunlight.",
+        "hint": "広い + 上に"
+      },
+      {
+        "ja": "彼は頭がいい{{上に}}、努力家だ。",
+        "en": "He is smart, and on top of that he's hardworking.",
+        "hint": "良い + 上に"
+      },
+      {
+        "ja": "雨が降っている{{上に}}、風も強い。",
+        "en": "It's raining, and on top of that the wind is strong.",
+        "hint": "降る + 上に"
+      }
+    ]
+  },
+  {
+    "id": "g:n2-you-de-wa",
+    "jlpt": "N2",
+    "title": "〜ようでは",
+    "meaning": "if (things) are like this, then (it is not good enough)",
+    "structure": "Plain form + ようでは",
+    "formality": "neutral",
+    "notes": "Criticizes a current state or behavior as insufficient, usually with a warning about the result. It is often used as advice to someone who is falling short. It is blunt, so it can sound harsh when used with other people.",
+    "similar": [],
+    "detect": [
+      "ようでは"
+    ],
+    "examples": [
+      {
+        "ja": "こんな簡単な問題が解け{{ないようでは}}、試験には受からないよ。",
+        "en": "If you can't solve a problem this easy, you won't pass the exam.",
+        "hint": "解ける + ようでは"
+      },
+      {
+        "ja": "そんなことで泣く{{ようでは}}、社会人として失格だ。",
+        "en": "If you cry over something like that, you're not fit to be a working adult.",
+        "hint": "泣く + ようでは"
+      },
+      {
+        "ja": "この程度の努力しかしない{{ようでは}}、目標は達成できない。",
+        "en": "If you only put in this much effort, you won't reach your goal.",
+        "hint": "する + ようでは"
+      }
+    ]
+  }
+]

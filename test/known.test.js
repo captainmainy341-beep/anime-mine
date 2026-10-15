@@ -55,7 +55,7 @@ async function importWords(fields, options = {}) {
 
 test('store round-trips through known.json and tolerates a missing file', () => {
   const { dir, store } = tempStore();
-  assert.deepEqual(store.stats(), { known: 0, learning: 0 });
+  assert.deepEqual(store.stats(), { known: 0, learning: 0, 'never-forget': 0, suspended: 0, blacklisted: 0 });
   store.mark('食べる', 'known', 'anki');
   store.mark('飲む', 'learning');
   store.addMany(['走る', '走る', '歩く'], 'known', 'text');
@@ -72,7 +72,7 @@ test('store round-trips through known.json and tolerates a missing file', () => 
   assert.equal(reloaded.status('飲む'), 'learning');
   assert.equal(reloaded.has('歩く'), true);
   assert.equal(reloaded.has('見る'), false);
-  assert.deepEqual(reloaded.stats(), { known: 3, learning: 1 });
+  assert.deepEqual(reloaded.stats(), { known: 3, learning: 1, 'never-forget': 0, suspended: 0, blacklisted: 0 });
 });
 
 test('revision counts vocabulary changes, persists them and loads old files as 0', () => {
@@ -257,18 +257,18 @@ test('importFromAnki cleans HTML, ruby, furigana, sound tags and entities', asyn
   for (const [raw, expected] of cases) {
     const store = await importWords({ Word: raw });
     assert.equal(store.status(expected), 'known', raw);
-    assert.deepEqual(store.stats(), { known: 1, learning: 0 }, raw);
+    assert.deepEqual(store.stats(), { known: 1, learning: 0, 'never-forget': 0, suspended: 0, blacklisted: 0 }, raw);
   }
 });
 
 test('importFromAnki splits multi-word fields and skips empty or long entries', async () => {
   const store = await importWords({ Word: '食べる、飲む・話す/書く' });
-  assert.deepEqual(store.stats(), { known: 4, learning: 0 });
+  assert.deepEqual(store.stats(), { known: 4, learning: 0, 'never-forget': 0, suspended: 0, blacklisted: 0 });
   for (const word of ['食べる', '飲む', '話す', '書く']) assert.equal(store.status(word), 'known');
 
   const long = 'あ'.repeat(21);
   const filtered = await importWords({ Word: '<br>', Expression: long, Vocab: '猫' });
-  assert.deepEqual(filtered.stats(), { known: 1, learning: 0 });
+  assert.deepEqual(filtered.stats(), { known: 1, learning: 0, 'never-forget': 0, suspended: 0, blacklisted: 0 });
   assert.equal(filtered.status('猫'), 'known');
   assert.equal(filtered.status(long), 'new');
 });
@@ -306,7 +306,7 @@ test('importFromAnki fetches notesInfo in chunks of 200', async () => {
   const infoCalls = client.calls.filter((call) => call.action === 'notesInfo');
   assert.deepEqual(infoCalls.map((call) => call.params.notes.length), [200, 200, 50]);
   assert.deepEqual(result, { added: 450, skipped: 0, notes: 450 });
-  assert.deepEqual(store.stats(), { known: 450, learning: 0 });
+  assert.deepEqual(store.stats(), { known: 450, learning: 0, 'never-forget': 0, suspended: 0, blacklisted: 0 });
 });
 
 test('ankiFieldNames lists fields and suggests a word field', async () => {
@@ -354,6 +354,29 @@ test('episodeCoverage computes coverage and top new words', async () => {
   });
 });
 
+test('episodeCoverage tokenizes each distinct cue text once and still counts every occurrence', async () => {
+  const { store } = tempStore();
+  store.mark('犬', 'known');
+  store.mark('鳥', 'learning');
+  const calls = [];
+  const tokenize = async (text) => {
+    calls.push(text);
+    return text.split(' ').filter(Boolean).map((surface) => token(surface));
+  };
+  const cues = [{ text: '犬 猫' }, { text: '鳥' }, { text: '犬 猫' }, '犬 猫', { text: '鳥' }, { text: '  ' }];
+  const result = await episodeCoverage(cues, tokenize, store);
+  assert.deepEqual(calls, ['犬 猫', '鳥']);
+  assert.deepEqual(result, {
+    totalWords: 8,
+    knownWords: 3,
+    learningWords: 2,
+    newWords: 3,
+    coverage: 5 / 8,
+    uniqueNew: 1,
+    topNew: [{ word: '猫', count: 3 }],
+  });
+});
+
 test('episodeCoverage is zero for empty input and caps topNew at 15 with stable ties', async () => {
   const { store } = tempStore();
   const tokenize = async (text) => text.split(' ').filter(Boolean).map((surface) => token(surface));
@@ -374,4 +397,38 @@ test('episodeCoverage is zero for empty input and caps topNew at 15 with stable 
   assert.equal(result.topNew.length, 15);
   assert.deepEqual(result.topNew[0], { word: words[19], count: 3 });
   assert.deepEqual(result.topNew.slice(1).map((entry) => entry.word), words.slice(0, 14));
+});
+
+test('never-forget counts as known, blacklisted is skipped and suspended is new but never suggested', () => {
+  const { store } = tempStore();
+  store.mark('猫', 'never-forget');
+  store.mark('犬', 'blacklisted');
+  store.mark('鳥', 'suspended');
+  assert.equal(store.classify(token('猫')), 'known');
+  assert.equal(store.classify(token('犬')), 'skip');
+  assert.equal(store.classify(token('鳥')), 'new');
+  assert.equal(store.isSuspended(token('鳥')), true);
+  assert.equal(store.isSuspended(token('猫')), false);
+  assert.deepEqual(store.stats(), { known: 0, learning: 0, 'never-forget': 1, suspended: 1, blacklisted: 1 });
+  assert.deepEqual(store.addMany(['猫', '魚'], 'learning'), { added: 1, skipped: 1 });
+
+  const info = store.sentenceInfo([token('鳥'), token('木'), token('猫'), token('犬'), token('魚')]);
+  assert.deepEqual(info.newWords.map((t) => t.base), ['木']);
+  assert.equal(info.unknownCount, 2);
+  assert.equal(info.isIPlusOne, false);
+  assert.equal(store.sentenceInfo([token('鳥'), token('猫'), token('魚'), token('犬')]).isIPlusOne, false);
+});
+
+test('episodeCoverage counts suspended words as new but leaves them out of topNew', async () => {
+  const { store } = tempStore();
+  store.mark('猫', 'never-forget');
+  store.mark('鳥', 'suspended');
+  const tokens = [token('鳥'), token('木'), token('木'), token('猫'), token('犬')];
+  store.mark('犬', 'blacklisted');
+  const result = await episodeCoverage([{ text: 'x' }], async () => tokens, store);
+  assert.equal(result.totalWords, 4);
+  assert.equal(result.knownWords, 1);
+  assert.equal(result.newWords, 3);
+  assert.equal(result.uniqueNew, 1);
+  assert.deepEqual(result.topNew, [{ word: '木', count: 2 }]);
 });

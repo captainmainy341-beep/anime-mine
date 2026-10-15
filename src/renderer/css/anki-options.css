@@ -1,0 +1,75 @@
+.deck-options { display:flex;flex-direction:column;gap:14px;padding:22px;min-width:0;position:relative; }
+.deck-options [hidden] { display:none !important; }
+.deck-options :focus-visible { outline:2px solid var(--accent);outline-offset:3px; }
+.deck-options-head { display:flex;align-items:start;justify-content:space-between;gap:12px; }
+.deck-options-head h2 { margin:0;font-size:20px; }
+.deck-options-head p { margin:4px 0 0;overflow-wrap:anywhere; }
+.deck-option-presets { display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px 14px; }
+.deck-option-presets .deck-option-field { min-width:220px; }
+.deck-option-presets select { width:100%; }
+.deck-option-preset-menu { display:flex;flex-wrap:wrap;gap:6px; }
+.deck-option-preset-form { display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:12px 14px;background:var(--panel-2);border-radius:7px; }
+.deck-option-preset-form input { min-width:220px;padding:8px 10px;border:1px solid var(--line-strong);border-radius:7px;background:var(--bg); }
+.deck-option-progress-line { margin:0;font-size:12px; }
+.deck-option-sections { display:flex;flex-direction:column;gap:8px; }
+.deck-option-section { border:1px solid var(--line);border-radius:8px;padding:0 16px;background:var(--panel); }
+.deck-option-section > summary { cursor:pointer;padding:13px 0;font-size:15px;font-weight:600;list-style-position:inside; }
+.deck-option-section[open] > summary { border-bottom:1px solid var(--line);margin-bottom:14px; }
+.deck-option-fields { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 20px;padding-bottom:16px; }
+.deck-option-field { display:flex;flex-direction:column;gap:6px;font-size:13px;min-width:0; }
+.deck-option-field input,.deck-option-field select { width:100%;padding:9px 11px;border:1px solid var(--line-strong);border-radius:7px;background:var(--bg);min-width:0; }
+.deck-option-field input[aria-invalid="true"] { border-color:var(--danger, #c0392b); }
+.deck-option-check { display:flex;align-items:center;gap:10px;font-size:14px;min-width:0; }
+.deck-option-check input { accent-color:var(--accent);width:17px;height:17px; }
+.deck-option-error { margin:0;font-size:12px;color:var(--danger, #c0392b);overflow-wrap:anywhere; }
+.deck-option-wide { grid-column:1 / -1; margin:0; }
+.deck-option-scopes { display:flex;align-self:stretch;grid-column:1 / -1; }
+.deck-option-scopes button { flex:1; }
+.deck-option-scopes button.active { background:var(--panel-2);color:var(--accent); }
+.deck-option-notice { padding:10px 14px;background:var(--panel-2);border-radius:7px;color:var(--muted);font-size:12px;margin:0;overflow-wrap:anywhere; }
+.deck-option-footer { position:sticky;bottom:0;display:flex;flex-direction:column;gap:10px;padding:12px 0 0;margin-top:4px;background:var(--panel);border-top:1px solid var(--line); }
+.deck-option-footer-row { display:flex;align-items:center;gap:12px;flex-wrap:wrap; }
+.deck-option-footer .panel-actions { margin:0;flex-wrap:wrap; }
+.deck-option-dirty { font-size:12px;color:var(--accent);font-weight:600; }
+.deck-option-status { min-height:20px;color:var(--ok);font-size:13px;margin:0;overflow-wrap:anywhere; }
+@media (max-width: 760px) {
+  .deck-options { padding:16px; }
+  .deck-option-fields { grid-template-columns:minmax(0,1fr); gap:12px; }
+  .deck-option-presets .deck-option-field { min-width:0;width:100%; }
+  .deck-options-head { flex-wrap:wrap; }
+}
+
+.anki-tab-body.is-options { overflow: hidden; }
+.anki-options-split { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 16px; flex: 1; min-height: 0; }
+.anki-options-decks { display: flex; flex-direction: column; gap: 10px; min-width: 0; min-height: 0; overflow: auto; }
+.anki-options-decks-head { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+.anki-options-deck-actions { display: flex; gap: 6px; }
+.anki-options-select { display: none; width: 100%; padding: 9px 11px; border: 1px solid var(--line-strong); border-radius: 7px; background: var(--bg); }
+.anki-options-deck-list { display: flex; flex-direction: column; gap: 4px; margin: 0; padding: 0; list-style: none; }
+.anki-options-deck { display: grid; gap: 2px; width: 100%; padding: 9px 10px; border: 1px solid transparent; border-radius: 8px; background: transparent; color: var(--text); text-align: left; font-size: 13px; }
+.anki-options-deck.selected { background: var(--accent-soft); border-color: var(--line-strong); }
+.anki-options-deck-name { font-weight: 600; overflow-wrap: anywhere; }
+.anki-options-deck-parent { color: var(--muted); font-size: 11px; overflow-wrap: anywhere; }
+.anki-options-deck-stats { color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+.anki-options-deck-stats b { color: var(--text); font-weight: 600; }
+.anki-options-deck-limits,
+.anki-options-deck-preset,
+.anki-options-deck-source { color: var(--muted); font-size: 11px; }
+.anki-options-deck-limits:empty,
+.anki-options-deck-preset:empty,
+.anki-options-deck-source:empty { display: none; }
+.anki-options-deck-limits::before { content: 'Daily limits '; }
+.anki-options-deck-preset::before { content: 'Preset: '; }
+.anki-options-editor { display: flex; flex-direction: column; min-width: 0; min-height: 0; }
+.anki-options-editor .deck-options-host { display: flex; flex: 1; flex-direction: column; min-height: 0; }
+.anki-options-editor .deck-options { flex: 1; min-height: 0; overflow-y: auto; }
+@media (max-width: 899px) {
+  .anki-tab-body.is-options { overflow: auto; }
+  .anki-options-split { grid-template-columns: minmax(0, 1fr); flex: none; }
+  .anki-options-decks { overflow: visible; }
+  .anki-options-deck-list { display: none; }
+  .anki-options-select { display: block; }
+  .anki-options-editor .deck-options { overflow: visible; }
+}
+.anki-options-editor .deck-options { padding-bottom: 0; }
+.anki-options-editor .deck-option-footer { padding-bottom: 16px; background: var(--panel); }

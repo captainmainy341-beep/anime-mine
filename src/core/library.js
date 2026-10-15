@@ -7,6 +7,7 @@ const { findBestVideo, parseMediaName } = require('./matcher');
 const VIDEO_EXTS = new Set(['.mkv', '.mp4', '.m4v', '.webm', '.avi']);
 const SUBTITLE_EXTS = new Set(['.srt', '.ass', '.ssa', '.vtt']);
 const SETTLE_MS = 800;
+const JIMAKU_RETRY_MS = 7 * 24 * 3600 * 1000;
 
 async function listFiles(dir) {
   const entries = await fsp.readdir(dir, { withFileTypes: true }).catch(() => []);
@@ -56,7 +57,7 @@ class Library {
   // missing in files written by older versions; defaults keep those files loadable.
   load() {
     const saved = fs.existsSync(this.file) ? JSON.parse(fs.readFileSync(this.file, 'utf8')) : {};
-    return { folders: [], links: {}, manual: [], auto: {}, ...saved };
+    return { folders: [], links: {}, manual: [], auto: {}, jimakuTried: {}, ...saved };
   }
 
   save(data) {
@@ -93,6 +94,7 @@ class Library {
     if (!data.links[videoPath]) return true;
     const current = data.auto[videoPath];
     if (!current) return false;
+    if (current.source === 'jimaku') return true;
     if (refresh && current.source === 'watch' && current.origin === origin) return true;
     return rank(lang) > rank(current.lang);
   }
@@ -133,12 +135,48 @@ class Library {
       .map(([title, episodes]) => ({ title, episodes: episodes.sort(byEpisode) }));
   }
 
+  storedPath(videoPath, name) {
+    const key = crypto.createHash('sha1').update(videoPath).digest('hex').slice(0, 12);
+    return path.join(this.subsDir, `${key}-${path.basename(name)}`);
+  }
+
   copySubtitle(videoPath, subtitlePath) {
     fs.mkdirSync(this.subsDir, { recursive: true });
-    const key = crypto.createHash('sha1').update(videoPath).digest('hex').slice(0, 12);
-    const stored = path.join(this.subsDir, `${key}-${path.basename(subtitlePath)}`);
+    const stored = this.storedPath(videoPath, subtitlePath);
     fs.copyFileSync(subtitlePath, stored);
     return stored;
+  }
+
+  // Throws on the first failed lookup (e.g. JimakuError 401/429) so the batch stops without recording it.
+  async fetchMissingSubtitles(jimaku, { onLinked = () => {}, retryAfterMs = JIMAKU_RETRY_MS, now = Date.now } = {}) {
+    const shows = await this.scan();
+    const missing = shows.flatMap(show => show.episodes).filter(episode => episode.subtitlePath === null);
+    for (const episode of missing) {
+      const before = this.load();
+      const tried = before.jimakuTried[episode.path];
+      if (before.links[episode.path] || (tried !== undefined && now() - tried < retryAfterMs)) continue;
+
+      const found = await jimaku.findSubtitle({
+        title: parseMediaName(episode.name).title,
+        season: episode.season,
+        episode: episode.episode,
+      });
+
+      const data = this.load();
+      data.jimakuTried[episode.path] = now();
+      if (!found || data.links[episode.path] || !this.canLink(data, episode.path, { lang: 'ja', origin: 'jimaku' })) {
+        this.save(data);
+        continue;
+      }
+      fs.mkdirSync(this.subsDir, { recursive: true });
+      const stored = this.storedPath(episode.path, found.name);
+      fs.writeFileSync(`${stored}.tmp`, found.data);
+      fs.renameSync(`${stored}.tmp`, stored);
+      data.links[episode.path] = stored;
+      data.auto[episode.path] = { lang: 'ja', origin: 'jimaku', source: 'jimaku' };
+      this.save(data);
+      onLinked({ ...episode, subtitlePath: stored });
+    }
   }
 
   linkSubtitle(videoPath, subtitlePath) {
