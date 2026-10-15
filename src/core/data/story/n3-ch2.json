@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "id": "n3-ch2",
+  "order": 14,
+  "title": "Chapter 14: 川ぞいの お店",
+  "summary": "The riverside cafe is closing. Say who is to blame, who deserves thanks, who decided, and what the briefing is about.",
+  "jlpt": "N3",
+  "source": "authored",
+  "bg": "cafe",
+  "characters": {
+    "mio": { "name": "みお", "color": "#f3a0b6" },
+    "sora": { "name": "そら", "color": "#a2befa" },
+    "kawaguchi": { "name": "川口さん", "color": "#c9a56a" }
+  },
+  "glossary": {
+    "g:n3-sei-de": { "label": "〜せいで", "meaning": "because of (a bad result)", "note": "Plain form / noun + の + せいで. Used when you blame something." },
+    "g:n3-okage-de": { "label": "〜おかげで", "meaning": "thanks to", "note": "Used when you are grateful for the cause of a good result." },
+    "g:n3-ni-yotte": { "label": "〜によって", "meaning": "by (agent) / depending on", "note": "Noun + によって can mark who does something in a passive sentence: 市によって決められた." },
+    "g:n3-ni-kanshite": { "label": "〜に関して", "meaning": "regarding", "note": "Noun + に関して introduces a topic: 再開発に関して." },
+    "k:閉": { "label": "閉", "reading": "へい / し(める)", "meaning": "close" },
+    "k:残": { "label": "残", "reading": "ざん / のこ(る)", "meaning": "remain" }
+  },
+  "beats": [
+    { "type": "bg", "bg": "cafe" },
+    { "type": "say", "who": null, "text": "放課後、「かわぞい珈琲」。いつもは にぎやかな 店の 中が、しずかだ。", "en": "After school at Kawazoi Coffee. The usually lively cafe is quiet." },
+    { "type": "show", "char": "mio", "expr": "sad", "pos": "left" },
+    { "type": "show", "char": "kawaguchi", "expr": "neutral", "pos": "right" },
+    { "type": "show", "char": "sora", "expr": "neutral", "pos": "center" },
+    { "type": "say", "who": "kawaguchi", "text": "…すまない。この 店は、来月で 閉店することに なった。", "en": "...I'm sorry. This shop is going to close next month." },
+    { "type": "intro", "item": "k:閉" },
+    { "type": "reading", "item": "k:閉", "display": "閉店", "target": "閉", "prompt": "The notice on the door says 閉店. Read it.", "answers": ["へいてん"] },
+    { "type": "say", "who": "mio", "text": "うそ…。どうして ですか、おじいちゃん。", "en": "No way... Why, Grandpa?" },
+    { "type": "say", "who": "kawaguchi", "text": "川ぞいの 再開発が 決まった。ここは 取りこわされる。", "en": "The riverside redevelopment is decided. This place will be torn down." },
+    { "type": "intro", "item": "g:n3-sei-de" },
+    { "type": "choice", "item": "g:n3-sei-de", "who": "kawaguchi", "prompt": "Say who is to blame: \"Because of the redevelopment, we have to close the shop.\"", "options": [
+      { "text": "再開発の せいで、お店を 閉める ことに なりました。", "correct": true },
+      { "text": "再開発の おかげで、お店を 閉める ことに なりました。", "awkward": { "who": "kawaguchi", "text": "「おかげで」は 感謝の ときだ。これは 悪い ことだから…", "en": "\"Okage de\" is for gratitude. This is bad news, so..." } },
+      { "text": "再開発 せいで、お店を 閉める ことに なりました。", "awkward": { "who": "mio", "text": "「再開発の せいで」…「の」が いるよ。", "en": "\"Saikaihatsu no sei de\" -- you need the \"no\"." } }
+    ] },
+    { "type": "say", "who": "sora", "text": "…この 計画は、だれが 決めたんですか。", "en": "...Who decided this plan?" },
+    { "type": "intro", "item": "g:n3-ni-yotte" },
+    { "type": "choice", "item": "g:n3-ni-yotte", "who": "kawaguchi", "prompt": "Answer: \"This plan was decided by the city.\"", "options": [
+      { "text": "この 計画は 市によって 決められました。", "correct": true },
+      { "text": "この 計画は 市によって 決めました。", "awkward": { "who": "kawaguchi", "text": "「決められました」と 受け身に する んだ。", "en": "You make it passive: \"kimeraremashita\"." } },
+      { "text": "この 計画は 市に よるて 決められました。", "awkward": { "who": "sora", "text": "「よるて」…？ 「よって」。", "en": "\"Yoruite\"...? It's \"yotte\"." } }
+    ] },
+    { "type": "say", "who": "kawaguchi", "text": "この 店が 三十年 続けられたのは、町の 皆さんの おかげだ。", "en": "That this shop lasted thirty years is thanks to everyone in town." },
+    { "type": "intro", "item": "g:n3-okage-de" },
+    { "type": "choice", "item": "g:n3-okage-de", "who": "mio", "prompt": "Thank the customers: \"Thanks to everyone, it lasted thirty years.\"", "options": [
+      { "text": "みなさんの おかげで、三十年 続きました。", "correct": true },
+      { "text": "みなさんの せいで、三十年 続きました。", "awkward": { "who": "kawaguchi", "text": "「せいで」だと 文句みたいに 聞こえるよ。", "en": "\"Sei de\" sounds like a complaint." } },
+      { "text": "みなさんの おかげに、三十年 続きました。", "awkward": { "who": "mio", "text": "「おかげで」。理由を 言う 「で」だよ。", "en": "It's \"okage de\" -- the \"de\" that gives the reason." } }
+    ] },
+    { "type": "intro", "item": "k:残" },
+    { "type": "reading", "item": "k:残", "display": "残念", "target": "残", "prompt": "Mio says it's 残念. Read it.", "answers": ["ざんねん"] },
+    { "type": "say", "who": "mio", "text": "…残念だけど、このまま 終わらせたく ない。", "en": "...It's a shame, but I don't want to let it end like this." },
+    { "type": "say", "who": "kawaguchi", "text": "来週、市役所で 説明会が あるそうだ。", "en": "I hear there's a briefing at city hall next week." },
+    { "type": "intro", "item": "g:n3-ni-kanshite" },
+    { "type": "choice", "item": "g:n3-ni-kanshite", "who": "sora", "prompt": "Say: \"There will be a briefing regarding the redevelopment.\"", "options": [
+      { "text": "再開発に 関して、説明会が あります。", "correct": true },
+      { "text": "再開発を 関して、説明会が あります。", "awkward": { "who": "kawaguchi", "text": "「に 関して」だ。「を」じゃない。", "en": "It's \"ni kanshite\", not \"wo\"." } },
+      { "text": "再開発で 関して、説明会が あります。", "awkward": { "who": "mio", "text": "「で」じゃなくて 「に」だよ。", "en": "\"Ni\", not \"de\"." } }
+    ] },
+    { "type": "affection", "char": "mio", "delta": 2 },
+    { "type": "cg", "id": "closing-notice", "title": "The closing notice" },
+    { "type": "say", "who": "sora", "text": "行こう。説明会に。…やれる ことは、やって みよう。", "en": "Let's go. To the briefing. ...Let's do what we can." }
+  ]
+}

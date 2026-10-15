@@ -1,0 +1,66 @@
+{
+  "schema": 1,
+  "id": "n1-ch1",
+  "order": 25,
+  "title": "Chapter 25: 十年後の校門",
+  "summary": "Ten years on, the promise at the school gate. Ever since, more than ever, a tour that starts here, and a striking contrast.",
+  "jlpt": "N1",
+  "source": "authored",
+  "bg": "sakura-road",
+  "characters": {
+    "mio": { "name": "みお", "color": "#f3a0b6" },
+    "sora": { "name": "そら", "color": "#a2befa" },
+    "tanaka": { "name": "田中先生", "color": "#9de3c4" }
+  },
+  "glossary": {
+    "g:n1-te-kara-to-iu-mono": { "label": "〜てからというもの", "meaning": "ever since", "note": "て-form + からというもの: a long period of changed habit follows a turning point." },
+    "g:n1-ni-mashite": { "label": "〜にもまして", "meaning": "even more than", "note": "Noun + にもまして: more than something that was already high." },
+    "g:n1-wo-kiri-ni": { "label": "〜を皮切りに", "meaning": "starting with", "note": "Noun + を皮切りに: the first of a series (tour, campaign, wave)." },
+    "g:n1-ni-hikae": { "label": "〜にひきかえ", "meaning": "in contrast to", "note": "Noun + にひきかえ: a sharp contrast, often with a sense of surprise." },
+    "k:卒": { "label": "卒", "reading": "そつ", "meaning": "graduate" },
+    "k:約": { "label": "約", "reading": "やく", "meaning": "promise, approximately" }
+  },
+  "beats": [
+    { "type": "bg", "bg": "sakura-road" },
+    { "type": "say", "who": null, "text": "あの 約束から ちょうど 十年。桜の 季節、ゆうきは 久しぶりに さくら丘高校の 門の 前に 立っていた。", "en": "Exactly ten years since that promise. In cherry blossom season, Yuuki stood before the Sakuragaoka High gate after a long time." },
+    { "type": "intro", "item": "k:約" },
+    { "type": "reading", "item": "k:約", "display": "約束", "target": "約", "prompt": "The memory comes back: 約束. Read it.", "answers": ["やくそく"] },
+    { "type": "show", "char": "mio", "expr": "smile", "pos": "left" },
+    { "type": "say", "who": "mio", "text": "…やっぱり 来て くれた。十年ぶりだね、ゆうきさん。", "en": "...I knew you'd come. It's been ten years, Yuuki." },
+    { "type": "intro", "item": "g:n1-te-kara-to-iu-mono" },
+    { "type": "choice", "item": "g:n1-te-kara-to-iu-mono", "who": "mio", "prompt": "Mio says: \"Ever since we made that promise, I've walked past this gate every year.\"", "options": [
+      { "text": "あの 約束を してからというもの、毎年 この 門の 前を 通って います。", "correct": true },
+      { "text": "あの 約束を するからというもの、毎年 この 門の 前を 通って います。", "awkward": { "who": "tanaka", "text": "「して からというもの」。て形に つながりますよ。", "en": "\"Shite kara to iu mono\" -- it follows the te-form." } },
+      { "text": "あの 約束を して からというのも、毎年 この 門の 前を 通って います。", "awkward": { "who": "sora", "text": "「もの」だよ。「の」じゃなくて。", "en": "\"Mono\", not \"no\"." } }
+    ] },
+    { "type": "show", "char": "sora", "expr": "smile", "pos": "right" },
+    { "type": "say", "who": "sora", "text": "桜は 去年にもまして 咲いて いるな。…十年前も、こんなに きれいだったっけ。", "en": "The cherry blossoms are blooming even more than last year. ...Were they this beautiful ten years ago too?" },
+    { "type": "intro", "item": "g:n1-ni-mashite" },
+    { "type": "choice", "item": "g:n1-ni-mashite", "who": "sora", "prompt": "Say: \"This year's cherry blossoms are even more beautiful than last year's.\"", "options": [
+      { "text": "去年にもまして、今年の 桜は 美しいです。", "correct": true },
+      { "text": "去年より もまして、今年の 桜は 美しいです。", "awkward": { "who": "mio", "text": "「にもまして」だけで 「〜より もっと」の 意味に なるよ。", "en": "\"Ni mo mashite\" alone means \"even more than\"." } },
+      { "text": "去年にも ましく、今年の 桜は 美しいです。", "awkward": { "who": "sora", "text": "「まして」。て-形だ。", "en": "\"Mashite\" -- the te-form." } }
+    ] },
+    { "type": "say", "who": "mio", "text": "そら、来月から ツアーでしょ？", "en": "Sora, your tour starts next month, right?" },
+    { "type": "intro", "item": "g:n1-wo-kiri-ni" },
+    { "type": "choice", "item": "g:n1-wo-kiri-ni", "who": "sora", "prompt": "Announce: \"Starting with Tokyo, the nationwide tour will begin.\"", "options": [
+      { "text": "東京を 皮切りに、全国ツアーが 始まります。", "correct": true },
+      { "text": "東京の 皮切りに、全国ツアーが 始まります。", "awkward": { "who": "mio", "text": "「を 皮切りに」。「の」じゃなくて。", "en": "\"Wo kawakiri ni\", not \"no\"." } },
+      { "text": "東京を 皮切りが、全国ツアーが 始まります。", "awkward": { "who": "sora", "text": "「皮切りに」。「が」じゃ つながらない。", "en": "\"Kawakiri ni\" -- \"ga\" doesn't work." } }
+    ] },
+    { "type": "show", "char": "tanaka", "expr": "smile", "pos": "center" },
+    { "type": "say", "who": "tanaka", "text": "皆さん、おそろいですね。卒業式の 日が、きのうの ことの ようです。", "en": "All of you are here together. The graduation day feels like yesterday." },
+    { "type": "intro", "item": "k:卒" },
+    { "type": "reading", "item": "k:卒", "display": "卒業", "target": "卒", "prompt": "Tanaka-sensei says 卒業式. Read 卒業.", "answers": ["そつぎょう"] },
+    { "type": "intro", "item": "g:n1-ni-hikae" },
+    { "type": "choice", "item": "g:n1-ni-hikae", "who": "tanaka", "prompt": "Tanaka-sensei teases: \"Compared with the nervous Sora of the past, today's Sora is composed.\"", "options": [
+      { "text": "緊張して いた 昔の 彼に ひきかえ、今の 彼は 堂々として います。", "correct": true },
+      { "text": "緊張して いた 昔の 彼を ひきかえ、今の 彼は 堂々として います。", "awkward": { "who": "sora", "text": "「に ひきかえ」ですよ、先生。", "en": "\"Ni hikae\", sensei." } },
+      { "text": "緊張して いた 昔の 彼に ひきかえて、今の 彼は 堂々として います。", "awkward": { "who": "mio", "text": "「ひきかえ」で 止める 形だよ。", "en": "It stops at \"hikae\"." } }
+    ] },
+    { "type": "affection", "char": "mio", "delta": 3 },
+    { "type": "affection", "char": "sora", "delta": 3 },
+    { "type": "cg", "id": "ten-years-gate", "title": "Ten years at the gate" },
+    { "type": "say", "who": "tanaka", "text": "実は、今日 みなさんを 呼んだのには わけが あります。この 学校の 創立百周年に ついて、相談が あるのです。", "en": "Actually, there's a reason I called you all here today. I have something to discuss about the school's hundredth anniversary." }
+  ]
+}

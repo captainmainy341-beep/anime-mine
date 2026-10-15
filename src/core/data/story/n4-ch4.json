@@ -1,0 +1,73 @@
+{
+  "schema": 1,
+  "id": "n4-ch4",
+  "order": 10,
+  "title": "Chapter 10: しゅうがくりょこう",
+  "summary": "The class trip to Kyoto. Being scolded, making a friend wait, asking a stranger for a photo, and speaking politely about the teacher.",
+  "jlpt": "N4",
+  "source": "authored",
+  "bg": "station-day",
+  "characters": {
+    "mio": { "name": "みお", "color": "#f3a0b6" },
+    "sora": { "name": "そら", "color": "#a2befa" },
+    "tanaka": { "name": "田中先生", "color": "#9de3c4" }
+  },
+  "glossary": {
+    "g:n4-passive": { "label": "〜られる (passive)", "meaning": "be done to / be affected", "note": "The person doing it is marked with に: 先生にしかられた (I was scolded by the teacher)." },
+    "g:n4-saseru": { "label": "〜させる (causative)", "meaning": "make / let someone do", "note": "ない-form + せる/させる. The person made to act is marked with を (intransitive: に or を)." },
+    "g:n4-te-itadakemasen-ka": { "label": "〜ていただけませんか", "meaning": "could you please...", "note": "A very polite request to someone you don't know or someone above you." },
+    "g:n4-o-ni-naru": { "label": "お〜になる", "meaning": "honorific: (someone) does", "note": "お + ます-stem + になる raises the other person: お帰りになる." },
+    "k:寺": { "label": "寺", "reading": "じ / てら", "meaning": "temple" },
+    "k:都": { "label": "都", "reading": "と / みやこ", "meaning": "capital, city" }
+  },
+  "beats": [
+    { "type": "bg", "bg": "station-day" },
+    { "type": "say", "who": null, "text": "しゅうがくりょこうの 朝。しんかんせんの ホームは 生徒で いっぱいだ。", "en": "The morning of the school trip. The bullet-train platform is full of students." },
+    { "type": "show", "char": "mio", "expr": "smile", "pos": "left" },
+    { "type": "show", "char": "sora", "expr": "tired", "pos": "right" },
+    { "type": "intro", "item": "k:都" },
+    { "type": "reading", "item": "k:都", "display": "京都", "target": "都", "prompt": "The sign for your destination says 京都. Read it.", "answers": ["きょうと"] },
+    { "type": "say", "who": "mio", "text": "そら、おそい！ もう 出発の 時間だよ。", "en": "Sora, you're late! It's already time to leave." },
+    { "type": "intro", "item": "g:n4-saseru" },
+    { "type": "choice", "item": "g:n4-saseru", "who": "mio", "prompt": "Tell Tanaka-sensei: \"Mio made Sora wait.\" (Mio is the one who made him wait.)", "options": [
+      { "text": "みおは そらを 待たせました。", "correct": true },
+      { "text": "みおは そらを 待たれました。", "awkward": { "who": "tanaka", "text": "それは 「うけみ」の かたちだね。「待たせました」だよ。", "en": "That's a passive form. It should be \"mataseta\"." } },
+      { "text": "みおは そらを 待ちせました。", "awkward": { "who": "tanaka", "text": "「待たせる」だよ。「ない形」に 「せる」。", "en": "It's \"mataseru\": ない-form + せる." } }
+    ] },
+    { "type": "show", "char": "tanaka", "expr": "neutral", "pos": "center" },
+    { "type": "say", "who": "tanaka", "text": "二人とも、おくれましたね。でも、電車は まだ 来ていません。", "en": "You two were late. But the train hasn't come yet." },
+    { "type": "bg", "bg": "park-day" },
+    { "type": "hide", "char": "tanaka" },
+    { "type": "say", "who": null, "text": "京都。古い お寺の 前で、三人は 立ち止まった。", "en": "Kyoto. The three of you stop in front of an old temple." },
+    { "type": "intro", "item": "k:寺" },
+    { "type": "reading", "item": "k:寺", "display": "お寺", "target": "寺", "prompt": "The map points to an お寺. Read it.", "answers": ["おてら"] },
+    { "type": "say", "who": "mio", "text": "ねえ、写真を とろう！ …あの、すみません。", "en": "Hey, let's take a photo! ...Excuse me." },
+    { "type": "intro", "item": "g:n4-te-itadakemasen-ka" },
+    { "type": "choice", "item": "g:n4-te-itadakemasen-ka", "who": "mio", "prompt": "Ask a stranger politely: \"Could you take a photo of us?\"", "options": [
+      { "text": "写真を 撮っていただけませんか。", "correct": true },
+      { "text": "写真を 撮ってくれませんか。", "awkward": { "who": "mio", "text": "しらない 人には ちょっと カジュアルだよ…！", "en": "That's a bit casual for a stranger...!" } },
+      { "text": "写真を 撮ていただけませんか。", "awkward": { "who": "sora", "text": "「撮て」じゃなくて 「撮って」。", "en": "Not \"tote\" -- \"totte\"." } }
+    ] },
+    { "type": "say", "who": "sora", "text": "…ありがとう。きれいに とれたよ。", "en": "...Thanks. It came out nicely." },
+    { "type": "show", "char": "tanaka", "expr": "neutral", "pos": "center" },
+    { "type": "say", "who": "tanaka", "text": "あ、ここに いたんですね。さっき、ほかの クラスの 先生に しかられました…。", "en": "Oh, here you are. I was scolded by a teacher from another class a moment ago..." },
+    { "type": "intro", "item": "g:n4-passive" },
+    { "type": "choice", "item": "g:n4-passive", "who": "tanaka", "prompt": "Tease Tanaka-sensei: \"I was scolded by the teacher too.\" (Say you were scolded.)", "options": [
+      { "text": "わたしも 先生に しかられました。", "correct": true },
+      { "text": "わたしも 先生を しかられました。", "awkward": { "who": "tanaka", "text": "「を」じゃなくて 「に」ですよ。", "en": "It's \"ni\", not \"wo\"." } },
+      { "text": "わたしも 先生に しかりました。", "awkward": { "who": "mio", "text": "それは あなたが しかった みたい…！", "en": "That sounds like you scolded the teacher...!" } }
+    ] },
+    { "type": "say", "who": "tanaka", "text": "あはは。…あ、ホテルの かたに 聞いて みましょう。", "en": "Haha. ...Ah, let's ask the hotel staff." },
+    { "type": "hide", "char": "mio" },
+    { "type": "intro", "item": "g:n4-o-ni-naru" },
+    { "type": "choice", "item": "g:n4-o-ni-naru", "who": "tanaka", "prompt": "Ask the hotel clerk politely: \"Has Tanaka-sensei gone out?\"", "options": [
+      { "text": "田中先生は お出かけに なりましたか。", "correct": true },
+      { "text": "田中先生は お出かけに しましたか。", "awkward": { "who": "tanaka", "text": "「おでかけに しました」は じぶんが 出かけた ときの 言い方ですよ。", "en": "\"Odekake ni shimashita\" is how you talk about your own going out." } },
+      { "text": "田中先生は お出かけな なりましたか。", "awkward": { "who": "tanaka", "text": "「お〜に なる」の 「に」ですよ。", "en": "It's the \"ni\" in \"o-... ni naru\"." } }
+    ] },
+    { "type": "affection", "char": "mio", "delta": 2 },
+    { "type": "affection", "char": "sora", "delta": 2 },
+    { "type": "cg", "id": "kyoto-temple", "title": "Kyoto temple photo" },
+    { "type": "say", "who": "tanaka", "text": "いい 思い出に なりそうですね。さあ、つぎの お寺へ 行きましょう。", "en": "This looks like it will make a good memory. Now, on to the next temple." }
+  ]
+}

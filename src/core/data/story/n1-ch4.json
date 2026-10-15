@@ -1,0 +1,69 @@
+{
+  "schema": 1,
+  "id": "n1-ch4",
+  "order": 28,
+  "title": "Chapter 28: 嵐の 夜",
+  "summary": "A typhoon hits the night before the ceremony. As if about to cry, precisely because of care, pushing through, and a voice from birth.",
+  "jlpt": "N1",
+  "source": "authored",
+  "bg": "night-street",
+  "characters": {
+    "mio": { "name": "みお", "color": "#f3a0b6" },
+    "sora": { "name": "そら", "color": "#a2befa" },
+    "kawaguchi": { "name": "川口さん", "color": "#c9a56a" }
+  },
+  "glossary": {
+    "g:n1-n-bakari-ni": { "label": "〜んばかりに", "meaning": "as if about to", "note": "ない-stem (minus ない) + んばかりに: an action almost happening (泣き出さんばかりに)." },
+    "g:n1-ba-koso": { "label": "〜ばこそ", "meaning": "precisely because", "note": "ば-form + こそ: a positive reason that justifies a hard action." },
+    "g:n1-wo-oshite": { "label": "〜をおして", "meaning": "pushing through, despite", "note": "Noun + をおして: forcing yourself through illness, storms or objections." },
+    "g:n1-nagara-ni": { "label": "〜ながらに", "meaning": "from birth / while still in a state", "note": "Verb stem + ながらに: 生まれながらに (since birth)." },
+    "k:嵐": { "label": "嵐", "reading": "あらし", "meaning": "storm" },
+    "k:危": { "label": "危", "reading": "き / あぶ(ない)", "meaning": "danger" }
+  },
+  "beats": [
+    { "type": "bg", "bg": "night-street" },
+    { "type": "intro", "item": "k:嵐" },
+    { "type": "reading", "item": "k:嵐", "display": "嵐", "prompt": "The news alert flashes 嵐. Read it.", "answers": ["あらし"] },
+    { "type": "say", "who": null, "text": "夜。台風が 町を おそった。式典の 会場の 体育館に 向かう 道は 水びたしだ。", "en": "Night. A typhoon has hit the town. The road toward the gymnasium for the ceremony is flooded." },
+    { "type": "show", "char": "mio", "expr": "surprised", "pos": "left" },
+    { "type": "show", "char": "kawaguchi", "expr": "neutral", "pos": "right" },
+    { "type": "intro", "item": "k:危" },
+    { "type": "reading", "item": "k:危", "display": "危険", "target": "危", "prompt": "A sign reads 危険. Read it.", "answers": ["きけん"] },
+    { "type": "say", "who": "kawaguchi", "text": "今夜は 行くな。危険だ。式典は 中止に したほうが いい。", "en": "Don't go tonight. It's dangerous. We should cancel the ceremony." },
+    { "type": "say", "who": "mio", "text": "でも、おじいちゃん…！", "en": "But, Grandpa...!" },
+    { "type": "intro", "item": "g:n1-n-bakari-ni" },
+    { "type": "choice", "item": "g:n1-n-bakari-ni", "who": "mio", "prompt": "Describe Mio: \"She pleaded as if she were about to burst into tears.\"", "options": [
+      { "text": "彼女は 今にも 泣き出さんばかりに 頼みました。", "correct": true },
+      { "text": "彼女は 今にも 泣き出しんばかりに 頼みました。", "awkward": { "who": "kawaguchi", "text": "「泣き出さ」＋「んばかり」。ない形の 語幹だ。", "en": "\"Nakidasa\" + \"nbakari\" -- the ない-stem." } },
+      { "text": "彼女は 今にも 泣き出さないばかりに 頼みました。", "awkward": { "who": "sora", "text": "「ない」の かわりに 「ん」が 入るんだ。", "en": "\"N\" takes the place of \"nai\"." } }
+    ] },
+    { "type": "show", "char": "sora", "expr": "neutral", "pos": "center" },
+    { "type": "say", "who": "kawaguchi", "text": "…厳しく 言うのは、孫の みおを 思えばこそだ。", "en": "...I'm being strict precisely because I care about my granddaughter, Mio." },
+    { "type": "intro", "item": "g:n1-ba-koso" },
+    { "type": "choice", "item": "g:n1-ba-koso", "who": "kawaguchi", "prompt": "Say: \"I'm saying harsh things precisely because I care about you.\"", "options": [
+      { "text": "あなたを 思えばこそ、厳しい ことを 言うんです。", "correct": true },
+      { "text": "あなたを 思うばこそ、厳しい ことを 言うんです。", "awkward": { "who": "mio", "text": "「思えばこそ」。ば形に するよ。", "en": "\"Omoeba koso\" -- use the ば-form." } },
+      { "text": "あなたを 思えばこそは、厳しい ことを 言うんです。", "awkward": { "who": "sora", "text": "「こそ」で 強調は 十分だ。「は」は いらない。", "en": "\"Koso\" is emphasis enough -- no \"wa\"." } }
+    ] },
+    { "type": "say", "who": "sora", "text": "でも、みんなが 待っている。…危ないのは わかって います。それでも 行かせて ください。", "en": "But everyone is waiting. ...I know it's dangerous. Even so, let us go." },
+    { "type": "intro", "item": "g:n1-wo-oshite" },
+    { "type": "choice", "item": "g:n1-wo-oshite", "who": "sora", "prompt": "Say: \"Pushing through the storm, they headed for the town.\"", "options": [
+      { "text": "嵐を おして、彼らは 町へ 向かいました。", "correct": true },
+      { "text": "嵐に おして、彼らは 町へ 向かいました。", "awkward": { "who": "kawaguchi", "text": "「を おして」。助詞は 「を」だ。", "en": "\"Wo oshite\" -- the particle is \"wo\"." } },
+      { "text": "嵐を おすて、彼らは 町へ 向かいました。", "awkward": { "who": "mio", "text": "「おして」。「す」の て形は 「して」。", "en": "\"Oshite\" -- the te-form of \"osu\"." } }
+    ] },
+    { "type": "bg", "bg": "festival-hall" },
+    { "type": "say", "who": null, "text": "停電した 体育館で、ろうそくの 明かりが ゆれる。そらは ギターを 構えた。", "en": "In the blacked-out gym, candlelight flickers. Sora readies his guitar." },
+    { "type": "say", "who": "kawaguchi", "text": "…そらの 声は、生まれながらに 人の 心を 動かす ものを 持って いるな。", "en": "...Sora's voice has something that moves people, from birth." },
+    { "type": "intro", "item": "g:n1-nagara-ni" },
+    { "type": "choice", "item": "g:n1-nagara-ni", "who": "kawaguchi", "prompt": "Say: \"He was born with a voice that moves people's hearts.\"", "options": [
+      { "text": "彼は 生まれながらに、人の 心を 動かす 声を 持って いた。", "correct": true },
+      { "text": "彼は 生まれながらで、人の 心を 動かす 声を 持って いた。", "awkward": { "who": "mio", "text": "「生まれながらに」。「で」じゃなくて。", "en": "\"Umare nagara ni\", not \"de\"." } },
+      { "text": "彼は 生まれるながらに、人の 心を 動かす 声を 持って いた。", "awkward": { "who": "kawaguchi", "text": "「生まれ」＋「ながら」。ます形の 語幹だ。", "en": "\"Umare\" + \"nagara\" -- the ます-stem." } }
+    ] },
+    { "type": "affection", "char": "sora", "delta": 3 },
+    { "type": "affection", "char": "mio", "delta": 3 },
+    { "type": "cg", "id": "candlelit-gym", "title": "The candlelit gymnasium" },
+    { "type": "say", "who": "mio", "text": "…電気が なくても、歌は 届くんだね。ありがとう、そら。", "en": "...Even without electricity, a song reaches people. Thank you, Sora." }
+  ]
+}

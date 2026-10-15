@@ -1,0 +1,74 @@
+{
+  "schema": 1,
+  "id": "n1-ch5",
+  "order": 29,
+  "title": "Chapter 29: 最後の 授業",
+  "summary": "Tanaka-sensei's farewell lecture. Formal gratitude, feelings you can't hold back, the height of honour, and joy beyond words.",
+  "jlpt": "N1",
+  "source": "authored",
+  "bg": "classroom-morning",
+  "characters": {
+    "tanaka": { "name": "田中先生", "color": "#9de3c4" },
+    "mio": { "name": "みお", "color": "#f3a0b6" },
+    "sora": { "name": "そら", "color": "#a2befa" }
+  },
+  "glossary": {
+    "g:n1-wo-motte": { "label": "〜をもって", "meaning": "as of / by means of", "note": "Noun + をもって marks an end point formally: 本日をもって." },
+    "g:n1-ni-taenai": { "label": "〜にたえない", "meaning": "cannot help / deeply (feeling)", "note": "Noun + にたえない: 感謝にたえません, 遺憾にたえない." },
+    "g:n1-wo-kinjienai": { "label": "〜を禁じえない", "meaning": "cannot suppress (an emotion)", "note": "Noun + を禁じえない: written or formal; used with feelings like 涙, 怒り, 驚き." },
+    "g:n1-no-itari": { "label": "〜の至り", "meaning": "the height of", "note": "Noun + の至り: 光栄の至り, 感激の至り." },
+    "g:n1-kagiri-da": { "label": "〜かぎりだ", "meaning": "extremely (emotion)", "note": "い-adjective / emotional word + かぎりだ: うれしいかぎりだ." },
+    "k:恩": { "label": "恩", "reading": "おん", "meaning": "kindness, favour owed" },
+    "k:涙": { "label": "涙", "reading": "るい / なみだ", "meaning": "tears" }
+  },
+  "beats": [
+    { "type": "bg", "bg": "classroom-morning" },
+    { "type": "say", "who": null, "text": "式典の 朝。嵐は 去り、空は 晴れて いた。田中先生の 最後の 授業が、あの 教室で 始まる。", "en": "Ceremony morning. The storm has passed and the sky has cleared. Tanaka-sensei's final lecture begins in that classroom." },
+    { "type": "show", "char": "tanaka", "expr": "smile", "pos": "center" },
+    { "type": "show", "char": "mio", "expr": "smile", "pos": "left" },
+    { "type": "show", "char": "sora", "expr": "smile", "pos": "right" },
+    { "type": "intro", "item": "k:恩" },
+    { "type": "reading", "item": "k:恩", "display": "恩師", "target": "恩", "prompt": "Mio introduces him as her 恩師. Read the word.", "answers": ["おんし"] },
+    { "type": "say", "who": "tanaka", "text": "皆さん、今日は 私の ために 集まって くださって、ありがとう。", "en": "Everyone, thank you for gathering today for my sake." },
+    { "type": "intro", "item": "g:n1-wo-motte" },
+    { "type": "choice", "item": "g:n1-wo-motte", "who": "tanaka", "prompt": "Tanaka-sensei announces formally: \"As of today, I will leave the lectern.\"", "options": [
+      { "text": "本日を もって、教壇を 去ります。", "correct": true },
+      { "text": "本日に もって、教壇を 去ります。", "awkward": { "who": "mio", "text": "「を もって」ですよ、先生。", "en": "\"Wo motte\", sensei." } },
+      { "text": "本日を もちて、教壇を 去ります。", "awkward": { "who": "sora", "text": "「もって」。て-形だよ。", "en": "\"Motte\" -- the te-form." } }
+    ] },
+    { "type": "say", "who": "tanaka", "text": "皆様の ご厚意に、感謝に たえません。", "en": "I'm deeply grateful for everyone's kindness." },
+    { "type": "intro", "item": "g:n1-ni-taenai" },
+    { "type": "choice", "item": "g:n1-ni-taenai", "who": "tanaka", "prompt": "Say: \"I can't express how grateful I am for everyone's kindness.\"", "options": [
+      { "text": "皆様の ご厚意に、感謝に たえません。", "correct": true },
+      { "text": "皆様の ご厚意に、感謝に たえます。", "awkward": { "who": "tanaka", "text": "「たえません」。否定の 形に します。", "en": "\"Taemasen\" -- it takes the negative form." } },
+      { "text": "皆様の ご厚意に、感謝を たえません。", "awkward": { "who": "mio", "text": "「感謝に たえない」。助詞は 「に」。", "en": "\"Kansha ni taenai\" -- the particle is \"ni\"." } }
+    ] },
+    { "type": "intro", "item": "k:涙" },
+    { "type": "reading", "item": "k:涙", "display": "涙", "prompt": "Mio wipes away her 涙. Read it.", "answers": ["なみだ"] },
+    { "type": "say", "who": "sora", "text": "先生の 最後の 言葉に、涙を 禁じえなかった。", "en": "At Sensei's last words, I couldn't hold back my tears." },
+    { "type": "intro", "item": "g:n1-wo-kinjienai" },
+    { "type": "choice", "item": "g:n1-wo-kinjienai", "who": "sora", "prompt": "Write it formally: \"At his words, I couldn't suppress my tears.\"", "options": [
+      { "text": "彼の 言葉に、涙を 禁じえなかった。", "correct": true },
+      { "text": "彼の 言葉に、涙を 禁じえた。", "awkward": { "who": "tanaka", "text": "「禁じえない」。否定で 「止められない」の 意味に なる。", "en": "\"Kinjienai\" -- the negative gives \"can't suppress\"." } },
+      { "text": "彼の 言葉に、涙に 禁じえなかった。", "awkward": { "who": "mio", "text": "「涙を 禁じえない」。「を」だよ。", "en": "\"Namida wo kinjienai\" -- \"wo\"." } }
+    ] },
+    { "type": "say", "who": "tanaka", "text": "教え子の みなさんに、このような 場に お招き いただき、本当に 光栄の 至りです。", "en": "To be invited to such an occasion by my former students is truly the height of honour." },
+    { "type": "intro", "item": "g:n1-no-itari" },
+    { "type": "choice", "item": "g:n1-no-itari", "who": "tanaka", "prompt": "Say: \"Being invited to such an occasion is the height of honour.\"", "options": [
+      { "text": "このような 場に お招き いただき、光栄の 至りです。", "correct": true },
+      { "text": "このような 場に お招き いただき、光栄を 至りです。", "awkward": { "who": "mio", "text": "「光栄の 至り」。「の」ですよ。", "en": "\"Kouei no itari\" -- \"no\"." } },
+      { "text": "このような 場に お招き いただき、光栄の 至ります。", "awkward": { "who": "sora", "text": "「至りです」で 終わる。名詞です。", "en": "It ends \"itari desu\" -- it's a noun." } }
+    ] },
+    { "type": "say", "who": "tanaka", "text": "皆さんが 立派に なった 姿を 見られて、うれしい かぎりです。", "en": "Seeing how splendid you've all become makes me endlessly happy." },
+    { "type": "intro", "item": "g:n1-kagiri-da" },
+    { "type": "choice", "item": "g:n1-kagiri-da", "who": "tanaka", "prompt": "Say: \"Being able to see my former students' success, I'm overjoyed.\"", "options": [
+      { "text": "教え子の 活躍を 見られて、うれしい かぎりです。", "correct": true },
+      { "text": "教え子の 活躍を 見られて、うれしいの かぎりです。", "awkward": { "who": "mio", "text": "「うれしい かぎり」。「の」は いらないよ。", "en": "\"Ureshii kagiri\" -- no \"no\"." } },
+      { "text": "教え子の 活躍を 見られて、うれしく かぎりです。", "awkward": { "who": "sora", "text": "「うれしい」の まま 使う。", "en": "Keep \"ureshii\" as it is." } }
+    ] },
+    { "type": "affection", "char": "mio", "delta": 4 },
+    { "type": "affection", "char": "sora", "delta": 3 },
+    { "type": "cg", "id": "final-lecture", "title": "The final lecture" },
+    { "type": "say", "who": "tanaka", "text": "さて、最後に 一つだけ。…あの 校門で、もう 一度 みなさんで 歌って くれませんか。", "en": "Now, one last thing. ...Would you all sing once more at that school gate?" }
+  ]
+}
