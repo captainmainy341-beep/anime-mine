@@ -1,0 +1,319 @@
+{
+  "schema": 1,
+  "id": "genki-l07",
+  "order": 107,
+  "track": "genki",
+  "lesson": 7,
+  "title": "ハナの 家族",
+  "summary": "Looking through Hana's family photos: what people do, where they live, and what they look like.",
+  "covers": "〜ている · X は Y が〜 · 〜くて / 〜で · 〜に行く · counting people",
+  "jlpt": "N5",
+  "source": "authored",
+  "bg": "home-evening",
+  "characters": {
+    "hana": {
+      "name": "ハナ",
+      "color": "#7cc6b4"
+    },
+    "leo": {
+      "name": "レオ",
+      "color": "#f0a35e"
+    }
+  },
+  "glossary": {
+    "k:父": {
+      "label": "父",
+      "reading": "ちち / ふ",
+      "meaning": "father"
+    },
+    "g:n5-te-iru": {
+      "label": "〜ています",
+      "meaning": "is doing (ongoing action or state)",
+      "note": "ている shows an action in progress or a repeated state. With some verbs such as 知る or 持つ it shows a resulting state. The plain form is 〜ている and the polite form is 〜ています."
+    },
+    "k:京": {
+      "label": "京",
+      "reading": "きょう",
+      "meaning": "capital"
+    },
+    "g:genki-x-wa-y-ga": {
+      "label": "X は Y が〜",
+      "meaning": "X has a ... Y (describing features)",
+      "note": "The person takes は, the feature takes が: 兄は せが 高いです = my brother is tall."
+    },
+    "g:genki-adj-te": {
+      "label": "〜くて / 〜で",
+      "meaning": "joining adjectives: ... and ...",
+      "note": "い-adjectives: 高い → 高くて. な-adjectives and nouns: しずか → しずかで."
+    },
+    "k:人": {
+      "label": "人",
+      "reading": "ひと / じん / にん",
+      "meaning": "person"
+    },
+    "g:n5-ni-iku": {
+      "label": "〜に行く",
+      "meaning": "go in order to (do something)",
+      "note": "The verb stem before に expresses the purpose of going. The sentence ends with a movement verb such as 行く, 来る, or 帰る. Nouns before に are the thing being done, like 買い物に行く."
+    }
+  },
+  "beats": [
+    {
+      "type": "show",
+      "char": "hana",
+      "expr": "smile",
+      "pos": "left"
+    },
+    {
+      "type": "show",
+      "char": "leo",
+      "expr": "neutral",
+      "pos": "right"
+    },
+    {
+      "type": "say",
+      "who": null,
+      "text": "ハナさんの 家で、家族の しゃしんを 見る。",
+      "en": "At Hana's house, you look at family photos."
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "これは わたしの 父と 母です。",
+      "en": "These are my father and mother."
+    },
+    {
+      "type": "reading",
+      "item": "k:父",
+      "display": "父と 母",
+      "answers": [
+        "ちちとはは"
+      ],
+      "prompt": "Read it.",
+      "target": "父"
+    },
+    {
+      "type": "intro",
+      "item": "g:n5-te-iru"
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "父は 東京で はたらいています。",
+      "en": "My father works in Tokyo."
+    },
+    {
+      "type": "reading",
+      "item": "k:京",
+      "display": "東京",
+      "answers": [
+        "とうきょう"
+      ],
+      "prompt": "Where does he work? Read it.",
+      "target": "京"
+    },
+    {
+      "type": "choice",
+      "item": "g:n5-te-iru",
+      "who": null,
+      "prompt": "Ask where Hana's mother lives now.",
+      "options": [
+        {
+          "text": "お母さんは どこに 住んでいますか。",
+          "correct": true
+        },
+        {
+          "text": "お母さんは どこに 住みますか。",
+          "awkward": {
+            "who": "hana",
+            "text": "「住みますか」…？ 今の ことは「住んでいます」ですよ。",
+            "en": "\"Sumimasu ka\"...? For now, it's \"sunde imasu\"."
+          }
+        },
+        {
+          "text": "お母さんは どこで 住んでいますか。",
+          "awkward": {
+            "who": "hana",
+            "text": "住むは「に」ですよ。「で」じゃなくて。",
+            "en": "\"Sumu\" takes \"ni\", not \"de\"."
+          }
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "みなと町に 住んでいます。おばあさんと いっしょに。",
+      "en": "Here in Minato. With Grandma."
+    },
+    {
+      "type": "say",
+      "who": "leo",
+      "text": "この 人は だれですか。せが 高いですね。",
+      "en": "Who's this? He's tall."
+    },
+    {
+      "type": "intro",
+      "item": "g:genki-x-wa-y-ga"
+    },
+    {
+      "type": "particle",
+      "item": "g:genki-x-wa-y-ga",
+      "who": "hana",
+      "text": "兄は かみ＿ みじかいです。",
+      "options": [
+        "が",
+        "を",
+        "に",
+        "で"
+      ],
+      "answers": [
+        "が"
+      ],
+      "en": "My big brother has short hair.",
+      "role": "p:ga/subject"
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "兄です。大学で おしえています。",
+      "en": "That's my older brother. He teaches at a university."
+    },
+    {
+      "type": "intro",
+      "item": "g:genki-adj-te"
+    },
+    {
+      "type": "choice",
+      "item": "g:genki-adj-te",
+      "who": null,
+      "prompt": "Say he is tall and cool-looking.",
+      "options": [
+        {
+          "text": "せが 高くて、かっこいいですね。",
+          "correct": true
+        },
+        {
+          "text": "せが 高いで、かっこいいですね。",
+          "awkward": {
+            "who": "hana",
+            "text": "「高いで」？ い形容詞は「くて」ですよ。",
+            "en": "\"Takai de\"? I-adjectives take \"kute\"."
+          }
+        },
+        {
+          "text": "せが 高いくて、かっこいいですね。"
+        }
+      ]
+    },
+    {
+      "type": "choice",
+      "item": "g:genki-adj-te",
+      "who": null,
+      "prompt": "Describe your hometown: quiet and pretty (しずか, きれい).",
+      "options": [
+        {
+          "text": "わたしの 町は しずかで、きれいです。",
+          "correct": true
+        },
+        {
+          "text": "わたしの 町は しずかくて、きれいです。",
+          "awkward": {
+            "who": "hana",
+            "text": "な形容詞は「で」ですよ！",
+            "en": "Na-adjectives take \"de\"!"
+          }
+        },
+        {
+          "text": "わたしの 町は しずかだ、きれいです。"
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "ノアさんの 家族は 何人ですか。",
+      "en": "How many people are in your family, Noa?"
+    },
+    {
+      "type": "reading",
+      "item": "k:人",
+      "display": "四人",
+      "answers": [
+        "よにん"
+      ],
+      "prompt": "Your family has four people. Read it.",
+      "target": "人"
+    },
+    {
+      "type": "say",
+      "who": "leo",
+      "text": "ぼくの 家族は 五人です。",
+      "en": "My family has five people."
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "あした、いっしょに 町へ 買いものに 行きませんか。",
+      "en": "Want to go shopping in town together tomorrow?"
+    },
+    {
+      "type": "intro",
+      "item": "g:n5-ni-iku"
+    },
+    {
+      "type": "choice",
+      "item": "g:n5-ni-iku",
+      "who": null,
+      "prompt": "Suggest a movie instead: \"Let's go see a movie.\"",
+      "options": [
+        {
+          "text": "えいがを 見に 行きましょう。",
+          "correct": true
+        },
+        {
+          "text": "えいがを 見るに 行きましょう。",
+          "awkward": {
+            "who": "hana",
+            "text": "「見るに」…？ 「見」＋「に」ですよ。",
+            "en": "\"Miru ni\"...? It's \"mi\" + \"ni\"."
+          }
+        },
+        {
+          "text": "えいがを 見て 行きましょう。",
+          "awkward": {
+            "who": "hana",
+            "text": "それは「見てから 行く」に なりますよ。",
+            "en": "That means \"watch, then go\"."
+          }
+        }
+      ]
+    },
+    {
+      "type": "particle",
+      "item": "g:n5-ni-iku",
+      "who": null,
+      "text": "レオさんは 本を 買い＿ 行きます。",
+      "options": [
+        "に",
+        "で",
+        "を",
+        "へ"
+      ],
+      "answers": [
+        "に"
+      ],
+      "en": "Leo is going to buy a book."
+    },
+    {
+      "type": "affection",
+      "char": "hana",
+      "delta": 2
+    },
+    {
+      "type": "cg",
+      "id": "genki-family",
+      "title": "Hana's family album"
+    }
+  ]
+}

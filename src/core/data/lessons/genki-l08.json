@@ -1,0 +1,134 @@
+{
+  "schema": 1,
+  "id": "genki-l08",
+  "lesson": 8,
+  "title": "Barbecue Plans",
+  "tagline": "Talk casually with short forms, report what people said, and say what you think.",
+  "hook": "The friends are planning a barbecue and the chat just got casual. Time to drop です and ます, quote what someone said and share an opinion.",
+  "goals": ["Use plain (short) forms of verbs and adjectives", "Quote with と言う and give opinions with と思う", "Say \"please don't\" and \"I like doing...\""],
+  "minutes": 11,
+  "vocab": [
+    ["買い物", "かいもの", "shopping", "🛒"],
+    ["肉", "にく", "meat", "🥩"],
+    ["やさい", "やさい", "vegetables", "🥦"],
+    ["ビール", "ビール", "beer", "🍺"],
+    ["たいてい", "たいてい", "usually", "🔂"],
+    ["たぶん", "たぶん", "probably", "🤔"],
+    ["きっと", "きっと", "surely", "💫"],
+    ["ほんとう", "ほんとう", "really, true", "💎"],
+    ["作る", "つくる", "to make", "🍳"],
+    ["やめる", "やめる", "to quit, stop", "🛑"],
+    ["電話", "でんわ", "phone call", "📞"],
+    ["話す", "はなす", "to speak", "🗣️"],
+    ["言う", "いう", "to say", "💬"],
+    ["思う", "おもう", "to think", "💭"],
+    ["歌", "うた", "song", "🎤"],
+    ["弾く", "ひく", "to play (strings, piano)", "🎸"],
+    ["天気", "てんき", "weather", "⛅"],
+    ["雨", "あめ", "rain", "🌧️"],
+    ["楽しみ", "たのしみ", "looking forward", "🤩"],
+    ["でも", "でも", "but, however", "↩️"]
+  ],
+  "points": [
+    {
+      "id": "g:genki-short",
+      "title": "Short (plain) forms",
+      "formula": "dictionary / ない / た / なかった",
+      "gist": "Casual forms of verbs, adjectives and nouns.",
+      "explain": [
+        "Friends and family usually speak with short forms. Verbs: 食べる (do), 食べない (don't), 食べた (did), 食べなかった (didn't). い-adjectives: 高い / 高くない. Nouns and な-adjectives: だ / じゃない.",
+        "Short forms are also used inside bigger sentences, like quotes and reasons."
+      ],
+      "examples": [
+        { "ja": "あした|肉を|買う。", "gloss": "tomorrow|meat|buy", "en": "I'll buy meat tomorrow." },
+        { "ja": "雨は|ふらない。", "gloss": "rain (topic)|won't fall", "en": "It won't rain." },
+        { "ja": "このケーキ、|おいしくない。", "gloss": "this cake|not delicious", "en": "This cake isn't good." }
+      ],
+      "tip": "Use them with close friends. With a teacher or stranger, stay polite.",
+      "watch": "Don't mix です in the middle of a plain sentence."
+    },
+    {
+      "id": "g:n4-to-omou",
+      "title": "〜と思う",
+      "formula": "short form + と思います",
+      "gist": "I think that ...",
+      "explain": [
+        "Put the short form before と思います to say what you think. This softens a statement and sounds modest.",
+        "To say \"I think not\", negate the clause, not 思う: 行かないと思います."
+      ],
+      "examples": [
+        { "ja": "あしたは|晴れると|思います。", "gloss": "tomorrow (topic)|will clear|I think", "en": "I think it will be sunny tomorrow." },
+        { "ja": "レオさんは|来ないと|思います。", "gloss": "Leo (topic)|won't come|I think", "en": "I don't think Leo will come." },
+        { "ja": "この歌は|いいと|思います。", "gloss": "this song (topic)|good|I think", "en": "I think this song is good." }
+      ],
+      "tip": "For a noun or な-adjective, drop だ: ハナさんは 先生だと 思います is also fine.",
+      "watch": "Use the short form before と, not ます."
+    },
+    {
+      "id": "g:n4-to-iu-quote",
+      "title": "〜と言う / 言っていました",
+      "formula": "short form + と言いました",
+      "gist": "(Someone) said that ...",
+      "explain": [
+        "Quote someone's idea with short form + と言う. For a past report use 言いました or 言っていました.",
+        "Direct quotes use 「」 and と: 「いいね」と言いました."
+      ],
+      "examples": [
+        { "ja": "ハナさんは|来ると|言っていました。", "gloss": "Hana (topic)|will come|said", "en": "Hana said she will come." },
+        { "ja": "レオさんは|「楽しみだ」と|言いました。", "gloss": "Leo (topic)|\"looking forward\" quote|said", "en": "Leo said, \"I'm looking forward to it.\"" },
+        { "ja": "先生は|何と|言いましたか。", "gloss": "teacher (topic)|what (quote)|said?", "en": "What did the teacher say?" }
+      ],
+      "tip": "と is the quote marker; 何と言いましたか asks \"what did they say?\".",
+      "watch": "Don't forget と. Without it the quote has nowhere to land."
+    },
+    {
+      "id": "g:n5-na-de-kudasai",
+      "title": "〜ないでください",
+      "formula": "ない-form + でください",
+      "gist": "Please don't ...",
+      "explain": [
+        "To ask someone not to do something, take the ない-form and add でください. It is the negative cousin of てください.",
+        "It sounds gentler than a prohibition: 見ないでください is \"please don't look\"."
+      ],
+      "examples": [
+        { "ja": "ここで|写真を|とらないでください。", "gloss": "here|photo|don't take please", "en": "Please don't take photos here." },
+        { "ja": "あまり|飲まないでください。", "gloss": "not too much|don't drink please", "en": "Please don't drink too much." },
+        { "ja": "電話を|しないでください。", "gloss": "phone call|don't make please", "en": "Please don't call." }
+      ],
+      "tip": "Contrast: てください (do) vs ないでください (don't).",
+      "watch": "Don't use ませんでください. It must be the ない-form."
+    },
+    {
+      "id": "g:n5-no-ga-suki",
+      "title": "〜のが好き",
+      "formula": "verb (short form) + のが好き",
+      "gist": "I like doing ...",
+      "explain": [
+        "の turns a verb phrase into a noun, so you can say you like or dislike an activity: 食べるのが好きです (I like eating).",
+        "The same trick works with 上手 and 下手: うたうのが上手です."
+      ],
+      "examples": [
+        { "ja": "料理を|作るのが|好きです。", "gloss": "cooking|making (nominalized)|like", "en": "I like cooking." },
+        { "ja": "ギターを|弾くのが|上手です。", "gloss": "guitar|playing|good at", "en": "I'm good at playing the guitar." },
+        { "ja": "早く|おきるのは|きらいです。", "gloss": "early|getting up (topic)|dislike", "en": "I dislike getting up early." }
+      ],
+      "tip": "Think of の as \"the act of\".",
+      "watch": "Use the dictionary form before の, not ます."
+    }
+  ],
+  "drills": [
+    { "type": "pick", "point": 0, "q": "The short negative of 買う is...", "options": ["買わない", "買うない", "買いない", "買わなかった"], "answer": 0, "why": "う-verbs change the final う to わ + ない." },
+    { "type": "pick", "point": 0, "q": "The short past of 食べる is...", "options": ["食べた", "食べて", "食べない", "食べった"], "answer": 0, "why": "Like the て-form, but ending in た." },
+    { "type": "gap", "point": 1, "ja": "あしたは 晴れる＿ 思います。", "options": ["と", "を", "に", "が"], "answer": "と", "en": "I think it will be sunny tomorrow.", "why": "と marks the thought." },
+    { "type": "order", "point": 1, "en": "I don't think Leo will come.", "chunks": ["レオさんは", "来ないと", "思います"] },
+    { "type": "gap", "point": 2, "ja": "ハナさんは 来る＿ 言っていました。", "options": ["と", "を", "が", "で"], "answer": "と", "en": "Hana said she will come.", "why": "と marks the quote." },
+    { "type": "pick", "point": 2, "q": "\"What did the teacher say?\"", "options": ["先生は 何と 言いましたか。", "先生は 何を 言いましたか と。", "先生が 何に 言いました。", "先生は 何だと 言う。"], "answer": 0, "why": "何と言いましたか is the set phrase." },
+    { "type": "gap", "point": 3, "ja": "写真を とら＿でください。", "options": ["ない", "ます", "て", "た"], "answer": "ない", "en": "Please don't take photos.", "why": "ない-form + でください." },
+    { "type": "order", "point": 3, "en": "Please don't call.", "chunks": ["電話を", "しないで", "ください"] },
+    { "type": "gap", "point": 4, "ja": "料理を 作る＿が 好きです。", "options": ["の", "と", "を", "は"], "answer": "の", "en": "I like cooking.", "why": "の nominalizes the verb." },
+    { "type": "order", "point": 4, "en": "I'm good at playing the guitar.", "chunks": ["ギターを", "弾くのが", "上手です"] },
+    { "type": "type", "prompt": "Type the reading of 買い物 (shopping) in hiragana.", "show": "買い物", "answers": ["かいもの"] },
+    { "type": "type", "prompt": "Type the reading of 思う (to think) in hiragana.", "show": "思う", "answers": ["おもう"] },
+    { "type": "pick", "q": "Which is the plain (casual) form of 行きます?", "options": ["行く", "行き", "行って", "行きます"], "answer": 0, "why": "Dictionary form." }
+  ]
+}

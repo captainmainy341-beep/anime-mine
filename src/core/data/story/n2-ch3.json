@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "id": "n2-ch3",
+  "order": 21,
+  "title": "Chapter 21: しめきりの 夜",
+  "summary": "An all-nighter before the deadline. After agonising, after long talks, only after failing, and just because of one small mistake.",
+  "jlpt": "N2",
+  "source": "authored",
+  "bg": "office",
+  "characters": {
+    "kuroda": { "name": "黒田編集長", "color": "#c97b5a" },
+    "sora": { "name": "そら", "color": "#a2befa" }
+  },
+  "glossary": {
+    "g:n2-ageku": { "label": "〜あげく", "meaning": "after (a long process), in the end", "note": "た-form / Noun の + あげく: a long struggle ends, usually badly or wearily." },
+    "g:n2-sue-ni": { "label": "〜末に", "meaning": "after (long effort), finally", "note": "Noun の / た-form + 末に: more neutral or positive than あげく." },
+    "g:n2-te-hajimete": { "label": "〜てはじめて", "meaning": "only after ...", "note": "て-form + はじめて: you realize something only after experiencing it." },
+    "g:n2-bakari-ni": { "label": "〜ばかりに", "meaning": "just because (and so, unfortunately)", "note": "た-form + ばかりに: a small cause leads to a regrettable result." },
+    "k:徹": { "label": "徹", "reading": "てつ", "meaning": "penetrate, all through" },
+    "k:限": { "label": "限", "reading": "げん / かぎ(る)", "meaning": "limit" }
+  },
+  "beats": [
+    { "type": "bg", "bg": "office" },
+    { "type": "say", "who": null, "text": "締め切りの 前の 夜。編集部の 明かりは、まだ 消えて いない。", "en": "The night before the deadline. The lights in the editorial office are still on." },
+    { "type": "show", "char": "kuroda", "expr": "tired", "pos": "left" },
+    { "type": "intro", "item": "k:徹" },
+    { "type": "reading", "item": "k:徹", "display": "徹夜", "target": "徹", "prompt": "Kuroda mutters, \"今夜は 徹夜だ。\" Read 徹夜.", "answers": ["てつや"] },
+    { "type": "say", "who": "kuroda", "text": "ゆうき、この 記事、最初から 書き直せるか。", "en": "Yuuki, can you rewrite this article from the start?" },
+    { "type": "intro", "item": "g:n2-ageku" },
+    { "type": "choice", "item": "g:n2-ageku", "who": "kuroda", "prompt": "Explain what you did: \"After agonising a lot, I decided to rewrite it from the beginning.\"", "options": [
+      { "text": "さんざん 悩んだあげく、最初から 書き直す ことに しました。", "correct": true },
+      { "text": "さんざん 悩むあげく、最初から 書き直す ことに しました。", "awkward": { "who": "kuroda", "text": "「悩んだ あげく」。た形を 使う。", "en": "\"Nayanda ageku\" -- use the た-form." } },
+      { "text": "さんざん 悩んだあげくは、最初から 書き直す ことに しました。", "awkward": { "who": "kuroda", "text": "「あげく」の あとは 「に」か 「、」。「は」は つけない。", "en": "After \"ageku\" you use \"ni\" or a comma, not \"wa\"." } }
+    ] },
+    { "type": "show", "char": "sora", "expr": "neutral", "pos": "right" },
+    { "type": "say", "who": "sora", "text": "（電話）ゆうき、取材の 原稿、まだ 終わって ない？ 手伝おうか。", "en": "(On the phone) Yuuki, is the interview draft still unfinished? Want me to help?" },
+    { "type": "intro", "item": "g:n2-sue-ni" },
+    { "type": "choice", "item": "g:n2-sue-ni", "who": "sora", "prompt": "Report: \"After many discussions, we finally reached a conclusion.\"", "options": [
+      { "text": "何度も 話し合った末に、やっと 結論が 出ました。", "correct": true },
+      { "text": "何度も 話し合う末に、やっと 結論が 出ました。", "awkward": { "who": "kuroda", "text": "「話し合った 末に」。終わった 後の 話だ。", "en": "\"Hanashiatta sue ni\" -- it's about after it's over." } },
+      { "text": "何度も 話し合った 末が、やっと 結論が 出ました。", "awkward": { "who": "sora", "text": "「末に」だよ。「が」じゃ つながらない。", "en": "\"Sue ni\" -- \"ga\" doesn't connect it." } }
+    ] },
+    { "type": "intro", "item": "k:限" },
+    { "type": "reading", "item": "k:限", "display": "限界", "target": "限", "prompt": "Kuroda yawns: \"もう 限界だ…。\" Read 限界.", "answers": ["げんかい"] },
+    { "type": "say", "who": "kuroda", "text": "実は、おれも 若いころ、締め切りを やぶって 大失敗してな。", "en": "Actually, when I was young I broke a deadline and failed badly." },
+    { "type": "intro", "item": "g:n2-te-hajimete" },
+    { "type": "choice", "item": "g:n2-te-hajimete", "who": "kuroda", "prompt": "Reflect: \"Only after pulling an all-nighter did I understand how hard editing is.\"", "options": [
+      { "text": "徹夜して はじめて、編集の 大変さが わかりました。", "correct": true },
+      { "text": "徹夜して はじめに、編集の 大変さが わかりました。", "awkward": { "who": "kuroda", "text": "「はじめて」だ。「はじめに」は 「最初に」の 意味だぞ。", "en": "\"Hajimete\" -- \"hajime ni\" means \"first of all\"." } },
+      { "text": "徹夜して はじめた、編集の 大変さが わかりました。", "awkward": { "who": "sora", "text": "「はじめて」と 言おう。", "en": "Say \"hajimete\"." } }
+    ] },
+    { "type": "say", "who": "kuroda", "text": "ミスの 原因は、確認を 忘れた ことだった。", "en": "The cause of the mistake was forgetting to check." },
+    { "type": "intro", "item": "g:n2-bakari-ni" },
+    { "type": "choice", "item": "g:n2-bakari-ni", "who": "kuroda", "prompt": "Say: \"Just because I forgot to check, a mistake got through.\"", "options": [
+      { "text": "確認を 忘れたばかりに、ミスが 出て しまいました。", "correct": true },
+      { "text": "確認を 忘れた ばかりで、ミスが 出て しまいました。", "awkward": { "who": "sora", "text": "「たばかり」は 「したばかり(just did)」。理由なら 「ばかりに」。", "en": "\"Ta bakari\" means \"just did\". For a regrettable cause, \"bakari ni\"." } },
+      { "text": "確認を 忘れるばかりに、ミスが 出て しまいました。", "awkward": { "who": "kuroda", "text": "「忘れた ばかりに」。起きた ことだから た形だ。", "en": "\"Wasureta bakari ni\" -- it already happened, so the た-form." } }
+    ] },
+    { "type": "affection", "char": "sora", "delta": 2 },
+    { "type": "cg", "id": "deadline-dawn", "title": "Dawn after the deadline" },
+    { "type": "say", "who": "kuroda", "text": "…朝か。ゆうき、いい 記事に なったな。よく がんばった。", "en": "...It's morning. Yuuki, this turned out to be a good article. You did well." }
+  ]
+}

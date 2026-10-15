@@ -1,0 +1,359 @@
+{
+  "schema": 1,
+  "id": "genki-l23",
+  "lesson": 23,
+  "title": "One Year Later",
+  "tagline": "Look back on what you were made to do, how far you have come, and what you hope for.",
+  "hook": "Under the cherry trees, a year after Noa arrived, everyone looks back. This last lesson combines the passive and causative, then shows how to talk about change and purpose.",
+  "goals": [
+    "Say you were made to do something with 〜させられる",
+    "Show gradual change with 〜ようになる",
+    "Express purpose with 〜ように"
+  ],
+  "minutes": 13,
+  "vocab": [
+    [
+      "去年",
+      "きょねん",
+      "last year",
+      "📅"
+    ],
+    [
+      "一年",
+      "いちねん",
+      "one year",
+      "1️⃣"
+    ],
+    [
+      "思い出",
+      "おもいで",
+      "memory",
+      "🖼️"
+    ],
+    [
+      "手紙",
+      "てがみ",
+      "letter",
+      "✉️"
+    ],
+    [
+      "約束",
+      "やくそく",
+      "promise",
+      "🤝"
+    ],
+    [
+      "成長",
+      "せいちょう",
+      "growth",
+      "🌱"
+    ],
+    [
+      "卒業",
+      "そつぎょう",
+      "graduation",
+      "🎓"
+    ],
+    [
+      "花びら",
+      "はなびら",
+      "petal",
+      "🌸"
+    ],
+    [
+      "待たされる",
+      "またされる",
+      "to be kept waiting",
+      "⏱️"
+    ],
+    [
+      "考えさせられる",
+      "かんがえさせられる",
+      "to be made to think",
+      "🤔"
+    ],
+    [
+      "歩く",
+      "あるく",
+      "to walk",
+      "🚶"
+    ],
+    [
+      "できる",
+      "できる",
+      "to be able",
+      "✅"
+    ],
+    [
+      "わかる",
+      "わかる",
+      "to understand",
+      "💡"
+    ],
+    [
+      "なれる",
+      "なれる",
+      "to get used to",
+      "😌"
+    ],
+    [
+      "だんだん",
+      "だんだん",
+      "gradually",
+      "📈"
+    ],
+    [
+      "ずっと",
+      "ずっと",
+      "all along",
+      "♾️"
+    ],
+    [
+      "また",
+      "また",
+      "again",
+      "🔄"
+    ],
+    [
+      "これから",
+      "これから",
+      "from now on",
+      "🚀"
+    ],
+    [
+      "さびしい",
+      "さびしい",
+      "lonely",
+      "🥺"
+    ],
+    [
+      "ありがとう",
+      "ありがとう",
+      "thank you",
+      "🙇"
+    ]
+  ],
+  "points": [
+    {
+      "id": "g:n4-saserareru",
+      "title": "〜させられる",
+      "formula": "causative + passive",
+      "gist": "Be made to do something.",
+      "explain": [
+        "Make the causative (読ませる) then turn it into the passive (読ませられる). For many u-verbs there is a shorter form: 読ます → 読まされる, 待つ → 待たされる. する becomes させられる.",
+        "It means someone forced you to do something, usually against your will: 毎日 そうじを させられた. The person who forced you takes に."
+      ],
+      "examples": [
+        {
+          "ja": "ぼくは|毎日|そうじを|させられました。",
+          "gloss": "I (topic)|every day|cleaning (object)|was made to do",
+          "en": "I was made to clean every day."
+        },
+        {
+          "ja": "一時間も|待たされました。",
+          "gloss": "a whole hour|was made to wait",
+          "en": "I was kept waiting for an hour."
+        },
+        {
+          "ja": "先生に|作文を|書かされました。",
+          "gloss": "by teacher|essay (object)|was made to write",
+          "en": "I was made to write an essay by the teacher."
+        }
+      ],
+      "tip": "Say it as one word: 待たされる, 書かされる, 食べさせられる.",
+      "watch": "It sounds unhappy. If you volunteered, use 〜させてもらう instead."
+    },
+    {
+      "id": "g:n4-you-ni-naru",
+      "title": "〜ようになる",
+      "formula": "dictionary / potential form + ようになる",
+      "gist": "A gradual change in ability or habit.",
+      "explain": [
+        "Dictionary form or potential form + ようになる means that something that was not the case has now become the case: 日本語が 話せるように なりました (I have come to be able to speak Japanese).",
+        "The negative is 〜なくなる: 食べられなく なった. It describes change over time, not a decision."
+      ],
+      "examples": [
+        {
+          "ja": "日本語が|話せるように|なりました。",
+          "gloss": "Japanese (subject)|to be able to speak|has become",
+          "en": "I have come to be able to speak Japanese."
+        },
+        {
+          "ja": "だんだん|早く|起きられるように|なりました。",
+          "gloss": "gradually|early|to be able to get up|became",
+          "en": "Gradually I came to be able to get up early."
+        }
+      ],
+      "tip": "ようになる = the \"before and after\" of an ability.",
+      "watch": "ようになる is a change that happens. ようにする is your effort."
+    },
+    {
+      "id": "g:n4-you-ni-purpose",
+      "title": "〜ように（purpose）",
+      "formula": "dictionary / potential form + ように",
+      "gist": "So that something can happen.",
+      "explain": [
+        "Put ように after a dictionary or potential form to show the purpose or hope: また 会えるように、手紙を 書きます (I will write so that we can meet again). The verb before ように is usually not fully under your control.",
+        "The negative is 〜ないように: わすれないように メモします (I note it so that I won't forget)."
+      ],
+      "examples": [
+        {
+          "ja": "また|会えるように、|手紙を|書きます。",
+          "gloss": "again|so that we can meet|letter (object)|I will write",
+          "en": "I will write letters so that we can meet again."
+        },
+        {
+          "ja": "わすれないように、|メモします。",
+          "gloss": "so that I don't forget|I will take notes",
+          "en": "I'll note it down so I don't forget."
+        }
+      ],
+      "tip": "Use ように for outcomes you hope for and ために for outcomes you control.",
+      "watch": "Do not use ように with a volitional verb. Say 行くために, not 行くように."
+    }
+  ],
+  "drills": [
+    {
+      "type": "gap",
+      "point": 0,
+      "ja": "ぼくは 毎日 そうじを させ＿ました。",
+      "options": [
+        "られ",
+        "れ",
+        "せ",
+        "さ"
+      ],
+      "answer": "られ",
+      "en": "I was made to clean every day.",
+      "why": "させられる."
+    },
+    {
+      "type": "pick",
+      "q": "Which is the short causative-passive of 待つ?",
+      "options": [
+        "待たされる",
+        "待たせられる",
+        "待ちされる",
+        "待ちさせる"
+      ],
+      "answer": 0,
+      "why": "あ-row + される.",
+      "point": 0
+    },
+    {
+      "type": "pick",
+      "q": "You were forced to write an essay.",
+      "options": [
+        "作文を 書かされました。",
+        "作文を 書かれました。",
+        "作文を 書かせました。",
+        "作文を 書けました。"
+      ],
+      "answer": 0,
+      "why": "書く → 書かされる.",
+      "point": 0
+    },
+    {
+      "type": "order",
+      "point": 0,
+      "en": "I was made to wait for an hour.",
+      "chunks": [
+        "一時間も",
+        "待たされました"
+      ]
+    },
+    {
+      "type": "gap",
+      "point": 1,
+      "ja": "日本語が 話せる＿ なりました。",
+      "options": [
+        "ように",
+        "ことに",
+        "ために",
+        "ような"
+      ],
+      "answer": "ように",
+      "en": "I have come to be able to speak Japanese.",
+      "why": "ようになる."
+    },
+    {
+      "type": "pick",
+      "q": "Which means \"I came to be able to wake up early\"?",
+      "options": [
+        "早く 起きられるように なりました。",
+        "早く 起きるように しました。",
+        "早く 起きることに しました。",
+        "早く 起きようと 思いました。"
+      ],
+      "answer": 0,
+      "why": "Potential + ようになる.",
+      "point": 1
+    },
+    {
+      "type": "order",
+      "point": 1,
+      "en": "Gradually I came to be able to speak.",
+      "chunks": [
+        "だんだん",
+        "話せるように",
+        "なりました"
+      ]
+    },
+    {
+      "type": "gap",
+      "point": 2,
+      "ja": "また 会える＿、手紙を 書きます。",
+      "options": [
+        "ように",
+        "ために",
+        "ことに",
+        "ばかり"
+      ],
+      "answer": "ように",
+      "en": "I will write so that we can meet again.",
+      "why": "Potential + ように."
+    },
+    {
+      "type": "pick",
+      "q": "You note it so that you will not forget:",
+      "options": [
+        "わすれないように、メモします。",
+        "わすれないために、メモします。",
+        "わすれないことに、メモします。",
+        "わすれないなら、メモします。"
+      ],
+      "answer": 0,
+      "why": "ないように.",
+      "point": 2
+    },
+    {
+      "type": "pick",
+      "q": "Which pair is correct?",
+      "options": [
+        "日本へ 行くために、貯金します。",
+        "日本へ 行くように、貯金します。",
+        "日本へ 行きように、貯金します。",
+        "日本へ 行ったように、貯金します。"
+      ],
+      "answer": 0,
+      "why": "Volitional goals use ために.",
+      "point": 2
+    },
+    {
+      "type": "type",
+      "prompt": "Type the reading of 約束 (promise) in hiragana.",
+      "show": "約束",
+      "answers": [
+        "やくそく"
+      ]
+    },
+    {
+      "type": "type",
+      "prompt": "Type the reading of 思い出 (memory) in hiragana.",
+      "show": "思い出",
+      "answers": [
+        "おもいで"
+      ]
+    }
+  ]
+}

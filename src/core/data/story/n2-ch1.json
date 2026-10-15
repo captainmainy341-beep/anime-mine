@@ -1,0 +1,69 @@
+{
+  "schema": 1,
+  "id": "n2-ch1",
+  "order": 19,
+  "title": "Chapter 19: 再会",
+  "summary": "Five years later, in Tokyo. A reunion at Sora's first big live: turning points, bad weather, a pro's polish and formal announcements.",
+  "jlpt": "N2",
+  "source": "authored",
+  "bg": "tokyo-skyline",
+  "characters": {
+    "mio": { "name": "みお", "color": "#f3a0b6" },
+    "sora": { "name": "そら", "color": "#a2befa" },
+    "sakai": { "name": "酒井さん", "color": "#6f8fd8" }
+  },
+  "glossary": {
+    "g:n2-wo-keiki-ni": { "label": "〜を契機に", "meaning": "triggered by / using as an opportunity", "note": "Noun + を契機に marks the event that started a change." },
+    "g:n2-ni-mo-kakawarazu": { "label": "〜にもかかわらず", "meaning": "despite", "note": "Noun / plain form + にもかかわらず. Not the same as にかかわらず (regardless of)." },
+    "g:n2-dake-atte": { "label": "〜だけあって", "meaning": "as you'd expect from", "note": "Praise that fits a person's effort, skill or position: 練習してきただけあって." },
+    "g:n2-ni-saishite": { "label": "〜に際して", "meaning": "on the occasion of (formal)", "note": "Noun / dictionary form + に際して is used in announcements and polite writing." },
+    "k:再": { "label": "再", "reading": "さい / ふたた(び)", "meaning": "again" },
+    "k:機": { "label": "機", "reading": "き", "meaning": "machine, opportunity" }
+  },
+  "beats": [
+    { "type": "bg", "bg": "tokyo-skyline" },
+    { "type": "say", "who": null, "text": "それから 五年。東京の 夕方、ゆうきは 大学を 卒業する 年に なっていた。", "en": "Five years later. On a Tokyo evening, Yuuki is in the year of graduating university." },
+    { "type": "show", "char": "mio", "expr": "smile", "pos": "left" },
+    { "type": "say", "who": "mio", "text": "ゆうきさん！ ひさしぶり！ …ほんとに 東京に 来たんだね。", "en": "Yuuki! It's been a while! ...So you really came to Tokyo." },
+    { "type": "intro", "item": "k:再" },
+    { "type": "reading", "item": "k:再", "display": "再会", "target": "再", "prompt": "Mio waves a ticket that says 再会ライブ. Read 再会.", "answers": ["さいかい"] },
+    { "type": "intro", "item": "g:n2-wo-keiki-ni" },
+    { "type": "choice", "item": "g:n2-wo-keiki-ni", "who": "mio", "prompt": "Explain how it started: \"Triggered by my study abroad, I came to want to work in Japan.\"", "options": [
+      { "text": "留学を 契機に、日本で 働きたいと 思うように なりました。", "correct": true },
+      { "text": "留学を 契機を、日本で 働きたいと 思うように なりました。", "awkward": { "who": "mio", "text": "「を契機に」。「を」の あとは 「に」だよ。", "en": "\"Wo keiki ni\" -- after \"wo\" comes \"ni\"." } },
+      { "text": "留学に 契機に、日本で 働きたいと 思うように なりました。", "awkward": { "who": "mio", "text": "「留学を 契機に」。助詞は 「を」。", "en": "\"Ryuugaku wo keiki ni\" -- the particle is \"wo\"." } }
+    ] },
+    { "type": "bg", "bg": "night-street" },
+    { "type": "say", "who": null, "text": "ライブハウスの 前。雨が 降って いるのに、長い 列が できている。", "en": "In front of the live house. It's raining, yet a long line has formed." },
+    { "type": "intro", "item": "g:n2-ni-mo-kakawarazu" },
+    { "type": "choice", "item": "g:n2-ni-mo-kakawarazu", "who": "mio", "prompt": "Say: \"Despite the rain, many fans have gathered.\"", "options": [
+      { "text": "雨にもかかわらず、多くの ファンが 集まりました。", "correct": true },
+      { "text": "雨にもかからず、多くの ファンが 集まりました。", "awkward": { "who": "mio", "text": "「かかわらず」だよ。「かからず」じゃなくて。", "en": "It's \"kakawarazu\", not \"kakarazu\"." } },
+      { "text": "雨にかかわらず、多くの ファンが 集まりました。", "awkward": { "who": "mio", "text": "「にかかわらず」は 「〜に 関係なく」。「にもかかわらず」の ほうが 「〜なのに」だよ。", "en": "\"Ni kakawarazu\" means \"regardless of\". \"Ni mo kakawarazu\" means \"despite\"." } }
+    ] },
+    { "type": "show", "char": "sakai", "expr": "neutral", "pos": "right" },
+    { "type": "say", "who": "sakai", "text": "ゆうきさんですね。そらから 聞いて います。今日は 開演前に、ごあいさつを させて ください。", "en": "You must be Yuuki. Sora has told me about you. Please let me say a few words before the show." },
+    { "type": "intro", "item": "g:n2-ni-saishite" },
+    { "type": "choice", "item": "g:n2-ni-saishite", "who": "sakai", "prompt": "Sakai makes a formal announcement: \"On the occasion of the debut, a few words of greeting.\"", "options": [
+      { "text": "デビューに 際して、一言 ごあいさつ いたします。", "correct": true },
+      { "text": "デビューを 際して、一言 ごあいさつ いたします。", "awkward": { "who": "mio", "text": "「に 際して」。「を」じゃなくて。", "en": "\"Ni saishite\", not \"wo\"." } },
+      { "text": "デビューに 際る、一言 ごあいさつ いたします。", "awkward": { "who": "sakai", "text": "「際して」と して-形に します。", "en": "Use the して-form: \"saishite\"." } }
+    ] },
+    { "type": "bg", "bg": "studio" },
+    { "type": "show", "char": "sora", "expr": "smile", "pos": "center" },
+    { "type": "say", "who": "sora", "text": "ゆうき。…来て くれて ありがとう。五年ぶりだ。", "en": "Yuuki. ...Thanks for coming. It's been five years." },
+    { "type": "say", "who": "sakai", "text": "リハーサルを 聞きましたが、長年 練習して きただけあって、本当に すばらしい 演奏でした。", "en": "I heard the rehearsal. As you'd expect from years of practice, the performance was truly superb." },
+    { "type": "intro", "item": "g:n2-dake-atte" },
+    { "type": "choice", "item": "g:n2-dake-atte", "who": "sakai", "prompt": "Praise Sora: \"As you'd expect from someone who has practiced for years, your playing is wonderful.\"", "options": [
+      { "text": "長年 練習して きただけあって、演奏が すばらしいです。", "correct": true },
+      { "text": "長年 練習して きたくせに、演奏が すばらしいです。", "awkward": { "who": "sora", "text": "「くせに」は 批判する ときの 言い方だよ。", "en": "\"Kuse ni\" is used when criticising." } },
+      { "text": "長年 練習して きたのに、演奏が すばらしいです。", "awkward": { "who": "sakai", "text": "「のに」だと 「意外だ」という 感じに なりますね。", "en": "\"Noni\" gives a sense of surprise." } }
+    ] },
+    { "type": "intro", "item": "k:機" },
+    { "type": "reading", "item": "k:機", "display": "機会", "target": "機", "prompt": "Sora says it was a good 機会 to meet again. Read 機会.", "answers": ["きかい"] },
+    { "type": "affection", "char": "sora", "delta": 4 },
+    { "type": "affection", "char": "mio", "delta": 2 },
+    { "type": "cg", "id": "tokyo-reunion", "title": "The Tokyo reunion" },
+    { "type": "say", "who": "sora", "text": "あの 川の 町から、ここまで 来た。…今夜の 曲は、みんなの ための 曲だよ。", "en": "From that riverside town, I've come all the way here. ...Tonight's song is for all of you." }
+  ]
+}

@@ -1,0 +1,340 @@
+{
+  "schema": 1,
+  "id": "genki-l09",
+  "order": 109,
+  "track": "genki",
+  "lesson": 9,
+  "title": "なつまつりの 夜",
+  "summary": "The summer festival. Talk about what you did in casual past forms, and describe people by what they are doing.",
+  "covers": "past short forms · もう / まだ · verb + noun · 〜から",
+  "jlpt": "N5",
+  "source": "authored",
+  "bg": "festival-hall",
+  "characters": {
+    "hana": {
+      "name": "ハナ",
+      "color": "#7cc6b4"
+    },
+    "leo": {
+      "name": "レオ",
+      "color": "#f0a35e"
+    },
+    "mori": {
+      "name": "森先生",
+      "color": "#8e7cc3"
+    }
+  },
+  "glossary": {
+    "k:午": {
+      "label": "午",
+      "reading": "ご",
+      "meaning": "noon"
+    },
+    "g:n5-ta": {
+      "label": "〜た",
+      "meaning": "plain past: did / has done",
+      "note": "The plain past of verbs: 見る becomes 見た, 食べる becomes 食べた, 来る becomes 来た. Use it with friends; polite speech uses 〜ました. In casual speech, 食べた？ also asks whether someone has done something yet."
+    },
+    "g:genki-mou": {
+      "label": "もう〜た / まだ〜ていない",
+      "meaning": "already / not yet",
+      "note": "もう 食べた = I already ate. まだ 食べていない = I have not eaten yet (not まだ 食べなかった)."
+    },
+    "g:n5-kara-made": {
+      "label": "〜から〜まで",
+      "meaning": "from ... to ... (range in time or place)",
+      "note": "から marks the starting point and まで the end point. Either one can be used alone, as in 九時から or 駅まで. Do not replace まで with に here."
+    },
+    "g:genki-noun-mod": {
+      "label": "verb + noun",
+      "meaning": "the ... who / that ... (describing a noun with a verb)",
+      "note": "Put a short-form verb before the noun: いっしょに 来た 人 = the person who came with me."
+    },
+    "k:友": {
+      "label": "友",
+      "reading": "とも / ゆう",
+      "meaning": "friend"
+    },
+    "k:雨": {
+      "label": "雨",
+      "reading": "あめ / う",
+      "meaning": "rain"
+    },
+    "g:n5-kara-reason": {
+      "label": "〜から（理由）",
+      "meaning": "because / since (reason)",
+      "note": "から gives a reason and comes after the cause, as in 寒いから. The result comes after the comma. It is more direct than ので, which sounds softer and more polite."
+    }
+  },
+  "beats": [
+    {
+      "type": "show",
+      "char": "hana",
+      "expr": "smile",
+      "pos": "left"
+    },
+    {
+      "type": "show",
+      "char": "leo",
+      "expr": "smile",
+      "pos": "right"
+    },
+    {
+      "type": "say",
+      "who": null,
+      "text": "なつまつりの 夜。",
+      "en": "The night of the summer festival."
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "ノア、きのうの 午後、何 した？",
+      "en": "Noa, what did you do yesterday afternoon?"
+    },
+    {
+      "type": "reading",
+      "item": "k:午",
+      "display": "午後",
+      "answers": [
+        "ごご"
+      ],
+      "prompt": "When? Read it.",
+      "target": "午後"
+    },
+    {
+      "type": "intro",
+      "item": "g:n5-ta"
+    },
+    {
+      "type": "choice",
+      "item": "g:n5-ta",
+      "who": null,
+      "prompt": "Answer casually: \"I read a book at the library.\"",
+      "options": [
+        {
+          "text": "としょかんで 本を 読んだ。",
+          "correct": true
+        },
+        {
+          "text": "としょかんで 本を 読みた。",
+          "awkward": {
+            "who": "hana",
+            "text": "「読みた」？ む → んだ だよ。",
+            "en": "\"Yomita\"? む becomes んだ."
+          }
+        },
+        {
+          "text": "としょかんで 本を 読った。"
+        }
+      ]
+    },
+    {
+      "type": "choice",
+      "item": "g:n5-ta",
+      "who": null,
+      "prompt": "Ask Leo casually: \"Did you eat takoyaki?\"",
+      "options": [
+        {
+          "text": "レオ、たこやき 食べた？",
+          "correct": true
+        },
+        {
+          "text": "レオ、たこやき 食べった？",
+          "awkward": {
+            "who": "leo",
+            "text": "「食べった」？ ははは、「食べた」だよ！",
+            "en": "\"Tabetta\"? Haha, it's \"tabeta\"!"
+          }
+        },
+        {
+          "text": "レオ、たこやき 食べるた？"
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "leo",
+      "text": "もう 食べたよ！ 三つ！ ノアは？",
+      "en": "Already did! Three! You?"
+    },
+    {
+      "type": "intro",
+      "item": "g:genki-mou"
+    },
+    {
+      "type": "choice",
+      "item": "g:genki-mou",
+      "who": null,
+      "prompt": "You have not eaten yet.",
+      "options": [
+        {
+          "text": "まだ 食べていない。",
+          "correct": true
+        },
+        {
+          "text": "まだ 食べなかった。",
+          "awkward": {
+            "who": "leo",
+            "text": "「まだ」の ときは「食べていない」だよ。",
+            "en": "With \"mada\", it's \"tabete inai\"."
+          }
+        },
+        {
+          "text": "もう 食べていない。"
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "おまつりは 何時まで？",
+      "en": "Until what time is the festival?"
+    },
+    {
+      "type": "particle",
+      "item": "g:n5-kara-made",
+      "who": "leo",
+      "text": "六時＿ 九時まで だよ。",
+      "options": [
+        "から",
+        "に",
+        "で",
+        "を"
+      ],
+      "answers": [
+        "から"
+      ],
+      "en": "It's from six to nine.",
+      "role": "p:kara/from"
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "あ、あそこで ゆかたを 着ている 人、だれ？",
+      "en": "Oh, who's that person over there wearing a yukata?"
+    },
+    {
+      "type": "show",
+      "char": "mori",
+      "expr": "smile",
+      "pos": "center"
+    },
+    {
+      "type": "say",
+      "who": "mori",
+      "text": "こんばんは。わたしですよ。",
+      "en": "Good evening. It's me."
+    },
+    {
+      "type": "intro",
+      "item": "g:genki-noun-mod"
+    },
+    {
+      "type": "choice",
+      "item": "g:genki-noun-mod",
+      "who": null,
+      "prompt": "Ask Mori-sensei: \"Who is the person who came with you?\"",
+      "options": [
+        {
+          "text": "いっしょに 来た 人は だれですか。",
+          "correct": true
+        },
+        {
+          "text": "いっしょに 来ました 人は だれですか。",
+          "awkward": {
+            "who": "mori",
+            "text": "名詞の 前は 短い形ですよ。「来た 人」。",
+            "en": "Before a noun, use the short form: \"kita hito\"."
+          }
+        },
+        {
+          "text": "人は いっしょに 来た だれですか。"
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "mori",
+      "text": "わたしの 古い 友だちです。",
+      "en": "An old friend of mine."
+    },
+    {
+      "type": "reading",
+      "item": "k:友",
+      "display": "友だち",
+      "answers": [
+        "ともだち"
+      ],
+      "prompt": "Read it.",
+      "target": "友"
+    },
+    {
+      "type": "hide",
+      "char": "mori"
+    },
+    {
+      "type": "say",
+      "who": null,
+      "text": "とつぜん、雨が ふってきた。",
+      "en": "Suddenly it starts to rain."
+    },
+    {
+      "type": "reading",
+      "item": "k:雨",
+      "display": "雨",
+      "answers": [
+        "あめ"
+      ],
+      "prompt": "What is falling? Read it."
+    },
+    {
+      "type": "intro",
+      "item": "g:n5-kara-reason"
+    },
+    {
+      "type": "choice",
+      "item": "g:n5-kara-reason",
+      "who": null,
+      "prompt": "Say: \"It's raining, so let's go home.\"",
+      "options": [
+        {
+          "text": "雨が ふっているから、帰りましょう。",
+          "correct": true
+        },
+        {
+          "text": "帰りましょうから、雨が ふっています。",
+          "awkward": {
+            "who": "hana",
+            "text": "あれ、ぎゃくだよ！",
+            "en": "Hm, that's backwards!"
+          }
+        },
+        {
+          "text": "雨が ふるから、帰りましょうでした。"
+        }
+      ]
+    },
+    {
+      "type": "affection",
+      "char": "hana",
+      "delta": 2
+    },
+    {
+      "type": "affection",
+      "char": "leo",
+      "delta": 1
+    },
+    {
+      "type": "cg",
+      "id": "genki-festival",
+      "title": "Summer festival"
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "たのしかった！ また 来年も 来ようね！",
+      "en": "That was fun! Let's come again next year!",
+      "expr": "smile"
+    }
+  ]
+}

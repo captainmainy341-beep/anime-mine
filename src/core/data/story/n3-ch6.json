@@ -1,0 +1,76 @@
+{
+  "schema": 1,
+  "id": "n3-ch6",
+  "order": 18,
+  "title": "Chapter 18: 駅前の 花火",
+  "summary": "Fireworks night and the answer. When something turned out, doing one thing instead of another, killing two birds, the moment something happens, and sticking to your decision.",
+  "jlpt": "N3",
+  "source": "authored",
+  "bg": "festival-hall",
+  "characters": {
+    "mio": { "name": "みお", "color": "#f3a0b6" },
+    "sora": { "name": "そら", "color": "#a2befa" },
+    "okada": { "name": "岡田さん", "color": "#8e7cc3" }
+  },
+  "glossary": {
+    "g:n3-tokoro-ta": { "label": "〜たところ", "meaning": "when I did ... (it turned out)", "note": "Past form + ところ: after doing something, you discover a result." },
+    "g:n3-kawari-ni": { "label": "〜かわりに", "meaning": "instead of", "note": "Verb plain / Noun の + かわりに: one thing in place of another, or in exchange." },
+    "g:n3-tsuide-ni": { "label": "〜ついでに", "meaning": "while at it", "note": "Verb plain / Noun の + ついでに: use an errand to do another small thing." },
+    "g:n3-ka-nai-ka-no-uchi-ni": { "label": "〜か〜ないかのうちに", "meaning": "the moment ...", "note": "Repeat the verb (dictionary form + か + ない form + かのうちに): two events almost overlap." },
+    "g:n3-ijou": { "label": "〜以上（は）", "meaning": "now that / as long as", "note": "Verb た/ている/ない + 以上は: since the situation is so, you must follow through." },
+    "k:花": { "label": "花", "reading": "か / はな", "meaning": "flower" },
+    "k:続": { "label": "続", "reading": "ぞく / つづ(く)", "meaning": "continue" }
+  },
+  "beats": [
+    { "type": "bg", "bg": "festival-hall" },
+    { "type": "say", "who": null, "text": "夏祭りの 夜。署名は ついに 千五百人分に なった。三人は 緊張して、町長を 待っている。", "en": "Summer festival night. The signatures have reached fifteen hundred. The three of you wait nervously for the mayor." },
+    { "type": "show", "char": "mio", "expr": "neutral", "pos": "left" },
+    { "type": "show", "char": "sora", "expr": "neutral", "pos": "right" },
+    { "type": "intro", "item": "k:花" },
+    { "type": "reading", "item": "k:花", "display": "花火", "target": "花", "prompt": "The poster says 花火大会. Read the first word, 花火.", "answers": ["はなび"] },
+    { "type": "say", "who": "mio", "text": "町長に 相談したところ、「花火の あとで 会う」と 言われたよ。", "en": "When I consulted the mayor, I was told, \"I'll meet you after the fireworks.\"" },
+    { "type": "intro", "item": "g:n3-tokoro-ta" },
+    { "type": "choice", "item": "g:n3-tokoro-ta", "who": "mio", "prompt": "Report: \"When I consulted the mayor, I was told he'd meet us.\"", "options": [
+      { "text": "町長に 相談したところ、会って くれると 言われました。", "correct": true },
+      { "text": "町長に 相談する ところ、会って くれると 言われました。", "awkward": { "who": "sora", "text": "「したところ」。「たところ」は 過去形。", "en": "\"Shita tokoro\" -- it uses the past form." } },
+      { "text": "町長に 相談したところで、会って くれると 言われました。", "awkward": { "who": "mio", "text": "「たところで」は 「〜しても むだ」の 意味に なるよ。", "en": "\"Ta tokoro de\" means \"even if I did...\"." } }
+    ] },
+    { "type": "say", "who": "sora", "text": "町長、忙しくて 来られないんじゃ…？", "en": "Won't the mayor be too busy to come...?" },
+    { "type": "show", "char": "okada", "expr": "smile", "pos": "center" },
+    { "type": "say", "who": "okada", "text": "町長は 来られない かわりに、手紙を 預かって 来ました。", "en": "The mayor can't come, but in his place he sent a letter." },
+    { "type": "intro", "item": "g:n3-kawari-ni" },
+    { "type": "choice", "item": "g:n3-kawari-ni", "who": "okada", "prompt": "Say: \"Instead of coming himself, the mayor sent a letter.\"", "options": [
+      { "text": "町長は 来られない かわりに、手紙を 送って くれました。", "correct": true },
+      { "text": "町長は 来られないのかわりに、手紙を 送って くれました。", "awkward": { "who": "okada", "text": "「の」は いりません。", "en": "No need for \"no\"." } },
+      { "text": "町長は 来られない かわりで、手紙を 送って くれました。", "awkward": { "who": "mio", "text": "「かわりに」ですよ。", "en": "It's \"kawari ni\"." } }
+    ] },
+    { "type": "say", "who": "okada", "text": "あとで 花火を 見ながら、ゆっくり 読みましょう。", "en": "Let's read it slowly later while we watch the fireworks." },
+    { "type": "intro", "item": "g:n3-tsuide-ni" },
+    { "type": "choice", "item": "g:n3-tsuide-ni", "who": "mio", "prompt": "Suggest: \"While we go to see the fireworks, let's take down the posters too.\"", "options": [
+      { "text": "花火を 見に 行く ついでに、ポスターも はずしましょう。", "correct": true },
+      { "text": "花火を 見に 行く ついでが、ポスターも はずしましょう。", "awkward": { "who": "sora", "text": "「ついでに」。「が」じゃなくて。", "en": "\"Tsuide ni\", not \"ga\"." } },
+      { "text": "花火を 見に 行ったついでに、ポスターも はずしましょう。", "awkward": { "who": "okada", "text": "これから する ことなので、「行く ついでに」ですよ。", "en": "It's something you'll do, so \"iku tsuide ni\"." } }
+    ] },
+    { "type": "say", "who": null, "text": "ドン！ 夜空に 最初の 花火が 上がった。", "en": "Boom! The first firework bursts in the night sky." },
+    { "type": "intro", "item": "g:n3-ka-nai-ka-no-uchi-ni" },
+    { "type": "choice", "item": "g:n3-ka-nai-ka-no-uchi-ni", "who": "sora", "prompt": "Describe: \"The moment the firework went up, the crowd cheered.\"", "options": [
+      { "text": "花火が 上がるか 上がらないかの うちに、歓声が 上がりました。", "correct": true },
+      { "text": "花火が 上がったか 上がらなかったかの うちに、歓声が 上がりました。", "awkward": { "who": "mio", "text": "この 形は じしょけいを つかうよ。", "en": "This pattern uses the dictionary form." } },
+      { "text": "花火が 上がるか ないかの うちに、歓声が 上がりました。", "awkward": { "who": "sora", "text": "おなじ 動詞を くりかえす。「上がらないか」。", "en": "Repeat the same verb: \"agaranai ka\"." } }
+    ] },
+    { "type": "say", "who": "okada", "text": "手紙の 内容は、こうです。「署名に 基づいて、計画の 一部を 変更します」。", "en": "The letter says: \"Based on the signatures, part of the plan will be changed.\"" },
+    { "type": "intro", "item": "k:続" },
+    { "type": "reading", "item": "k:続", "display": "続ける", "target": "続", "prompt": "The letter says the cafe can 続ける. Read it.", "answers": ["つづける"] },
+    { "type": "say", "who": "okada", "text": "川ぞいの 建物は 残し、お店を 続けても いいそうです。", "en": "The riverside building will be kept, and the shop may continue." },
+    { "type": "intro", "item": "g:n3-ijou" },
+    { "type": "choice", "item": "g:n3-ijou", "who": "mio", "prompt": "Make a vow: \"Now that we've decided to do it, let's do it to the end.\"", "options": [
+      { "text": "やると 決めた 以上、最後まで やりましょう。", "correct": true },
+      { "text": "やると 決めた 以上に、最後まで やりましょう。", "awkward": { "who": "okada", "text": "「以上に」だと 「〜より もっと」の 意味に なりますよ。", "en": "\"Ijou ni\" means \"more than\"." } },
+      { "text": "やると 決めた ように、最後まで やりましょう。", "awkward": { "who": "sora", "text": "「ように」だと 「決めた とおりに」。理由なら 「以上」。", "en": "\"You ni\" means \"as decided\". For \"now that\", use \"ijou\"." } }
+    ] },
+    { "type": "affection", "char": "mio", "delta": 4 },
+    { "type": "affection", "char": "sora", "delta": 3 },
+    { "type": "cg", "id": "fireworks-night", "title": "Fireworks above the river" },
+    { "type": "say", "who": "mio", "text": "…守れたんだね、あの お店。ありがとう、二人とも。", "en": "...We saved that shop. Thank you, both of you." }
+  ]
+}

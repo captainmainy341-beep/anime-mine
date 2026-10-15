@@ -1,0 +1,380 @@
+{
+  "schema": 1,
+  "id": "genki-l13",
+  "lesson": 13,
+  "title": "Can Do!",
+  "tagline": "Say what you can do, give a few reasons at once, and say how things look.",
+  "hook": "Noa's first shift at Café Aozora means plates, coffee and customers. You'll need to say what you can do, explain why you like a place, and guess how things will turn out just by looking.",
+  "goals": [
+    "Turn verbs into can-do verbs (potential)",
+    "List reasons with 〜し、〜し",
+    "Say how something looks with 〜そうです"
+  ],
+  "minutes": 12,
+  "vocab": [
+    [
+      "運ぶ",
+      "はこぶ",
+      "to carry",
+      "🍽️"
+    ],
+    [
+      "作る",
+      "つくる",
+      "to make",
+      "🥞"
+    ],
+    [
+      "話す",
+      "はなす",
+      "to speak",
+      "🗣️"
+    ],
+    [
+      "泳ぐ",
+      "およぐ",
+      "to swim",
+      "🏊"
+    ],
+    [
+      "弾く",
+      "ひく",
+      "to play (strings)",
+      "🎸"
+    ],
+    [
+      "走る",
+      "はしる",
+      "to run",
+      "🏃"
+    ],
+    [
+      "覚える",
+      "おぼえる",
+      "to memorize",
+      "🧠"
+    ],
+    [
+      "注文",
+      "ちゅうもん",
+      "order",
+      "📝"
+    ],
+    [
+      "お客さん",
+      "おきゃくさん",
+      "customer",
+      "🙋"
+    ],
+    [
+      "店員",
+      "てんいん",
+      "shop clerk",
+      "🧑‍🍳"
+    ],
+    [
+      "時給",
+      "じきゅう",
+      "hourly pay",
+      "💴"
+    ],
+    [
+      "初めて",
+      "はじめて",
+      "for the first time",
+      "🌱"
+    ],
+    [
+      "緊張",
+      "きんちょう",
+      "nervousness",
+      "😬"
+    ],
+    [
+      "料理",
+      "りょうり",
+      "cooking",
+      "🍳"
+    ],
+    [
+      "皿",
+      "さら",
+      "plate",
+      "🍽️"
+    ],
+    [
+      "眠い",
+      "ねむい",
+      "sleepy",
+      "😴"
+    ],
+    [
+      "忙しい",
+      "いそがしい",
+      "busy",
+      "⏳"
+    ],
+    [
+      "難しい",
+      "むずかしい",
+      "difficult",
+      "🧩"
+    ],
+    [
+      "上手",
+      "じょうず",
+      "good at",
+      "👍"
+    ],
+    [
+      "雨",
+      "あめ",
+      "rain",
+      "🌧️"
+    ]
+  ],
+  "points": [
+    {
+      "id": "g:n4-potential",
+      "title": "〜られる / 〜える（can do）",
+      "formula": "ru-verb: stem + られる / u-verb: え-row + る",
+      "gist": "Turn \"do\" into \"can do\".",
+      "explain": [
+        "Ru-verbs add られる: 食べる → 食べられる. U-verbs change the last sound to the え-row and add る: 飲む → 飲める, 話す → 話せる, 書く → 書ける.",
+        "する becomes できる and 来る becomes 来られる. Every can-do verb then behaves like a ru-verb: 飲める, 飲めない, 飲めます."
+      ],
+      "examples": [
+        {
+          "ja": "わたしは|日本語が|話せます。",
+          "gloss": "I (topic)|Japanese (subject)|can speak",
+          "en": "I can speak Japanese."
+        },
+        {
+          "ja": "ハナさんは|ギターが|ひけます。",
+          "gloss": "Hana (topic)|guitar (subject)|can play",
+          "en": "Hana can play the guitar."
+        },
+        {
+          "ja": "ここで|お茶が|飲めますか。",
+          "gloss": "here|tea (subject)|can I drink",
+          "en": "Can I drink tea here?"
+        }
+      ],
+      "tip": "食べる → 食べられる, 飲む → 飲める. Look at the last sound before you change it.",
+      "watch": "The thing you can do usually takes が, not を: 日本語が話せる."
+    },
+    {
+      "id": "g:genki-shi",
+      "title": "〜し、〜し",
+      "formula": "plain clause + し、plain clause + し",
+      "gist": "Stack up reasons with \"and besides\".",
+      "explain": [
+        "し joins two or more reasons after plain-form clauses. It hints that there are even more reasons than you named.",
+        "Often the sentence ends with the conclusion: ここは 安いし、おいしいし、好きです. You can also finish with から or ので."
+      ],
+      "examples": [
+        {
+          "ja": "ここは|安いし、|おいしいし、|好きです。",
+          "gloss": "this place (topic)|cheap and|tasty and|I like it",
+          "en": "It's cheap and tasty, so I like it."
+        },
+        {
+          "ja": "あしたは|休みだし、|天気もいいし、|出かけましょう。",
+          "gloss": "tomorrow (topic)|a day off and|the weather is good and|let us go out",
+          "en": "It's a day off and the weather is good, so let's go out."
+        }
+      ],
+      "tip": "Two reasons are enough: A し、B し、conclusion.",
+      "watch": "し is for listing reasons, not for joining two actions. For actions use the て-form."
+    },
+    {
+      "id": "g:n4-sou-da-appearance",
+      "title": "〜そうです（looks like）",
+      "formula": "verb stem / adj stem + そうです",
+      "gist": "Say how something looks from the outside.",
+      "explain": [
+        "Take the stem (ます-stem of a verb, or the adjective without い) and add そうです: おいしそう, 降りそう, 楽しそう.",
+        "Two odd ones: いい becomes よさそう and ない becomes なさそう. For な-adjectives drop nothing: 元気そう."
+      ],
+      "examples": [
+        {
+          "ja": "この|ケーキは|おいしそうです。",
+          "gloss": "this|cake (topic)|looks tasty",
+          "en": "This cake looks tasty."
+        },
+        {
+          "ja": "雨が|降りそうですね。",
+          "gloss": "rain (subject)|looks like falling",
+          "en": "It looks like rain."
+        },
+        {
+          "ja": "ハナさんは|眠そうです。",
+          "gloss": "Hana (topic)|looks sleepy",
+          "en": "Hana looks sleepy."
+        }
+      ],
+      "tip": "Think of it as \"I can see it just by looking\".",
+      "watch": "This is for looks. To pass on what you heard use 〜そうだ (hearsay), which attaches to a whole plain sentence."
+    }
+  ],
+  "drills": [
+    {
+      "type": "gap",
+      "point": 0,
+      "ja": "ハナさんは ギターが ひ＿ます。",
+      "options": [
+        "け",
+        "ける",
+        "きる",
+        "かれ"
+      ],
+      "answer": "け",
+      "en": "Hana can play the guitar.",
+      "why": "ひく → ひける; polite form ひけます."
+    },
+    {
+      "type": "pick",
+      "q": "Which means \"I can eat it\"?",
+      "options": [
+        "食べられます。",
+        "食べれます。",
+        "食べいます。",
+        "食べるます。"
+      ],
+      "answer": 0,
+      "why": "Ru-verb: 食べる → 食べられる.",
+      "point": 0
+    },
+    {
+      "type": "gap",
+      "point": 0,
+      "ja": "わたしは 日本語＿ 話せます。",
+      "options": [
+        "が",
+        "に",
+        "へ",
+        "も"
+      ],
+      "answer": "が",
+      "en": "I can speak Japanese.",
+      "why": "The thing you can do takes が."
+    },
+    {
+      "type": "order",
+      "point": 0,
+      "en": "I can carry five plates.",
+      "chunks": [
+        "五まい",
+        "運べます"
+      ],
+      "extra": [
+        "お皿を"
+      ]
+    },
+    {
+      "type": "gap",
+      "point": 1,
+      "ja": "ここは 安い＿、おいしいし、好きです。",
+      "options": [
+        "し",
+        "が",
+        "を",
+        "に"
+      ],
+      "answer": "し",
+      "en": "It's cheap, tasty, so I like it.",
+      "why": "安いし、おいしいし、…"
+    },
+    {
+      "type": "pick",
+      "q": "You want to say \"It is a day off and the weather is good.\"",
+      "options": [
+        "休みだし、天気もいいです。",
+        "休みだて、天気もいいです。",
+        "休みしだ、天気もいいです。",
+        "休みので、天気もいいです。"
+      ],
+      "answer": 0,
+      "why": "Plain form + し.",
+      "point": 1
+    },
+    {
+      "type": "order",
+      "point": 1,
+      "en": "It's quiet and cheap, so I like it.",
+      "chunks": [
+        "しずかだし、",
+        "安いし、",
+        "好きです"
+      ]
+    },
+    {
+      "type": "gap",
+      "point": 2,
+      "ja": "このケーキは おいし＿ です。",
+      "options": [
+        "そう",
+        "そうに",
+        "そうな",
+        "ので"
+      ],
+      "answer": "そう",
+      "en": "This cake looks tasty.",
+      "why": "Drop い and add そう."
+    },
+    {
+      "type": "pick",
+      "q": "Which means \"It looks like rain\"?",
+      "options": [
+        "雨が 降りそうです。",
+        "雨が 降るそうです。",
+        "雨が 降りますそう。",
+        "雨が 降ったそう。"
+      ],
+      "answer": 0,
+      "why": "ます-stem 降り + そう.",
+      "point": 2
+    },
+    {
+      "type": "pick",
+      "q": "How do you say \"that looks good\" with いい?",
+      "options": [
+        "よさそうです。",
+        "いそうです。",
+        "いいそうです。",
+        "よいそうです。"
+      ],
+      "answer": 0,
+      "why": "いい becomes よさそう.",
+      "point": 2
+    },
+    {
+      "type": "type",
+      "prompt": "Type the reading of 運ぶ (to carry) in hiragana.",
+      "show": "運ぶ",
+      "answers": [
+        "はこぶ"
+      ]
+    },
+    {
+      "type": "type",
+      "prompt": "Type the reading of 忙しい (busy) in hiragana.",
+      "show": "忙しい",
+      "answers": [
+        "いそがしい"
+      ]
+    },
+    {
+      "type": "pick",
+      "q": "Which one means \"hourly pay\"?",
+      "options": [
+        "時給",
+        "注文",
+        "店員",
+        "皿"
+      ],
+      "answer": 0,
+      "why": "時給 (じきゅう) = hourly pay."
+    }
+  ]
+}

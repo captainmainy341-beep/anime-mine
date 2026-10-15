@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "id": "n4-ch6",
+  "order": 12,
+  "title": "Chapter 12: ふゆの けつい",
+  "summary": "Winter. Your exchange year is ending. Decide to stay, learn what has been decided for you, and notice how far you have come.",
+  "jlpt": "N4",
+  "source": "authored",
+  "bg": "home-evening",
+  "characters": {
+    "mio": { "name": "みお", "color": "#f3a0b6" },
+    "tanaka": { "name": "田中先生", "color": "#9de3c4" }
+  },
+  "glossary": {
+    "g:n4-koto-ni-suru": { "label": "〜ことにする", "meaning": "decide to (my own decision)", "note": "Plain form + ことにする: the speaker decides." },
+    "g:n4-koto-ni-naru": { "label": "〜ことになる", "meaning": "it has been decided / it turns out", "note": "Plain form + ことになる: the decision comes from outside, or sounds like an outcome." },
+    "g:n4-you-ni-naru": { "label": "〜ようになる", "meaning": "come to be able to / start to", "note": "Dictionary or potential form + ようになる shows a gradual change." },
+    "g:n4-you-ni-suru": { "label": "〜ようにする", "meaning": "make an effort to / make a point of", "note": "Dictionary or ない form + ようにする describes a habit you work at." },
+    "k:冬": { "label": "冬", "reading": "とう / ふゆ", "meaning": "winter" },
+    "k:決": { "label": "決", "reading": "けつ / き(める)", "meaning": "decide" }
+  },
+  "beats": [
+    { "type": "bg", "bg": "home-evening" },
+    { "type": "say", "who": null, "text": "十二月。外は 雪。ホームステイの 家で、あたたかい お茶を のんでいる。", "en": "December. Snow outside. You're sipping hot tea at your homestay." },
+    { "type": "intro", "item": "k:冬" },
+    { "type": "reading", "item": "k:冬", "display": "冬休み", "target": "冬", "prompt": "The school calendar shows 冬休み. Read it.", "answers": ["ふゆやすみ"] },
+    { "type": "show", "char": "tanaka", "expr": "smile", "pos": "left" },
+    { "type": "say", "who": "tanaka", "text": "ゆうきさん、留学は 春までですね。…これから どう しますか。", "en": "Yuuki, your study abroad ends in spring. ...What will you do from here?" },
+    { "type": "intro", "item": "k:決" },
+    { "type": "reading", "item": "k:決", "display": "決める", "target": "決", "prompt": "Tanaka-sensei says you have to 決める. Read it.", "answers": ["きめる"] },
+    { "type": "intro", "item": "g:n4-koto-ni-suru" },
+    { "type": "choice", "item": "g:n4-koto-ni-suru", "who": "tanaka", "prompt": "Tell Tanaka-sensei your own decision: \"I decided to stay in Japan one more year.\"", "options": [
+      { "text": "もう 一年、日本に のこる ことに しました。", "correct": true },
+      { "text": "もう 一年、日本に のこる ことに なりました。", "awkward": { "who": "tanaka", "text": "「なりました」だと、まわりが 決めた みたいですね。", "en": "\"Narimashita\" sounds like someone else decided." } },
+      { "text": "もう 一年、日本に のこった ことに しました。", "awkward": { "who": "tanaka", "text": "「のこる」ですよ。まだ のこって いません。", "en": "It's \"nokoru\" -- you haven't stayed yet." } }
+    ] },
+    { "type": "say", "who": "tanaka", "text": "そうですか！ じつは、学校の ほうでも 一つ 決まった ことが あります。", "en": "I see! Actually, there's something the school has decided too." },
+    { "type": "intro", "item": "g:n4-koto-ni-naru" },
+    { "type": "choice", "item": "g:n4-koto-ni-naru", "who": "tanaka", "prompt": "Report it to Mio later: \"It's been decided that I'll help with the class next year.\"", "options": [
+      { "text": "来年から、授業を 手伝う ことに なりました。", "correct": true },
+      { "text": "来年から、授業を 手伝う ことに しました。", "awkward": { "who": "mio", "text": "えっ、じぶんで 決めたの？ 「なりました」は まわりが 決めた とき。", "en": "Oh, you decided it yourself? \"Narimashita\" is for when others decided." } },
+      { "text": "来年から、授業を 手伝う ことが なりました。", "awkward": { "who": "mio", "text": "「ことに なる」だよ。「が」じゃなくて。", "en": "It's \"koto ni naru\", not \"ga\"." } }
+    ] },
+    { "type": "hide", "char": "tanaka" },
+    { "type": "show", "char": "mio", "expr": "smile", "pos": "left" },
+    { "type": "say", "who": "mio", "text": "ゆうきさん、日本語、すごく じょうずに なったね。", "en": "Yuuki, your Japanese has gotten so good." },
+    { "type": "intro", "item": "g:n4-you-ni-naru" },
+    { "type": "choice", "item": "g:n4-you-ni-naru", "who": "mio", "prompt": "Answer humbly: \"I've come to be able to speak Japanese.\"", "options": [
+      { "text": "日本語が はなせるように なりました。", "correct": true },
+      { "text": "日本語が はなせるに なりました。", "awkward": { "who": "mio", "text": "「ように」が ぬけて いるよ。", "en": "You left out \"you ni\"." } },
+      { "text": "日本語が はなせるようを なりました。", "awkward": { "who": "mio", "text": "「ように なる」の 「に」だよ。", "en": "It's the \"ni\" of \"you ni naru\"." } }
+    ] },
+    { "type": "intro", "item": "g:n4-you-ni-suru" },
+    { "type": "choice", "item": "g:n4-you-ni-suru", "who": "mio", "prompt": "Explain your secret: \"I make a point of writing a diary every day.\"", "options": [
+      { "text": "まいにち 日記を 書くように しています。", "correct": true },
+      { "text": "まいにち 日記を 書いたように しています。", "awkward": { "who": "mio", "text": "「書いたように」は 「書いた とおりに」みたいな いみだよ。", "en": "\"Kaita you ni\" means \"as I wrote\"." } },
+      { "text": "まいにち 日記を 書くようして います。", "awkward": { "who": "mio", "text": "「ように して」…「に」が ぬけて いるよ。", "en": "\"You ni shite\"... the \"ni\" is missing." } }
+    ] },
+    { "type": "affection", "char": "mio", "delta": 3 },
+    { "type": "cg", "id": "winter-snow", "title": "Snow on the homestay roof" },
+    { "type": "say", "who": "mio", "text": "もう 一年 いっしょだね。うれしい！ 春が 来たら、また 川に 行こう。", "en": "One more year together. I'm so happy! When spring comes, let's go to the river again." }
+  ]
+}

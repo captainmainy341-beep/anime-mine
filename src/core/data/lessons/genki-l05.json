@@ -1,0 +1,118 @@
+{
+  "schema": 1,
+  "id": "genki-l05",
+  "lesson": 5,
+  "title": "A Day at the Sea",
+  "tagline": "Describe things with adjectives, say what you like, and suggest doing something together.",
+  "hook": "The trip to the seaside is on, and the group has opinions about everything: the weather, the water, the food. Time to describe, like and propose.",
+  "goals": ["Use い-adjectives and な-adjectives correctly", "Say how something was with adjective past forms", "Say you like something and suggest ましょう"],
+  "minutes": 10,
+  "vocab": [
+    ["大きい", "おおきい", "big", "🐘"],
+    ["小さい", "ちいさい", "small", "🐭"],
+    ["高い", "たかい", "tall, expensive", "💹"],
+    ["安い", "やすい", "cheap", "🏷️"],
+    ["おいしい", "おいしい", "delicious", "😋"],
+    ["あつい", "あつい", "hot (weather, things)", "🥵"],
+    ["さむい", "さむい", "cold (weather)", "🥶"],
+    ["たのしい", "たのしい", "fun", "🎉"],
+    ["きれい", "きれい", "pretty, clean (な)", "✨"],
+    ["しずか", "しずか", "quiet (な)", "🤫"],
+    ["にぎやか", "にぎやか", "lively (な)", "🎊"],
+    ["元気", "げんき", "healthy, energetic (な)", "💪"],
+    ["すき", "すき", "to like (な)", "💗"],
+    ["きらい", "きらい", "to dislike (な)", "💔"],
+    ["天気", "てんき", "weather", "⛅"],
+    ["晴れ", "はれ", "sunny", "☀️"],
+    ["海", "うみ", "sea", "🌊"],
+    ["砂", "すな", "sand", "🏖️"],
+    ["水", "みず", "water", "💧"],
+    ["とても", "とても", "very", "💯"]
+  ],
+  "points": [
+    {
+      "id": "g:n5-i-na-adj",
+      "title": "い-adjectives and な-adjectives",
+      "formula": "い-adj + noun / な-adj + な + noun",
+      "gist": "Two families of describing words.",
+      "explain": [
+        "い-adjectives end in い and attach straight to a noun: おいしい ケーキ. な-adjectives need な when they come before a noun: しずかな 海.",
+        "Before です, い-adjectives take it directly (高いです) while な-adjectives drop the な (しずかです)."
+      ],
+      "examples": [
+        { "ja": "この|ケーキは|おいしいです。", "gloss": "this|cake (topic)|delicious", "en": "This cake is delicious." },
+        { "ja": "しずかな|海ですね。", "gloss": "quiet|sea, isn't it", "en": "It's a quiet sea, isn't it?" },
+        { "ja": "あつい|天気ですね。", "gloss": "hot|weather, isn't it", "en": "It's hot weather, isn't it?" }
+      ],
+      "tip": "きれい and きらい look like い-adjectives but are な-adjectives. Learn them as exceptions.",
+      "watch": "Never say しずかい; しずか is a な-adjective."
+    },
+    {
+      "id": "g:genki-adj-past",
+      "title": "Adjective past: 〜かったです / 〜でした",
+      "formula": "い-adj: ○い → ○かったです / な-adj: ○でした",
+      "gist": "Was ... (past).",
+      "explain": [
+        "For an い-adjective, drop い and add かった: 高い → 高かった. Add です to keep it polite. For a な-adjective or noun, use でした.",
+        "The negative past is くなかった (い-adjective) or じゃなかった (な-adjective)."
+      ],
+      "examples": [
+        { "ja": "海は|きれいでした。", "gloss": "sea (topic)|was pretty", "en": "The sea was pretty." },
+        { "ja": "天気は|あつかったです。", "gloss": "weather (topic)|was hot", "en": "The weather was hot." },
+        { "ja": "ケーキは|高くなかったです。", "gloss": "cake (topic)|wasn't expensive", "en": "The cake wasn't expensive." }
+      ],
+      "tip": "いい is the odd one: past is よかった, not いかった.",
+      "watch": "Don't turn な-adjectives into かった: きれいかった is wrong."
+    },
+    {
+      "id": "g:n5-ga-suki",
+      "title": "〜が好き / きらい / 上手 / 下手",
+      "formula": "thing が すき です",
+      "gist": "I like it (the thing is marked with が).",
+      "explain": [
+        "In Japanese you don't \"like\" something with a verb. Something is likeable (好き) to you, so the object takes が, not を.",
+        "The same pattern works for きらい (dislike), 上手 (good at), and 下手 (bad at)."
+      ],
+      "examples": [
+        { "ja": "わたしは|海が|好きです。", "gloss": "I (topic)|sea (subject)|like", "en": "I like the sea." },
+        { "ja": "レオさんは|うたが|上手です。", "gloss": "Leo (topic)|singing (subject)|good at", "en": "Leo is good at singing." },
+        { "ja": "コーヒーは|あまり|好きじゃないです。", "gloss": "coffee (topic)|not very|don't like", "en": "I don't like coffee very much." }
+      ],
+      "tip": "Say とても 好きです for \"I love it\".",
+      "watch": "海を 好きです sounds off. Use が."
+    },
+    {
+      "id": "g:n5-mashou",
+      "title": "〜ましょう",
+      "formula": "verb stem + ましょう",
+      "gist": "Let's ...",
+      "explain": [
+        "ましょう suggests doing something together. It is the answer-ready version of ませんか: the speaker proposes confidently.",
+        "Use it for plans (行きましょう), reminders (休みましょう) or to accept an invitation."
+      ],
+      "examples": [
+        { "ja": "海へ|行きましょう。", "gloss": "to the sea|let's go", "en": "Let's go to the sea." },
+        { "ja": "すこし|休みましょう。", "gloss": "a little|let's rest", "en": "Let's rest a little." },
+        { "ja": "いっしょに|食べましょう。", "gloss": "together|let's eat", "en": "Let's eat together." }
+      ],
+      "tip": "Use ましょう when you've decided; use ませんか when you want the other person to choose.",
+      "watch": "ましょう is not used for suggestions to a boss or someone far above you."
+    }
+  ],
+  "drills": [
+    { "type": "gap", "point": 0, "ja": "このケーキは おいし＿です。", "options": ["い", "な", "く", "に"], "answer": "い", "en": "This cake is delicious.", "why": "おいしい is an い-adjective." },
+    { "type": "gap", "point": 0, "ja": "しずか＿ 海ですね。", "options": ["な", "い", "の", "を"], "answer": "な", "en": "It's a quiet sea.", "why": "な-adjectives need な before a noun." },
+    { "type": "pick", "point": 0, "q": "Which is a な-adjective?", "options": ["きれい", "あつい", "たかい", "おおきい"], "answer": 0, "why": "きれい looks like an い-adjective but is a な-adjective." },
+    { "type": "gap", "point": 1, "ja": "天気は あつ＿です。", "options": ["かった", "い", "くて", "でした"], "answer": "かった", "en": "The weather was hot.", "why": "Drop い, add かった." },
+    { "type": "pick", "point": 1, "q": "\"The sea was pretty.\" (きれい)", "options": ["海は きれいでした。", "海は きれいかったです。", "海は きれくなかったです。", "海は きれいだったでした。"], "answer": 0, "why": "な-adjectives use でした." },
+    { "type": "order", "point": 1, "en": "The cake wasn't expensive.", "chunks": ["ケーキは", "高くなかった", "です"] },
+    { "type": "gap", "point": 2, "ja": "わたしは 海＿ 好きです。", "options": ["が", "を", "に", "で"], "answer": "が", "en": "I like the sea.", "why": "好き marks its object with が." },
+    { "type": "order", "point": 2, "en": "Leo is good at singing.", "chunks": ["レオさんは", "うたが", "上手です"] },
+    { "type": "pick", "point": 2, "q": "\"I don't like coffee very much.\"", "options": ["コーヒーは あまり 好きじゃないです。", "コーヒーを あまり 好きじゃないです。", "コーヒーは あまり 好きです。", "コーヒーは ぜんぜん 好きでした。"], "answer": 0, "why": "あまり needs the negative." },
+    { "type": "gap", "point": 3, "ja": "海へ 行き＿。", "options": ["ましょう", "ません", "ました", "たい"], "answer": "ましょう", "en": "Let's go to the sea.", "why": "ましょう means let's." },
+    { "type": "order", "point": 3, "en": "Let's rest a little.", "chunks": ["すこし", "休みましょう"] },
+    { "type": "pick", "q": "\"The weather is fine.\"", "options": ["天気が いいです。", "天気が いいます。", "天気が いなです。", "天気を いいです。"], "answer": 0, "why": "いい is an い-adjective." },
+    { "type": "type", "prompt": "Type the reading of 小さい (small) in hiragana.", "show": "小さい", "answers": ["ちいさい"] },
+    { "type": "type", "prompt": "Type the reading of 元気 (energetic) in hiragana.", "show": "元気", "answers": ["げんき"] }
+  ]
+}

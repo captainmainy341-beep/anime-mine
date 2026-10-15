@@ -1,0 +1,364 @@
+{
+  "schema": 1,
+  "id": "genki-l21",
+  "lesson": 21,
+  "title": "Rumours",
+  "tagline": "Say what was done to you, what happened to your annoyance, and what you heard.",
+  "hook": "A rumour is going around school and everyone wants to tell Noa something. You'll need the passive for what was done to someone, the 'affected' passive for things that happened to you, and らしい for what you have heard.",
+  "goals": [
+    "Form and use the passive",
+    "Show annoyance with the affected passive",
+    "Report what you heard with 〜らしい"
+  ],
+  "minutes": 13,
+  "vocab": [
+    [
+      "選ぶ",
+      "えらぶ",
+      "to choose",
+      "🗳️"
+    ],
+    [
+      "噂",
+      "うわさ",
+      "rumour",
+      "🗣️"
+    ],
+    [
+      "委員",
+      "いいん",
+      "committee member",
+      "📋"
+    ],
+    [
+      "ほめる",
+      "ほめる",
+      "to praise",
+      "👏"
+    ],
+    [
+      "しかる",
+      "しかる",
+      "to scold",
+      "😠"
+    ],
+    [
+      "笑う",
+      "わらう",
+      "to laugh, laugh at",
+      "😄"
+    ],
+    [
+      "踏む",
+      "ふむ",
+      "to step on",
+      "👣"
+    ],
+    [
+      "盗む",
+      "ぬすむ",
+      "to steal",
+      "🕵️"
+    ],
+    [
+      "呼ぶ",
+      "よぶ",
+      "to call",
+      "📣"
+    ],
+    [
+      "誘う",
+      "さそう",
+      "to invite",
+      "💌"
+    ],
+    [
+      "頼む",
+      "たのむ",
+      "to ask",
+      "🙏"
+    ],
+    [
+      "知らせる",
+      "しらせる",
+      "to inform",
+      "📢"
+    ],
+    [
+      "聞く",
+      "きく",
+      "to hear",
+      "👂"
+    ],
+    [
+      "助ける",
+      "たすける",
+      "to help, rescue",
+      "🛟"
+    ],
+    [
+      "迷惑",
+      "めいわく",
+      "trouble, nuisance",
+      "😣"
+    ],
+    [
+      "おとうと",
+      "おとうと",
+      "younger brother",
+      "👦"
+    ],
+    [
+      "大変",
+      "たいへん",
+      "tough, serious",
+      "😰"
+    ],
+    [
+      "さいしょ",
+      "さいしょ",
+      "the beginning",
+      "🏁"
+    ],
+    [
+      "みんな",
+      "みんな",
+      "everyone",
+      "👥"
+    ],
+    [
+      "先に",
+      "さきに",
+      "ahead, first",
+      "⏩"
+    ]
+  ],
+  "points": [
+    {
+      "id": "g:n4-passive",
+      "title": "〜られる（passive）",
+      "formula": "ru: stem + られる / u: あ-row + れる",
+      "gist": "Say what was done to someone.",
+      "explain": [
+        "Ru-verbs add られる: ほめる → ほめられる. U-verbs change the last sound to the あ-row and add れる: 選ぶ → 選ばれる, 読む → 読まれる, 書く → 書かれる. する → される, 来る → 来られる.",
+        "The person who is acted on becomes the subject, and the doer takes に: 先生に ほめられました (I was praised by the teacher)."
+      ],
+      "examples": [
+        {
+          "ja": "ノアさんは|先生に|ほめられました。",
+          "gloss": "Noa (topic)|by teacher|was praised",
+          "en": "Noa was praised by the teacher."
+        },
+        {
+          "ja": "ノアさんは|みんなに|選ばれました。",
+          "gloss": "Noa (topic)|by everyone|was chosen",
+          "en": "Noa was chosen by everyone."
+        },
+        {
+          "ja": "この|本は|世界中で|読まれて います。",
+          "gloss": "this|book (topic)|all over the world|is being read",
+          "en": "This book is read all over the world."
+        }
+      ],
+      "tip": "Passive forms look like potential for ru-verbs: 食べられる, 見られる. Context decides.",
+      "watch": "The doer is marked by に, not が. 先生が ほめられた is wrong."
+    },
+    {
+      "id": "g:genki-meiwaku",
+      "title": "迷惑の受身（affected passive）",
+      "formula": "doer に + passive verb",
+      "gist": "Something happened to me and I did not like it.",
+      "explain": [
+        "Japanese also uses the passive for things that happen to you and cause trouble, even with verbs that take no object in English: 雨に ふられました (I got rained on), 子どもに 泣かれました (my child cried on me).",
+        "Often the thing that was done also appears with を: おとうとに ケーキを 食べられました (my brother ate my cake). The feeling of annoyance is the point."
+      ],
+      "examples": [
+        {
+          "ja": "きのう、|雨に|ふられました。",
+          "gloss": "yesterday|by the rain|got rained on",
+          "en": "I got caught in the rain yesterday."
+        },
+        {
+          "ja": "おとうとに|ケーキを|食べられました。",
+          "gloss": "by my brother|cake (object)|got eaten",
+          "en": "My little brother ate my cake (and I'm annoyed)."
+        },
+        {
+          "ja": "電車で|足を|ふまれました。",
+          "gloss": "on the train|foot (object)|got stepped on",
+          "en": "My foot got stepped on in the train."
+        }
+      ],
+      "tip": "Look for a hidden \"…and I was bothered\".",
+      "watch": "Do not use it when the result is good. For good things use 〜てもらう."
+    },
+    {
+      "id": "g:n4-rashii",
+      "title": "〜らしい",
+      "formula": "plain form + らしい",
+      "gist": "Apparently, from what I heard.",
+      "explain": [
+        "Attach らしい to a plain-form sentence to say how things seem based on information you heard or saw: ノアさんが 選ばれたらしい. Nouns and な-adjectives drop だ: 休みらしい.",
+        "It tells the listener that this is not your own firsthand knowledge. Use 〜みたい or 〜ようだ when you have seen the evidence yourself."
+      ],
+      "examples": [
+        {
+          "ja": "あしたは|休みらしいです。",
+          "gloss": "tomorrow (topic)|day off, apparently",
+          "en": "Apparently tomorrow is a day off."
+        },
+        {
+          "ja": "ハナさんは|かぜを|ひいたらしい。",
+          "gloss": "Hana (topic)|cold (object)|caught, apparently",
+          "en": "Apparently Hana has caught a cold."
+        }
+      ],
+      "tip": "らしい = \"I heard that, and it seems so\".",
+      "watch": "〜らしい also means \"typical of\", as in 子どもらしい. Context tells you which."
+    }
+  ],
+  "drills": [
+    {
+      "type": "gap",
+      "point": 0,
+      "ja": "ノアさんは 先生＿ ほめられました。",
+      "options": [
+        "に",
+        "が",
+        "を",
+        "は"
+      ],
+      "answer": "に",
+      "en": "Noa was praised by the teacher.",
+      "why": "The doer takes に."
+    },
+    {
+      "type": "pick",
+      "q": "What is the passive of 選ぶ?",
+      "options": [
+        "選ばれる",
+        "選べる",
+        "選ばせる",
+        "選ぶれる"
+      ],
+      "answer": 0,
+      "why": "あ-row + れる.",
+      "point": 0
+    },
+    {
+      "type": "pick",
+      "q": "Which is the passive of ほめる?",
+      "options": [
+        "ほめられる",
+        "ほめれる",
+        "ほめさせる",
+        "ほまれる"
+      ],
+      "answer": 0,
+      "why": "Ru-verb: stem + られる.",
+      "point": 0
+    },
+    {
+      "type": "order",
+      "point": 0,
+      "en": "I was chosen by everyone.",
+      "chunks": [
+        "みんなに",
+        "選ばれました"
+      ]
+    },
+    {
+      "type": "gap",
+      "point": 1,
+      "ja": "きのう、雨＿ ふられました。",
+      "options": [
+        "に",
+        "が",
+        "を",
+        "で"
+      ],
+      "answer": "に",
+      "en": "I got rained on yesterday.",
+      "why": "The doer takes に."
+    },
+    {
+      "type": "pick",
+      "q": "You got your foot stepped on:",
+      "options": [
+        "足を ふまれました。",
+        "足が ふまれました。",
+        "足を ふみました。",
+        "足に ふまれました。"
+      ],
+      "answer": 0,
+      "why": "Affected passive keeps を for the thing.",
+      "point": 1
+    },
+    {
+      "type": "order",
+      "point": 1,
+      "en": "My little brother ate my cake.",
+      "chunks": [
+        "おとうとに",
+        "ケーキを",
+        "食べられました"
+      ]
+    },
+    {
+      "type": "gap",
+      "point": 2,
+      "ja": "あしたは 休み＿です。",
+      "options": [
+        "らしい",
+        "だらしい",
+        "のらしい",
+        "なので"
+      ],
+      "answer": "らしい",
+      "en": "Apparently tomorrow is a day off.",
+      "why": "Noun + らしい (no だ)."
+    },
+    {
+      "type": "pick",
+      "q": "Which is \"Apparently Hana caught a cold\"?",
+      "options": [
+        "ハナさんは かぜを ひいたらしい。",
+        "ハナさんは かぜを ひいたらしだ。",
+        "ハナさんは かぜを ひくらしくない。",
+        "ハナさんは かぜを ひいたのらしい。"
+      ],
+      "answer": 0,
+      "why": "Plain past + らしい.",
+      "point": 2
+    },
+    {
+      "type": "pick",
+      "q": "You heard from a friend that the cafe is closed:",
+      "options": [
+        "あの 店は 休みらしいよ。",
+        "あの 店は 休みさせるよ。",
+        "あの 店は 休みられるよ。",
+        "あの 店は 休みなのらしいよ。"
+      ],
+      "answer": 0,
+      "why": "らしい marks hearsay.",
+      "point": 2
+    },
+    {
+      "type": "type",
+      "prompt": "Type the reading of 噂 (rumour) in hiragana.",
+      "show": "噂",
+      "answers": [
+        "うわさ"
+      ]
+    },
+    {
+      "type": "type",
+      "prompt": "Type the reading of 迷惑 (trouble) in hiragana.",
+      "show": "迷惑",
+      "answers": [
+        "めいわく"
+      ]
+    }
+  ]
+}

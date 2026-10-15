@@ -1,0 +1,117 @@
+{
+  "schema": 1,
+  "id": "genki-l02",
+  "lesson": 2,
+  "title": "What Is This?",
+  "tagline": "Point at things, ask whose they are, say \"too\" and say \"it's not\".",
+  "hook": "Hana's grandmother runs a tiny café, and every shelf is full of things you don't know the names of yet. Time to point, ask and politely disagree.",
+  "goals": ["Choose between これ, それ and あれ by distance", "Say \"also\" with も and ask \"whose?\" with だれの", "Deny something politely with じゃないです"],
+  "minutes": 9,
+  "vocab": [
+    ["これ", "これ", "this (near me)", "👇"],
+    ["それ", "それ", "that (near you)", "👉"],
+    ["あれ", "あれ", "that (over there)", "☝️"],
+    ["ここ", "ここ", "here", "📍"],
+    ["そこ", "そこ", "there (near you)", "📌"],
+    ["あそこ", "あそこ", "over there", "🔭"],
+    ["だれ", "だれ", "who", "🕵️"],
+    ["いくら", "いくら", "how much?", "💴"],
+    ["円", "えん", "yen", "💴"],
+    ["かさ", "かさ", "umbrella", "☂️"],
+    ["かばん", "かばん", "bag", "👜"],
+    ["本", "ほん", "book", "📖"],
+    ["コーヒー", "コーヒー", "coffee", "☕"],
+    ["ケーキ", "ケーキ", "cake", "🍰"],
+    ["おちゃ", "おちゃ", "tea", "🍵"],
+    ["おみせ", "おみせ", "shop", "🏪"],
+    ["時計", "とけい", "clock, watch", "⌚"],
+    ["財布", "さいふ", "wallet", "👛"],
+    ["いす", "いす", "chair", "🪑"],
+    ["おばあさん", "おばあさん", "grandmother", "👵"]
+  ],
+  "points": [
+    {
+      "id": "g:genki-kosoado",
+      "title": "これ・それ・あれ / この・その・あの",
+      "formula": "これ / この + noun",
+      "gist": "Choose by distance: near me, near you, far from both.",
+      "explain": [
+        "Japanese points in three steps. こ- is near the speaker, そ- is near the listener, あ- is far from both. The same trick builds ここ / そこ / あそこ for places.",
+        "これ, それ, あれ stand alone: \"this one\". この, その, あの must sit in front of a noun: この かさ (this umbrella)."
+      ],
+      "examples": [
+        { "ja": "これは|ケーキです。", "gloss": "this one (topic)|cake", "en": "This is a cake." },
+        { "ja": "その|かさは|だれのですか。", "gloss": "that|umbrella (topic)|whose is it?", "en": "Whose is that umbrella?" },
+        { "ja": "あそこは|おみせです。", "gloss": "over there (topic)|shop", "en": "Over there is a shop." }
+      ],
+      "tip": "When you point at something near the listener, switch to そ-: it's \"theirs\" territory.",
+      "watch": "これ can't be followed directly by a noun. これ ケーキ is wrong; use この ケーキ."
+    },
+    {
+      "id": "g:n5-mo",
+      "title": "〜も",
+      "formula": "A も B です",
+      "gist": "A is B too.",
+      "explain": [
+        "も takes the place of は (or を, が) to say \"also\". It keeps the sentence shape but adds \"too\".",
+        "Never write はも. も already does the topic job."
+      ],
+      "examples": [
+        { "ja": "わたしも|学生です。", "gloss": "I too|student", "en": "I'm a student too." },
+        { "ja": "それも|ケーキですか。", "gloss": "that one too|cake?", "en": "Is that a cake as well?" },
+        { "ja": "コーヒーも|おちゃも|あります。", "gloss": "coffee too|tea too|there is", "en": "There is coffee and also tea." }
+      ],
+      "tip": "Use も twice to mean \"both\": コーヒーも ケーキも すきです.",
+      "watch": "も replaces は, it doesn't stack with it."
+    },
+    {
+      "id": "g:genki-ja-nai",
+      "title": "〜じゃないです",
+      "formula": "A は B じゃないです",
+      "gist": "A is not B.",
+      "explain": [
+        "To say \"is not\" swap です for じゃないです. A slightly more careful version is じゃありません.",
+        "To answer a yes/no question negatively, start with いいえ and then repeat what's true."
+      ],
+      "examples": [
+        { "ja": "これは|かさじゃないです。", "gloss": "this (topic)|not an umbrella", "en": "This isn't an umbrella." },
+        { "ja": "いいえ、|わたしのじゃありません。", "gloss": "no|not mine", "en": "No, it isn't mine." },
+        { "ja": "レオさんは|先生じゃないです。", "gloss": "Leo (topic)|not a teacher", "en": "Leo isn't a teacher." }
+      ],
+      "tip": "じゃ is the friendly spoken form of では. You will hear both.",
+      "watch": "Don't say いいえ、です. After いいえ, change the sentence to the negative."
+    },
+    {
+      "id": "g:genki-dare-no",
+      "title": "だれの / 〜の (whose)",
+      "formula": "だれの + noun / A の",
+      "gist": "Whose? / the one belonging to A.",
+      "explain": [
+        "Put の after a name and you get a possessive. だれの is the question form: \"whose?\".",
+        "If the noun is obvious, you can skip it and end with の: それは わたしの です."
+      ],
+      "examples": [
+        { "ja": "これは|だれのですか。", "gloss": "this (topic)|whose?", "en": "Whose is this?" },
+        { "ja": "それは|ハナさんのです。", "gloss": "that (topic)|Hana's", "en": "That's Hana's." },
+        { "ja": "だれの|かばんですか。", "gloss": "whose|bag?", "en": "Whose bag is it?" }
+      ],
+      "tip": "In English you need the noun again (\"mine\" is a different word). In Japanese you just keep の.",
+      "watch": "Don't add さん to yourself: わたしの, never わたしさんの."
+    }
+  ],
+  "drills": [
+    { "type": "pick", "point": 0, "q": "The cake is right next to YOU. Which word do you use?", "options": ["これ", "それ", "あれ", "どれ"], "answer": 0, "why": "こ- means near the speaker." },
+    { "type": "gap", "point": 0, "ja": "＿ かさは だれのですか。 (the umbrella near the listener)", "options": ["その", "この", "あの", "それ"], "answer": "その", "en": "Whose is that umbrella (near you)?", "why": "A noun follows, so use その, not それ." },
+    { "type": "order", "point": 0, "en": "Over there is a shop.", "chunks": ["あそこは", "おみせ", "です"] },
+    { "type": "gap", "point": 1, "ja": "わたし＿ 学生です。", "options": ["も", "は", "の", "か"], "answer": "も", "en": "I'm a student too.", "why": "も replaces は to say \"also\"." },
+    { "type": "order", "point": 1, "en": "I like cake too.", "chunks": ["ケーキも", "すきです"], "alts": [["すきです", "ケーキも"]] },
+    { "type": "pick", "point": 1, "q": "Which is wrong?", "options": ["わたしはも 学生です。", "わたしも 学生です。", "コーヒーも すきです。", "それも ケーキです。"], "answer": 0, "why": "も replaces は; you can't use them together." },
+    { "type": "gap", "point": 2, "ja": "これは かさ＿ないです。", "options": ["じゃ", "は", "も", "の"], "answer": "じゃ", "en": "This isn't an umbrella.", "why": "じゃないです is the negative of です." },
+    { "type": "pick", "point": 2, "q": "\"Is this yours?\" You say it isn't. Which is correct?", "options": ["いいえ、わたしのじゃないです。", "いいえ、わたしのです。", "はい、わたしのじゃないです。", "いいえ、わたしの か。"], "answer": 0, "why": "いいえ + the negative." },
+    { "type": "gap", "point": 3, "ja": "これは ＿のですか。 (Whose is this?)", "options": ["だれ", "いくら", "なに", "どこ"], "answer": "だれ", "en": "Whose is this?", "why": "だれの means whose." },
+    { "type": "order", "point": 3, "en": "That's Hana's.", "chunks": ["それは", "ハナさんの", "です"] },
+    { "type": "type", "prompt": "Type the reading of 時計 (clock) in hiragana.", "show": "時計", "answers": ["とけい"] },
+    { "type": "type", "prompt": "Type the reading of 財布 (wallet) in hiragana.", "show": "財布", "answers": ["さいふ"] },
+    { "type": "pick", "q": "How do you ask the price?", "options": ["いくらですか。", "だれですか。", "どこですか。", "なにですか。"], "answer": 0, "why": "いくら = how much." }
+  ]
+}

@@ -1,0 +1,329 @@
+{
+  "schema": 1,
+  "id": "genki-l03",
+  "order": 103,
+  "track": "genki",
+  "lesson": 3,
+  "title": "しゅうまつの よてい",
+  "summary": "Leo and Hana compare weekend plans. Polite verbs, the particles を・で・に・へ, and an invitation.",
+  "covers": "〜ます / 〜ません · を · で · に・へ · 時間 + に · 〜ませんか · よく / あまり",
+  "jlpt": "N5",
+  "source": "authored",
+  "bg": "classroom-morning",
+  "characters": {
+    "hana": {
+      "name": "ハナ",
+      "color": "#7cc6b4"
+    },
+    "leo": {
+      "name": "レオ",
+      "color": "#f0a35e"
+    }
+  },
+  "glossary": {
+    "g:genki-masu": {
+      "label": "〜ます / 〜ません",
+      "meaning": "polite verb: do / do not",
+      "note": "Verbs end in ます when polite: 読みます (read), 行きます (go). The negative is ません."
+    },
+    "g:n5-o": {
+      "label": "〜を",
+      "meaning": "marks the direct object of an action",
+      "note": "を marks the thing a transitive verb acts on. It is written as を but pronounced o. Intransitive verbs such as 行く or 来る use に or へ for direction instead."
+    },
+    "g:n5-de-place": {
+      "label": "〜で（場所）",
+      "meaning": "at / in (place where an action happens)",
+      "note": "で after a place shows where an action takes place. It is different from に, which marks where something exists or where one is going. Use で with verbs of action such as 勉強する or 食べる."
+    },
+    "g:n5-ni": {
+      "label": "〜に",
+      "meaning": "at / on / in (time); to (destination)",
+      "note": "に marks a specific point in time (七時に, 月曜日に) and the goal of movement (学校に). Do not use に with きのう, きょう, あした, or いつ. Those time words take no particle."
+    },
+    "k:時": {
+      "label": "時",
+      "reading": "じ / とき",
+      "meaning": "time, o'clock"
+    },
+    "g:genki-frequency": {
+      "label": "よく / ときどき / あまり〜ません / ぜんぜん〜ません",
+      "meaning": "often / sometimes / not much / not at all",
+      "note": "あまり and ぜんぜん pair with a negative verb: あまり 見ません = I do not watch much."
+    },
+    "g:n5-masenka": {
+      "label": "〜ませんか",
+      "meaning": "would you like to ...? / shall we ...?",
+      "note": "ませんか invites someone politely to do something. It is softer than a direct request. Use it with people you do not know well, and accept or decline with はい、ぜひ or すみません."
+    }
+  },
+  "beats": [
+    {
+      "type": "show",
+      "char": "hana",
+      "expr": "neutral",
+      "pos": "left"
+    },
+    {
+      "type": "show",
+      "char": "leo",
+      "expr": "smile",
+      "pos": "right"
+    },
+    {
+      "type": "say",
+      "who": "leo",
+      "text": "ノアさん、しゅうまつは 何を しますか。",
+      "en": "Noa, what are you doing this weekend?"
+    },
+    {
+      "type": "intro",
+      "item": "g:genki-masu"
+    },
+    {
+      "type": "choice",
+      "item": "g:genki-masu",
+      "who": "leo",
+      "prompt": "Say you will read a book.",
+      "options": [
+        {
+          "text": "本を 読みます。",
+          "correct": true
+        },
+        {
+          "text": "本を 読みです。",
+          "awkward": {
+            "who": "leo",
+            "text": "「読みです」？ 動詞は「ます」ですよ。",
+            "en": "\"Yomi desu\"? Verbs take \"masu\"."
+          }
+        },
+        {
+          "text": "本を 読むます。",
+          "awkward": {
+            "who": "leo",
+            "text": "「読むます」…？ ちょっと ちがう！",
+            "en": "\"Yomu-masu\"...? Not quite!"
+          }
+        }
+      ]
+    },
+    {
+      "type": "intro",
+      "item": "g:n5-o"
+    },
+    {
+      "type": "particle",
+      "item": "g:n5-o",
+      "who": "leo",
+      "text": "ぼくは 土曜日に テニス＿ します。",
+      "options": [
+        "を",
+        "に",
+        "で",
+        "が"
+      ],
+      "answers": [
+        "を"
+      ],
+      "en": "I'm playing tennis on Saturday.",
+      "role": "p:wo/object"
+    },
+    {
+      "type": "intro",
+      "item": "g:n5-de-place"
+    },
+    {
+      "type": "particle",
+      "item": "g:n5-de-place",
+      "who": "hana",
+      "text": "わたしは 日曜日に カフェ＿ はたらきます。",
+      "options": [
+        "で",
+        "に",
+        "を",
+        "は"
+      ],
+      "answers": [
+        "で"
+      ],
+      "en": "I work at the café on Sunday.",
+      "role": "p:de/location"
+    },
+    {
+      "type": "intro",
+      "item": "g:n5-ni"
+    },
+    {
+      "type": "particle",
+      "item": "g:n5-ni",
+      "who": null,
+      "text": "わたしは 土曜日に としょかん＿ 行きます。",
+      "options": [
+        "に",
+        "へ",
+        "で",
+        "を"
+      ],
+      "answers": [
+        "に",
+        "へ"
+      ],
+      "en": "I'm going to the library on Saturday.",
+      "role": "p:ni/destination",
+      "prompt": "You are going to the library on Saturday."
+    },
+    {
+      "type": "particle",
+      "item": "g:n5-ni",
+      "who": null,
+      "text": "日曜日は 七時＿ おきます。",
+      "options": [
+        "に",
+        "で",
+        "を",
+        "が"
+      ],
+      "answers": [
+        "に"
+      ],
+      "en": "On Sundays I get up at seven.",
+      "role": "p:ni/time",
+      "prompt": "You get up at seven on Sundays."
+    },
+    {
+      "type": "reading",
+      "item": "k:時",
+      "display": "七時",
+      "answers": [
+        "しちじ",
+        "ななじ"
+      ],
+      "prompt": "Read the time.",
+      "target": "時"
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "ノアさんは よく えいがを 見ますか。",
+      "en": "Do you watch movies often, Noa?"
+    },
+    {
+      "type": "intro",
+      "item": "g:genki-frequency"
+    },
+    {
+      "type": "choice",
+      "item": "g:genki-frequency",
+      "who": "hana",
+      "prompt": "You do not watch movies much. Answer.",
+      "options": [
+        {
+          "text": "いいえ、あまり 見ません。",
+          "correct": true
+        },
+        {
+          "text": "いいえ、あまり 見ます。",
+          "awkward": {
+            "who": "hana",
+            "text": "「あまり」の あとは「ません」ですよ。",
+            "en": "After \"amari\" comes \"-masen\"."
+          }
+        },
+        {
+          "text": "はい、ぜんぜん 見ます。",
+          "awkward": {
+            "who": "hana",
+            "text": "「ぜんぜん」は「ません」と いっしょに！",
+            "en": "\"Zenzen\" goes with \"-masen\"!"
+          }
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "じゃあ… いっしょに 見ませんか。土曜日に。",
+      "en": "Then... won't you watch one with me? On Saturday.",
+      "expr": "smile"
+    },
+    {
+      "type": "intro",
+      "item": "g:n5-masenka"
+    },
+    {
+      "type": "choice",
+      "item": "g:n5-masenka",
+      "who": null,
+      "prompt": "Say yes, and invite Leo to come along.",
+      "options": [
+        {
+          "text": "レオさんも 行きませんか。",
+          "correct": true
+        },
+        {
+          "text": "レオさんも 行きましたか。",
+          "awkward": {
+            "who": "leo",
+            "text": "え？ もう 行った？ まだですよ！",
+            "en": "Huh? Did I already go? Not yet!"
+          }
+        },
+        {
+          "text": "レオさんも 行くませんか。",
+          "awkward": {
+            "who": "leo",
+            "text": "「行くません」…？",
+            "en": "\"Iku-masen\"...?"
+          }
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "leo",
+      "text": "いいですね！ 何時に 会いますか。",
+      "en": "Sounds good! What time shall we meet?"
+    },
+    {
+      "type": "particle",
+      "item": "g:n5-de-place",
+      "who": null,
+      "text": "三時に えき＿ 会いませんか。",
+      "options": [
+        "で",
+        "に",
+        "を",
+        "へ"
+      ],
+      "answers": [
+        "で"
+      ],
+      "en": "Shall we meet at the station at three?",
+      "role": "p:de/location",
+      "prompt": "Suggest meeting at the station."
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "はい！ たのしみです。",
+      "en": "Yes! Can't wait.",
+      "expr": "smile"
+    },
+    {
+      "type": "affection",
+      "char": "leo",
+      "delta": 1
+    },
+    {
+      "type": "affection",
+      "char": "hana",
+      "delta": 1
+    },
+    {
+      "type": "cg",
+      "id": "genki-plans",
+      "title": "Weekend plans"
+    }
+  ]
+}

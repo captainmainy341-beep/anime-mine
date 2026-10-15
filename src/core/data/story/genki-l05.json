@@ -1,0 +1,333 @@
+{
+  "schema": 1,
+  "id": "genki-l05",
+  "order": 105,
+  "track": "genki",
+  "lesson": 5,
+  "title": "海の 町へ",
+  "summary": "A day trip to the sea. Describe things with adjectives, say what you like, and suggest what to do.",
+  "covers": "い・な adjectives · 〜かった / 〜でした · 好き · 〜ましょう",
+  "jlpt": "N5",
+  "source": "authored",
+  "bg": "beach-day",
+  "characters": {
+    "hana": {
+      "name": "ハナ",
+      "color": "#7cc6b4"
+    },
+    "leo": {
+      "name": "レオ",
+      "color": "#f0a35e"
+    }
+  },
+  "glossary": {
+    "k:天": {
+      "label": "天",
+      "reading": "てん",
+      "meaning": "heaven, sky"
+    },
+    "g:n5-i-na-adj": {
+      "label": "〜いです / 〜だ",
+      "meaning": "adjective sentences: is ... (い-adjective / な-adjective)",
+      "note": "Describes a state with an adjective. い-adjectives end in い and take です directly; な-adjectives take です in polite speech and だ in plain speech. Do not add だ to い-adjectives."
+    },
+    "g:n5-ga-suki": {
+      "label": "〜が好き／上手／下手",
+      "meaning": "like / good at / bad at (something)",
+      "note": "好き, 上手, and 下手 take が for the thing liked or the skill, not を. 嫌い uses the same pattern. Use these with nouns or with 〜こと when the item is a verb phrase."
+    },
+    "g:n5-mashou": {
+      "label": "〜ましょう",
+      "meaning": "let's ... (suggestion to do something together)",
+      "note": "ましょう suggests doing something together. A common reply is はい、そうしましょう. For a polite offer of help, use 〜ましょうか instead."
+    },
+    "g:genki-adj-past": {
+      "label": "〜かったです / 〜でした",
+      "meaning": "adjective past: was ...",
+      "note": "い-adjectives: おいしい → おいしかったです. な-adjectives: しずか → しずかでした. Never おいしいでした."
+    },
+    "k:元": {
+      "label": "元",
+      "reading": "げん / もと",
+      "meaning": "origin"
+    },
+    "g:n5-o": {
+      "label": "〜を",
+      "meaning": "marks the direct object of an action",
+      "note": "を marks the thing a transitive verb acts on. It is written as を but pronounced o. Intransitive verbs such as 行く or 来る use に or へ for direction instead."
+    }
+  },
+  "beats": [
+    {
+      "type": "show",
+      "char": "hana",
+      "expr": "smile",
+      "pos": "left"
+    },
+    {
+      "type": "show",
+      "char": "leo",
+      "expr": "smile",
+      "pos": "right"
+    },
+    {
+      "type": "say",
+      "who": null,
+      "text": "土曜日。三人で 海の 町に 来た。",
+      "en": "Saturday. The three of you came to a town by the sea."
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "わあ、海ですよ！ きれいですね！",
+      "en": "Wow, the sea! It's beautiful!"
+    },
+    {
+      "type": "reading",
+      "item": "k:天",
+      "display": "いい 天気",
+      "answers": [
+        "いいてんき"
+      ],
+      "prompt": "Read it: how is the weather?",
+      "target": "天気"
+    },
+    {
+      "type": "intro",
+      "item": "g:n5-i-na-adj"
+    },
+    {
+      "type": "choice",
+      "item": "g:n5-i-na-adj",
+      "who": null,
+      "prompt": "Say the water is cold.",
+      "options": [
+        {
+          "text": "水が つめたいです。",
+          "correct": true
+        },
+        {
+          "text": "水が つめたいだです。",
+          "awkward": {
+            "who": "leo",
+            "text": "「つめたいだ」？ い形容詞に「だ」は いりません！",
+            "en": "\"Tsumetai da\"? No \"da\" after an i-adjective!"
+          }
+        },
+        {
+          "text": "水が つめたいなです。"
+        }
+      ]
+    },
+    {
+      "type": "choice",
+      "item": "g:n5-i-na-adj",
+      "who": null,
+      "prompt": "Say it is a quiet town (しずか is a な-adjective).",
+      "options": [
+        {
+          "text": "しずかな 町ですね。",
+          "correct": true
+        },
+        {
+          "text": "しずかい 町ですね。",
+          "awkward": {
+            "who": "hana",
+            "text": "「しずかい」？ 「しずかな」ですよ。",
+            "en": "\"Shizukai\"? It's \"shizuka na\"."
+          }
+        },
+        {
+          "text": "しずかの 町ですね。",
+          "awkward": {
+            "who": "hana",
+            "text": "「しずかの」…？ な形容詞は「な」！",
+            "en": "\"Shizuka no\"...? Na-adjectives take \"na\"!"
+          }
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "leo",
+      "text": "ぼくは 海が 大好きです！ ノアさんは？",
+      "en": "I love the sea! What about you, Noa?"
+    },
+    {
+      "type": "intro",
+      "item": "g:n5-ga-suki"
+    },
+    {
+      "type": "particle",
+      "item": "g:n5-ga-suki",
+      "who": null,
+      "text": "わたしも 海＿ 好きです。",
+      "options": [
+        "が",
+        "を",
+        "に",
+        "で"
+      ],
+      "answers": [
+        "が"
+      ],
+      "en": "I like the sea too.",
+      "role": "p:ga/subject"
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "おなかが すきましたね。何か 食べましょう！",
+      "en": "I'm hungry. Let's eat something!"
+    },
+    {
+      "type": "intro",
+      "item": "g:n5-mashou"
+    },
+    {
+      "type": "choice",
+      "item": "g:n5-mashou",
+      "who": null,
+      "prompt": "Suggest: \"Let's eat at that restaurant.\"",
+      "options": [
+        {
+          "text": "あの レストランで 食べましょう。",
+          "correct": true
+        },
+        {
+          "text": "あの レストランで 食べましょうです。",
+          "awkward": {
+            "who": "hana",
+            "text": "「ましょうです」…？ 「ましょう」だけで いいですよ。",
+            "en": "\"Mashou desu\"...? Just \"mashou\" is fine."
+          }
+        },
+        {
+          "text": "あの レストランに 食べましょう。",
+          "awkward": {
+            "who": "hana",
+            "text": "食べるのは レストラン「で」ですよ。",
+            "en": "You eat AT the restaurant: \"de\"."
+          }
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": null,
+      "text": "レストランで さかなを 食べた。",
+      "en": "You ate fish at the restaurant."
+    },
+    {
+      "type": "intro",
+      "item": "g:genki-adj-past"
+    },
+    {
+      "type": "choice",
+      "item": "g:genki-adj-past",
+      "who": null,
+      "prompt": "Say the fish was delicious.",
+      "options": [
+        {
+          "text": "さかなは おいしかったです。",
+          "correct": true
+        },
+        {
+          "text": "さかなは おいしいでした。",
+          "awkward": {
+            "who": "leo",
+            "text": "あ、それ ぼくも よく まちがえます！「おいしかった」ですよ。",
+            "en": "Ah, I make that mistake too! It's \"oishikatta\"."
+          }
+        },
+        {
+          "text": "さかなは おいしいかったです。"
+        }
+      ]
+    },
+    {
+      "type": "choice",
+      "item": "g:genki-adj-past",
+      "who": null,
+      "prompt": "Say the town was very quiet (な-adjective, past).",
+      "options": [
+        {
+          "text": "町は とても しずかでした。",
+          "correct": true
+        },
+        {
+          "text": "町は とても しずかかったです。",
+          "awkward": {
+            "who": "hana",
+            "text": "「しずかかった」？ な形容詞は「でした」ですよ。",
+            "en": "\"Shizukakatta\"? Na-adjectives take \"deshita\"."
+          }
+        },
+        {
+          "text": "町は とても しずかだでした。"
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "ノアさん、まだ 元気ですか。",
+      "en": "Noa, still full of energy?"
+    },
+    {
+      "type": "reading",
+      "item": "k:元",
+      "display": "元気",
+      "answers": [
+        "げんき"
+      ],
+      "prompt": "Read the word Hana used.",
+      "target": "元"
+    },
+    {
+      "type": "say",
+      "who": "leo",
+      "text": "しゃしんを とりましょうか。",
+      "en": "Shall we take a photo?"
+    },
+    {
+      "type": "particle",
+      "item": "g:n5-o",
+      "who": null,
+      "text": "三人で しゃしん＿ とりましょう。",
+      "options": [
+        "を",
+        "が",
+        "で",
+        "に"
+      ],
+      "answers": [
+        "を"
+      ],
+      "en": "Let's take a photo, the three of us.",
+      "role": "p:wo/object"
+    },
+    {
+      "type": "affection",
+      "char": "hana",
+      "delta": 1
+    },
+    {
+      "type": "affection",
+      "char": "leo",
+      "delta": 1
+    },
+    {
+      "type": "cg",
+      "id": "genki-sea",
+      "title": "A day by the sea"
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "たのしかったですね！",
+      "en": "That was fun!",
+      "expr": "smile"
+    }
+  ]
+}

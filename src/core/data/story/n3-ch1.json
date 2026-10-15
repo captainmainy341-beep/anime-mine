@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "id": "n3-ch1",
+  "order": 13,
+  "title": "Chapter 13: さくらの 道、ふたたび",
+  "summary": "Third year, new spring. School rules, \"no wonder\" realisations and having just started something.",
+  "jlpt": "N3",
+  "source": "authored",
+  "bg": "school-gate-evening",
+  "characters": {
+    "mio": { "name": "みお", "color": "#f3a0b6" },
+    "sora": { "name": "そら", "color": "#a2befa" },
+    "tanaka": { "name": "田中先生", "color": "#9de3c4" }
+  },
+  "glossary": {
+    "g:n3-koto-ni-natte-iru": { "label": "〜ことになっている", "meaning": "it is arranged / supposed to", "note": "A rule, custom or plan set by others. Compare ことになる (it was decided) and ことにしている (my own habit)." },
+    "g:n3-wake-da": { "label": "〜わけだ", "meaning": "no wonder / that explains it", "note": "Shows you've understood the reason behind something: それで眠いわけだ." },
+    "g:n3-mono-no": { "label": "〜ものの", "meaning": "although", "note": "Plain form + ものの: a contrast follows, often a worry or a gap between plan and reality." },
+    "g:n3-tabakari": { "label": "〜たばかり", "meaning": "have just done", "note": "Past form + ばかり: something happened a short while ago." },
+    "k:進": { "label": "進", "reading": "しん / すす(む)", "meaning": "advance" },
+    "k:将": { "label": "将", "reading": "しょう", "meaning": "leader; soon to be" }
+  },
+  "beats": [
+    { "type": "bg", "bg": "school-gate-evening" },
+    { "type": "say", "who": null, "text": "桜の 季節が また 来た。三年生に なった 新学期の 朝、校門の 前は 花びらで いっぱいだ。", "en": "Cherry blossom season has come again. On the first morning of third year, the school gate is covered in petals." },
+    { "type": "show", "char": "mio", "expr": "smile", "pos": "left" },
+    { "type": "say", "who": "mio", "text": "見て、一年生！ 入学したばかりの 子たちは、制服が まだ ぶかぶかだね。", "en": "Look, the first-years! The kids who just started still have oversized uniforms." },
+    { "type": "intro", "item": "g:n3-tabakari" },
+    { "type": "choice", "item": "g:n3-tabakari", "who": "mio", "prompt": "Agree: \"The first-years who have just entered are cute.\"", "options": [
+      { "text": "入学したばかりの 一年生は かわいいですね。", "correct": true },
+      { "text": "入学するばかりの 一年生は かわいいですね。", "awkward": { "who": "mio", "text": "「するばかり」だと 「これから 入学する」みたいだよ。", "en": "\"Suru bakari\" sounds like \"about to enroll\"." } },
+      { "text": "入学したのばかりの 一年生は かわいいですね。", "awkward": { "who": "sora", "text": "…「の」は いらない。", "en": "...No need for \"no\"." } }
+    ] },
+    { "type": "show", "char": "sora", "expr": "tired", "pos": "right" },
+    { "type": "say", "who": "sora", "text": "ふぁ…。きのうも 夜おそくまで 曲を 作ってた。", "en": "Yawn... I stayed up late again last night writing songs." },
+    { "type": "intro", "item": "g:n3-wake-da" },
+    { "type": "choice", "item": "g:n3-wake-da", "who": "sora", "prompt": "Realise: \"I see, no wonder you're sleepy.\"", "options": [
+      { "text": "毎晩 作曲しているのか。それで 眠いわけだ。", "correct": true },
+      { "text": "毎晩 作曲しているのか。それで 眠いわけがない。", "awkward": { "who": "sora", "text": "「わけがない」は 「眠いはずが ない」って 意味だよ。反対。", "en": "\"Wake ga nai\" means \"there's no way you're sleepy\". The opposite." } },
+      { "text": "毎晩 作曲しているのか。それで 眠いわけではない。", "awkward": { "who": "sora", "text": "ぼく、ちゃんと 眠いんだけど…。", "en": "I really am sleepy, though..." } }
+    ] },
+    { "type": "bg", "bg": "classroom-morning" },
+    { "type": "show", "char": "tanaka", "expr": "neutral", "pos": "center" },
+    { "type": "say", "who": "tanaka", "text": "さて、三年生の 皆さん。うちの 学校では、四月に 進路 面談を することに なっています。", "en": "Now then, third-years. At our school, you're supposed to have a career interview in April." },
+    { "type": "intro", "item": "k:進" },
+    { "type": "reading", "item": "k:進", "display": "進路", "target": "進", "prompt": "The board says 進路. Read it.", "answers": ["しんろ"] },
+    { "type": "intro", "item": "g:n3-koto-ni-natte-iru" },
+    { "type": "choice", "item": "g:n3-koto-ni-natte-iru", "who": "tanaka", "prompt": "Explain the school rule: \"Third-years are supposed to have an interview in April.\"", "options": [
+      { "text": "三年生は 四月に 面談を することに なっています。", "correct": true },
+      { "text": "三年生は 四月に 面談を することに して います。", "awkward": { "who": "tanaka", "text": "「している」だと 自分で 決めた みたいですよ。決まりなら 「なっている」。", "en": "\"Shite iru\" sounds like your own decision. For rules it's \"natte iru\"." } },
+      { "text": "三年生は 四月に 面談を する ことが なって います。", "awkward": { "who": "tanaka", "text": "「ことに なって いる」ですよ。「が」じゃなくて。", "en": "It's \"koto ni natte iru\", not \"ga\"." } }
+    ] },
+    { "type": "say", "who": "tanaka", "text": "そらさんは 将来、どう するつもりですか。", "en": "Sora, what do you plan to do in the future?" },
+    { "type": "intro", "item": "k:将" },
+    { "type": "reading", "item": "k:将", "display": "将来", "target": "将", "prompt": "Tanaka-sensei says 将来. Read it.", "answers": ["しょうらい"] },
+    { "type": "say", "who": "sora", "text": "…音楽の 道に 進むと 言ったものの、まだ 自信が ありません。", "en": "...I said I'd pursue music, but I'm still not confident." },
+    { "type": "intro", "item": "g:n3-mono-no" },
+    { "type": "choice", "item": "g:n3-mono-no", "who": "mio", "prompt": "Share the feeling: \"I said I'd go on to university, but I'm still worried.\"", "options": [
+      { "text": "進学すると 言ったものの、まだ 不安です。", "correct": true },
+      { "text": "進学すると 言ったものか、まだ 不安です。", "awkward": { "who": "tanaka", "text": "「ものか」は 「〜するもんか」と 強く 否定する 言い方ですよ。", "en": "\"Mono ka\" is a strong denial, like \"no way I would\"." } },
+      { "text": "進学すると 言ったものに、まだ 不安です。", "awkward": { "who": "sora", "text": "「ものに」…？ 「ものの」だよ。", "en": "\"Mono ni\"...? It's \"mono no\"." } }
+    ] },
+    { "type": "affection", "char": "sora", "delta": 2 },
+    { "type": "affection", "char": "mio", "delta": 2 },
+    { "type": "cg", "id": "third-year-sakura", "title": "Third-year spring" },
+    { "type": "say", "who": "mio", "text": "だいじょうぶ。ことしの 夏は、いろいろ 起こりそうな 気が する。", "en": "It'll be fine. I have a feeling that a lot will happen this summer." }
+  ]
+}

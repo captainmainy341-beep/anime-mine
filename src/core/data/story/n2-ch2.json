@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "id": "n2-ch2",
+  "order": 20,
+  "title": "Chapter 20: インターン",
+  "summary": "Your internship at a music magazine. Business Japanese: when starting a project, regardless of age, not to mention, and not only... but also.",
+  "jlpt": "N2",
+  "source": "authored",
+  "bg": "office",
+  "characters": {
+    "kuroda": { "name": "黒田編集長", "color": "#c97b5a" },
+    "mio": { "name": "みお", "color": "#f3a0b6" }
+  },
+  "glossary": {
+    "g:n2-ni-atatte": { "label": "〜に当たって", "meaning": "upon / when beginning (formal)", "note": "Noun / dictionary form + に当たって marks a significant starting point." },
+    "g:n2-wo-towazu": { "label": "〜を問わず", "meaning": "regardless of", "note": "Noun + を問わず: the thing named does not matter (age, experience, nationality)." },
+    "g:n2-wa-motoyori": { "label": "〜はもとより", "meaning": "not to mention", "note": "Noun + はもとより + also...: the first thing is obvious, the second adds to it." },
+    "g:n2-no-mi-narazu": { "label": "〜のみならず", "meaning": "not only ... but also", "note": "Formal version of だけでなく." },
+    "k:編": { "label": "編", "reading": "へん / あ(む)", "meaning": "compile, knit" },
+    "k:企": { "label": "企", "reading": "き / くわだ(てる)", "meaning": "plan, undertake" }
+  },
+  "beats": [
+    { "type": "bg", "bg": "office" },
+    { "type": "say", "who": null, "text": "月曜日の 朝。出版社の 編集部に、新しい インターンが 来た。ゆうきだ。", "en": "Monday morning. A new intern arrives at the publishing house's editorial office. It's Yuuki." },
+    { "type": "show", "char": "kuroda", "expr": "neutral", "pos": "center" },
+    { "type": "intro", "item": "k:編" },
+    { "type": "reading", "item": "k:編", "display": "編集部", "target": "編", "prompt": "The door sign says 編集部. Read it.", "answers": ["へんしゅうぶ"] },
+    { "type": "say", "who": "kuroda", "text": "黒田です。今日から 一か月、よろしく。まず、取材を 始めるに 当たって 気を つける ことを 話そう。", "en": "I'm Kuroda. For the next month, nice to meet you. First, let's talk about what to watch for when starting an interview project." },
+    { "type": "intro", "item": "g:n2-ni-atatte" },
+    { "type": "choice", "item": "g:n2-ni-atatte", "who": "kuroda", "prompt": "Reply properly: \"Upon starting the interview, let's organize the questions.\"", "options": [
+      { "text": "取材を 始めるに 当たって、質問を 整理しましょう。", "correct": true },
+      { "text": "取材を 始めたに 当たって、質問を 整理しましょう。", "awkward": { "who": "kuroda", "text": "「始めるに 当たって」。じしょけいだよ。", "en": "\"Hajimeru ni atatte\" -- the dictionary form." } },
+      { "text": "取材を 始めるに 当たりて、質問を 整理しましょう。", "awkward": { "who": "kuroda", "text": "「当たって」。て-形だね。", "en": "\"Atatte\" -- the te-form." } }
+    ] },
+    { "type": "say", "who": "kuroda", "text": "うちの 雑誌は、年齢や 経験を 問わず、だれでも 応募できる コーナーが ある。", "en": "Our magazine has a column anyone can submit to, regardless of age or experience." },
+    { "type": "intro", "item": "g:n2-wo-towazu" },
+    { "type": "choice", "item": "g:n2-wo-towazu", "who": "kuroda", "prompt": "Announce: \"Anyone can apply, regardless of age or experience.\"", "options": [
+      { "text": "年齢や 経験を 問わず、だれでも 応募できます。", "correct": true },
+      { "text": "年齢や 経験を 問われず、だれでも 応募できます。", "awkward": { "who": "kuroda", "text": "「問わず」。受け身の 「問われず」じゃなくて。", "en": "\"Towazu\" -- not the passive \"towarezu\"." } },
+      { "text": "年齢や 経験が 問わず、だれでも 応募できます。", "awkward": { "who": "mio", "text": "「を 問わず」だよ。「が」じゃなくて。", "en": "\"Wo towazu\", not \"ga\"." } }
+    ] },
+    { "type": "intro", "item": "k:企" },
+    { "type": "reading", "item": "k:企", "display": "企画", "target": "企", "prompt": "Kuroda wants your 企画 by Friday. Read 企画.", "answers": ["きかく"] },
+    { "type": "say", "who": "kuroda", "text": "企画では、文章は もとより、写真の 質も 大切だぞ。", "en": "In the proposal, the photos' quality matters, not to mention the text." },
+    { "type": "intro", "item": "g:n2-wa-motoyori" },
+    { "type": "choice", "item": "g:n2-wa-motoyori", "who": "kuroda", "prompt": "Say: \"Not to mention the text, the photos matter too.\"", "options": [
+      { "text": "文章は もとより、写真も 大切です。", "correct": true },
+      { "text": "文章に もとより、写真も 大切です。", "awkward": { "who": "kuroda", "text": "「は もとより」。助詞は 「は」だ。", "en": "\"Wa motoyori\" -- the particle is \"wa\"." } },
+      { "text": "文章は もとより、写真が 大切です。", "awkward": { "who": "kuroda", "text": "「も」が 欲しいね。「写真も」。", "en": "You'd want \"mo\" for \"photos too\"." } }
+    ] },
+    { "type": "show", "char": "mio", "expr": "smile", "pos": "right" },
+    { "type": "say", "who": "mio", "text": "（電話の 声）ゆうきさん、そらの 取材、お願い できる？ 彼、音楽のみならず、映画にも くわしいよ。", "en": "(Over the phone) Yuuki, can you do the interview with Sora? He's knowledgeable not only about music but also about movies." },
+    { "type": "intro", "item": "g:n2-no-mi-narazu" },
+    { "type": "choice", "item": "g:n2-no-mi-narazu", "who": "mio", "prompt": "Describe Sora: \"He's knowledgeable not only about music but also about movies.\"", "options": [
+      { "text": "彼は 音楽のみならず、映画にも くわしいです。", "correct": true },
+      { "text": "彼は 音楽のみにならず、映画にも くわしいです。", "awkward": { "who": "kuroda", "text": "「のみならず」で ひとつの 表現だよ。", "en": "\"Nomi narazu\" is one expression." } },
+      { "text": "彼は 音楽のみならず、映画のみ くわしいです。", "awkward": { "who": "mio", "text": "「のみ」を ふたつ 使うと 意味が 反対に なるよ。", "en": "Using \"nomi\" twice reverses the meaning." } }
+    ] },
+    { "type": "affection", "char": "mio", "delta": 1 },
+    { "type": "cg", "id": "editorial-office", "title": "First day at the magazine" },
+    { "type": "say", "who": "kuroda", "text": "よし。インタビューは 来週だ。しっかり 準備しろよ、ゆうき。", "en": "Good. The interview is next week. Prepare well, Yuuki." }
+  ]
+}

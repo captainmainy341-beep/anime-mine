@@ -1,0 +1,366 @@
+{
+  "schema": 1,
+  "id": "genki-l19",
+  "lesson": 19,
+  "title": "Honoured Guests",
+  "tagline": "Use respectful verbs for what other people do.",
+  "hook": "The mayor is visiting the culture festival and Mori-sensei wants everyone to sound respectful. Japanese has special verbs for other people's actions, and this lesson shows how to raise them.",
+  "goals": [
+    "Raise a verb with お〜になる",
+    "Learn the special honorific verbs",
+    "Use the honorific passive form"
+  ],
+  "minutes": 13,
+  "vocab": [
+    [
+      "市長",
+      "しちょう",
+      "mayor",
+      "🏛️"
+    ],
+    [
+      "校長先生",
+      "こうちょうせんせい",
+      "principal",
+      "🎓"
+    ],
+    [
+      "お客様",
+      "おきゃくさま",
+      "guest, customer (polite)",
+      "🎩"
+    ],
+    [
+      "目上",
+      "めうえ",
+      "superior",
+      "⬆️"
+    ],
+    [
+      "敬語",
+      "けいご",
+      "respectful language",
+      "🙇"
+    ],
+    [
+      "ご覧になる",
+      "ごらんになる",
+      "to see (honorific)",
+      "👀"
+    ],
+    [
+      "召し上がる",
+      "めしあがる",
+      "to eat (honorific)",
+      "🍽️"
+    ],
+    [
+      "いらっしゃる",
+      "いらっしゃる",
+      "to be/go/come (honorific)",
+      "🚪"
+    ],
+    [
+      "おっしゃる",
+      "おっしゃる",
+      "to say (honorific)",
+      "🗣️"
+    ],
+    [
+      "なさる",
+      "なさる",
+      "to do (honorific)",
+      "✨"
+    ],
+    [
+      "くださる",
+      "くださる",
+      "to give (honorific)",
+      "🎁"
+    ],
+    [
+      "読む",
+      "よむ",
+      "to read",
+      "📖"
+    ],
+    [
+      "帰る",
+      "かえる",
+      "to return",
+      "🏠"
+    ],
+    [
+      "待つ",
+      "まつ",
+      "to wait",
+      "⏳"
+    ],
+    [
+      "座る",
+      "すわる",
+      "to sit",
+      "🪑"
+    ],
+    [
+      "ぶんかさい",
+      "ぶんかさい",
+      "culture festival",
+      "🎪"
+    ],
+    [
+      "ご挨拶",
+      "ごあいさつ",
+      "greeting (polite)",
+      "👋"
+    ],
+    [
+      "失礼",
+      "しつれい",
+      "rudeness, excuse me",
+      "🙏"
+    ],
+    [
+      "歓迎",
+      "かんげい",
+      "welcome",
+      "🎊"
+    ],
+    [
+      "案内",
+      "あんない",
+      "guidance, guiding",
+      "🧭"
+    ]
+  ],
+  "points": [
+    {
+      "id": "g:n4-o-ni-naru",
+      "title": "お〜になる",
+      "formula": "お + ます-stem + になる",
+      "gist": "Raise someone else by raising the verb.",
+      "explain": [
+        "Put お before the ます-stem and add になる: 読む → お読みになる, 待つ → お待ちになる, 帰る → お帰りになる. It describes what a respected person does.",
+        "Most する-verbs use ご…になる: ご利用になる. Never use this for your own actions: it raises the doer."
+      ],
+      "examples": [
+        {
+          "ja": "市長は|もう|新聞を|お読みに|なりました。",
+          "gloss": "mayor (topic)|already|newspaper (object)|read (honorific)|did",
+          "en": "The mayor has already read the newspaper."
+        },
+        {
+          "ja": "先生は|何時に|お帰りに|なりますか。",
+          "gloss": "teacher (topic)|what time|go home (honorific)|will",
+          "en": "What time will you go home, sir?"
+        },
+        {
+          "ja": "こちらで|お待ちに|なって|ください。",
+          "gloss": "here (at)|wait (honorific)|becoming|please",
+          "en": "Please wait here."
+        }
+      ],
+      "tip": "お + stem + になる. Think of it as putting the person on a pedestal.",
+      "watch": "Not for yourself! For your own actions use お〜する (next lesson)."
+    },
+    {
+      "id": "g:genki-irassharu",
+      "title": "いらっしゃる・おっしゃる・召し上がる",
+      "formula": "special honorific verbs",
+      "gist": "Verbs with their own respectful form.",
+      "explain": [
+        "Some very common verbs have irregular honorific forms. いる・行く・来る become いらっしゃる, 言う becomes おっしゃる, 食べる・飲む become 召し上がる, 見る becomes ご覧になる, する becomes なさる, くれる becomes くださる.",
+        "The ます-forms are いらっしゃいます, おっしゃいます, くださいます: the る becomes い, which is why you hear 「いらっしゃいませ」."
+      ],
+      "examples": [
+        {
+          "ja": "市長は|ここに|いらっしゃいます。",
+          "gloss": "mayor (topic)|here (at)|is",
+          "en": "The mayor is here."
+        },
+        {
+          "ja": "先生は|何と|おっしゃいましたか。",
+          "gloss": "teacher (topic)|what|said",
+          "en": "What did the teacher say?"
+        },
+        {
+          "ja": "どうぞ|ケーキを|召し上がって|ください。",
+          "gloss": "please|cake (object)|eat (honorific)|do",
+          "en": "Please have some cake."
+        }
+      ],
+      "tip": "いらっしゃる covers three verbs (be, go, come) so it is very useful.",
+      "watch": "Do not use these for your own actions. Use 食べる → いただく or 言う → 申す instead."
+    },
+    {
+      "id": "g:n4-rareru-honorific",
+      "title": "〜(ら)れる（honorific）",
+      "formula": "passive form of the verb",
+      "gist": "A lighter way to show respect.",
+      "explain": [
+        "The passive form can also be honorific. 先生が 来られました and 社長が 帰られました are respectful without the full お〜になる.",
+        "It is common in writing and when speaking to people one rank higher. Ru-verbs add られる (来られる) and u-verbs change the last sound to the あ-row and add れる (読む → 読まれる, 帰る → 帰られる)."
+      ],
+      "examples": [
+        {
+          "ja": "校長先生は|三時に|来られます。",
+          "gloss": "principal (topic)|at three|will come (honorific)",
+          "en": "The principal will come at three."
+        },
+        {
+          "ja": "先生は|もう|帰られました。",
+          "gloss": "teacher (topic)|already|went home (honorific)",
+          "en": "The teacher has already gone home."
+        }
+      ],
+      "tip": "Compare: 帰られる (honorific) and お帰りになる (more formal).",
+      "watch": "来られる can also be the potential form, so it depends on the context."
+    }
+  ],
+  "drills": [
+    {
+      "type": "gap",
+      "point": 0,
+      "ja": "市長は もう お読み＿ なりましたか。",
+      "options": [
+        "に",
+        "を",
+        "が",
+        "へ"
+      ],
+      "answer": "に",
+      "en": "Has the mayor already read this?",
+      "why": "お + stem + に なる."
+    },
+    {
+      "type": "pick",
+      "q": "Which is the honorific for 待つ?",
+      "options": [
+        "お待ちに なる",
+        "お待つに なる",
+        "お待ちする",
+        "お待つする"
+      ],
+      "answer": 0,
+      "why": "ます-stem: 待ち + になる.",
+      "point": 0
+    },
+    {
+      "type": "pick",
+      "q": "Ask a guest politely: \"What time will you go home?\"",
+      "options": [
+        "何時に お帰りに なりますか。",
+        "何時に お帰りします。",
+        "何時に お帰るに なりますか。",
+        "何時に 帰りになりますか。"
+      ],
+      "answer": 0,
+      "why": "お帰りになる.",
+      "point": 0
+    },
+    {
+      "type": "order",
+      "point": 0,
+      "en": "Please wait here.",
+      "chunks": [
+        "こちらで",
+        "お待ちに",
+        "なって",
+        "ください"
+      ]
+    },
+    {
+      "type": "gap",
+      "point": 1,
+      "ja": "どうぞ ケーキを 召し上が＿ ください。",
+      "options": [
+        "って",
+        "り",
+        "る",
+        "ない"
+      ],
+      "answer": "って",
+      "en": "Please have some cake.",
+      "why": "召し上がって ください."
+    },
+    {
+      "type": "pick",
+      "q": "The honorific for 言う:",
+      "options": [
+        "おっしゃる",
+        "申す",
+        "言われる",
+        "いらっしゃる"
+      ],
+      "answer": 0,
+      "why": "言う → おっしゃる.",
+      "point": 1
+    },
+    {
+      "type": "pick",
+      "q": "The mayor is here (honorific):",
+      "options": [
+        "市長は ここに いらっしゃいます。",
+        "市長は ここに おります。",
+        "市長は ここに まいります。",
+        "市長は ここに いたします。"
+      ],
+      "answer": 0,
+      "why": "いる → いらっしゃる.",
+      "point": 1
+    },
+    {
+      "type": "order",
+      "point": 1,
+      "en": "What did the mayor say?",
+      "chunks": [
+        "市長は",
+        "何と",
+        "おっしゃいましたか"
+      ]
+    },
+    {
+      "type": "gap",
+      "point": 2,
+      "ja": "校長先生は 三時に 来＿ます。",
+      "options": [
+        "られ",
+        "れ",
+        "さ",
+        "せ"
+      ],
+      "answer": "られ",
+      "en": "The principal will come at three.",
+      "why": "来る → 来られる."
+    },
+    {
+      "type": "pick",
+      "q": "Which is the honorific passive of 帰る?",
+      "options": [
+        "帰られる",
+        "帰れる",
+        "帰らせる",
+        "帰りる"
+      ],
+      "answer": 0,
+      "why": "あ-row + れる.",
+      "point": 2
+    },
+    {
+      "type": "type",
+      "prompt": "Type the reading of 市長 (mayor) in hiragana.",
+      "show": "市長",
+      "answers": [
+        "しちょう"
+      ]
+    },
+    {
+      "type": "type",
+      "prompt": "Type the reading of 敬語 (respectful language) in hiragana.",
+      "show": "敬語",
+      "answers": [
+        "けいご"
+      ]
+    }
+  ]
+}

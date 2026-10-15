@@ -1,0 +1,135 @@
+{
+  "schema": 1,
+  "id": "genki-l11",
+  "lesson": 11,
+  "title": "After the Holidays",
+  "tagline": "Tell stories of what you did, say what you've experienced and what you want.",
+  "hook": "The break is over and the class is full of travel stories. Everyone did a bit of this and a bit of that, and some have been places others still dream of.",
+  "goals": ["List actions with たり〜たりする", "Say you have done something with たことがある", "Say what you want with 〜たい and list nouns with や"],
+  "minutes": 11,
+  "vocab": [
+    ["旅", "たび", "journey", "🧳"],
+    ["京都", "きょうと", "Kyoto", "⛩️"],
+    ["北海道", "ほっかいどう", "Hokkaido", "🗻"],
+    ["お土産", "おみやげ", "souvenir", "🎁"],
+    ["写真", "しゃしん", "photo", "📷"],
+    ["お寺", "おてら", "temple", "🛕"],
+    ["有名", "ゆうめい", "famous", "🌟"],
+    ["温泉", "おんせん", "hot spring", "♨️"],
+    ["泳ぐ", "およぐ", "to swim", "🏊"],
+    ["歩く", "あるく", "to walk", "🚶"],
+    ["乗る", "のる", "to ride", "🚌"],
+    ["会う", "あう", "to meet", "🤝"],
+    ["遊ぶ", "あそぶ", "to play, hang out", "🎮"],
+    ["見る", "みる", "to see, watch", "👀"],
+    ["一度", "いちど", "once", "☝️"],
+    ["何度も", "なんども", "many times", "🔁"],
+    ["まだ", "まだ", "not yet", "⏳"],
+    ["ほしい", "ほしい", "want (a thing)", "🙏"],
+    ["やりたい", "やりたい", "want to do", "💪"],
+    ["いつか", "いつか", "someday", "🌠"]
+  ],
+  "points": [
+    {
+      "id": "g:n4-tari-tari-suru",
+      "title": "〜たり〜たりする",
+      "formula": "た-form + り, た-form + り + する",
+      "gist": "do things like A and B (among others).",
+      "explain": [
+        "Use it to list examples of what you did, not everything. Make the た-form of each verb, add り, and finish with する in the right tense.",
+        "It paints a picture of a typical day: 食べたり、飲んだり、しました."
+      ],
+      "examples": [
+        { "ja": "休みには|海で|泳いだり、|本を読んだり|しました。", "gloss": "during the break|at the sea|swam and|read and|did", "en": "During the break I did things like swim at the sea and read." },
+        { "ja": "休みの日は|映画を見たり、|友だちと|会ったり|します。", "gloss": "on days off|watch movies and|with friends|meet and|do", "en": "On days off I watch movies, meet friends and so on." },
+        { "ja": "日曜日には|ねたり、|さんぽしたり|しました。", "gloss": "on Sunday|slept and|walked and|did", "en": "On Sunday I did things like sleep and take walks." }
+      ],
+      "tip": "Don't forget the final する. Without it the sentence is unfinished.",
+      "watch": "Tense is marked only on する at the end."
+    },
+    {
+      "id": "g:n5-ya-nado",
+      "title": "〜や〜など",
+      "formula": "A や B (など)",
+      "gist": "A and B, among other things.",
+      "explain": [
+        "や lists a few examples from a longer list, while と means \"exactly these\". Add など (etc.) to make it clear there is more.",
+        "Don't put や after the last item unless you add など."
+      ],
+      "examples": [
+        { "ja": "お寺や|温泉に|行きました。", "gloss": "temples and|hot springs|went", "en": "I went to temples, hot springs and so on." },
+        { "ja": "りんごや|みかんなどを|買いました。", "gloss": "apples and|mandarins etc.|bought", "en": "I bought apples, mandarins and so on." },
+        { "ja": "ともだちや|かぞくに|おみやげを|あげました。", "gloss": "friends and|family|souvenirs|gave", "en": "I gave souvenirs to friends, family and so on." }
+      ],
+      "tip": "A と B means exactly A and B. A や B means A, B and others.",
+      "watch": "や joins nouns only."
+    },
+    {
+      "id": "g:n4-ta-koto-ga-aru",
+      "title": "〜たことがある",
+      "formula": "た-form + ことがある",
+      "gist": "I have done ... before.",
+      "explain": [
+        "To talk about experience, attach ことがある to the た-form. It means \"there is the experience of doing it\".",
+        "Add 一度 (once), 何度も (many times), or まだ ... ことがない (never) to be specific."
+      ],
+      "examples": [
+        { "ja": "京都に|行ったことが|あります。", "gloss": "to Kyoto|have gone|there is", "en": "I have been to Kyoto." },
+        { "ja": "雪を|見たことが|ありません。", "gloss": "snow|have seen|there isn't", "en": "I've never seen snow." },
+        { "ja": "すしを|食べたことが|ありますか。", "gloss": "sushi|have eaten|is there?", "en": "Have you ever eaten sushi?" }
+      ],
+      "tip": "Contrast: 京都に行きました (I went) is a plain past event; 行ったことがあります is a lifetime experience.",
+      "watch": "Don't use ことがある with a ます form."
+    },
+    {
+      "id": "g:n5-tai",
+      "title": "〜たい",
+      "formula": "verb stem + たい",
+      "gist": "I want to ...",
+      "explain": [
+        "To say you want to do something, drop ます and add たい. It conjugates like an い-adjective: たくない (don't want to), たかった (wanted to).",
+        "The thing you want may take を or が: 食べ物が 食べたい, 食べ物を 食べたい."
+      ],
+      "examples": [
+        { "ja": "北海道に|行きたいです。", "gloss": "to Hokkaido|want to go", "en": "I want to go to Hokkaido." },
+        { "ja": "何を|食べたいですか。", "gloss": "what|do you want to eat?", "en": "What do you want to eat?" },
+        { "ja": "何も|したくないです。", "gloss": "anything|don't want to do", "en": "I don't want to do anything." }
+      ],
+      "tip": "たい works for your own wishes. About others, say たいと言っていました or たがっています.",
+      "watch": "ほしい is for things (本が ほしい); たい is for actions."
+    },
+    {
+      "id": "g:genki-giving",
+      "title": "あげる · もらう · くれる",
+      "formula": "A は B に C を あげる / もらう",
+      "gist": "Giving and receiving things.",
+      "explain": [
+        "あげる means giving to someone else, もらう means receiving, and くれる means someone gives to me or my side. The giver or receiver takes に.",
+        "あげる and もらう flip the viewpoint: A に あげる / A に もらう."
+      ],
+      "examples": [
+        { "ja": "ともだちに|おみやげを|あげました。", "gloss": "to my friend|souvenir|gave", "en": "I gave my friend a souvenir." },
+        { "ja": "ハナさんに|写真を|もらいました。", "gloss": "from Hana|photo|received", "en": "I received a photo from Hana." },
+        { "ja": "レオさんが|おかしを|くれました。", "gloss": "Leo (subject)|sweets|gave me", "en": "Leo gave me some sweets." }
+      ],
+      "tip": "くれる means the giver is the subject and the receiver is me or us.",
+      "watch": "Don't use あげる when you receive; use もらう or くれる."
+    }
+  ],
+  "drills": [
+    { "type": "gap", "point": 0, "ja": "海で 泳いだ＿、本を 読んだり しました。", "options": ["り", "て", "と", "が"], "answer": "り", "en": "I swam at the sea and read.", "why": "た-form + り." },
+    { "type": "order", "point": 0, "en": "On days off I watch movies and meet friends.", "chunks": ["休みの日は", "映画を見たり", "友だちと会ったり", "します"] },
+    { "type": "gap", "point": 1, "ja": "お寺＿ 温泉に 行きました。", "options": ["や", "を", "が", "は"], "answer": "や", "en": "I went to temples, hot springs and so on.", "why": "や lists examples." },
+    { "type": "pick", "point": 1, "q": "Which one means \"A and B, among others\"?", "options": ["A や B", "A と B", "A の B", "A か B"], "answer": 0, "why": "や implies there are more." },
+    { "type": "gap", "point": 2, "ja": "京都に 行ったことが＿。", "options": ["あります", "ました", "です", "います"], "answer": "あります", "en": "I have been to Kyoto.", "why": "た-form + ことがあります." },
+    { "type": "order", "point": 2, "en": "I've never seen snow.", "chunks": ["雪を", "見たことが", "ありません"] },
+    { "type": "pick", "point": 2, "q": "\"Have you ever eaten sushi?\"", "options": ["すしを 食べたことが ありますか。", "すしを 食べることが ありますか。", "すしを 食べたことは しましたか。", "すしが 食べたこと ですか。"], "answer": 0, "why": "た-form + ことがある." },
+    { "type": "gap", "point": 3, "ja": "北海道に 行き＿です。", "options": ["たい", "ます", "たく", "ませ"], "answer": "たい", "en": "I want to go to Hokkaido.", "why": "Stem + たい." },
+    { "type": "pick", "point": 3, "q": "\"I don't want to do anything.\"", "options": ["何も したくないです。", "何も したいくないです。", "何を したくありません ない。", "何も したいません。"], "answer": 0, "why": "たい → たくない." },
+    { "type": "gap", "point": 4, "ja": "ともだち＿ おみやげを あげました。", "options": ["に", "が", "は", "で"], "answer": "に", "en": "I gave my friend a souvenir.", "why": "The receiver takes に." },
+    { "type": "pick", "point": 4, "q": "Leo gave you sweets. Which is right?", "options": ["レオさんが おかしを くれました。", "レオさんが おかしを あげました。", "レオさんに おかしを くれました。", "レオさんは おかしを もらいました。"], "answer": 0, "why": "くれる: someone gives to me." },
+    { "type": "type", "prompt": "Type the reading of お土産 (souvenir) in hiragana.", "show": "お土産", "answers": ["おみやげ"] },
+    { "type": "type", "prompt": "Type the reading of 有名 (famous) in hiragana.", "show": "有名", "answers": ["ゆうめい"] },
+    { "type": "pick", "q": "Which means \"once, one time\"?", "options": ["一度", "何度も", "いつか", "もう"], "answer": 0, "why": "一度 (いちど) = once." }
+  ]
+}

@@ -1,0 +1,336 @@
+{
+  "schema": 1,
+  "id": "genki-l11",
+  "order": 111,
+  "track": "genki",
+  "lesson": 11,
+  "title": "やすみの あと",
+  "summary": "Back after the break. Talk about what you did, what you want to do, and things you have done before.",
+  "covers": "〜たり〜たりする · や · 〜たことがある · 〜たい · に / を (giving)",
+  "jlpt": "N5",
+  "source": "authored",
+  "bg": "classroom-morning",
+  "characters": {
+    "hana": {
+      "name": "ハナ",
+      "color": "#7cc6b4"
+    },
+    "leo": {
+      "name": "レオ",
+      "color": "#f0a35e"
+    },
+    "tomi": {
+      "name": "とみさん",
+      "color": "#c97b5a"
+    }
+  },
+  "glossary": {
+    "k:旅": {
+      "label": "旅",
+      "reading": "りょ / たび",
+      "meaning": "trip"
+    },
+    "g:n4-tari-tari-suru": {
+      "label": "〜たり〜たりする",
+      "meaning": "do things like ... and ... (among other actions)",
+      "note": "Lists typical actions as examples, implying there are others. The final する can be conjugated (したりする, しなかったりする). Used with verbs; the same pattern appears with adjectives at a higher level."
+    },
+    "g:n5-ya-nado": {
+      "label": "〜や〜など",
+      "meaning": "and so on / things like ... and ...",
+      "note": "Lists examples without naming everything. や joins the items, and など signals that there are more. など is often left out, but the list then sounds less open-ended."
+    },
+    "g:n4-ta-koto-ga-aru": {
+      "label": "〜たことがある",
+      "meaning": "have had the experience of ...",
+      "note": "Talks about an experience at some unspecified time in the past, not a specific event. The negative 〜たことがない means never having done something. Polite form: 〜たことがあります."
+    },
+    "g:n5-tai": {
+      "label": "〜たい",
+      "meaning": "want to (do something)",
+      "note": "たい attaches to the verb stem and works like an i-adjective. The object takes を or が, and both are seen in speech. Use it only for your own wishes; for someone else's wish use 〜たがっている."
+    },
+    "k:映": {
+      "label": "映",
+      "reading": "えい",
+      "meaning": "reflect, project"
+    },
+    "g:n5-o": {
+      "label": "〜を",
+      "meaning": "marks the direct object of an action",
+      "note": "を marks the thing a transitive verb acts on. It is written as を but pronounced o. Intransitive verbs such as 行く or 来る use に or へ for direction instead."
+    },
+    "g:n5-ni": {
+      "label": "〜に",
+      "meaning": "at / on / in (time); to (destination)",
+      "note": "に marks a specific point in time (七時に, 月曜日に) and the goal of movement (学校に). Do not use に with きのう, きょう, あした, or いつ. Those time words take no particle."
+    }
+  },
+  "beats": [
+    {
+      "type": "show",
+      "char": "hana",
+      "expr": "smile",
+      "pos": "left"
+    },
+    {
+      "type": "show",
+      "char": "leo",
+      "expr": "smile",
+      "pos": "right"
+    },
+    {
+      "type": "say",
+      "who": null,
+      "text": "一月。やすみが おわった。",
+      "en": "January. The break is over."
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "ノア、旅行は どうだった？",
+      "en": "Noa, how was your trip?"
+    },
+    {
+      "type": "reading",
+      "item": "k:旅",
+      "display": "旅行",
+      "answers": [
+        "りょこう"
+      ],
+      "prompt": "Read it.",
+      "target": "旅行"
+    },
+    {
+      "type": "intro",
+      "item": "g:n4-tari-tari-suru"
+    },
+    {
+      "type": "choice",
+      "item": "g:n4-tari-tari-suru",
+      "who": null,
+      "prompt": "Say you went skiing, ate crab, and so on.",
+      "options": [
+        {
+          "text": "スキーを したり、かにを 食べたり しました。",
+          "correct": true
+        },
+        {
+          "text": "スキーを したり、かにを 食べました。",
+          "awkward": {
+            "who": "hana",
+            "text": "「たり」は 二つ！「食べたり」もね。",
+            "en": "\"Tari\" comes in pairs! \"Tabetari\" too."
+          }
+        },
+        {
+          "text": "スキーを するたり、かにを 食べるたり しました。"
+        }
+      ]
+    },
+    {
+      "type": "intro",
+      "item": "g:n5-ya-nado"
+    },
+    {
+      "type": "particle",
+      "item": "g:n5-ya-nado",
+      "who": null,
+      "text": "おみやげに チョコレート＿ クッキーなどを 買いました。",
+      "options": [
+        "や",
+        "を",
+        "が",
+        "に"
+      ],
+      "answers": [
+        "や"
+      ],
+      "en": "I bought chocolate, cookies and other things as souvenirs.",
+      "role": "p:ya/listing"
+    },
+    {
+      "type": "say",
+      "who": "leo",
+      "text": "いいなあ。ぼくは ほっかいどうに 行ったことが ない。",
+      "en": "Lucky. I've never been to Hokkaido."
+    },
+    {
+      "type": "intro",
+      "item": "g:n4-ta-koto-ga-aru"
+    },
+    {
+      "type": "choice",
+      "item": "g:n4-ta-koto-ga-aru",
+      "who": null,
+      "prompt": "Ask Hana casually: \"Have you ever been to Hokkaido?\"",
+      "options": [
+        {
+          "text": "ハナは ほっかいどうに 行ったことが ある？",
+          "correct": true
+        },
+        {
+          "text": "ハナは ほっかいどうに 行くことが ある？",
+          "awkward": {
+            "who": "hana",
+            "text": "それは「ときどき 行く？」って いみに なるよ。",
+            "en": "That means \"do you sometimes go?\""
+          }
+        },
+        {
+          "text": "ハナは ほっかいどうに 行ったことを ある？",
+          "awkward": {
+            "who": "hana",
+            "text": "「ことが ある」だよ！",
+            "en": "It's \"koto ga aru\"!"
+          }
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "ううん、ない。いつか 行きたい！",
+      "en": "No, never. I want to go someday!"
+    },
+    {
+      "type": "intro",
+      "item": "g:n5-tai"
+    },
+    {
+      "type": "choice",
+      "item": "g:n5-tai",
+      "who": null,
+      "prompt": "Say you want to watch a Japanese movie this weekend.",
+      "options": [
+        {
+          "text": "しゅうまつ、日本の 映画を 見たいです。",
+          "correct": true
+        },
+        {
+          "text": "しゅうまつ、日本の 映画を 見るたいです。",
+          "awkward": {
+            "who": "leo",
+            "text": "「見るたい」？ 「見」＋「たい」だよ。",
+            "en": "\"Miru-tai\"? It's \"mi\" + \"tai\"."
+          }
+        },
+        {
+          "text": "しゅうまつ、日本の 映画を 見たいでした。"
+        }
+      ]
+    },
+    {
+      "type": "reading",
+      "item": "k:映",
+      "display": "映画",
+      "answers": [
+        "えいが"
+      ],
+      "prompt": "Read it.",
+      "target": "映画"
+    },
+    {
+      "type": "say",
+      "who": "leo",
+      "text": "ぼくは、しゅうまつは ずっと ねたい…。",
+      "en": "Me, I just want to sleep all weekend...",
+      "expr": "tired"
+    },
+    {
+      "type": "choice",
+      "item": "g:n5-tai",
+      "who": null,
+      "prompt": "Say it for Leo, casually: \"I don't want to go out.\"",
+      "options": [
+        {
+          "text": "出かけたくない。",
+          "correct": true
+        },
+        {
+          "text": "出かけたいない。",
+          "awkward": {
+            "who": "leo",
+            "text": "「たいない」？ い形容詞と 同じで「たくない」！",
+            "en": "\"Tai-nai\"? Like an i-adjective: \"takunai\"!"
+          }
+        },
+        {
+          "text": "出かけないたい。"
+        }
+      ]
+    },
+    {
+      "type": "bg",
+      "bg": "cafe"
+    },
+    {
+      "type": "hide",
+      "char": "leo"
+    },
+    {
+      "type": "show",
+      "char": "tomi",
+      "expr": "smile",
+      "pos": "right"
+    },
+    {
+      "type": "say",
+      "who": "tomi",
+      "text": "おかえり、ノアさん。お茶を どうぞ。",
+      "en": "Welcome back, Noa. Have some tea."
+    },
+    {
+      "type": "particle",
+      "item": "g:n5-o",
+      "who": null,
+      "text": "とみさんに おみやげ＿ あげました。",
+      "options": [
+        "を",
+        "に",
+        "が",
+        "で"
+      ],
+      "answers": [
+        "を"
+      ],
+      "en": "I gave Tomi a souvenir.",
+      "role": "p:wo/object"
+    },
+    {
+      "type": "particle",
+      "item": "g:n5-ni",
+      "who": null,
+      "text": "とみさん＿ おみやげを あげました。",
+      "options": [
+        "に",
+        "を",
+        "で",
+        "が"
+      ],
+      "answers": [
+        "に"
+      ],
+      "en": "I gave Tomi a souvenir.",
+      "role": "p:ni/recipient",
+      "prompt": "Same sentence: now mark the person who receives it."
+    },
+    {
+      "type": "say",
+      "who": "tomi",
+      "text": "まあ、うれしい！ ありがとう。",
+      "en": "Oh, how lovely! Thank you.",
+      "expr": "smile"
+    },
+    {
+      "type": "affection",
+      "char": "tomi",
+      "delta": 2
+    },
+    {
+      "type": "cg",
+      "id": "genki-after-break",
+      "title": "Souvenirs"
+    }
+  ]
+}

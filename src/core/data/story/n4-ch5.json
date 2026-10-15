@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "id": "n4-ch5",
+  "order": 11,
+  "title": "Chapter 11: わすれもの",
+  "summary": "Sora leaves his song notebook on the train. Giving, receiving and regretting: あげる, くれる, もらう and しまう.",
+  "jlpt": "N4",
+  "source": "authored",
+  "bg": "station-day",
+  "characters": {
+    "mio": { "name": "みお", "color": "#f3a0b6" },
+    "sora": { "name": "そら", "color": "#a2befa" },
+    "ekiin": { "name": "駅員さん", "color": "#6f8fd8" }
+  },
+  "glossary": {
+    "g:n4-te-shimau": { "label": "〜てしまう", "meaning": "end up doing / do completely (often regret)", "note": "て-form + しまう. Casual: ちゃう / じゃう." },
+    "g:n4-te-ageru": { "label": "〜てあげる", "meaning": "do something for someone", "note": "You (or someone) do a favour for another person." },
+    "g:n4-te-kureru": { "label": "〜てくれる", "meaning": "someone does something for me", "note": "The giver is marked with が; the receiver is me / us." },
+    "g:n4-te-morau": { "label": "〜てもらう", "meaning": "have someone do something for me", "note": "The giver is marked with に: 駅員さんにさがしてもらった." },
+    "k:忘": { "label": "忘", "reading": "ぼう / わす(れる)", "meaning": "forget" },
+    "k:持": { "label": "持", "reading": "じ / も(つ)", "meaning": "hold, have" }
+  },
+  "beats": [
+    { "type": "bg", "bg": "station-day" },
+    { "type": "say", "who": null, "text": "京都から もどる 電車の 中。…そらの かおが、とつぜん 青く なった。", "en": "On the train back from Kyoto. ...Sora's face suddenly goes pale." },
+    { "type": "show", "char": "sora", "expr": "surprised", "pos": "right" },
+    { "type": "show", "char": "mio", "expr": "neutral", "pos": "left" },
+    { "type": "intro", "item": "k:忘" },
+    { "type": "reading", "item": "k:忘", "display": "忘れ物", "target": "忘", "prompt": "Sora says he has a 忘れ物. Read it.", "answers": ["わすれもの"] },
+    { "type": "say", "who": "sora", "text": "ノートが ない…。歌の ノートを、前の 駅に おいて きた。", "en": "My notebook's gone... I left my song notebook at the last station." },
+    { "type": "intro", "item": "g:n4-te-shimau" },
+    { "type": "choice", "item": "g:n4-te-shimau", "who": "sora", "prompt": "Say with regret: \"I left my bag on the train.\" (You forgot it, unfortunately.)", "options": [
+      { "text": "かばんを 電車に わすれてしまいました。", "correct": true },
+      { "text": "かばんを 電車に わすれるしまいました。", "awkward": { "who": "sora", "text": "「わすれて」…て-形に する。", "en": "\"Wasurete\" -- use the て-form." } },
+      { "text": "かばんを 電車に わすれてしまうました。", "awkward": { "who": "mio", "text": "「しまいました」で おわるよ。", "en": "It ends with \"shimaimashita\"." } }
+    ] },
+    { "type": "bg", "bg": "station-day" },
+    { "type": "say", "who": null, "text": "次の 駅で 降りて、事務所へ かけこむ。", "en": "You get off at the next station and rush to the office." },
+    { "type": "show", "char": "ekiin", "expr": "neutral", "pos": "center" },
+    { "type": "say", "who": "ekiin", "text": "ノートですか。今、さがして いるところです。", "en": "A notebook? We're looking for it right now." },
+    { "type": "say", "who": "mio", "text": "そら、重そうな 荷物だね。", "en": "Sora, that bag looks heavy." },
+    { "type": "intro", "item": "k:持" },
+    { "type": "reading", "item": "k:持", "display": "持つ", "target": "持", "prompt": "Mio says she will 持つ the bag. Read it.", "answers": ["もつ"] },
+    { "type": "intro", "item": "g:n4-te-ageru" },
+    { "type": "choice", "item": "g:n4-te-ageru", "who": "mio", "prompt": "Offer to help: \"I'll carry your luggage for you.\"", "options": [
+      { "text": "荷物を もってあげるよ。", "correct": true },
+      { "text": "荷物を もってくれるよ。", "awkward": { "who": "mio", "text": "「くれる」は わたしの ために して くれる とき。", "en": "\"Kureru\" is for when someone does it for me." } },
+      { "text": "荷物を もってもらうよ。", "awkward": { "who": "sora", "text": "…それだと ぼくが 持って もらう みたい。", "en": "...That sounds like I'm having it carried." } }
+    ] },
+    { "type": "say", "who": "ekiin", "text": "ありましたよ！ ごみ箱の よこに ありました。", "en": "Found it! It was next to the trash can." },
+    { "type": "intro", "item": "g:n4-te-kureru" },
+    { "type": "choice", "item": "g:n4-te-kureru", "who": "sora", "prompt": "Tell Mio what happened: \"The station attendant searched for it for me.\"", "options": [
+      { "text": "駅員さんが さがしてくれました。", "correct": true },
+      { "text": "駅員さんが さがしてあげました。", "awkward": { "who": "mio", "text": "「あげました」だと ぼくが あげた みたい。", "en": "\"Agemashita\" sounds like I gave something." } },
+      { "text": "駅員さんが さがしてもらいました。", "awkward": { "who": "mio", "text": "「もらう」の ときは 「駅員さんに」だよ。", "en": "With \"morau\" it's \"ekiin-san ni\"." } }
+    ] },
+    { "type": "intro", "item": "g:n4-te-morau" },
+    { "type": "choice", "item": "g:n4-te-morau", "who": "mio", "prompt": "Say it from your own side: \"I had the attendant look for it.\"", "options": [
+      { "text": "駅員さんに さがしてもらいました。", "correct": true },
+      { "text": "駅員さんが さがしてもらいました。", "awkward": { "who": "ekiin", "text": "「もらう」の ひとは 「に」ですよ。", "en": "The person doing it is marked with \"ni\"." } },
+      { "text": "駅員さんに さがしてくれました。", "awkward": { "who": "ekiin", "text": "「くれる」の ひとは 「が」ですよ。", "en": "With \"kureru\" it's \"ga\"." } }
+    ] },
+    { "type": "affection", "char": "sora", "delta": 3 },
+    { "type": "cg", "id": "lost-notebook", "title": "The lost notebook" },
+    { "type": "say", "who": "sora", "text": "…この ノートは、ぼくの いちばん 大事な ものなんだ。ありがとう、二人とも。", "en": "...This notebook is the most important thing I own. Thank you, both of you." }
+  ]
+}
