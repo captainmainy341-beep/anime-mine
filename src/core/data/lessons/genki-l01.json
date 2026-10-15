@@ -1,0 +1,99 @@
+{
+  "schema": 1,
+  "id": "genki-l01",
+  "lesson": 1,
+  "title": "Hello, Minato",
+  "tagline": "Introduce yourself, ask who someone is, and say whose things are whose.",
+  "hook": "Noa steps off the train in Minato with one suitcase and a lot of nerves. In a few minutes you'll have the words and the three tiny particles that make a first conversation work.",
+  "goals": ["Say who you are with は and です", "Turn any statement into a question with か", "Link two nouns with の and add さん politely"],
+  "minutes": 8,
+  "vocab": [
+    ["わたし", "わたし", "I, me", "🙋"],
+    ["あなた", "あなた", "you", "👉"],
+    ["はい", "はい", "yes", "✅"],
+    ["いいえ", "いいえ", "no", "❌"],
+    ["先生", "せんせい", "teacher", "🧑‍🏫"],
+    ["学生", "がくせい", "student", "🎓"],
+    ["留学生", "りゅうがくせい", "exchange student", "✈️"],
+    ["大学", "だいがく", "university", "🏫"],
+    ["一年生", "いちねんせい", "first-year student", "1️⃣"],
+    ["二年生", "にねんせい", "second-year student", "2️⃣"],
+    ["日本人", "にほんじん", "Japanese person", "🎌"],
+    ["アメリカ人", "アメリカじん", "American", "🗽"],
+    ["カナダ人", "カナダじん", "Canadian", "🍁"],
+    ["ブラジル人", "ブラジルじん", "Brazilian", "⚽"],
+    ["名前", "なまえ", "name", "📛"],
+    ["専攻", "せんこう", "major, field of study", "📚"],
+    ["友だち", "ともだち", "friend", "🤝"],
+    ["はじめまして", "はじめまして", "nice to meet you (first time)", "👋"],
+    ["よろしくおねがいします", "よろしくおねがいします", "please treat me well", "🙇"],
+    ["何", "なん", "what", "❓"]
+  ],
+  "points": [
+    {
+      "id": "g:n5-wa-desu",
+      "title": "〜は〜です",
+      "formula": "A は B です",
+      "gist": "A is B.",
+      "explain": [
+        "は is a spotlight. It marks the topic: the thing you are about to say something about. Read it as \"as for A...\".",
+        "です is the polite full stop. It closes the sentence and tells the listener you're being respectful. There is no separate word for \"am / is / are\"."
+      ],
+      "examples": [
+        { "ja": "わたしは|ノアです。", "gloss": "topic|name + です", "en": "I am Noa." },
+        { "ja": "ハナさんは|学生です。", "gloss": "topic|student + です", "en": "Hana is a student." },
+        { "ja": "レオさんは|ブラジル人です。", "gloss": "topic|Brazilian + です", "en": "Leo is Brazilian." }
+      ],
+      "tip": "Japanese drops \"I\" all the time once the topic is clear. 学生です alone can mean \"I am a student\".",
+      "watch": "As a particle, は is pronounced \"wa\". In はじめまして it stays \"ha\"."
+    },
+    {
+      "id": "g:n5-ka",
+      "title": "〜か",
+      "formula": "A は B ですか",
+      "gist": "Is A B?",
+      "explain": [
+        "Add か to the end and the sentence becomes a yes/no question. There's no word-order change and normally no question mark needed.",
+        "Answer with はい (yes) or いいえ (no), then repeat the key part."
+      ],
+      "examples": [
+        { "ja": "ノアさんは|カナダ人|ですか。", "gloss": "topic|Canadian|question", "en": "Are you Canadian, Noa?" },
+        { "ja": "はい、|カナダ人です。", "gloss": "yes|Canadian + です", "en": "Yes, I'm Canadian." },
+        { "ja": "いいえ、|アメリカ人です。", "gloss": "no|American + です", "en": "No, I'm American." }
+      ],
+      "tip": "か is only for asking. Say it with rising tone and you sound curious, not rude.",
+      "watch": "Don't put か in the middle. It always closes the question."
+    },
+    {
+      "id": "g:n5-no",
+      "title": "〜の",
+      "formula": "A の B",
+      "gist": "A's B / the B of A.",
+      "explain": [
+        "の links two nouns. The first one describes or owns the second: 大学の学生 is a student of the university.",
+        "It works for belonging (わたしの名前), affiliation (大学の先生) and subject (日本語の先生)."
+      ],
+      "examples": [
+        { "ja": "わたしの|名前は|ノアです。", "gloss": "my|name (topic)|Noa", "en": "My name is Noa." },
+        { "ja": "みなと大学の|留学生です。", "gloss": "Minato University's|exchange student", "en": "I'm an exchange student at Minato University." },
+        { "ja": "森先生の|専攻は|何ですか。", "gloss": "Mori-sensei's|major (topic)|what?", "en": "What is Mori-sensei's field?" }
+      ],
+      "tip": "Add さん after a name when you talk about someone else. Never add it to your own name.",
+      "watch": "If the second noun is obvious you can drop it: それはわたしのです (\"that's mine\")."
+    }
+  ],
+  "drills": [
+    { "type": "gap", "point": 0, "ja": "わたし＿ノアです。", "options": ["は", "を", "の", "か"], "answer": "は", "en": "I am Noa.", "why": "は marks the topic, \"I\"." },
+    { "type": "order", "point": 0, "en": "Hana is a student.", "chunks": ["ハナさんは", "学生", "です"] },
+    { "type": "pick", "point": 0, "q": "Which sentence politely says \"Leo is Brazilian\"?", "options": ["レオさんは ブラジル人です。", "レオさんを ブラジル人です。", "レオさんは ブラジル人。です", "レオさんの ブラジル人です。"], "answer": 0, "why": "は for the topic, then the noun, then です." },
+    { "type": "gap", "point": 1, "ja": "ノアさんは カナダ人です＿。", "options": ["か", "の", "は", "ね"], "answer": "か", "en": "Are you Canadian, Noa?", "why": "か at the end makes it a question." },
+    { "type": "order", "point": 1, "en": "Are you a first-year student?", "chunks": ["あなたは", "一年生", "ですか"], "alts": [["一年生", "あなたは", "ですか"]] },
+    { "type": "pick", "point": 1, "q": "Someone asks 学生ですか。 You are a student. What do you say?", "options": ["はい、学生です。", "いいえ、学生です。", "はい、学生ですか。", "いいえ、学生か。"], "answer": 0, "why": "はい means yes; repeat the answer with です." },
+    { "type": "gap", "point": 2, "ja": "わたし＿名前は ノアです。", "options": ["の", "は", "を", "か"], "answer": "の", "en": "My name is Noa.", "why": "の links わたし and 名前." },
+    { "type": "order", "point": 2, "en": "I'm an exchange student at Minato University.", "chunks": ["みなと大学の", "留学生", "です"] },
+    { "type": "type", "prompt": "Type the reading of 先生 (teacher) in hiragana.", "show": "先生", "answers": ["せんせい"] },
+    { "type": "type", "prompt": "Type the reading of 友だち (friend) in hiragana.", "show": "友だち", "answers": ["ともだち"] },
+    { "type": "pick", "q": "Which one means \"first-year student\"?", "options": ["一年生", "二年生", "留学生", "先生"], "answer": 0, "why": "一 = one, 年生 = school-year student." },
+    { "type": "gap", "ja": "ハナさん＿ 二年生ですか。", "options": ["は", "の", "か", "を"], "answer": "は", "en": "Is Hana a second-year?", "why": "は marks Hana as the topic of the question." }
+  ]
+}

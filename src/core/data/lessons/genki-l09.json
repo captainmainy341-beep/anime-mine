@@ -1,0 +1,134 @@
+{
+  "schema": 1,
+  "id": "genki-l09",
+  "lesson": 9,
+  "title": "Summer Festival Night",
+  "tagline": "Talk about the past in casual speech, say already / not yet, name times, and describe things with verbs.",
+  "hook": "The summer festival is tonight and everyone has a story from earlier: who went, who didn't, and who is already late.",
+  "goals": ["Use past short forms (た / なかった)", "Say もう (already) and まだ (not yet)", "Use から〜まで for ranges and verbs before nouns to describe them"],
+  "minutes": 11,
+  "vocab": [
+    ["祭り", "まつり", "festival", "🏮"],
+    ["花火", "はなび", "fireworks", "🎆"],
+    ["浴衣", "ゆかた", "light summer kimono", "👘"],
+    ["屋台", "やたい", "food stall", "🍢"],
+    ["午前", "ごぜん", "morning, a.m.", "🌅"],
+    ["午後", "ごご", "afternoon, p.m.", "🌇"],
+    ["夜", "よる", "night", "🌙"],
+    ["時間", "じかん", "time, hours", "⌛"],
+    ["もう", "もう", "already", "✔️"],
+    ["まだ", "まだ", "not yet, still", "⏳"],
+    ["おくれる", "おくれる", "to be late", "🏃"],
+    ["会う", "あう", "to meet", "🤝"],
+    ["始まる", "はじまる", "to begin", "▶️"],
+    ["終わる", "おわる", "to end", "⏹️"],
+    ["着る", "きる", "to wear (on the body)", "👗"],
+    ["約束", "やくそく", "promise, appointment", "🤙"],
+    ["ともだち", "ともだち", "friend", "🫂"],
+    ["いつ", "いつ", "when", "🕐"],
+    ["どうして", "どうして", "why", "❔"],
+    ["だって", "だって", "because (casual)", "😅"]
+  ],
+  "points": [
+    {
+      "id": "g:n5-ta",
+      "title": "Past short forms: 〜た / 〜なかった",
+      "formula": "た-form / なかった",
+      "gist": "Casual past tense.",
+      "explain": [
+        "The casual past of a verb is made like the て-form but ending in た: 食べた, 飲んだ, 行った. The negative past is ない → なかった: 食べなかった.",
+        "い-adjectives use かった (おいしかった) and nouns/な-adjectives use だった."
+      ],
+      "examples": [
+        { "ja": "きのう|花火を|見た。", "gloss": "yesterday|fireworks|saw", "en": "I saw fireworks yesterday." },
+        { "ja": "雨だったから|行かなかった。", "gloss": "because it rained|didn't go", "en": "It rained, so I didn't go." },
+        { "ja": "ケーキは|おいしかった。", "gloss": "cake (topic)|was delicious", "en": "The cake was delicious." }
+      ],
+      "tip": "Learn the て-form first; the た-form is its twin.",
+      "watch": "行く → 行った, not 行いた."
+    },
+    {
+      "id": "g:genki-mou",
+      "title": "もう / まだ",
+      "formula": "もう + past / まだ + ていません",
+      "gist": "Already / not yet.",
+      "explain": [
+        "もう with a past verb means \"already\": もう 食べました. To say \"not yet\", use まだ with the て-form negative: まだ 食べていません.",
+        "もう with a negative verb means \"no longer\": もう 行きません."
+      ],
+      "examples": [
+        { "ja": "もう|宿題を|しましたか。", "gloss": "already|homework|did?", "en": "Have you already done your homework?" },
+        { "ja": "いいえ、|まだ|していません。", "gloss": "no|not yet|haven't done", "en": "No, not yet." },
+        { "ja": "もう|ゆかたを|着ました。", "gloss": "already|yukata|put on", "en": "I've already put on my yukata." }
+      ],
+      "tip": "まだです alone is a polite \"not yet\".",
+      "watch": "まだ + ませんでした is wrong. Use まだ + ていません."
+    },
+    {
+      "id": "g:n5-kara-made",
+      "title": "〜から〜まで",
+      "formula": "A から B まで",
+      "gist": "From A to B.",
+      "explain": [
+        "から marks the starting point; まで marks the end. Both work with times and places.",
+        "You can use each one alone: 九時から (from nine) or 駅まで (as far as the station)."
+      ],
+      "examples": [
+        { "ja": "花火は|七時から|九時までです。", "gloss": "fireworks (topic)|from 7|until 9", "en": "The fireworks are from seven to nine." },
+        { "ja": "駅から|学校まで|あるきます。", "gloss": "from the station|to school|walk", "en": "I walk from the station to school." },
+        { "ja": "午後まで|寝ました。", "gloss": "until afternoon|slept", "en": "I slept until the afternoon." }
+      ],
+      "tip": "Use に for one moment (七時に) and から / まで for a range.",
+      "watch": "から also means \"because\". Its position tells you which one: after a time or place it's \"from\"."
+    },
+    {
+      "id": "g:genki-noun-mod",
+      "title": "Verbs describing nouns",
+      "formula": "short-form clause + noun",
+      "gist": "The person who ... / the thing that ...",
+      "explain": [
+        "In Japanese, a whole clause can sit in front of a noun to describe it, like an English relative clause. Use the short form: 浴衣を着ている人 (the person who is wearing a yukata).",
+        "The clause needs no word like \"who\" or \"that\": just place it right before the noun."
+      ],
+      "examples": [
+        { "ja": "ゆかたを着ている|人は|ハナさんです。", "gloss": "wearing a yukata|person (topic)|Hana", "en": "The person wearing a yukata is Hana." },
+        { "ja": "きのう|買った|ケーキは|おいしかった。", "gloss": "yesterday|bought|cake (topic)|was delicious", "en": "The cake I bought yesterday was delicious." },
+        { "ja": "友だちが|すんでいる|町です。", "gloss": "friend (subject)|lives|town", "en": "It's the town where my friend lives." }
+      ],
+      "tip": "Inside the clause, が replaces は for the subject: 友だちが すんでいる.",
+      "watch": "No です or ます inside the clause."
+    },
+    {
+      "id": "g:n5-kara-reason",
+      "title": "〜から (reason, casual)",
+      "formula": "short form + から",
+      "gist": "Because / so ...",
+      "explain": [
+        "In casual speech, から follows a short form: おそいから、行こう (it's late, so let's go).",
+        "They often drop the main clause: だって、おそいから (because it's late)."
+      ],
+      "examples": [
+        { "ja": "雨だから、|行かない。", "gloss": "because it's raining|won't go", "en": "It's raining, so I won't go." },
+        { "ja": "もう|おそいから、|帰ろう。", "gloss": "already|because late|let's go home", "en": "It's late, so let's go home." },
+        { "ja": "だって、|やくそくが|あるから。", "gloss": "because|promise (subject)|there is", "en": "Because I have an appointment." }
+      ],
+      "tip": "Use から both polite and casual; the main clause decides the tone.",
+      "watch": "Reason first, result second."
+    }
+  ],
+  "drills": [
+    { "type": "pick", "point": 0, "q": "The short past of 飲む is...", "options": ["飲んだ", "飲った", "飲いた", "飲みた"], "answer": 0, "why": "む → んだ." },
+    { "type": "gap", "point": 0, "ja": "雨だった＿ 行かなかった。", "options": ["から", "ので", "でも", "のに"], "answer": "から", "en": "It rained, so I didn't go.", "why": "から = because." },
+    { "type": "order", "point": 0, "en": "The cake was delicious.", "chunks": ["ケーキは", "おいしかった"] },
+    { "type": "gap", "point": 1, "ja": "＿ 宿題を しましたか。", "options": ["もう", "まだ", "よく", "あまり"], "answer": "もう", "en": "Have you already done your homework?", "why": "もう means already." },
+    { "type": "pick", "point": 1, "q": "\"Not yet.\" Which is right?", "options": ["まだ していません。", "まだ しました。", "もう していません。", "まだ しません でした。"], "answer": 0, "why": "まだ + ていません." },
+    { "type": "gap", "point": 2, "ja": "七時＿ 九時までです。", "options": ["から", "まで", "に", "を"], "answer": "から", "en": "From seven to nine.", "why": "から marks the start." },
+    { "type": "order", "point": 2, "en": "I walk from the station to school.", "chunks": ["駅から", "学校まで", "あるきます"] },
+    { "type": "pick", "point": 3, "q": "\"The person wearing a yukata is Hana.\"", "options": ["ゆかたを着ている人は ハナさんです。", "ゆかたを着ています人は ハナさんです。", "ゆかたを着るです人は ハナさんです。", "人は ゆかたを着ていて ハナさんです。"], "answer": 0, "why": "Short form clause + noun." },
+    { "type": "order", "point": 3, "en": "The cake I bought yesterday was delicious.", "chunks": ["きのう", "買った", "ケーキは", "おいしかった"] },
+    { "type": "gap", "point": 4, "ja": "もう おそい＿、帰ろう。", "options": ["から", "を", "か", "の"], "answer": "から", "en": "It's late, so let's go home.", "why": "Reason + から." },
+    { "type": "type", "prompt": "Type the reading of 祭り (festival) in hiragana.", "show": "祭り", "answers": ["まつり"] },
+    { "type": "type", "prompt": "Type the reading of 約束 (promise) in hiragana.", "show": "約束", "answers": ["やくそく"] },
+    { "type": "pick", "q": "Which one means \"afternoon\"?", "options": ["午後", "午前", "夜", "朝"], "answer": 0, "why": "午後 (ごご) = p.m." }
+  ]
+}

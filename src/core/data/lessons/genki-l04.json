@@ -1,0 +1,135 @@
+{
+  "schema": 1,
+  "id": "genki-l04",
+  "lesson": 4,
+  "title": "Where Is the Key?",
+  "tagline": "Say what exists where, retrace yesterday, and keep track of who was with you.",
+  "hook": "Leo has lost his key and half the apartment is looking for it. To help, you need to say what is where, and what happened yesterday.",
+  "goals": ["Use ある and いる for things and people", "Place things with 上, 下, 中 and the other position words", "Talk about yesterday with ました and ませんでした"],
+  "minutes": 10,
+  "vocab": [
+    ["ある", "ある", "there is (things)", "📦"],
+    ["いる", "いる", "there is (people, animals)", "🧍"],
+    ["かぎ", "かぎ", "key", "🔑"],
+    ["つくえ", "つくえ", "desk", "🪑"],
+    ["へや", "へや", "room", "🚪"],
+    ["上", "うえ", "above, on top", "⬆️"],
+    ["下", "した", "below, under", "⬇️"],
+    ["中", "なか", "inside", "📥"],
+    ["前", "まえ", "in front", "⏩"],
+    ["後ろ", "うしろ", "behind", "⏪"],
+    ["となり", "となり", "next to", "↔️"],
+    ["近く", "ちかく", "nearby", "📍"],
+    ["きのう", "きのう", "yesterday", "⏮️"],
+    ["きょう", "きょう", "today", "📅"],
+    ["今朝", "けさ", "this morning", "🌅"],
+    ["ねこ", "ねこ", "cat", "🐱"],
+    ["犬", "いぬ", "dog", "🐕"],
+    ["電話", "でんわ", "telephone", "📞"],
+    ["ポケット", "ポケット", "pocket", "👖"],
+    ["だれも", "だれも", "nobody (with ない)", "🚷"]
+  ],
+  "points": [
+    {
+      "id": "g:n5-ga-aru-iru",
+      "title": "〜がある / 〜がいる",
+      "formula": "place に thing が あります / person が います",
+      "gist": "There is something somewhere.",
+      "explain": [
+        "ある says a thing exists and いる says a person or animal exists. The place goes first with に, and what exists is marked with が.",
+        "To say something does not exist, use ありません or いません. If nobody is there, say だれも いません."
+      ],
+      "examples": [
+        { "ja": "つくえの上に|かぎが|あります。", "gloss": "on the desk|key (subject)|there is", "en": "There is a key on the desk." },
+        { "ja": "へやに|ねこが|います。", "gloss": "in the room|cat (subject)|there is", "en": "There is a cat in the room." },
+        { "ja": "ここに|だれも|いません。", "gloss": "here|nobody|isn't", "en": "There is nobody here." }
+      ],
+      "tip": "Ask yourself: does it move by itself? Yes → いる. No → ある.",
+      "watch": "Plants and objects use ある even if they are alive-looking, like a tree."
+    },
+    {
+      "id": "g:genki-location",
+      "title": "上 · 下 · 中 · 前 · 後ろ · となり",
+      "formula": "noun の position + に",
+      "gist": "Say precisely where something is.",
+      "explain": [
+        "Position words are nouns, so they link with の: つくえの 上 (the top of the desk). Add に when you say where something is.",
+        "Learn them as a group: 上 and 下, 前 and 後ろ, 中, となり, and 近く."
+      ],
+      "examples": [
+        { "ja": "ねこは|いすの下に|います。", "gloss": "cat (topic)|under the chair|is", "en": "The cat is under the chair." },
+        { "ja": "かぎは|かばんの中に|あります。", "gloss": "key (topic)|inside the bag|is", "en": "The key is in the bag." },
+        { "ja": "学校は|駅の近くに|あります。", "gloss": "school (topic)|near the station|is", "en": "The school is near the station." }
+      ],
+      "tip": "Start a sentence with the thing as a topic when you're answering a \"where is it?\" question.",
+      "watch": "Don't skip の: つくえ 上 is incomplete."
+    },
+    {
+      "id": "g:genki-mashita",
+      "title": "〜ました / 〜ませんでした",
+      "formula": "verb stem + ました / ませんでした",
+      "gist": "Polite past.",
+      "explain": [
+        "Swap ます for ました to talk about the past, and ません for ませんでした for the negative past.",
+        "です becomes でした (was) and じゃないです becomes じゃなかったです."
+      ],
+      "examples": [
+        { "ja": "きのう|映画を|見ました。", "gloss": "yesterday|movie|watched", "en": "I watched a movie yesterday." },
+        { "ja": "けさ|何も|食べませんでした。", "gloss": "this morning|nothing|didn't eat", "en": "I didn't eat anything this morning." },
+        { "ja": "きのうは|あめでした。", "gloss": "yesterday (topic)|rain was", "en": "Yesterday it rained." }
+      ],
+      "tip": "Past markers like きのう and けさ come first; the verb ending does the rest.",
+      "watch": "ませんでした is the whole negative past. Don't write ませんした."
+    },
+    {
+      "id": "g:n5-to-with",
+      "title": "〜と (with)",
+      "formula": "person と verb",
+      "gist": "Do something together with someone.",
+      "explain": [
+        "と after a person means \"with\". It is also used between nouns as \"and\": かぎと さいふ.",
+        "For complete lists of two things, と is neat; for \"and so on\" use や (later)."
+      ],
+      "examples": [
+        { "ja": "ともだちと|学校へ|行きました。", "gloss": "with a friend|to school|went", "en": "I went to school with a friend." },
+        { "ja": "ハナさんと|レオさんは|うちに|います。", "gloss": "Hana and|Leo (topic)|at home|are", "en": "Hana and Leo are at home." },
+        { "ja": "かぎと|さいふが|ありません。", "gloss": "key and|wallet (subject)|aren't there", "en": "There's no key and no wallet." }
+      ],
+      "tip": "ひとりで (alone) is the opposite of 〜と.",
+      "watch": "と only joins nouns, not verbs or sentences."
+    },
+    {
+      "id": "g:genki-nani-mo",
+      "title": "だれも · 何も + negative",
+      "formula": "だれも / 何も + negative",
+      "gist": "Nobody did, nothing happened.",
+      "explain": [
+        "Question word + も + negative verb gives \"nobody\" or \"nothing\": だれも いません, 何も ありません.",
+        "The verb must be negative. も here replaces the subject marker."
+      ],
+      "examples": [
+        { "ja": "へやには|だれも|いませんでした。", "gloss": "in the room (topic)|nobody|wasn't", "en": "Nobody was in the room." },
+        { "ja": "つくえの上には|何も|ありません。", "gloss": "on the desk (topic)|nothing|isn't", "en": "There is nothing on the desk." },
+        { "ja": "きのうは|どこへも|行きませんでした。", "gloss": "yesterday (topic)|nowhere|didn't go", "en": "I didn't go anywhere yesterday." }
+      ],
+      "tip": "Think \"even one is not\".",
+      "watch": "Don't say だれも います. It must be negative."
+    }
+  ],
+  "drills": [
+    { "type": "gap", "point": 0, "ja": "つくえの上に かぎが＿。", "options": ["あります", "います", "ません", "です"], "answer": "あります", "en": "There is a key on the desk.", "why": "Things use あります." },
+    { "type": "gap", "point": 0, "ja": "へやに ねこが＿。", "options": ["います", "あります", "ありません", "でした"], "answer": "います", "en": "There is a cat in the room.", "why": "Animals use います." },
+    { "type": "order", "point": 1, "en": "The key is in the bag.", "chunks": ["かぎは", "かばんの中に", "あります"] },
+    { "type": "pick", "point": 1, "q": "\"The cat is under the chair.\"", "options": ["ねこは いすの下に います。", "ねこは いすの下に あります。", "ねこは いす下の います。", "ねこは いすの下で います。"], "answer": 0, "why": "の + 下 + に, and いる for animals." },
+    { "type": "gap", "point": 1, "ja": "学校は 駅の＿に あります。", "options": ["近く", "下", "中", "上"], "answer": "近く", "en": "The school is near the station.", "why": "近く means nearby." },
+    { "type": "gap", "point": 2, "ja": "きのう 映画を 見＿。", "options": ["ました", "ます", "ません", "たい"], "answer": "ました", "en": "I watched a movie yesterday.", "why": "Polite past positive." },
+    { "type": "pick", "point": 2, "q": "\"I didn't eat anything.\"", "options": ["何も 食べませんでした。", "何も 食べました。", "何も 食べませんした。", "何か 食べませんでした。"], "answer": 0, "why": "何も needs ませんでした." },
+    { "type": "order", "point": 2, "en": "Yesterday was rainy.", "chunks": ["きのうは", "あめ", "でした"] },
+    { "type": "gap", "point": 3, "ja": "ともだち＿ 学校へ 行きました。", "options": ["と", "を", "で", "の"], "answer": "と", "en": "I went to school with a friend.", "why": "と marks the companion." },
+    { "type": "order", "point": 3, "en": "There is no key and no wallet.", "chunks": ["かぎと", "さいふが", "ありません"] },
+    { "type": "gap", "point": 4, "ja": "へやには だれ＿ いませんでした。", "options": ["も", "が", "を", "に"], "answer": "も", "en": "Nobody was in the room.", "why": "だれも + negative = nobody." },
+    { "type": "pick", "point": 4, "q": "Which is correct?", "options": ["何も ありません。", "何も あります。", "何を ありません。", "何も あるません。"], "answer": 0, "why": "Question word + も takes a negative." },
+    { "type": "type", "prompt": "Type the reading of 上 (above) in hiragana.", "show": "上", "answers": ["うえ"] },
+    { "type": "type", "prompt": "Type the reading of 中 (inside) in hiragana.", "show": "中", "answers": ["なか"] }
+  ]
+}
