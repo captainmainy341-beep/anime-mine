@@ -129,6 +129,8 @@ contextBridge.exposeInMainWorld('api', {
   story: {
     list: invoke('story:list'),
     open: invoke('story:open'),
+    lesson: invoke('story:lesson'),
+    lessonDone: invoke('story:lessonDone'),
     learn: invoke('story:learn'),
     report: invoke('story:report'),
     save: invoke('story:save'),

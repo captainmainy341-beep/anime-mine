@@ -409,3 +409,37 @@ test('every shipped chapter plays to the end: once all right, once missing every
     }
   }
 });
+
+test('Genki lessons expose a "learn first" primer that records its own progress', async () => {
+  const { handlers, dir } = story();
+  const list = await handlers['story:list']();
+  const first = list.genki.find((c) => c.lesson === 1);
+  assert.deepEqual([first.primer.id, first.primer.done, first.primer.plays], ['genki-l01', false, 0]);
+  assert.ok(first.primer.words >= 15 && first.primer.patterns >= 3);
+  assert.equal(list.chapters.every((c) => c.primer === undefined), true, 'main-story chapters have no primer');
+  assert.ok(first.labels.length > 0 && first.cast.length > 0 && first.bg, 'summaries carry what the home screen needs');
+
+  const open = await handlers['story:lesson']('genki-l01');
+  assert.equal(open.lesson.id, 'genki-l01');
+  assert.deepEqual(Object.keys(open.items).sort(), open.lesson.points.map((p) => p.id).sort());
+  assert.equal(open.items['g:n5-ka'].state, 'new');
+  assert.equal(open.done, null);
+
+  const done = await handlers['story:lessonDone']({ id: 'genki-l01', accuracy: 0.8 });
+  assert.deepEqual([done.plays, done.bestAccuracy], [1, 0.8]);
+  const again = await handlers['story:lessonDone']({ id: 'genki-l01', accuracy: 0.5 });
+  assert.deepEqual([again.plays, again.bestAccuracy], [2, 0.8], 'best accuracy only goes up');
+  const after = (await handlers['story:list']()).genki.find((c) => c.lesson === 1).primer;
+  assert.deepEqual([after.done, after.plays, after.accuracy], [true, 2, 0.8]);
+  assert.equal(again.overview.lessons['genki-l01'].plays, 2);
+
+  const reloaded = new StoryProgress(dir, { now: () => NOW });
+  assert.equal(reloaded.overview().lessons['genki-l01'].plays, 2, 'primer progress persists across restarts');
+
+  const bad = (channel, input, pattern) => assert.rejects(Promise.resolve().then(() => handlers[channel](input)), pattern);
+  await bad('story:lesson', 'n5-ch1', /no lesson primer/);
+  await bad('story:lesson', '../x', /invalid scene id/);
+  await bad('story:lessonDone', { id: 'genki-l01', accuracy: 2 }, /accuracy/);
+  await bad('story:lessonDone', { id: 'n5-ch1', accuracy: 1 }, /no lesson primer/);
+  await bad('story:lessonDone', null, /object/);
+});
