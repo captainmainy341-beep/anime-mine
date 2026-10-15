@@ -9,8 +9,13 @@ const KANA_PATTERN = /^[ぁ-ゖァ-ヶーー]+$/;
 const BG_IMAGE_PATTERN = /^data:image\/jpeg;base64,[A-Za-z0-9+/]+={0,2}$/;
 const COLOR_PATTERN = /^#[0-9a-fA-F]{6}$/;
 const POSITIONS = ['left', 'center', 'right'];
-const BEAT_TYPES = ['bg', 'show', 'hide', 'say', 'intro', 'choice', 'reading', 'meaning', 'affection', 'cg', 'jump'];
-const CHALLENGES = ['choice', 'reading', 'meaning'];
+const BEAT_TYPES = ['bg', 'show', 'hide', 'say', 'intro', 'choice', 'reading', 'meaning', 'particle', 'affection', 'cg', 'jump'];
+const CHALLENGES = ['choice', 'reading', 'meaning', 'particle'];
+const TRACKS = ['main', 'genki'];
+const MAX_LESSON = 30;
+const BLANK = '＿';
+const PARTICLE_PATTERN = /^[ぁ-ゖ]{1,4}$/;
+const ROLE_PATTERN = /^p:[a-z-]{1,12}\/[a-z-]{1,20}$/;
 
 const MAX_BEATS = 120;
 const MAX_TEXT = 240;
@@ -169,6 +174,35 @@ function checkMeaning(raw, ctx) {
   return { beat };
 }
 
+// Fill-in-the-particle: `text` has one ＿ gap, `options` are particles, `answers` the ones that fit.
+// `role` (e.g. "p:ni/destination") points into the particle guide so a miss can explain itself.
+function checkParticle(raw, ctx) {
+  const item = itemOf(raw.item);
+  const who = speaker(raw.who, ctx);
+  const body = text(raw.text, 'text', ctx);
+  const prompt = raw.prompt === undefined ? { value: '' } : text(raw.prompt, 'prompt', ctx);
+  const bad = firstError(item, who, body, prompt);
+  if (bad) return bad;
+  if (body.value.split(BLANK).length !== 2) return { error: `particle text needs exactly one ${BLANK} gap` };
+  if (!Array.isArray(raw.options) || raw.options.length < 2 || raw.options.length > MAX_OPTIONS) {
+    return { error: `particle needs 2 to ${MAX_OPTIONS} options` };
+  }
+  if (!raw.options.every((o) => typeof o === 'string' && PARTICLE_PATTERN.test(o))) return { error: 'particle options must be short kana' };
+  if (new Set(raw.options).size !== raw.options.length) return { error: 'particle options must be different' };
+  const answers = Array.isArray(raw.answers) ? raw.answers : typeof raw.answers === 'string' ? [raw.answers] : [];
+  if (answers.length === 0 || !answers.every((a) => raw.options.includes(a))) return { error: 'particle answers must be among the options' };
+  if (answers.length === raw.options.length) return { error: 'particle needs at least one wrong option' };
+  const beat = { type: 'particle', item: item.value, who: who.who, text: body.value, options: [...raw.options], answers: [...new Set(answers)] };
+  if (prompt.value) beat.prompt = prompt.value;
+  const en = cleanText(raw.en, MAX_EN);
+  if (en) beat.en = en;
+  if (typeof raw.role === 'string' && ROLE_PATTERN.test(raw.role)) beat.role = raw.role;
+  const awkward = checkAwkward(raw.awkward, ctx);
+  if (awkward.error) return awkward;
+  if (awkward.value) beat.awkward = awkward.value;
+  return { beat };
+}
+
 const CHECKERS = {
   bg(raw) {
     const bg = optionalName(raw.bg, 'bg');
@@ -194,6 +228,7 @@ const CHECKERS = {
   choice: checkChoice,
   reading: checkReading,
   meaning: checkMeaning,
+  particle: checkParticle,
   affection(raw, ctx) {
     if (typeof raw.char !== 'string' || !Object.hasOwn(ctx.characters, raw.char)) return { error: `unknown character: ${String(raw.char)}` };
     if (!Number.isInteger(raw.delta) || raw.delta === 0 || Math.abs(raw.delta) > MAX_AFFECTION) {
@@ -332,6 +367,15 @@ function validate(raw, { repair }) {
   if (Object.keys(glossary).length) scene.glossary = glossary;
   if (isText(raw.summary, 300)) scene.summary = raw.summary.trim();
   if (Number.isInteger(raw.order)) scene.order = raw.order;
+  if (raw.track !== undefined) {
+    if (!TRACKS.includes(raw.track)) return { ok: false, errors: [`track must be one of ${TRACKS.join(', ')}`], repairs: ctx.repairs };
+    scene.track = raw.track;
+  }
+  if (raw.lesson !== undefined) {
+    if (!Number.isInteger(raw.lesson) || raw.lesson < 1 || raw.lesson > MAX_LESSON) return { ok: false, errors: [`lesson must be 1 to ${MAX_LESSON}`], repairs: ctx.repairs };
+    scene.lesson = raw.lesson;
+  }
+  if (isText(raw.covers, 300)) scene.covers = raw.covers.trim();
   return { ok: true, errors: [], repairs: ctx.repairs, scene };
 }
 
@@ -411,6 +455,8 @@ module.exports = {
   SCHEMA_VERSION,
   JLPT,
   CHALLENGES,
+  TRACKS,
+  BLANK,
   ITEM_PATTERN,
   NAME_PATTERN,
   KANA_PATTERN,

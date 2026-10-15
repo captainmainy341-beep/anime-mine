@@ -8,6 +8,7 @@ const { StoryProgress } = require('../core/storyProgress');
 const { buildAnimeScenes, sceneId: animeSceneId } = require('../core/storyAnime');
 const { generateScene, listCached, readCached } = require('../core/storyAi');
 const skins = require('../core/storySkins');
+const particles = require('../core/storyParticles');
 
 const ANIME_DIR = 'story-anime';
 const ANIME_ID = /^anime-[0-9a-f]{10}$/;
@@ -15,6 +16,8 @@ const MAX_INCORRECT = 50;
 const MAX_ANIME_BUILD = 6;
 const MAX_ITEMS = 6;
 const SCENE_ID = /^[a-z0-9][a-z0-9_-]{0,39}$/;
+const SINGLE_KANJI = /^\p{Script=Han}$/u;
+const MAX_KANJI_WORDS = 5;
 
 const isPlainObject = (value) => value !== null && typeof value === 'object' && !Array.isArray(value);
 
@@ -99,14 +102,25 @@ function createStoryHandlers({ dataDir, learn, getSettings, deps = {} }) {
     return scene;
   }
 
+  const stateOf = (card) => (!card ? 'untracked' : card.stage > 0 ? 'started' : card.locked ? 'untracked' : 'new');
+
   async function itemStatuses(scene) {
     const out = {};
     for (const id of scene.items) {
       const card = await cardOf(id);
-      const state = !card ? 'untracked' : card.stage > 0 ? 'started' : card.locked ? 'untracked' : 'new';
-      out[id] = { state, ...itemInfo(id, card, scene.glossary) };
+      out[id] = { state: stateOf(card), ...itemInfo(id, card, scene.glossary) };
     }
     return out;
+  }
+
+  // Dictionary handlers are optional here: tests and stripped-down builds may not register them.
+  async function optional(channel, ...args) {
+    if (typeof learn[channel] !== 'function') return null;
+    try {
+      return await learn[channel](...args);
+    } catch {
+      return null;
+    }
   }
 
   function summaryOf(scene) {
@@ -123,7 +137,8 @@ function createStoryHandlers({ dataDir, learn, getSettings, deps = {} }) {
     'story:list': async () => {
       const settings = await getSettings();
       return {
-        chapters: chapters.map(summaryOf),
+        chapters: chapters.filter((c) => (c.track ?? 'main') === 'main').map(summaryOf),
+        genki: chapters.filter((c) => c.track === 'genki').map(summaryOf),
         anime: listAnime().map(summaryOf),
         ai: { ready: aiReady(settings.ai), scenes: listCached(dataDir).map(summaryOf) },
         skins: skins.listPacks(dataDir),
@@ -132,7 +147,7 @@ function createStoryHandlers({ dataDir, learn, getSettings, deps = {} }) {
     },
     'story:open': async (id) => {
       const scene = requireScene(id);
-      return { scene, items: await itemStatuses(scene), save: progress.hasSave(scene.id), best: progress.state.chapters[scene.id] ?? null };
+      return { scene: particles.annotateScene(scene), items: await itemStatuses(scene), save: progress.hasSave(scene.id), best: progress.state.chapters[scene.id] ?? null };
     },
     // Mirrors a Learn lesson: the in-story intro starts the item, and that first quiz is not a review.
     'story:learn': async (item) => {
@@ -223,6 +238,33 @@ function createStoryHandlers({ dataDir, learn, getSettings, deps = {} }) {
       if (items.length === 0) throw new Error('Learn some kanji or grammar first, then come back for a side quest');
       const { scene, cached, repairs } = await generateScene({ dataDir, complete, settings: settings.ai, items, jlpt });
       return { scene: summaryOf(scene), cached, repaired: repairs.length };
+    },
+    'story:particles': () => particles.guide(),
+    // Everything the lookup card shows for one kanji: dictionary entry (KANJIDIC, when downloaded), the
+    // learner's SRS state for k:<char>, and the scene glossary as a fallback.
+    'story:kanji': async (input) => {
+      assertObject(input, 'kanji lookup');
+      if (typeof input.char !== 'string' || !SINGLE_KANJI.test(input.char)) throw new Error('char must be a single kanji');
+      if (input.scene !== undefined) assertSceneId(input.scene);
+      const id = `k:${input.char}`;
+      const glossary = input.scene ? findScene(input.scene)?.glossary?.[id] ?? null : null;
+      const status = await optional('vocab:status');
+      const detail = status?.kanjidic ? await optional('vocab:kanji', input.char) : null;
+      const card = await cardOf(id);
+      const info = itemInfo(id, card, glossary ? { [id]: glossary } : {});
+      return {
+        char: input.char,
+        dictionaryReady: Boolean(status?.kanjidic),
+        canDownload: typeof learn['kanjidic:download'] === 'function',
+        meanings: detail?.meanings?.length ? detail.meanings : info.meaning ? info.meaning.split(/,\s*/) : [],
+        on: detail?.on ?? [],
+        kun: detail?.kun ?? [],
+        reading: info.reading ?? '',
+        strokes: detail?.strokes ?? null,
+        jlpt: detail?.jlpt ?? null,
+        words: (detail?.usedInVocab ?? []).filter((w) => w && w.text).slice(0, MAX_KANJI_WORDS),
+        item: { id, state: stateOf(card), stage: card?.stage ?? 0 },
+      };
     },
     'story:skins': () => skins.listPacks(dataDir),
     'story:skinManifest': (pack) => skins.loadManifest(dataDir, pack),

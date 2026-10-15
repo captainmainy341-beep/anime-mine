@@ -13,6 +13,10 @@ const LOOKS = {
   sora: { hair: '#2d3c66', outfit: '#6f8fd8', skin: '#f6d6bd', eyes: '#3d6bb3', style: 'short', clothes: 'blazer', extra: 'cowlick' },
   tanaka: { hair: '#2b2b33', outfit: '#4f8f78', skin: '#efcfb3', eyes: '#4a3b30', style: 'neat', clothes: 'suit', extra: 'glasses' },
   line: { hair: '#3a3a4a', outfit: '#a2befa', skin: '#f5d9c4', eyes: '#5a4a6a', style: 'short', clothes: 'casual', extra: '' },
+  hana: { hair: '#5a3a2e', outfit: '#7cc6b4', skin: '#fbe0cc', eyes: '#6b4a32', style: 'ponytail', clothes: 'casual', extra: 'band' },
+  leo: { hair: '#3b2418', outfit: '#f0a35e', skin: '#d6a17c', eyes: '#4a2e1c', style: 'curly', clothes: 'casual', extra: '' },
+  mori: { hair: '#4a4048', outfit: '#8e7cc3', skin: '#f2d4bd', eyes: '#3d3340', style: 'bun', clothes: 'suit', extra: 'earrings' },
+  tomi: { hair: '#d2d0d8', outfit: '#c97b5a', skin: '#f0d2bc', eyes: '#4a3b30', style: 'bun', clothes: 'casual', extra: 'glasses' },
 };
 
 function hueFromId(id) {
@@ -93,6 +97,9 @@ function mouth(expr) {
 }
 
 function hairBack(style, color) {
+  if (style === 'ponytail') return `<path d="M78 152C74 82 112 54 150 54s76 28 72 98l-6 14H84z" fill="${color}"/><path d="M214 96c40 10 52 70 34 140c-6 22-22 30-30 18c14-46 12-96-12-128z" fill="${color}"/>`;
+  if (style === 'bun') return `<circle cx="150" cy="44" r="30" fill="${color}"/><path d="M78 152C74 82 112 56 150 56s76 26 72 96l-6 14H84z" fill="${color}"/>`;
+  if (style === 'curly') return `<path d="M76 150C66 70 112 46 150 46s88 24 74 104l-6 16H82z" fill="${color}"/><g fill="${color}"><circle cx="86" cy="96" r="18"/><circle cx="112" cy="66" r="20"/><circle cx="150" cy="56" r="22"/><circle cx="188" cy="66" r="20"/><circle cx="214" cy="96" r="18"/></g>`;
   if (style === 'bob') return `<path d="M70 150C66 80 110 50 150 50s84 30 80 100l6 100c-16 12-36 8-40-10H104c-4 18-24 22-40 10z" fill="${color}"/>`;
   if (style === 'long') return `<path d="M68 150C64 80 110 50 150 50s86 30 82 100l10 210c-30 14-60 6-70-12H128c-10 18-40 26-70 12z" fill="${color}"/>`;
   if (style === 'neat') return `<path d="M80 150C76 84 112 58 150 58s74 26 70 92l-4 14H84z" fill="${color}"/>`;
@@ -100,7 +107,10 @@ function hairBack(style, color) {
 }
 
 function hairFront(style, color, p) {
-  const fringe = style === 'neat'
+  if (style === 'curly') {
+    return `<path d="M82 132c6-44 34-66 68-66s62 22 68 66c-12-14-22-18-30-14c-6-14-20-20-38-20s-32 6-38 20c-8-4-18 0-30 14z" fill="${color}"/><g fill="${color}"><circle cx="104" cy="92" r="14"/><circle cx="132" cy="80" r="14"/><circle cx="168" cy="80" r="14"/><circle cx="196" cy="92" r="14"/></g><path d="M112 82q38-20 76 0" fill="none" stroke="url(#${p}-shine)" stroke-width="6" stroke-linecap="round"/>`;
+  }
+  const fringe = style === 'neat' || style === 'bun'
     ? `<path d="M80 140C82 88 116 64 152 64c36 0 66 22 68 76c-14-30-38-46-62-50c-10 16-40 30-78 50z" fill="${color}"/>`
     : `<path d="M80 136C84 84 118 60 150 60s66 24 70 76l-14-22-8 20-14-28-14 24-16-30-16 30-14-24-14 28-8-20z" fill="${color}"/>`;
   const locks = style === 'bob' || style === 'long'
@@ -144,6 +154,8 @@ function clothes(kind, outfit, p) {
 function extras(extra, look) {
   if (extra === 'clip') return '<path d="M196 96l10-8 6 12-12 4z" fill="#ffd36e" stroke="#c99a2e" stroke-width="2"/>';
   if (extra === 'cowlick') return `<path d="M150 60c-6-26 10-38 24-32c-12 2-18 12-16 32z" fill="${look.hair}"/>`;
+  if (extra === 'band') return '<path d="M206 84c8 4 12 10 12 16" stroke="#e8566e" stroke-width="7" stroke-linecap="round" fill="none"/>';
+  if (extra === 'earrings') return '<circle cx="82" cy="182" r="4" fill="#f3d27a"/><circle cx="218" cy="182" r="4" fill="#f3d27a"/>';
   if (extra === 'glasses') return '<g fill="none" stroke="#2a2a33" stroke-width="3"><rect x="102" y="146" width="40" height="32" rx="9"/><rect x="158" y="146" width="40" height="32" rx="9"/><path d="M142 158h16M102 156l-18-4M198 156l18-4"/></g><path d="M108 152l10 -4" stroke="#fff" stroke-width="2" opacity=".5"/>';
   return '';
 }
@@ -258,6 +270,62 @@ const BACKGROUNDS = {
       lantern(840, '#ff8a6b'),
       '<g><path d="M60 250l90-40 90 40z" fill="#c94a5a"/><rect x="70" y="250" width="160" height="100" fill="#3b2d4f"/><rect x="70" y="250" width="160" height="16" fill="#f3e3c3"/></g>',
       '<g><path d="M720 250l90-40 90 40z" fill="#3d6bb3"/><rect x="730" y="250" width="160" height="100" fill="#3b2d4f"/><rect x="730" y="250" width="160" height="16" fill="#f3e3c3"/></g>',
+    ].join(''),
+  },
+  cafe: {
+    css: 'linear-gradient(#5b4033 0%, #7a5a45 55%, #4a3226 55%, #3a271d 100%)',
+    shapes: [
+      '<rect x="560" y="40" width="300" height="170" rx="8" fill="#f7d9a8" opacity=".85"/><path d="M710 40v170M560 125h300" stroke="#5b4033" stroke-width="6"/>',
+      cloud(650, 90, 0.5),
+      '<g fill="#9b7356"><rect x="60" y="70" width="220" height="10"/><rect x="60" y="140" width="220" height="10"/></g>',
+      '<g><rect x="80" y="40" width="22" height="30" rx="4" fill="#e9e1cf"/><rect x="112" y="46" width="18" height="24" rx="4" fill="#c97b5a"/><rect x="150" y="38" width="26" height="32" rx="5" fill="#7cc6b4"/><rect x="210" y="44" width="30" height="26" rx="5" fill="#f3d27a"/><rect x="90" y="112" width="40" height="28" rx="4" fill="#e9e1cf"/><rect x="160" y="108" width="24" height="32" rx="4" fill="#9de3c4"/></g>',
+      '<g class="story-sway"><path d="M420 0v60" stroke="#2a1c14" stroke-width="2"/><path d="M396 60h48l-10 22h-28z" fill="#f3d27a"/><circle cx="420" cy="90" r="30" fill="#ffe7a8" opacity=".25"/></g>',
+      '<rect x="0" y="232" width="960" height="26" fill="#8a5f44"/><rect x="0" y="232" width="960" height="6" fill="#b48463"/>',
+      '<g fill="#e9e1cf"><path d="M300 222h30l-4 10h-22z"/><path d="M620 222h30l-4 10h-22z"/></g><path d="M330 224q8 2 0 8M650 224q8 2 0 8" fill="none" stroke="#e9e1cf" stroke-width="3"/>',
+    ].join(''),
+  },
+  'station-day': {
+    css: 'linear-gradient(#9fd0f0 0%, #e0f1fb 46%, #b9b2a8 46%, #8f877d 100%)',
+    shapes: [
+      cloud(200, 60),
+      cloud(720, 40, 0.7),
+      '<path d="M0 120h960v24H0z" fill="#6e6a74"/><g fill="#6e6a74"><rect x="120" y="144" width="14" height="80"/><rect x="460" y="144" width="14" height="80"/><rect x="800" y="144" width="14" height="80"/></g>',
+      '<rect x="380" y="150" width="200" height="44" rx="6" fill="#ffffff" stroke="#3d6bb3" stroke-width="4"/><path d="M400 172h160" stroke="#3d6bb3" stroke-width="6" opacity=".5" stroke-linecap="round"/>',
+      '<rect x="0" y="194" width="960" height="12" fill="#f3d27a"/><path d="M0 200h960" stroke="#c99a2e" stroke-width="2" stroke-dasharray="12 10"/>',
+      '<rect x="0" y="206" width="960" height="40" fill="#5a5560"/><path d="M0 222h960M0 238h960" stroke="#3a363e" stroke-width="3"/>',
+    ].join(''),
+  },
+  'home-evening': {
+    css: 'linear-gradient(#e9d6c0 0%, #f2e4d2 60%, #b38b66 60%, #93704f 100%)',
+    shapes: [
+      '<rect x="620" y="50" width="240" height="160" rx="6" fill="#f4a6a0"/><rect x="620" y="130" width="240" height="80" fill="#fbd8a5" opacity=".7"/><circle cx="700" cy="150" r="26" fill="#fff0c4" opacity=".9"/>',
+      '<path d="M620 50h240v160H620z" fill="none" stroke="#8d6f52" stroke-width="8"/><path d="M740 50v160" stroke="#8d6f52" stroke-width="5"/>',
+      '<path d="M600 40h40v190h-40zM840 40h40v190h-40z" fill="#c9577a" opacity=".55"/>',
+      '<g fill="#8d6f52"><rect x="80" y="80" width="200" height="12"/><rect x="80" y="150" width="200" height="12"/></g><g><rect x="96" y="52" width="16" height="28" fill="#6f8fd8"/><rect x="116" y="56" width="12" height="24" fill="#f3a0b6"/><rect x="132" y="50" width="18" height="30" fill="#7cc6b4"/><circle cx="240" cy="134" r="14" fill="#4d9a52"/><rect x="232" y="140" width="16" height="10" fill="#c97b5a"/></g>',
+      '<rect x="360" y="270" width="240" height="18" rx="4" fill="#7a5638"/><rect x="380" y="288" width="12" height="60" fill="#5e412a"/><rect x="568" y="288" width="12" height="60" fill="#5e412a"/>',
+      '<g class="story-sway"><path d="M480 0v40" stroke="#5e412a" stroke-width="2"/><ellipse cx="480" cy="52" rx="34" ry="14" fill="#f3e3c3"/><circle cx="480" cy="66" r="40" fill="#ffe7a8" opacity=".2"/></g>',
+    ].join(''),
+  },
+  shop: {
+    css: 'linear-gradient(#f4f6f8 0%, #e6ebef 62%, #c9d1d8 62%, #aeb8c1 100%)',
+    shapes: [
+      '<rect x="0" y="0" width="960" height="34" fill="#4f8f78"/><rect x="0" y="34" width="960" height="8" fill="#f3d27a"/>',
+      '<g fill="#d6dde3" stroke="#9aa6b1" stroke-width="3"><rect x="60" y="80" width="260" height="170"/><rect x="640" y="80" width="260" height="170"/></g>',
+      '<g stroke="#9aa6b1" stroke-width="3"><path d="M60 136h260M60 192h260M640 136h260M640 192h260"/></g>',
+      '<g><rect x="72" y="102" width="30" height="32" fill="#e8566e"/><rect x="108" y="96" width="24" height="38" fill="#f3d27a"/><rect x="140" y="104" width="34" height="30" fill="#6f8fd8"/><rect x="184" y="98" width="26" height="36" fill="#7cc6b4"/><rect x="220" y="106" width="40" height="28" fill="#f0a35e"/><rect x="270" y="100" width="36" height="34" fill="#e9e1cf"/><rect x="74" y="160" width="40" height="30" fill="#7cc6b4"/><rect x="124" y="156" width="30" height="34" fill="#e8566e"/><rect x="166" y="162" width="48" height="28" fill="#f3d27a"/><rect x="226" y="158" width="34" height="32" fill="#6f8fd8"/><rect x="656" y="100" width="56" height="34" fill="#f0a35e"/><rect x="722" y="104" width="40" height="30" fill="#e9e1cf"/><rect x="772" y="96" width="30" height="38" fill="#e8566e"/><rect x="814" y="102" width="70" height="32" fill="#9de3c4"/><rect x="660" y="158" width="50" height="32" fill="#6f8fd8"/><rect x="720" y="162" width="70" height="28" fill="#f3d27a"/><rect x="800" y="156" width="40" height="34" fill="#7cc6b4"/></g>',
+      '<rect x="380" y="200" width="200" height="60" rx="4" fill="#4f8f78"/><rect x="380" y="200" width="200" height="10" fill="#f3d27a"/>',
+    ].join(''),
+  },
+  'beach-day': {
+    css: 'linear-gradient(#8fd3f4 0%, #d8f1fb 44%, #3fa0c9 44%, #2a7fae 62%, #f2dfb0 62%, #e3c98f 100%)',
+    shapes: [
+      '<circle cx="780" cy="70" r="40" fill="#fff6b8"/><circle cx="780" cy="70" r="66" fill="#fff6b8" opacity=".25"/>',
+      cloud(220, 60),
+      cloud(560, 40, 0.6),
+      '<g class="story-shimmer" fill="#fff" opacity=".5"><rect x="120" y="200" width="90" height="4" rx="2"/><rect x="420" y="220" width="120" height="4" rx="2"/><rect x="720" y="206" width="80" height="4" rx="2"/></g>',
+      '<path d="M0 262q120-14 240 0t240 0 240 0 240 0" fill="none" stroke="#fff" stroke-width="5" opacity=".7"/>',
+      '<path d="M120 330l60-120" stroke="#8a5a3c" stroke-width="6"/><path d="M90 220q90-60 180 0z" fill="#e8566e"/><path d="M120 220q60-40 120 0z" fill="#fff" opacity=".6"/>',
+      '<g fill="#f3a0b6"><circle cx="760" cy="350" r="6"/><circle cx="800" cy="370" r="4"/></g>',
     ].join(''),
   },
   'anime-default': {

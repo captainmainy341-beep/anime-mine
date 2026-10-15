@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { createEngine, requeueGap } from '../src/renderer/learn/vn/engine.mjs';
-import { bridgeLine, gradeAttempt, reorder, reorderedBeat, revealAnswer, typedKana } from '../src/renderer/learn/vn/challenge.mjs';
+import { PEEK_LINE, createEngine, requeueGap } from '../src/renderer/learn/vn/engine.mjs';
+import { bridgeLine, filledText, gradeAttempt, particleExplain, reorder, reorderedBeat, revealAnswer, testedKanji, typedKana } from '../src/renderer/learn/vn/challenge.mjs';
 import { autoDelay, isComplete, sliceText, visibleCount } from '../src/renderer/learn/vn/typewriter.mjs';
 
 const choice = {
@@ -335,4 +335,102 @@ test('typewriter reveals by code point and respects skip and auto timing', () =>
   assert.equal(isComplete('ab', 1), false);
   assert.ok(autoDelay('あ'.repeat(10)) < autoDelay('あ'.repeat(40)));
   assert.equal(autoDelay('あ'.repeat(1000)), 6000);
+});
+
+const particleBeat = {
+  type: 'particle',
+  item: 'g:n5-ni',
+  who: 'mio',
+  text: 'がっこう＿いきます。',
+  en: 'I go to school.',
+  options: ['に', 'を', 'で', 'へ'],
+  answers: ['に', 'へ'],
+  notes: { に: 'marks a destination.', を: 'marks the object of an action.', で: 'marks where an action happens.' },
+  why: 'marks a destination.',
+};
+
+test('particle challenges: every listed answer is right, a miss explains the particle that was picked', () => {
+  assert.equal(gradeAttempt(particleBeat, 0).result, 'correct');
+  assert.equal(gradeAttempt(particleBeat, 3).result, 'correct', 'へ also fits');
+  assert.equal(gradeAttempt(particleBeat, 9).result, 'invalid');
+  const miss = gradeAttempt(particleBeat, 2);
+  assert.equal(miss.result, 'incorrect');
+  assert.equal(miss.awkward.explain, '「で」 marks where an action happens. Here you need 「に / へ」: marks a destination.');
+  assert.equal(particleExplain({ ...particleBeat, notes: undefined, why: undefined }, 'で'), 'Here you need 「に / へ」.');
+  assert.equal(filledText(particleBeat), 'がっこうにいきます。');
+  assert.equal(revealAnswer(particleBeat), 'がっこうにいきます。');
+  assert.deepEqual(reorderedBeat(particleBeat, reorder(4, 1)).options, ['を', 'で', 'へ', 'に']);
+});
+
+test('a particle miss is requeued like any challenge and the explanation reaches the frame and the backlog', () => {
+  const pscene = { ...long, id: 'p', beats: [long.beats[0], long.beats[1], particleBeat, ...long.beats.slice(3)] };
+  const e = createEngine(pscene);
+  e.advance();
+  assert.equal(e.frame().kind, 'particle');
+  e.answer(1);
+  const f = e.frame();
+  assert.equal(f.kind, 'awkward');
+  assert.match(f.explain, /^「を」 marks the object/);
+  assert.match(e.backlog().at(-1).explain, /Here you need/);
+  e.advance();
+  assert.equal(e.progress().pending, 1);
+  assert.equal(bridgeLine('particle').text, 'あ、さっきの 文、もう一度 言ってみて。', 'particles have their own lead-in line');
+});
+
+test('testedKanji: the kanji a reading or meaning challenge asks about', () => {
+  assert.deepEqual(testedKanji({ type: 'reading', item: 'k:日', display: '日本', target: '日' }), ['日']);
+  assert.deepEqual(testedKanji({ type: 'reading', item: 'v:学生', display: 'がくせい？ 学生', target: '学生' }), ['学', '生']);
+  assert.deepEqual(testedKanji({ type: 'meaning', item: 'k:本', options: [] }), ['本']);
+  assert.deepEqual(testedKanji({ type: 'choice', item: 'g:n5-ka' }), []);
+  assert.deepEqual(testedKanji(particleBeat), []);
+});
+
+test('looking up the tested kanji counts as a miss: answered now, requeued, reported once later with the peek counted', () => {
+  const e = createEngine(scene, { skipIntro: ['g:n5-ka'] });
+  e.advance();
+  assert.equal(e.isTested('日'), false, 'nothing is tested on a grammar choice');
+  assert.deepEqual(e.peek('日'), { counted: false });
+  e.answer(0);
+  e.takeReports();
+  assert.equal(e.frame().kind, 'reading');
+  assert.equal(e.isTested('本'), false, 'other kanji on screen are free to look up');
+  assert.deepEqual(e.peek('本'), { counted: false });
+  assert.equal(e.isTested('日'), true);
+  assert.deepEqual(e.peek('日'), { counted: true, already: false });
+  assert.deepEqual(e.peek('日'), { counted: true, already: true }, 'looking twice is still one miss');
+  assert.equal(e.frame().peeked, true);
+  const out = e.answer('にほん');
+  assert.deepEqual([out.result, out.counted, out.requeuedIn], ['correct', 'peeked', 3]);
+  assert.equal(e.frame().text, PEEK_LINE.text);
+  assert.deepEqual(e.takeReports(), [], 'not reported yet');
+  e.advance();
+  assert.equal(e.frame().kind, 'meaning');
+  assert.equal(e.frame().peeked, false, 'the peek belongs to the challenge it was made on');
+  e.answer(0);
+  e.advance();
+  for (let i = 0; i < 5 && !e.isFinished(); i += 1) {
+    const f = e.frame();
+    if (f.kind === 'reading') {
+      assert.equal(f.requeued, true);
+      e.answer('にほん');
+    } else e.advance();
+  }
+  assert.equal(e.isFinished(), true);
+  assert.deepEqual(e.takeReports(), [{ item: 'k:本', incorrectCount: 0 }, { item: 'k:日', incorrectCount: 1 }]);
+});
+
+test('a peek survives save and load, and a wrong answer after peeking is a single miss', () => {
+  const e = createEngine(scene, { skipIntro: ['g:n5-ka'] });
+  e.advance();
+  e.answer(0);
+  e.peek('日');
+  const restored = createEngine(scene, { restore: JSON.parse(JSON.stringify(e.snapshot())), skipIntro: ['g:n5-ka'] });
+  assert.equal(restored.frame().peeked, true);
+  assert.equal(restored.answer('にほん').counted, 'peeked');
+  const wrong = createEngine(scene, { skipIntro: ['g:n5-ka'] });
+  wrong.advance();
+  wrong.answer(0);
+  wrong.peek('日');
+  assert.equal(wrong.answer('ひ').result, 'incorrect');
+  assert.equal(wrong.snapshot().queue[0].wrong, 1);
 });

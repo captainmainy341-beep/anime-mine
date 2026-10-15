@@ -1,0 +1,364 @@
+{
+  "schema": 1,
+  "id": "genki-l10",
+  "order": 110,
+  "track": "genki",
+  "lesson": 10,
+  "title": "ふゆやすみの けいかく",
+  "summary": "Winter break is coming. Compare places, say what you plan to do, and how things change.",
+  "covers": "より / のほうが · 〜の中で一番 · 〜つもり · 〜くなる / 〜になる · で (by) · どこにも",
+  "jlpt": "N5",
+  "source": "authored",
+  "bg": "cafe",
+  "characters": {
+    "hana": {
+      "name": "ハナ",
+      "color": "#7cc6b4"
+    },
+    "leo": {
+      "name": "レオ",
+      "color": "#f0a35e"
+    }
+  },
+  "glossary": {
+    "g:n4-tsumori": {
+      "label": "〜つもり",
+      "meaning": "intend to / plan to (personal intention)",
+      "note": "Shows the speaker's own intention or decision, not an arranged schedule (use 予定 for that). Negative intention: 〜つもりはない (no intention of doing it). Sounds firm when stated with だ or です."
+    },
+    "g:genki-dokomo": {
+      "label": "どこか / どこにも〜ない",
+      "meaning": "somewhere / nowhere",
+      "note": "どこかに 行く = go somewhere. どこにも 行かない = not go anywhere. Same pattern: 何か / 何も, だれか / だれも."
+    },
+    "k:雪": {
+      "label": "雪",
+      "reading": "ゆき / せつ",
+      "meaning": "snow"
+    },
+    "g:n5-yori-hou-ga": {
+      "label": "〜より〜のほうが",
+      "meaning": "X is more ... than Y",
+      "note": "Compares two things: A より B のほうが…. The より part marks the thing being compared against. Use 〜のほうが to make the preferred or stronger item the subject."
+    },
+    "g:n5-naka-de-ichiban": {
+      "label": "〜の中で〜が一番",
+      "meaning": "among ..., X is the most ...",
+      "note": "Picks the top item from a group. The group comes first after の中で, then the winner with が一番. Use it for choosing favourites or superlatives."
+    },
+    "g:n5-de-means": {
+      "label": "〜で（手段）",
+      "meaning": "by / with (means, tool, or language)",
+      "note": "で after a noun shows the tool, means of transport, or language used to do something. The same particle marks a place of action, so context decides. For accompanying people use と, not で."
+    },
+    "g:n5-naru": {
+      "label": "〜くなる / 〜になる",
+      "meaning": "become (adjective or noun)",
+      "note": "Shows a change of state. い-adjectives drop the い and add く (寒い to 寒くなる); な-adjectives and nouns take に (元気になる, 大人になる). It describes a change, not an action someone does."
+    },
+    "k:正": {
+      "label": "正",
+      "reading": "しょう / ただ(しい)",
+      "meaning": "correct, proper"
+    }
+  },
+  "beats": [
+    {
+      "type": "show",
+      "char": "hana",
+      "expr": "neutral",
+      "pos": "left"
+    },
+    {
+      "type": "show",
+      "char": "leo",
+      "expr": "neutral",
+      "pos": "right"
+    },
+    {
+      "type": "say",
+      "who": null,
+      "text": "十二月。ふゆやすみが もうすぐ。",
+      "en": "December. Winter break is almost here."
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "ふゆやすみ、どこかに 行く？",
+      "en": "Going anywhere for winter break?"
+    },
+    {
+      "type": "intro",
+      "item": "g:n4-tsumori"
+    },
+    {
+      "type": "choice",
+      "item": "g:n4-tsumori",
+      "who": null,
+      "prompt": "Say you plan to go to Hokkaido (ほっかいどう).",
+      "options": [
+        {
+          "text": "ほっかいどうに 行くつもりです。",
+          "correct": true
+        },
+        {
+          "text": "ほっかいどうに 行きますつもりです。",
+          "awkward": {
+            "who": "hana",
+            "text": "「つもり」の 前は じしょ形！「行く」ですよ。",
+            "en": "Before \"tsumori\", use the dictionary form: \"iku\"."
+          }
+        },
+        {
+          "text": "ほっかいどうに 行ったつもりです。",
+          "awkward": {
+            "who": "hana",
+            "text": "それだと いみが かわっちゃう…。",
+            "en": "That changes the meaning..."
+          }
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "leo",
+      "text": "ぼくは どこにも 行かない。アルバイトする。",
+      "en": "I'm not going anywhere. I'll work part-time."
+    },
+    {
+      "type": "intro",
+      "item": "g:genki-dokomo"
+    },
+    {
+      "type": "particle",
+      "item": "g:genki-dokomo",
+      "who": null,
+      "text": "レオさんは どこに＿ 行きません。",
+      "options": [
+        "も",
+        "か",
+        "が",
+        "を"
+      ],
+      "answers": [
+        "も"
+      ],
+      "en": "Leo isn't going anywhere.",
+      "role": "p:mo/also"
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "ほっかいどうは 雪が きれいだよ。",
+      "en": "The snow in Hokkaido is beautiful."
+    },
+    {
+      "type": "reading",
+      "item": "k:雪",
+      "display": "雪",
+      "answers": [
+        "ゆき"
+      ],
+      "prompt": "What is beautiful in Hokkaido? Read it."
+    },
+    {
+      "type": "say",
+      "who": "leo",
+      "text": "ほっかいどうと 京都と どっちが さむい？",
+      "en": "Which is colder, Hokkaido or Kyoto?"
+    },
+    {
+      "type": "intro",
+      "item": "g:n5-yori-hou-ga"
+    },
+    {
+      "type": "choice",
+      "item": "g:n5-yori-hou-ga",
+      "who": null,
+      "prompt": "Answer: Hokkaido is colder than Kyoto.",
+      "options": [
+        {
+          "text": "ほっかいどうの ほうが 京都より さむいです。",
+          "correct": true
+        },
+        {
+          "text": "京都の ほうが ほっかいどうより さむいです。",
+          "awkward": {
+            "who": "leo",
+            "text": "え、ほんとう？ ほっかいどうだと 思うけど…",
+            "en": "Really? I'd have thought Hokkaido..."
+          }
+        },
+        {
+          "text": "ほっかいどうより 京都の ほうが さむいです。",
+          "awkward": {
+            "who": "leo",
+            "text": "それだと 京都が さむい ことに なるよ。",
+            "en": "That says Kyoto is colder."
+          }
+        }
+      ]
+    },
+    {
+      "type": "particle",
+      "item": "g:n5-yori-hou-ga",
+      "who": null,
+      "text": "電車は バス＿ はやいです。",
+      "options": [
+        "より",
+        "から",
+        "まで",
+        "で"
+      ],
+      "answers": [
+        "より"
+      ],
+      "en": "The train is faster than the bus.",
+      "role": "p:yori/comparison"
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "日本の 食べものの 中で、何が 一番 好き？",
+      "en": "Of all Japanese foods, what do you like best?"
+    },
+    {
+      "type": "intro",
+      "item": "g:n5-naka-de-ichiban"
+    },
+    {
+      "type": "choice",
+      "item": "g:n5-naka-de-ichiban",
+      "who": null,
+      "prompt": "Say ramen is your favorite.",
+      "options": [
+        {
+          "text": "ラーメンが 一番 好き！",
+          "correct": true
+        },
+        {
+          "text": "ラーメンを 一番 好き！",
+          "awkward": {
+            "who": "hana",
+            "text": "「好き」は「が」だよ！",
+            "en": "\"Suki\" takes \"ga\"!"
+          }
+        },
+        {
+          "text": "ラーメンは 一番の 好き！"
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "leo",
+      "text": "ほっかいどうは どうやって 行く？",
+      "en": "How are you getting to Hokkaido?"
+    },
+    {
+      "type": "particle",
+      "item": "g:n5-de-means",
+      "who": null,
+      "text": "ひこうき＿ 行きます。",
+      "options": [
+        "で",
+        "に",
+        "を",
+        "が"
+      ],
+      "answers": [
+        "で"
+      ],
+      "en": "I'm going by plane.",
+      "role": "p:de/means"
+    },
+    {
+      "type": "intro",
+      "item": "g:n5-naru"
+    },
+    {
+      "type": "choice",
+      "item": "g:n5-naru",
+      "who": null,
+      "prompt": "Look outside and say: \"It's gotten cold.\"",
+      "options": [
+        {
+          "text": "さむく なりましたね。",
+          "correct": true
+        },
+        {
+          "text": "さむいに なりましたね。",
+          "awkward": {
+            "who": "hana",
+            "text": "い形容詞は「く なる」ですよ。",
+            "en": "I-adjectives take \"ku naru\"."
+          }
+        },
+        {
+          "text": "さむいく なりましたね。"
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "わたし、しょうらい 先生に なりたいんだ。",
+      "en": "You know, I want to become a teacher someday."
+    },
+    {
+      "type": "choice",
+      "item": "g:n5-naru",
+      "who": null,
+      "prompt": "Tell Leo: \"Hana will become a teacher.\"",
+      "options": [
+        {
+          "text": "ハナさんは 先生に なります。",
+          "correct": true
+        },
+        {
+          "text": "ハナさんは 先生く なります。",
+          "awkward": {
+            "who": "hana",
+            "text": "名詞は「に なる」！",
+            "en": "Nouns take \"ni naru\"!"
+          }
+        },
+        {
+          "text": "ハナさんは 先生が なります。"
+        }
+      ]
+    },
+    {
+      "type": "reading",
+      "item": "k:正",
+      "display": "お正月",
+      "answers": [
+        "おしょうがつ"
+      ],
+      "prompt": "Which holiday is coming? Read it.",
+      "target": "正"
+    },
+    {
+      "type": "affection",
+      "char": "hana",
+      "delta": 1
+    },
+    {
+      "type": "affection",
+      "char": "leo",
+      "delta": 1
+    },
+    {
+      "type": "cg",
+      "id": "genki-winter",
+      "title": "Winter break plans"
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "いい お正月を！",
+      "en": "Have a happy New Year!",
+      "expr": "smile"
+    }
+  ]
+}

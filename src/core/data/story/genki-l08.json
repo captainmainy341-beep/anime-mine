@@ -1,0 +1,387 @@
+{
+  "schema": 1,
+  "id": "genki-l08",
+  "order": 108,
+  "track": "genki",
+  "lesson": 8,
+  "title": "バーベキューの けいかく",
+  "summary": "Planning a barbecue with friends, in casual Japanese. Short forms, \"I think\", and passing on what someone said.",
+  "covers": "short forms · 〜と思います · 〜と言っていました · 〜ないでください · 〜のが好き · が",
+  "jlpt": "N5",
+  "source": "authored",
+  "bg": "classroom-morning",
+  "characters": {
+    "hana": {
+      "name": "ハナ",
+      "color": "#7cc6b4"
+    },
+    "leo": {
+      "name": "レオ",
+      "color": "#f0a35e"
+    },
+    "mori": {
+      "name": "森先生",
+      "color": "#8e7cc3"
+    }
+  },
+  "glossary": {
+    "g:genki-short": {
+      "label": "short (plain) form",
+      "meaning": "casual verb forms",
+      "note": "Friends use the dictionary form instead of ます: 行きます → 行く, 食べません → 食べない."
+    },
+    "g:n5-nai": {
+      "label": "〜ない",
+      "meaning": "plain negative: does not / will not",
+      "note": "The plain negative of verbs: 食べる becomes 食べない, 行く becomes 行かない, する becomes しない. Use it with friends and family; polite speech uses 〜ません."
+    },
+    "g:n4-to-omou": {
+      "label": "〜と思う",
+      "meaning": "I think that ... / I believe that ...",
+      "note": "States the speaker's opinion or belief. The negative 〜と思わない means I don't think so. Attach to the plain form even in polite speech: 〜と思います."
+    },
+    "k:仕": {
+      "label": "仕",
+      "reading": "し",
+      "meaning": "serve, do"
+    },
+    "g:n4-to-iu-quote": {
+      "label": "〜と言う (quoting)",
+      "meaning": "says that ... / said that ...",
+      "note": "Reports what someone said, quoting in plain form. Past report: 〜と言った / 〜と言っていた. Different from 〜という (called / named), which names something."
+    },
+    "g:n5-na-de-kudasai": {
+      "label": "〜ないでください",
+      "meaning": "please don't (do something)",
+      "note": "ないでください politely asks someone not to do something. It is the negative counterpart of 〜てください. Use it for rules, warnings, or polite requests to stop."
+    },
+    "g:n5-no-ga-suki": {
+      "label": "〜のが好き",
+      "meaning": "I like (doing) ... / am good at ...",
+      "note": "Turns a verb into a noun with の so it can be the object of 好き, 得意, or 苦手. It is used for activities and hobbies. For a plain noun object, use 〜が好き instead."
+    },
+    "g:n5-ga-subject": {
+      "label": "〜が（主語）",
+      "meaning": "marks the subject of a sentence",
+      "note": "が marks the new or focused subject, especially with 誰, どれ, and with existence verbs. は introduces a topic, が points to the doer. Some sentences with 好き or 上手 also take が for the object of feeling."
+    },
+    "g:n5-de-means": {
+      "label": "〜で（手段）",
+      "meaning": "by / with (means, tool, or language)",
+      "note": "で after a noun shows the tool, means of transport, or language used to do something. The same particle marks a place of action, so context decides. For accompanying people use と, not で."
+    },
+    "k:電": {
+      "label": "電",
+      "reading": "でん",
+      "meaning": "electricity"
+    }
+  },
+  "beats": [
+    {
+      "type": "show",
+      "char": "hana",
+      "expr": "smile",
+      "pos": "left"
+    },
+    {
+      "type": "show",
+      "char": "leo",
+      "expr": "smile",
+      "pos": "right"
+    },
+    {
+      "type": "say",
+      "who": "leo",
+      "text": "ねえ、こんどの 日曜日、バーベキュー しない？",
+      "en": "Hey, wanna have a barbecue next Sunday?"
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "いいね！ ノアも 来る？",
+      "en": "Sounds great! Noa, you coming?"
+    },
+    {
+      "type": "intro",
+      "item": "g:genki-short"
+    },
+    {
+      "type": "choice",
+      "item": "g:genki-short",
+      "who": null,
+      "prompt": "Answer casually: \"Of course I'll come!\"",
+      "options": [
+        {
+          "text": "もちろん、行く！",
+          "correct": true
+        },
+        {
+          "text": "もちろん、行きますだ！",
+          "awkward": {
+            "who": "leo",
+            "text": "「行きますだ」？ ははは！ 友だちだから「行く」で いいよ。",
+            "en": "\"Ikimasu da\"? Haha! We're friends, just say \"iku\"."
+          }
+        },
+        {
+          "text": "もちろん、行かない！",
+          "awkward": {
+            "who": "hana",
+            "text": "え、来ないの…？",
+            "en": "Huh, you're not coming...?"
+          }
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "leo",
+      "text": "ノアは 肉 食べる？",
+      "en": "Noa, do you eat meat?"
+    },
+    {
+      "type": "intro",
+      "item": "g:n5-nai"
+    },
+    {
+      "type": "choice",
+      "item": "g:n5-nai",
+      "who": null,
+      "prompt": "You don't. Answer casually.",
+      "options": [
+        {
+          "text": "ううん、食べない。",
+          "correct": true
+        },
+        {
+          "text": "ううん、食べらない。",
+          "awkward": {
+            "who": "leo",
+            "text": "「食べらない」？ 「食べない」だよ。",
+            "en": "\"Taberanai\"? It's \"tabenai\"."
+          }
+        },
+        {
+          "text": "ううん、食べないですだ。"
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "leo",
+      "text": "そっか。じゃあ、やさいも 買うね。",
+      "en": "Got it. Then I'll buy vegetables too."
+    },
+    {
+      "type": "intro",
+      "item": "g:n4-to-omou"
+    },
+    {
+      "type": "choice",
+      "item": "g:n4-to-omou",
+      "who": null,
+      "prompt": "Say you think it will be sunny on Sunday (はれる).",
+      "options": [
+        {
+          "text": "日曜日は はれると 思います。",
+          "correct": true
+        },
+        {
+          "text": "日曜日は はれますと 思います。",
+          "awkward": {
+            "who": "hana",
+            "text": "「思います」の 前は 短い形ですよ。「はれる」！",
+            "en": "Before \"omoimasu\", use the short form: \"hareru\"!"
+          }
+        },
+        {
+          "text": "日曜日は はれるを 思います。"
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "森先生も さそう？",
+      "en": "Should we invite Mori-sensei too?"
+    },
+    {
+      "type": "show",
+      "char": "mori",
+      "expr": "smile",
+      "pos": "center"
+    },
+    {
+      "type": "say",
+      "who": "mori",
+      "text": "バーベキュー？ いいですね。でも 日曜日は 仕事が あります。",
+      "en": "A barbecue? Nice. But I have work on Sunday."
+    },
+    {
+      "type": "reading",
+      "item": "k:仕",
+      "display": "仕事",
+      "answers": [
+        "しごと"
+      ],
+      "prompt": "What does she have on Sunday? Read it.",
+      "target": "仕事"
+    },
+    {
+      "type": "hide",
+      "char": "mori"
+    },
+    {
+      "type": "intro",
+      "item": "g:n4-to-iu-quote"
+    },
+    {
+      "type": "choice",
+      "item": "g:n4-to-iu-quote",
+      "who": null,
+      "prompt": "Tell Leo what the teacher said: \"She said she has work on Sunday.\"",
+      "options": [
+        {
+          "text": "先生は 日曜日は 仕事が あると 言っていました。",
+          "correct": true
+        },
+        {
+          "text": "先生は 日曜日は 仕事が あります 言っていました。",
+          "awkward": {
+            "who": "leo",
+            "text": "「と」が ないよ！",
+            "en": "You're missing \"to\"!"
+          }
+        },
+        {
+          "text": "先生は 日曜日は 仕事が あるを 言っていました。"
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "leo",
+      "text": "ざんねん。あ、ノア、肉を やかないでね。ぼくが やる！",
+      "en": "Too bad. Oh, Noa, don't grill the meat. I'll do it!"
+    },
+    {
+      "type": "intro",
+      "item": "g:n5-na-de-kudasai"
+    },
+    {
+      "type": "choice",
+      "item": "g:n5-na-de-kudasai",
+      "who": null,
+      "prompt": "Ask Leo politely: \"Please don't forget the drinks.\" (わすれる)",
+      "options": [
+        {
+          "text": "飲みものを わすれないでください。",
+          "correct": true
+        },
+        {
+          "text": "飲みものを わすれてないでください。",
+          "awkward": {
+            "who": "leo",
+            "text": "「わすれてない」…？ 「わすれないで」だよ。",
+            "en": "\"Wasurete nai\"...? It's \"wasurenai de\"."
+          }
+        },
+        {
+          "text": "飲みものを わすれなくてください。"
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "レオは 料理を するのが 好きだね。",
+      "en": "Leo, you really like cooking, huh."
+    },
+    {
+      "type": "intro",
+      "item": "g:n5-no-ga-suki"
+    },
+    {
+      "type": "particle",
+      "item": "g:n5-no-ga-suki",
+      "who": null,
+      "text": "わたしは 食べるの＿ 好き！",
+      "options": [
+        "が",
+        "を",
+        "に",
+        "で"
+      ],
+      "answers": [
+        "が"
+      ],
+      "en": "Me, I like eating!",
+      "role": "p:ga/subject"
+    },
+    {
+      "type": "say",
+      "who": "leo",
+      "text": "だれが 車で 行く？",
+      "en": "Who's going by car?"
+    },
+    {
+      "type": "intro",
+      "item": "g:n5-ga-subject"
+    },
+    {
+      "type": "particle",
+      "item": "g:n5-ga-subject",
+      "who": null,
+      "text": "ハナ＿ 車で 行くよ。",
+      "options": [
+        "が",
+        "は",
+        "を",
+        "で"
+      ],
+      "answers": [
+        "が"
+      ],
+      "en": "Hana's going by car. (answering \"who\")",
+      "role": "p:ga/subject",
+      "prompt": "Answer Leo's \"who\" question."
+    },
+    {
+      "type": "particle",
+      "item": "g:n5-de-means",
+      "who": "leo",
+      "text": "ぼくたちは 電車＿ 行く。",
+      "options": [
+        "で",
+        "に",
+        "を",
+        "が"
+      ],
+      "answers": [
+        "で"
+      ],
+      "en": "We'll go by train.",
+      "role": "p:de/means"
+    },
+    {
+      "type": "reading",
+      "item": "k:電",
+      "display": "電車",
+      "answers": [
+        "でんしゃ"
+      ],
+      "prompt": "How are Leo and Noa going? Read it.",
+      "target": "電"
+    },
+    {
+      "type": "affection",
+      "char": "leo",
+      "delta": 2
+    },
+    {
+      "type": "cg",
+      "id": "genki-bbq",
+      "title": "Barbecue plans"
+    }
+  ]
+}

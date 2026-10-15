@@ -1,0 +1,376 @@
+{
+  "schema": 1,
+  "id": "genki-l12",
+  "order": 112,
+  "track": "genki",
+  "lesson": 12,
+  "title": "かぜの 日",
+  "summary": "You come to class with a fever. Explain what's wrong, take advice, and say what you have to do.",
+  "covers": "〜んです · 〜すぎる · 〜ほうがいい · 〜ので · 〜なければいけません · 〜でしょう",
+  "jlpt": "N5",
+  "source": "authored",
+  "bg": "classroom-morning",
+  "characters": {
+    "hana": {
+      "name": "ハナ",
+      "color": "#7cc6b4"
+    },
+    "leo": {
+      "name": "レオ",
+      "color": "#f0a35e"
+    },
+    "mori": {
+      "name": "森先生",
+      "color": "#8e7cc3"
+    }
+  },
+  "glossary": {
+    "g:genki-n-desu": {
+      "label": "〜んです",
+      "meaning": "explaining or asking for an explanation",
+      "note": "Short form + んです: いたいんです = (the thing is) it hurts. な-adjectives and nouns take な: 学生なんです."
+    },
+    "g:n4-sugiru": {
+      "label": "〜すぎる",
+      "meaning": "too much / excessively",
+      "note": "Means doing or being more than is appropriate, usually with a negative nuance. Examples: 食べすぎる (eat too much), 高すぎる (too expensive)."
+    },
+    "g:n4-ta-hou-ga-ii": {
+      "label": "〜たほうがいい",
+      "meaning": "should / had better (advice)",
+      "note": "Gives advice on what someone should do. Stronger than 〜といい. The negative 〜ないほうがいい means should not. Can sound strong, so avoid it with superiors."
+    },
+    "k:早": {
+      "label": "早",
+      "reading": "はや(い) / そう",
+      "meaning": "early, fast"
+    },
+    "g:n4-node-because": {
+      "label": "〜ので",
+      "meaning": "because / since (polite reason)",
+      "note": "Gives a reason in a softer, more objective way than 〜から, so it suits polite speech, announcements and explanations. Often used before a polite request. Avoid it for strong personal assertions or commands."
+    },
+    "g:n5-o": {
+      "label": "〜を",
+      "meaning": "marks the direct object of an action",
+      "note": "を marks the thing a transitive verb acts on. It is written as を but pronounced o. Intransitive verbs such as 行く or 来る use に or へ for direction instead."
+    },
+    "g:genki-nakereba": {
+      "label": "〜なければいけません",
+      "meaning": "must, have to",
+      "note": "ない-form minus い + ければいけません: しない → しなければいけません. Casual: しなきゃ."
+    },
+    "g:n5-deshou": {
+      "label": "〜でしょう",
+      "meaning": "probably / right? (softer guess or confirmation)",
+      "note": "Expresses a guess or asks for agreement, more tentatively than だ. Use it in polite speech or when unsure; the rising tone at the end makes it a question. Casual speakers use だろう instead."
+    },
+    "k:起": {
+      "label": "起",
+      "reading": "お(きる) / き",
+      "meaning": "wake up, rise"
+    }
+  },
+  "beats": [
+    {
+      "type": "show",
+      "char": "mori",
+      "expr": "neutral",
+      "pos": "center"
+    },
+    {
+      "type": "show",
+      "char": "hana",
+      "expr": "neutral",
+      "pos": "left"
+    },
+    {
+      "type": "say",
+      "who": "mori",
+      "text": "ノアさん、顔が 赤いですね。どうしたんですか。",
+      "en": "Noa, your face is red. What's the matter?"
+    },
+    {
+      "type": "intro",
+      "item": "g:genki-n-desu"
+    },
+    {
+      "type": "choice",
+      "item": "g:genki-n-desu",
+      "who": null,
+      "prompt": "Explain: you have a headache.",
+      "options": [
+        {
+          "text": "頭が いたいんです。",
+          "correct": true
+        },
+        {
+          "text": "頭が いたいなんです。",
+          "awkward": {
+            "who": "mori",
+            "text": "い形容詞は「いたいんです」ですよ。",
+            "en": "I-adjectives: \"itai n desu\"."
+          }
+        },
+        {
+          "text": "頭が いたかったんです。",
+          "awkward": {
+            "who": "mori",
+            "text": "今は？ 今の ことですよ。",
+            "en": "And now? I mean right now."
+          }
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "きのう、おそくまで ゲームを したんでしょう？",
+      "en": "You played games until late yesterday, didn't you?"
+    },
+    {
+      "type": "intro",
+      "item": "g:n4-sugiru"
+    },
+    {
+      "type": "choice",
+      "item": "g:n4-sugiru",
+      "who": null,
+      "prompt": "Admit it: \"I drank too much coffee.\"",
+      "options": [
+        {
+          "text": "コーヒーを 飲みすぎました。",
+          "correct": true
+        },
+        {
+          "text": "コーヒーを 飲むすぎました。",
+          "awkward": {
+            "who": "hana",
+            "text": "「飲み」＋「すぎる」だよ！",
+            "en": "It's \"nomi\" + \"sugiru\"!"
+          }
+        },
+        {
+          "text": "コーヒーを 飲んですぎました。"
+        }
+      ]
+    },
+    {
+      "type": "intro",
+      "item": "g:n4-ta-hou-ga-ii"
+    },
+    {
+      "type": "choice",
+      "item": "g:n4-ta-hou-ga-ii",
+      "who": "mori",
+      "prompt": "Mori-sensei tells you to go home early. What does she say?",
+      "options": [
+        {
+          "text": "今日は 早く 帰った ほうが いいですよ。",
+          "correct": true
+        },
+        {
+          "text": "今日は 早く 帰って ほうが いいですよ。",
+          "awkward": {
+            "who": "mori",
+            "text": "「帰って ほうが」…？ 「帰った ほうが」ですよ。",
+            "en": "\"Kaette hou ga\"...? It's \"kaetta hou ga\"."
+          }
+        },
+        {
+          "text": "今日は 早く 帰る ほうが いいでした。"
+        }
+      ]
+    },
+    {
+      "type": "reading",
+      "item": "k:早",
+      "display": "早く",
+      "answers": [
+        "はやく"
+      ],
+      "prompt": "Read it: when should you go home?",
+      "target": "早"
+    },
+    {
+      "type": "intro",
+      "item": "g:n4-node-because"
+    },
+    {
+      "type": "choice",
+      "item": "g:n4-node-because",
+      "who": null,
+      "prompt": "Tell her: \"I have a fever, so I'll go home.\"",
+      "options": [
+        {
+          "text": "ねつが あるので、帰ります。",
+          "correct": true
+        },
+        {
+          "text": "ねつが あるなので、帰ります。",
+          "awkward": {
+            "who": "mori",
+            "text": "「あるなので」？ 動詞は そのまま「あるので」。",
+            "en": "\"Aru na node\"? Verbs go straight to \"node\"."
+          }
+        },
+        {
+          "text": "帰りますので、ねつが あります。",
+          "awkward": {
+            "who": "mori",
+            "text": "ぎゃくですね。",
+            "en": "That's backwards."
+          }
+        }
+      ]
+    },
+    {
+      "type": "bg",
+      "bg": "home-evening"
+    },
+    {
+      "type": "hide",
+      "char": "mori"
+    },
+    {
+      "type": "show",
+      "char": "leo",
+      "expr": "neutral",
+      "pos": "right"
+    },
+    {
+      "type": "say",
+      "who": "leo",
+      "text": "ノア、だいじょうぶ？ くすり、ちゃんと 飲んでね。",
+      "en": "You okay, Noa? Make sure you take your medicine."
+    },
+    {
+      "type": "particle",
+      "item": "g:n5-o",
+      "who": "hana",
+      "text": "くすり＿ 飲んで、早く ねてください。",
+      "options": [
+        "を",
+        "が",
+        "に",
+        "で"
+      ],
+      "answers": [
+        "を"
+      ],
+      "en": "Take your medicine and go to bed early.",
+      "role": "p:wo/object"
+    },
+    {
+      "type": "intro",
+      "item": "g:genki-nakereba"
+    },
+    {
+      "type": "choice",
+      "item": "g:genki-nakereba",
+      "who": null,
+      "prompt": "Say you have to study for tomorrow's test.",
+      "options": [
+        {
+          "text": "あしたの テストの 勉強を しなければいけません。",
+          "correct": true
+        },
+        {
+          "text": "あしたの テストの 勉強を しないければいけません。",
+          "awkward": {
+            "who": "leo",
+            "text": "「しないければ」？ 「しなければ」だよ。",
+            "en": "\"Shinaikereba\"? It's \"shinakereba\"."
+          }
+        },
+        {
+          "text": "あしたの テストの 勉強を するなければいけません。"
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "でも、今日は ねた ほうが いいよ。",
+      "en": "But you'd better sleep today."
+    },
+    {
+      "type": "intro",
+      "item": "g:n5-deshou"
+    },
+    {
+      "type": "choice",
+      "item": "g:n5-deshou",
+      "who": "hana",
+      "prompt": "Hana says you will probably be fine tomorrow. What does she say?",
+      "options": [
+        {
+          "text": "あしたは 元気に なるでしょう。",
+          "correct": true
+        },
+        {
+          "text": "あしたは 元気に なったでしょう。",
+          "awkward": {
+            "who": "hana",
+            "text": "あしたの ことだよ！",
+            "en": "I'm talking about tomorrow!"
+          }
+        },
+        {
+          "text": "あしたは 元気に なるだでしょう。"
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "leo",
+      "text": "あした、何時に 起きる？",
+      "en": "What time are you getting up tomorrow?"
+    },
+    {
+      "type": "reading",
+      "item": "k:起",
+      "display": "起きる",
+      "answers": [
+        "おきる"
+      ],
+      "prompt": "Read it.",
+      "target": "起"
+    },
+    {
+      "type": "say",
+      "who": null,
+      "text": "つぎの 朝。ねつは もう ない。",
+      "en": "The next morning. The fever is gone."
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "ノア、元気に なったね！ よかった！",
+      "en": "Noa, you're better! Thank goodness!",
+      "expr": "smile"
+    },
+    {
+      "type": "affection",
+      "char": "hana",
+      "delta": 2
+    },
+    {
+      "type": "affection",
+      "char": "leo",
+      "delta": 1
+    },
+    {
+      "type": "cg",
+      "id": "genki-get-well",
+      "title": "Feeling better"
+    },
+    {
+      "type": "say",
+      "who": "leo",
+      "text": "テスト、がんばろう！",
+      "en": "Good luck on the test!",
+      "expr": "smile"
+    }
+  ]
+}

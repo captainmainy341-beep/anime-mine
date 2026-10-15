@@ -333,3 +333,79 @@ test('shipped chapters load the same way main does', () => {
   assert.equal(problems.length, 0);
   assert.ok(chapters.length >= 4);
 });
+
+test('story:list puts the Genki path in its own section, in lesson order; story:open annotates particle beats', async () => {
+  const { handlers } = story();
+  const list = await handlers['story:list']();
+  assert.ok(list.chapters.every((c) => c.track === 'main'));
+  assert.deepEqual(list.genki.map((c) => c.lesson), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+  assert.ok(list.genki.every((c) => c.covers && c.completed === false));
+  const open = await handlers['story:open']('genki-l03');
+  const particle = open.scene.beats.find((b) => b.type === 'particle');
+  assert.ok(particle.why && Object.keys(particle.notes).length === particle.options.length);
+  const guide = await handlers['story:particles']();
+  assert.ok(guide.particles.length > 0 && guide.confusions.length > 0);
+});
+
+test('story:kanji combines KANJIDIC, the SRS card and the scene glossary, and validates input', async () => {
+  const learn = {
+    ...realLearn(tmp()),
+    'vocab:status': () => ({ kanjidic: true }),
+    'vocab:kanji': (char) => ({ char, meanings: ['ahead', 'previous'], on: ['セン'], kun: ['さき'], strokes: 6, jlpt: 4, usedInVocab: [{ text: '先生', reading: 'せんせい', gloss: 'teacher' }, null] }),
+    'kanjidic:download': () => ({ ready: true }),
+  };
+  const { handlers } = story({ learn });
+  const full = await handlers['story:kanji']({ char: '先', scene: 'genki-l01' });
+  assert.deepEqual(
+    { meanings: full.meanings, on: full.on, kun: full.kun, strokes: full.strokes, words: full.words, ready: full.dictionaryReady, canDownload: full.canDownload, item: full.item },
+    { meanings: ['ahead', 'previous'], on: ['セン'], kun: ['さき'], strokes: 6, words: [{ text: '先生', reading: 'せんせい', gloss: 'teacher' }], ready: true, canDownload: true, item: { id: 'k:先', state: 'untracked', stage: 0 } },
+  );
+
+  const bare = story().handlers;
+  const fallback = await bare['story:kanji']({ char: '先', scene: 'genki-l01' });
+  assert.equal(fallback.dictionaryReady, false, 'no dictionary handlers: falls back to the glossary');
+  assert.deepEqual(fallback.meanings, ['ahead', 'previous']);
+  assert.equal(fallback.reading, 'せん / さき');
+  assert.deepEqual(fallback.words, []);
+  assert.equal(fallback.canDownload, false);
+  assert.deepEqual((await bare['story:kanji']({ char: '猫' })).meanings, []);
+
+  for (const input of [null, { char: 'あ' }, { char: '先生' }, { char: '' }, { char: '先', scene: '../x' }]) {
+    await assert.rejects(Promise.resolve().then(() => bare['story:kanji'](input)), /kanji|scene|object/);
+  }
+});
+
+test('every shipped chapter plays to the end: once all right, once missing every challenge first', async () => {
+  const { createEngine } = await import('../src/renderer/learn/vn/engine.mjs');
+  const { CHALLENGES } = require('../src/core/storySchema');
+  const { handlers } = story();
+  const right = (f) => {
+    if (f.kind === 'choice') return f.beat.options.findIndex((o) => o.correct);
+    if (f.kind === 'particle') return f.beat.options.findIndex((o) => f.beat.answers.includes(o));
+    if (f.kind === 'reading') return f.beat.answers[0];
+    return f.beat.correct;
+  };
+  const wrong = (f) => {
+    if (f.kind === 'choice') return f.beat.options.findIndex((o) => !o.correct);
+    if (f.kind === 'particle') return f.beat.options.findIndex((o) => !f.beat.answers.includes(o));
+    if (f.kind === 'reading') return 'ぬぬぬ';
+    return (f.beat.correct + 1) % f.beat.options.length;
+  };
+  for (const summary of [...(await handlers['story:list']()).chapters, ...(await handlers['story:list']()).genki]) {
+    const { scene } = await handlers['story:open'](summary.id);
+    const challenges = scene.beats.filter((b) => CHALLENGES.includes(b.type)).length;
+    for (const missFirst of [false, true]) {
+      const engine = createEngine(scene);
+      const reports = [];
+      for (let i = 0; i < 600 && !engine.isFinished(); i += 1) {
+        const f = engine.frame();
+        if (['say', 'awkward', 'intro'].includes(f.kind)) engine.advance();
+        else assert.notEqual(engine.answer(missFirst && !f.requeued ? wrong(f) : right(f)).result, 'invalid', `${scene.id}: ${f.kind}`);
+        reports.push(...engine.takeReports());
+      }
+      assert.equal(engine.isFinished(), true, `${scene.id} finishes`);
+      assert.equal(reports.length, challenges, `${scene.id}: one report per challenge`);
+      assert.ok(reports.every((r) => r.incorrectCount === (missFirst ? 1 : 0)), `${scene.id}: incorrectCount`);
+    }
+  }
+});

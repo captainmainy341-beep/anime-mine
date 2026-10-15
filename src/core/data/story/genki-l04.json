@@ -1,0 +1,340 @@
+{
+  "schema": 1,
+  "id": "genki-l04",
+  "order": 104,
+  "track": "genki",
+  "lesson": 4,
+  "title": "レオの かぎ",
+  "summary": "Leo has lost his key. Search his room, retrace yesterday, and find out who was where.",
+  "covers": "ある / いる · 上・下・中 · 〜ました / 〜ませんでした · と · も",
+  "jlpt": "N5",
+  "source": "authored",
+  "bg": "home-evening",
+  "characters": {
+    "hana": {
+      "name": "ハナ",
+      "color": "#7cc6b4"
+    },
+    "leo": {
+      "name": "レオ",
+      "color": "#f0a35e"
+    }
+  },
+  "glossary": {
+    "k:月": {
+      "label": "月",
+      "reading": "げつ / つき",
+      "meaning": "moon, month"
+    },
+    "g:n5-ga-aru-iru": {
+      "label": "〜がある／いる",
+      "meaning": "there is / there are (things / living things)",
+      "note": "ある is for things and plants, いる is for people and animals. The location takes に, and the thing that exists takes が. The plain forms are ある and いる."
+    },
+    "g:genki-location": {
+      "label": "〜の 上・下・中・となり",
+      "meaning": "on / under / in / next to",
+      "note": "Place word after の, then に: つくえの 上に = on the desk, かばんの 中に = in the bag."
+    },
+    "g:genki-mashita": {
+      "label": "〜ました",
+      "meaning": "polite past: did",
+      "note": "Swap ます for ました: 行きます → 行きました (went)."
+    },
+    "g:n5-to-with": {
+      "label": "〜と（〜と一緒に）",
+      "meaning": "with (someone)",
+      "note": "と after a person means doing something together with that person. It is different from the list particle と, which joins nouns. Use と with 友だち, 家族, and similar people."
+    },
+    "g:n5-nakatta": {
+      "label": "〜ませんでした / 〜なかった",
+      "meaning": "did not (past negative)",
+      "note": "Negates an action in the past. ませんでした is the polite form and なかった is the plain form. Adjectives use くなかったです and くなかった instead."
+    },
+    "g:n5-mo": {
+      "label": "〜も",
+      "meaning": "also / too",
+      "note": "も replaces は, が, or を when the item is also true or included. Do not add は after も; も already marks the topic. It can attach to nouns, verbs, and adjectives."
+    }
+  },
+  "beats": [
+    {
+      "type": "say",
+      "who": null,
+      "text": "月曜日の 夜。レオさんの へや。",
+      "en": "Monday night. Leo's room."
+    },
+    {
+      "type": "show",
+      "char": "leo",
+      "expr": "sad",
+      "pos": "right"
+    },
+    {
+      "type": "say",
+      "who": "leo",
+      "text": "ノアさん、たいへんです！ かぎが ありません！",
+      "en": "Noa, it's terrible! My key is gone!"
+    },
+    {
+      "type": "reading",
+      "item": "k:月",
+      "display": "月曜日",
+      "answers": [
+        "げつようび"
+      ],
+      "prompt": "What day is it? Read it.",
+      "target": "月"
+    },
+    {
+      "type": "intro",
+      "item": "g:n5-ga-aru-iru"
+    },
+    {
+      "type": "choice",
+      "item": "g:n5-ga-aru-iru",
+      "who": null,
+      "prompt": "Ask: \"Is the key in the bag?\"",
+      "options": [
+        {
+          "text": "かばんの 中に かぎが ありますか。",
+          "correct": true
+        },
+        {
+          "text": "かばんの 中に かぎが いますか。",
+          "awkward": {
+            "who": "leo",
+            "text": "「いますか」？ かぎは 生きていませんよ！",
+            "en": "\"Imasu ka\"? The key isn't alive!"
+          }
+        },
+        {
+          "text": "かばんの 中に かぎを ありますか。",
+          "awkward": {
+            "who": "leo",
+            "text": "「かぎを ある」…？ 「が」ですよ。",
+            "en": "\"Kagi wo aru\"...? It's \"ga\"."
+          }
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "leo",
+      "text": "ありません…。",
+      "en": "It's not there...",
+      "expr": "sad"
+    },
+    {
+      "type": "intro",
+      "item": "g:genki-location"
+    },
+    {
+      "type": "particle",
+      "item": "g:genki-location",
+      "who": null,
+      "text": "つくえの 上＿ 本が あります。",
+      "options": [
+        "に",
+        "で",
+        "を",
+        "へ"
+      ],
+      "answers": [
+        "に"
+      ],
+      "en": "There are books on the desk.",
+      "role": "p:ni/location",
+      "prompt": "Describe the desk."
+    },
+    {
+      "type": "say",
+      "who": null,
+      "text": "つくえの 下を 見た。…ねこが いる！",
+      "en": "You look under the desk... there's a cat!"
+    },
+    {
+      "type": "particle",
+      "item": "g:n5-ga-aru-iru",
+      "who": null,
+      "text": "つくえの 下に ねこ＿ います。",
+      "options": [
+        "が",
+        "を",
+        "で",
+        "に"
+      ],
+      "answers": [
+        "が"
+      ],
+      "en": "There's a cat under the desk.",
+      "role": "p:ga/subject"
+    },
+    {
+      "type": "say",
+      "who": "leo",
+      "text": "あ、となりの いえの ねこです。名前は モモです。",
+      "en": "Ah, that's the neighbor's cat. Her name is Momo.",
+      "expr": "smile"
+    },
+    {
+      "type": "say",
+      "who": "leo",
+      "text": "今日、ぼくは どこに いましたか…。",
+      "en": "Where was I today...?",
+      "expr": "tired"
+    },
+    {
+      "type": "intro",
+      "item": "g:genki-mashita"
+    },
+    {
+      "type": "choice",
+      "item": "g:genki-mashita",
+      "who": null,
+      "prompt": "Remind Leo: \"You went to the café this afternoon.\"",
+      "options": [
+        {
+          "text": "ごご、カフェに 行きました。",
+          "correct": true
+        },
+        {
+          "text": "ごご、カフェに 行きます。",
+          "awkward": {
+            "who": "leo",
+            "text": "これから？ ちがいます、もう 行きましたよ！",
+            "en": "Later? No, I already went!"
+          }
+        },
+        {
+          "text": "ごご、カフェに 行きでした。"
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "leo",
+      "text": "そうだ！ ハナさんと コーヒーを 飲みました！",
+      "en": "That's right! I had coffee with Hana!",
+      "expr": "surprised"
+    },
+    {
+      "type": "intro",
+      "item": "g:n5-to-with"
+    },
+    {
+      "type": "particle",
+      "item": "g:n5-to-with",
+      "who": null,
+      "text": "レオさんは ハナさん＿ カフェに 行きました。",
+      "options": [
+        "と",
+        "に",
+        "を",
+        "が"
+      ],
+      "answers": [
+        "と"
+      ],
+      "en": "Leo went to the café with Hana.",
+      "role": "p:to/with"
+    },
+    {
+      "type": "bg",
+      "bg": "cafe"
+    },
+    {
+      "type": "show",
+      "char": "hana",
+      "expr": "neutral",
+      "pos": "left"
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "レオさん！ かぎですか？ テーブルの 上に ありましたよ。",
+      "en": "Leo! Your key? It was on the table."
+    },
+    {
+      "type": "say",
+      "who": "leo",
+      "text": "よかった…！ ハナさん、ありがとう！",
+      "en": "Phew...! Thank you, Hana!",
+      "expr": "smile"
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "ノアさん、きのう 勉強しましたか。",
+      "en": "Noa, did you study yesterday?"
+    },
+    {
+      "type": "intro",
+      "item": "g:n5-nakatta"
+    },
+    {
+      "type": "choice",
+      "item": "g:n5-nakatta",
+      "who": "hana",
+      "prompt": "You did not. Answer.",
+      "options": [
+        {
+          "text": "いいえ、勉強しませんでした。",
+          "correct": true
+        },
+        {
+          "text": "いいえ、勉強しません。",
+          "awkward": {
+            "who": "hana",
+            "text": "きのうの ことですよ！",
+            "en": "I'm asking about yesterday!"
+          }
+        },
+        {
+          "text": "いいえ、勉強しましたでした。"
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "わたしも。ふふ。",
+      "en": "Me neither. Hehe.",
+      "expr": "smile"
+    },
+    {
+      "type": "particle",
+      "item": "g:n5-mo",
+      "who": null,
+      "text": "レオさん＿ 勉強しませんでした。",
+      "options": [
+        "も",
+        "を",
+        "に",
+        "で"
+      ],
+      "answers": [
+        "も"
+      ],
+      "en": "Leo didn't study either.",
+      "role": "p:mo/also"
+    },
+    {
+      "type": "affection",
+      "char": "leo",
+      "delta": 2
+    },
+    {
+      "type": "cg",
+      "id": "genki-key",
+      "title": "Momo the cat"
+    },
+    {
+      "type": "say",
+      "who": "leo",
+      "text": "モモと、かぎと、ハナさん… いい 一日でした！",
+      "en": "Momo, my key, and Hana... it was a good day!",
+      "expr": "smile"
+    }
+  ]
+}

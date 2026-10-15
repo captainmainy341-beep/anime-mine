@@ -1,0 +1,297 @@
+{
+  "schema": 1,
+  "id": "genki-l02",
+  "order": 102,
+  "track": "genki",
+  "lesson": 2,
+  "title": "カフェ「あおぞら」",
+  "summary": "Hana's grandmother runs a small café. Point at things, ask prices, and sort out whose umbrella is whose.",
+  "covers": "これ・それ・あれ · この・その · ここ・あそこ · だれの · も · じゃないです",
+  "jlpt": "N5",
+  "source": "authored",
+  "bg": "cafe",
+  "characters": {
+    "hana": {
+      "name": "ハナ",
+      "color": "#7cc6b4"
+    },
+    "leo": {
+      "name": "レオ",
+      "color": "#f0a35e"
+    }
+  },
+  "glossary": {
+    "g:genki-kosoado": {
+      "label": "これ・それ・あれ / この・その・あの",
+      "meaning": "this / that / that over there",
+      "note": "これ, それ, あれ stand alone (\"this one\"); この, その, あの go before a noun (この ケーキ). ここ, そこ, あそこ are places."
+    },
+    "k:円": {
+      "label": "円",
+      "reading": "えん",
+      "meaning": "yen, circle"
+    },
+    "g:n5-mo": {
+      "label": "〜も",
+      "meaning": "also / too",
+      "note": "も replaces は, が, or を when the item is also true or included. Do not add は after も; も already marks the topic. It can attach to nouns, verbs, and adjectives."
+    },
+    "g:genki-ja-nai": {
+      "label": "〜じゃないです",
+      "meaning": "is not (polite negative of です)",
+      "note": "Noun + じゃないです (or じゃありません): わたしの かさじゃないです = it is not my umbrella."
+    }
+  },
+  "beats": [
+    {
+      "type": "say",
+      "who": null,
+      "text": "日曜日。ハナさんの おばあさんの カフェ「あおぞら」。",
+      "en": "Sunday. Hana's grandmother's café, Aozora."
+    },
+    {
+      "type": "show",
+      "char": "hana",
+      "expr": "smile",
+      "pos": "left"
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "いらっしゃいませ！ あ、ノアさん！",
+      "en": "Welcome! Oh, Noa!"
+    },
+    {
+      "type": "intro",
+      "item": "g:genki-kosoado"
+    },
+    {
+      "type": "choice",
+      "item": "g:genki-kosoado",
+      "who": "hana",
+      "prompt": "Point at the cake right in front of you and ask what it is.",
+      "options": [
+        {
+          "text": "これは 何ですか。",
+          "correct": true
+        },
+        {
+          "text": "あれは 何ですか。",
+          "awkward": {
+            "who": "hana",
+            "text": "あれ？ あそこの ポスターですか？",
+            "en": "\"Are\"? You mean the poster over there?"
+          }
+        },
+        {
+          "text": "これの 何ですか。"
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "それは チーズケーキです。おばあさんの ケーキですよ。",
+      "en": "That's cheesecake. Grandma makes it."
+    },
+    {
+      "type": "choice",
+      "item": "g:genki-kosoado",
+      "who": "hana",
+      "prompt": "Ask how much this cake is.",
+      "options": [
+        {
+          "text": "この ケーキは いくらですか。",
+          "correct": true
+        },
+        {
+          "text": "これ ケーキは いくらですか。",
+          "awkward": {
+            "who": "hana",
+            "text": "「これ ケーキ」…？ 名詞の 前は「この」ですよ。",
+            "en": "\"Kore keeki\"...? Before a noun it's \"kono\"."
+          }
+        },
+        {
+          "text": "ケーキは この いくらですか。"
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "三百円です。",
+      "en": "It's three hundred yen."
+    },
+    {
+      "type": "reading",
+      "item": "k:円",
+      "display": "三百円",
+      "answers": [
+        "さんびゃくえん"
+      ],
+      "prompt": "Read the price on the menu.",
+      "target": "円"
+    },
+    {
+      "type": "show",
+      "char": "leo",
+      "expr": "smile",
+      "pos": "right"
+    },
+    {
+      "type": "say",
+      "who": "leo",
+      "text": "ハナさん、ぼくも チーズケーキ！ あと、コーヒーも！",
+      "en": "Hana, cheesecake for me too! And coffee too!"
+    },
+    {
+      "type": "intro",
+      "item": "g:n5-mo"
+    },
+    {
+      "type": "particle",
+      "item": "g:n5-mo",
+      "who": null,
+      "text": "わたし＿ コーヒーを おねがいします。",
+      "options": [
+        "も",
+        "を",
+        "の",
+        "か"
+      ],
+      "answers": [
+        "も"
+      ],
+      "en": "I'll have coffee too, please.",
+      "role": "p:mo/also",
+      "prompt": "You want coffee, too (like Leo)."
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "はい、コーヒー ふたつですね。",
+      "en": "Okay, two coffees."
+    },
+    {
+      "type": "say",
+      "who": "leo",
+      "text": "あれ？ この かさは だれの かさですか。",
+      "en": "Huh? Whose umbrella is this?"
+    },
+    {
+      "type": "intro",
+      "item": "g:genki-ja-nai"
+    },
+    {
+      "type": "choice",
+      "item": "g:genki-ja-nai",
+      "who": "leo",
+      "prompt": "It is not yours. Say: \"It's not my umbrella.\"",
+      "options": [
+        {
+          "text": "わたしの かさじゃないです。",
+          "correct": true
+        },
+        {
+          "text": "わたしの かさです じゃない。",
+          "awkward": {
+            "who": "leo",
+            "text": "え？ どっち？",
+            "en": "Huh? Which is it?"
+          }
+        },
+        {
+          "text": "わたしの かさないです。",
+          "awkward": {
+            "who": "leo",
+            "text": "「かさない」…？",
+            "en": "\"Kasa-nai\"...?"
+          }
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "あ、それは おばあさんの かさです。",
+      "en": "Oh, that's Grandma's umbrella."
+    },
+    {
+      "type": "say",
+      "who": "leo",
+      "text": "ハナさん、トイレは どこですか。",
+      "en": "Hana, where's the restroom?"
+    },
+    {
+      "type": "choice",
+      "item": "g:genki-kosoado",
+      "who": "hana",
+      "prompt": "The restroom is far away at the back of the café. What does Hana say?",
+      "options": [
+        {
+          "text": "あそこです。",
+          "correct": true
+        },
+        {
+          "text": "ここです。",
+          "awkward": {
+            "who": "leo",
+            "text": "ここ？ ここは テーブルですよ。",
+            "en": "Here? This is a table."
+          }
+        },
+        {
+          "text": "それです。"
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "leo",
+      "text": "ありがとう。",
+      "en": "Thanks."
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "ケーキと コーヒーです。どうぞ。",
+      "en": "Here's your cake and coffee."
+    },
+    {
+      "type": "particle",
+      "item": "g:n5-mo",
+      "who": null,
+      "text": "ケーキ＿ コーヒーも おいしいです。",
+      "options": [
+        "も",
+        "は",
+        "の",
+        "を"
+      ],
+      "answers": [
+        "も"
+      ],
+      "en": "Both the cake and the coffee are delicious.",
+      "role": "p:mo/also",
+      "prompt": "Say both are delicious."
+    },
+    {
+      "type": "affection",
+      "char": "hana",
+      "delta": 2
+    },
+    {
+      "type": "cg",
+      "id": "genki-aozora",
+      "title": "Café Aozora"
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "また 来てくださいね！",
+      "en": "Please come again!",
+      "expr": "smile"
+    }
+  ]
+}

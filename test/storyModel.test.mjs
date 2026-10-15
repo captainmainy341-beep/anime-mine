@@ -119,3 +119,33 @@ test('drawn characters use per-character gradient ids and animation hooks, all s
   assert.notEqual(characterSvg('mio', 'sad'), characterSvg('mio', 'neutral'), 'each expression draws a different face');
   assert.doesNotMatch(characterSvg('x"><script>', 'neutral'), /<script/);
 });
+
+test('kanji in a line are split out one by one so each can be tapped', async () => {
+  const { splitKanji } = await import('../src/renderer/learn/storyModel.mjs');
+  assert.deepEqual(splitKanji('ゆうきさんは日本人？'), [
+    { text: 'ゆうきさんは', kanji: false }, { text: '日', kanji: true }, { text: '本', kanji: true }, { text: '人', kanji: true }, { text: '？', kanji: false },
+  ]);
+  assert.deepEqual(splitKanji(''), []);
+  assert.deepEqual(splitKanji('ねこ'), [{ text: 'ねこ', kanji: false }]);
+});
+
+test('the kanji card shows dictionary data, SRS state, and asks for the dictionary when it is missing', async () => {
+  const { kanjiCard } = await import('../src/renderer/learn/storyModel.mjs');
+  const full = kanjiCard({ char: '学', dictionaryReady: true, meanings: ['study', 'learning', 'science'], on: ['ガク'], kun: ['まな.ぶ'], strokes: 8, jlpt: 4, words: [{ text: '学生', reading: 'がくせい', gloss: 'student' }, { text: 'がく', reading: 'がく' }], item: { state: 'started', stage: 3 } });
+  assert.deepEqual([full.meaning, full.on, full.kun, full.facts, full.status, full.learnable, full.needsDownload], ['study, learning, science', 'ガク', 'まな.ぶ', '8 strokes · JLPT N4', 'In your reviews: stage 3', false, false]);
+  assert.deepEqual(full.words[1], { text: 'がく', reading: '', gloss: '' });
+  const bare = kanjiCard({ char: '先', dictionaryReady: false, meanings: ['previous'], reading: 'せん', item: { state: 'new', stage: 0 } }, { tested: true });
+  assert.deepEqual([bare.reading, bare.learnable, bare.needsDownload, bare.tested, bare.status], ['せん', true, true, true, 'New: not learned yet']);
+  assert.match(kanjiCard({ char: '本', meanings: [] }).meaning, /No meaning/);
+  assert.match(kanjiCard({ char: '本' }).status, /Not in your study pack/);
+});
+
+test('particle helpers and the Genki path list', async () => {
+  const { particleParts, guideFocus, genkiRows } = await import('../src/renderer/learn/storyModel.mjs');
+  assert.deepEqual(particleParts('学校＿行きます。'), { before: '学校', after: '行きます。' });
+  const guide = { confusions: [{ id: 'wa-ga', pair: ['は', 'が'] }, { id: 'ni-de', pair: ['に', 'で'] }] };
+  assert.equal(guideFocus(guide, 'で'), 'ni-de');
+  assert.equal(guideFocus(guide, 'ね'), null);
+  const rows = genkiRows([{ id: 'b', lesson: 2, plays: 0 }, { id: 'a', lesson: 1, completed: true, plays: 1 }, { id: 'c', lesson: 3, plays: 0 }]);
+  assert.deepEqual(rows.map((r) => [r.id, r.label, r.upNext]), [['a', 'Lesson 1', false], ['b', 'Lesson 2', true], ['c', 'Lesson 3', false]]);
+});

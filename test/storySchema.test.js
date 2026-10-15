@@ -4,7 +4,8 @@ const { loadChapters } = require('../src/core/storyContent');
 const { validateScene, assertScene, parseAiScene, extractJson } = require('../src/core/storySchema');
 const { loadGrammar } = require('../src/core/grammar');
 
-const DISPLAYED = new Set(['say', 'intro', 'choice', 'reading', 'meaning']);
+const DISPLAYED = new Set(['say', 'intro', 'choice', 'reading', 'meaning', 'particle']);
+const CHALLENGE_TYPES = ['choice', 'reading', 'meaning', 'particle'];
 
 function scene(overrides = {}) {
   return {
@@ -44,9 +45,11 @@ test('every shipped chapter is valid: 3+ N5 chapters of 10-15+ beats and an N4 c
 test('shipped chapters only reference grammar points that exist, and cover every item with a challenge', () => {
   const grammar = loadGrammar();
   for (const chapter of loadChapters().chapters) {
-    const tested = new Set(chapter.beats.filter((b) => ['choice', 'reading', 'meaning'].includes(b.type)).map((b) => b.item));
+    const tested = new Set(chapter.beats.filter((b) => CHALLENGE_TYPES.includes(b.type)).map((b) => b.item));
     for (const item of chapter.items) {
-      if (item.startsWith('g:')) assert.ok(grammar.byId.has(item), `${chapter.id}: unknown grammar ${item}`);
+      // Genki-path points that are not in the grammar deck use a g:genki-* id and are practice only.
+      const genkiOnly = chapter.track === 'genki' && item.startsWith('g:genki-');
+      if (item.startsWith('g:') && !genkiOnly) assert.ok(grammar.byId.has(item), `${chapter.id}: unknown grammar ${item}`);
       assert.ok(tested.has(item), `${chapter.id}: ${item} is introduced but never tested`);
       assert.ok(chapter.glossary?.[item], `${chapter.id}: ${item} has no glossary fallback`);
     }
@@ -158,4 +161,37 @@ test('an AI reply cannot smuggle its own background image', () => {
   const sneaky = { ...goodAi, bgImage: 'data:image/jpeg;base64,AAAA' };
   const { scene: out } = parseAiScene(JSON.stringify(sneaky), { allowedItems: ['k:雨', 'g:n5-ka'], id: 'ai-0123456789ab' });
   assert.equal(out.bgImage, undefined);
+});
+
+test('the Genki path ships lessons 1-12 in order, each drilling particles', () => {
+  const genki = loadChapters().chapters.filter((c) => c.track === 'genki');
+  assert.deepEqual(genki.map((c) => c.lesson), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+  for (const chapter of genki) {
+    assert.match(chapter.id, /^genki-l\d\d$/);
+    assert.ok(chapter.covers, `${chapter.id} lists what it covers`);
+    assert.ok(chapter.beats.some((b) => b.type === 'particle'), `${chapter.id} has a particle challenge`);
+    for (const beat of chapter.beats.filter((b) => b.type === 'particle')) {
+      assert.ok(beat.en, `${chapter.id}: particle sentences carry a translation`);
+      assert.ok(beat.options.some((o) => !beat.answers.includes(o)));
+    }
+  }
+});
+
+test('particle beats: one gap, answers among the options, at least one wrong option; track and lesson are checked', () => {
+  const particle = (patch) => scene({ beats: [{ type: 'say', who: 'mio', text: 'はい。' }, { type: 'particle', item: 'g:n5-ni', text: '学校＿行きます。', options: ['に', 'へ', 'で'], answers: ['に', 'へ'], role: 'p:ni/destination', en: 'I go to school.', ...patch }] });
+  const good = validateScene(particle({}));
+  assert.equal(good.ok, true, good.errors.join());
+  assert.deepEqual(good.scene.beats[1], { type: 'particle', item: 'g:n5-ni', who: null, text: '学校＿行きます。', options: ['に', 'へ', 'で'], answers: ['に', 'へ'], en: 'I go to school.', role: 'p:ni/destination' });
+  const bad = (patch, pattern) => assert.match(validateScene(particle(patch)).errors.join(' | '), pattern);
+  bad({ text: '学校に行きます。' }, /one ＿ gap/);
+  bad({ text: '学校＿行き＿ます。' }, /one ＿ gap/);
+  bad({ answers: ['を'] }, /among the options/);
+  bad({ answers: ['に', 'へ', 'で'] }, /wrong option/);
+  bad({ options: ['に', 'に', 'で'] }, /different/);
+  bad({ options: ['ni', 'で'] }, /short kana/);
+  bad({ options: ['に'] }, /2 to 4/);
+  assert.equal(validateScene(particle({ role: 'nonsense' })).scene.beats[1].role, undefined, 'a bad role is dropped, not fatal');
+  assert.match(validateScene(scene({ track: 'other' })).errors.join(), /track/);
+  assert.match(validateScene(scene({ lesson: 0 })).errors.join(), /lesson/);
+  assert.deepEqual(['track', 'lesson'].map((k) => validateScene(scene({ track: 'genki', lesson: 3 })).scene[k]), ['genki', 3]);
 });
