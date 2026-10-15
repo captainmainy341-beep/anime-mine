@@ -129,6 +129,7 @@ contextBridge.exposeInMainWorld('api', {
   story: {
     list: invoke('story:list'),
     open: invoke('story:open'),
+    genki: invoke('story:genki'),
     lesson: invoke('story:lesson'),
     lessonDone: invoke('story:lessonDone'),
     learn: invoke('story:learn'),
