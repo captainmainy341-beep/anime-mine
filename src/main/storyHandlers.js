@@ -9,6 +9,7 @@ const { buildAnimeScenes, sceneId: animeSceneId } = require('../core/storyAnime'
 const { generateScene, listCached, readCached } = require('../core/storyAi');
 const skins = require('../core/storySkins');
 const particles = require('../core/storyParticles');
+const { loadLessons, lessonSummary } = require('../core/storyLessons');
 
 const ANIME_DIR = 'story-anime';
 const ANIME_ID = /^anime-[0-9a-f]{10}$/;
@@ -62,6 +63,7 @@ function createStoryHandlers({ dataDir, learn, getSettings, deps = {} }) {
   const progress = new StoryProgress(dataDir, { now });
   const chapters = loadChapters().chapters;
   const chapterById = new Map(chapters.map((c) => [c.id, c]));
+  const lessonById = new Map(loadLessons().lessons.map((l) => [l.id, l]));
   const animeDir = path.join(dataDir, ANIME_DIR);
 
   async function cardOf(id) {
@@ -123,9 +125,17 @@ function createStoryHandlers({ dataDir, learn, getSettings, deps = {} }) {
     }
   }
 
+  function primerOf(sceneId) {
+    const lesson = lessonById.get(sceneId);
+    if (!lesson) return null;
+    const done = progress.state.lessons[sceneId] ?? null;
+    return { ...lessonSummary(lesson), done: (done?.plays ?? 0) > 0, plays: done?.plays ?? 0, accuracy: done?.bestAccuracy ?? 0 };
+  }
+
   function summaryOf(scene) {
     const done = progress.state.chapters[scene.id] ?? null;
-    return { ...chapterSummary(scene), completed: (done?.plays ?? 0) > 0, plays: done?.plays ?? 0, saved: progress.hasSave(scene.id) };
+    const primer = primerOf(scene.id);
+    return { ...chapterSummary(scene), completed: (done?.plays ?? 0) > 0, plays: done?.plays ?? 0, saved: progress.hasSave(scene.id), ...(primer ? { primer } : {}) };
   }
 
   async function startedItems(kind, limit) {
@@ -150,6 +160,26 @@ function createStoryHandlers({ dataDir, learn, getSettings, deps = {} }) {
       return { scene: particles.annotateScene(scene), items: await itemStatuses(scene), save: progress.hasSave(scene.id), best: progress.state.chapters[scene.id] ?? null };
     },
     // Mirrors a Learn lesson: the in-story intro starts the item, and that first quiz is not a review.
+    // The "learn first" primer for a Genki lesson, plus the learner's SRS state for each grammar point it teaches.
+    'story:lesson': async (id) => {
+      assertSceneId(id);
+      const lesson = lessonById.get(id);
+      if (!lesson) throw new Error(`no lesson primer for: ${id}`);
+      const items = {};
+      for (const point of lesson.points) {
+        const card = await cardOf(point.id);
+        items[point.id] = { state: stateOf(card), stage: card?.stage ?? 0 };
+      }
+      return { lesson, items, done: progress.state.lessons[id] ?? null };
+    },
+    'story:lessonDone': (input) => {
+      assertObject(input, 'lesson result');
+      assertSceneId(input.id);
+      if (!lessonById.has(input.id)) throw new Error(`no lesson primer for: ${input.id}`);
+      if (!Number.isFinite(input.accuracy) || input.accuracy < 0 || input.accuracy > 1) throw new Error('accuracy must be between 0 and 1');
+      const result = progress.completeLesson(input.id, { accuracy: input.accuracy });
+      return { ...result, overview: progress.overview() };
+    },
     'story:learn': async (item) => {
       assertItem(item);
       const { started } = await learn['learn:completeLessons']([item]);

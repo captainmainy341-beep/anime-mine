@@ -11,7 +11,7 @@ const isObject = (value) => value !== null && typeof value === 'object' && !Arra
 const clamp = (n, lo, hi) => Math.max(lo, Math.min(hi, n));
 
 function empty() {
-  return { version: 1, chapters: {}, affection: {}, gallery: {}, saves: {} };
+  return { version: 1, chapters: {}, lessons: {}, affection: {}, gallery: {}, saves: {} };
 }
 
 // Older files also stored a 0-3 star rating per chapter. Stars are gone; the rest of the record is kept.
@@ -22,6 +22,19 @@ function normalizeChapters(chapters) {
     const plays = Number.isInteger(entry.plays) && entry.plays > 0 ? entry.plays : 0;
     out[id] = {
       plays,
+      bestAccuracy: Number.isFinite(entry.bestAccuracy) ? clamp(entry.bestAccuracy, 0, 1) : 0,
+      ...(Number.isFinite(entry.completedAt) ? { completedAt: entry.completedAt } : {}),
+    };
+  }
+  return out;
+}
+
+function normalizeLessons(lessons) {
+  const out = {};
+  for (const [id, entry] of Object.entries(lessons)) {
+    if (!isObject(entry) || !NAME_PATTERN.test(id)) continue;
+    out[id] = {
+      plays: Number.isInteger(entry.plays) && entry.plays > 0 ? entry.plays : 0,
       bestAccuracy: Number.isFinite(entry.bestAccuracy) ? clamp(entry.bestAccuracy, 0, 1) : 0,
       ...(Number.isFinite(entry.completedAt) ? { completedAt: entry.completedAt } : {}),
     };
@@ -44,6 +57,7 @@ class StoryProgress {
       return {
         ...empty(),
         chapters: isObject(parsed.chapters) ? normalizeChapters(parsed.chapters) : {},
+        lessons: isObject(parsed.lessons) ? normalizeLessons(parsed.lessons) : {},
         affection: isObject(parsed.affection) ? parsed.affection : {},
         gallery: isObject(parsed.gallery) ? parsed.gallery : {},
         saves: isObject(parsed.saves) ? parsed.saves : {},
@@ -63,6 +77,7 @@ class StoryProgress {
   overview() {
     return {
       chapters: this.state.chapters,
+      lessons: this.state.lessons,
       affection: this.state.affection,
       gallery: Object.entries(this.state.gallery).map(([id, g]) => ({ id, ...g })),
     };
@@ -85,6 +100,18 @@ class StoryProgress {
 
   clearSlot(sceneId) {
     if (delete this.state.saves[sceneId]) this.save();
+  }
+
+  // A finished "learn first" lesson. Like chapters, best accuracy only goes up.
+  completeLesson(lessonId, { accuracy }) {
+    const prev = this.state.lessons[lessonId] ?? { plays: 0, bestAccuracy: 0 };
+    this.state.lessons[lessonId] = {
+      plays: prev.plays + 1,
+      bestAccuracy: Math.max(prev.bestAccuracy, clamp(accuracy, 0, 1)),
+      completedAt: this.now(),
+    };
+    this.save();
+    return this.state.lessons[lessonId];
   }
 
   // Records a finished run. Best accuracy only goes up; affection and gallery are merged.
