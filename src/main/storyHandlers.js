@@ -111,7 +111,7 @@ function createStoryHandlers({ dataDir, learn, getSettings, deps = {} }) {
 
   function summaryOf(scene) {
     const done = progress.state.chapters[scene.id] ?? null;
-    return { ...chapterSummary(scene), stars: done?.stars ?? 0, plays: done?.plays ?? 0, saved: progress.hasSave(scene.id) };
+    return { ...chapterSummary(scene), completed: (done?.plays ?? 0) > 0, plays: done?.plays ?? 0, saved: progress.hasSave(scene.id) };
   }
 
   async function startedItems(kind, limit) {
@@ -171,14 +171,13 @@ function createStoryHandlers({ dataDir, learn, getSettings, deps = {} }) {
       assertObject(input, 'completion');
       assertSceneId(input.id);
       const scene = requireScene(input.id);
-      assertInt(input.stars, 'stars', 0, 3);
       if (!Number.isFinite(input.accuracy) || input.accuracy < 0 || input.accuracy > 1) throw new Error('accuracy must be between 0 and 1');
       assertObject(input.affection ?? {}, 'affection');
       for (const [char, delta] of Object.entries(input.affection ?? {})) {
         if (!NAME_PATTERN.test(char) || !Number.isInteger(delta) || Math.abs(delta) > 50) throw new Error('invalid affection entry');
       }
       if (!Array.isArray(input.gallery ?? []) || (input.gallery ?? []).length > 20) throw new Error('gallery must be a short list');
-      const result = progress.complete(scene.id, input, scene.characters);
+      const result = progress.complete(scene.id, { accuracy: input.accuracy, affection: input.affection, gallery: input.gallery }, scene.characters);
       return { ...result, overview: progress.overview() };
     },
     'story:animeBuild': async () => {

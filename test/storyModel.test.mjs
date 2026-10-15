@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { resolveBackground, resolveSprite } from '../src/renderer/learn/vn/skin.mjs';
 import { backgroundFor, characterSvg, lookFor, BACKGROUND_IDS } from '../src/renderer/learn/vn/defaultSkin.mjs';
-import { affectionRows, chapterAction, endSummary, introModel, menuSections, pickSkin, reportLine, starText } from '../src/renderer/learn/storyModel.mjs';
+import { affectionRows, backlogRows, chapterAction, completionMark, endSummary, introModel, menuSections, pendingLabel, pickSkin, reportLine, translateLabel, translationFor, translationOn } from '../src/renderer/learn/storyModel.mjs';
 
 const manifest = {
   pack: 'mine',
@@ -48,8 +48,8 @@ test('every background id used by a shipped chapter has a drawn default', async 
 });
 
 test('menu helpers', () => {
-  assert.equal(starText(2), '★★☆');
-  assert.equal(starText(9), '★★★');
+  assert.equal(completionMark({ completed: true, plays: 1 }), 'Completed');
+  assert.equal(completionMark({ completed: false, plays: 0 }), '');
   assert.deepEqual(chapterAction({ saved: true, plays: 1 }), { label: 'Continue', secondary: 'Start over' });
   assert.deepEqual(chapterAction({ saved: false, plays: 1 }), { label: 'Play again', secondary: null });
   assert.equal(chapterAction({ saved: false, plays: 0 }).label, 'Play');
@@ -76,10 +76,46 @@ test('report lines describe what happened to the schedule', () => {
   assert.equal(reportLine('k:日', { tracked: true, applied: true, result: { prevStage: 4, stage: 3, group: { label: 'Apprentice' } } }), 'Review recorded: stage 4 → 3');
 });
 
-test('end summary formats stars, accuracy and rewards', () => {
-  const out = endSummary({ total: 4, firstTry: 3, accuracy: 0.75, stars: 2, affection: { mio: 2, sora: 0 }, gallery: [{ id: 'a', title: 'A' }] });
-  assert.equal(out.stars, '★★☆');
-  assert.match(out.line, /3 of 4.*75%/);
+test('end summary shows first-try count and completion, no stars', () => {
+  const out = endSummary({ total: 4, firstTry: 3, accuracy: 0.75, affection: { mio: 2, sora: 0 }, gallery: [{ id: 'a', title: 'A' }] });
+  assert.equal(out.heading, 'Scene complete');
+  assert.equal(out.line, '3 of 4 right first try');
+  assert.equal(out.revisited, 1);
   assert.deepEqual(out.affection, [['mio', 2]]);
-  assert.equal(endSummary({ total: 0, firstTry: 0, accuracy: 1, stars: 3, affection: {}, gallery: [] }).line, 'Story complete');
+  assert.ok(!JSON.stringify(out).includes('★'));
+  assert.equal('stars' in out, false);
+  assert.equal(endSummary({ total: 0, firstTry: 0, accuracy: 1, affection: {}, gallery: [] }).line, 'Story complete');
+  assert.deepEqual([pendingLabel(0), pendingLabel(1), pendingLabel(3)], ['', '1 to revisit', '3 to revisit']);
+});
+
+test('translation toggle: explicit preference wins, otherwise on for N5/N4', () => {
+  assert.equal(translationOn(null, { jlpt: 'N5' }), true);
+  assert.equal(translationOn(undefined, { jlpt: 'N4' }), true);
+  assert.equal(translationOn(null, { jlpt: 'N3' }), false);
+  assert.equal(translationOn(false, { jlpt: 'N5' }), false);
+  assert.equal(translationOn(true, { jlpt: 'N1' }), true);
+  assert.equal(translationOn('yes', { jlpt: 'N2' }), false, 'garbage in prefs falls back to the default');
+  assert.equal(translationFor({ en: 'Hello.' }, true), 'Hello.');
+  assert.equal(translationFor({ en: 'Hello.' }, false), '');
+  assert.equal(translationFor({ text: 'x' }, true), '');
+  assert.deepEqual([translateLabel(true), translateLabel(false)], ['Translation: on', 'Translation: off']);
+  const log = [{ name: 'みお', text: 'えっ？', en: 'Huh?' }, { text: '…', en: 'Hmm.', bridge: true }];
+  assert.deepEqual(backlogRows(log, true).map((r) => r.en), ['Huh?', 'Hmm.']);
+  assert.deepEqual(backlogRows(log, false).map((r) => r.en), ['', '']);
+  assert.equal(backlogRows(log, false)[1].bridge, true);
+});
+
+test('drawn characters use per-character gradient ids and animation hooks, all self-contained', () => {
+  const a = characterSvg('mio', 'smile');
+  const b = characterSvg('sora', 'smile');
+  const ids = (svg) => [...svg.matchAll(/id="([^"]+)"/g)].map((m) => m[1]);
+  assert.ok(ids(a).length >= 3);
+  assert.equal(ids(a).filter((id) => ids(b).includes(id)).length, 0, 'two characters on stage never share gradient ids');
+  for (const svg of [a, characterSvg('tanaka', 'sad')]) {
+    for (const [, ref] of svg.matchAll(/url\(#([^)]+)\)/g)) assert.ok(ids(svg).includes(ref), `${ref} is defined`);
+  }
+  assert.match(a, /class="story-breathe"/);
+  assert.match(characterSvg('mio', 'neutral'), /class="story-blink"/);
+  assert.notEqual(characterSvg('mio', 'sad'), characterSvg('mio', 'neutral'), 'each expression draws a different face');
+  assert.doesNotMatch(characterSvg('x"><script>', 'neutral'), /<script/);
 });

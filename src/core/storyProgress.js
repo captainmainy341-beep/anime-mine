@@ -14,7 +14,22 @@ function empty() {
   return { version: 1, chapters: {}, affection: {}, gallery: {}, saves: {} };
 }
 
-// Player progress for the Story tab: stars, affection, gallery and one save slot per scene.
+// Older files also stored a 0-3 star rating per chapter. Stars are gone; the rest of the record is kept.
+function normalizeChapters(chapters) {
+  const out = {};
+  for (const [id, entry] of Object.entries(chapters)) {
+    if (!isObject(entry)) continue;
+    const plays = Number.isInteger(entry.plays) && entry.plays > 0 ? entry.plays : 0;
+    out[id] = {
+      plays,
+      bestAccuracy: Number.isFinite(entry.bestAccuracy) ? clamp(entry.bestAccuracy, 0, 1) : 0,
+      ...(Number.isFinite(entry.completedAt) ? { completedAt: entry.completedAt } : {}),
+    };
+  }
+  return out;
+}
+
+// Player progress for the Story tab: completion, affection, gallery and one save slot per scene.
 // Kept separate from the SRS store (learn.json) so game state can never corrupt study state.
 class StoryProgress {
   constructor(dataDir, { now = Date.now } = {}) {
@@ -28,7 +43,7 @@ class StoryProgress {
       const parsed = JSON.parse(fs.readFileSync(this.file, 'utf8'));
       return {
         ...empty(),
-        chapters: isObject(parsed.chapters) ? parsed.chapters : {},
+        chapters: isObject(parsed.chapters) ? normalizeChapters(parsed.chapters) : {},
         affection: isObject(parsed.affection) ? parsed.affection : {},
         gallery: isObject(parsed.gallery) ? parsed.gallery : {},
         saves: isObject(parsed.saves) ? parsed.saves : {},
@@ -72,11 +87,10 @@ class StoryProgress {
     if (delete this.state.saves[sceneId]) this.save();
   }
 
-  // Records a finished run. Stars only ever go up; affection and gallery are merged.
-  complete(sceneId, { stars, accuracy, affection = {}, gallery = [] }, characters = {}) {
-    const prev = this.state.chapters[sceneId] ?? { stars: 0, plays: 0, bestAccuracy: 0 };
+  // Records a finished run. Best accuracy only goes up; affection and gallery are merged.
+  complete(sceneId, { accuracy, affection = {}, gallery = [] }, characters = {}) {
+    const prev = this.state.chapters[sceneId] ?? { plays: 0, bestAccuracy: 0 };
     this.state.chapters[sceneId] = {
-      stars: Math.max(prev.stars, clamp(stars, 0, 3)),
       bestAccuracy: Math.max(prev.bestAccuracy, clamp(accuracy, 0, 1)),
       plays: prev.plays + 1,
       completedAt: this.now(),
