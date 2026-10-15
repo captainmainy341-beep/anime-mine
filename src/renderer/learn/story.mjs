@@ -1,0 +1,457 @@
+import { attempt, fill, h, toast } from '../lib/ui.mjs';
+import { rubyNode } from './ruby.mjs';
+import { createEngine } from './vn/engine.mjs';
+import { revealAnswer, typedKana } from './vn/challenge.mjs';
+import { autoDelay, isComplete, sliceText, visibleCount } from './vn/typewriter.mjs';
+import { resolveBackground, resolveSprite } from './vn/skin.mjs';
+import { backgroundFor, backgroundSvg, characterSvg } from './vn/defaultSkin.mjs';
+import { affectionRows, chapterAction, endSummary, introModel, menuSections, pickSkin, reportLine, starText } from './storyModel.mjs';
+
+const POSITIONS = ['left', 'center', 'right'];
+
+const button = (label, onclick, className = 'story-btn', props = {}) => h('button', { type: 'button', class: className, onclick, ...props }, label);
+
+export function mountStory(el, ctx, arg = {}) {
+  const api = ctx.api.story;
+  let disposed = false;
+  let teardownPlay = null;
+  const root = h('section', { class: 'story' });
+  el.append(root);
+  showMenu();
+  if (arg.play) play(arg.play);
+
+  return () => {
+    disposed = true;
+    teardownPlay?.();
+    root.remove();
+  };
+
+  async function showMenu() {
+    teardownPlay?.();
+    teardownPlay = null;
+    fill(root, h('p', { class: 'learn-sub' }, 'Loading…'));
+    let list;
+    try {
+      list = await api.list();
+    } catch (err) {
+      if (!disposed) fill(root, h('div', { class: 'learn-card learn-error', role: 'alert' }, h('h2', {}, 'Could not load Story'), h('p', {}, err.message), button('Try again', showMenu)));
+      return;
+    }
+    if (disposed) return;
+    renderMenu(list);
+  }
+
+  function renderMenu(list) {
+    const sections = menuSections(list);
+    const skin = pickSkin(list.skins, ctx.prefs.get('storySkin', null));
+    const card = (summary) => h(
+      'article',
+      { class: 'story-card' },
+      h('div', { class: 'story-card-head' }, h('span', { class: 'story-level' }, summary.jlpt), h('span', { class: 'story-stars', 'aria-label': `${summary.stars} of 3 stars` }, starText(summary.stars))),
+      h('h3', { lang: 'ja' }, summary.title),
+      h('p', { class: 'learn-sub' }, summary.summary || `${summary.challenges} challenges`),
+      h('div', { class: 'story-card-actions' }, ...cardButtons(summary)),
+    );
+    const cardButtons = (summary) => {
+      const action = chapterAction(summary);
+      return [
+        button(action.label, () => play(summary.id), 'story-btn primary'),
+        action.secondary ? button(action.secondary, () => attempt(async () => { await api.clearSave(summary.id); play(summary.id, { fresh: true }); })) : null,
+      ];
+    };
+    const skinSelect = h(
+      'select',
+      { class: 'story-select', 'aria-label': 'Art pack', onchange: (event) => { ctx.prefs.set('storySkin', event.target.value || null); } },
+      h('option', { value: '' }, 'Default (drawn in code)'),
+      list.skins.filter((p) => p.valid).map((p) => h('option', { value: p.pack, selected: p.pack === skin ? true : null }, p.title)),
+    );
+    const affection = affectionRows(list.overview);
+    fill(
+      root,
+      h('header', { class: 'course-heading' },
+        h('div', {}, h('h1', {}, 'Story'), h('p', { class: 'learn-sub' }, 'Read the story. Every kanji you read and every sentence you build counts as a review.')),
+        h('div', { class: 'course-tools' }, h('label', { class: 'story-skin-label' }, 'Art ', skinSelect)),
+      ),
+      h('h2', {}, 'Main story'),
+      h('div', { class: 'story-grid' }, sections.chapters.map(card)),
+      h('h2', {}, 'Anime lines'),
+      h('p', { class: 'learn-sub' }, 'Short bonus scenes built from sentences you mined. A frame from the episode becomes the background when the file is still on disk.'),
+      h('div', { class: 'story-grid' }, sections.anime.map(card)),
+      button('Build scenes from my anime', () => attempt(buildAnime), 'story-btn'),
+      sections.aiVisible
+        ? [
+          h('h2', {}, 'Side quests'),
+          h('p', { class: 'learn-sub' }, 'Your AI provider writes a new scene around kanji and grammar you are studying. Generated scenes are saved, so replays are free.'),
+          h('div', { class: 'story-grid' }, sections.ai.map(card)),
+          button('Generate a side quest', () => attempt(generate), 'story-btn'),
+        ]
+        : null,
+      h('h2', {}, 'Gallery'),
+      h('div', { class: 'story-gallery' },
+        list.overview.gallery.length ? list.overview.gallery.map((g) => h('figure', { class: 'story-cg' }, h('div', { class: 'story-cg-art', style: `background:${backgroundFor('park-day').css}` }), h('figcaption', {}, g.title))) : h('p', { class: 'learn-sub' }, 'Finish scenes to unlock pictures.'),
+      ),
+      affection.length ? h('div', { class: 'story-affection' }, h('h2', {}, 'Bonds'), affection.map((a) => h('label', { class: 'story-meter' }, h('span', {}, a.name), h('meter', { min: 0, max: 100, value: a.percent }), h('span', {}, String(a.value))))) : null,
+    );
+  }
+
+  async function buildAnime() {
+    const out = await api.animeBuild();
+    toast(out.built ? `Built ${out.built} anime scene${out.built === 1 ? '' : 's'}` : out.withoutExamples === 'none-started' ? 'Start some grammar points in Learn first' : out.withoutExamples === 'none-scanned' ? 'Scan your library for grammar examples in the Grammar tab first' : 'No new scenes to build');
+    showMenu();
+  }
+
+  async function generate() {
+    toast('Writing a side quest…');
+    const out = await api.aiGenerate();
+    toast(out.cached ? 'Replaying a saved side quest' : 'Side quest ready');
+    showMenu();
+  }
+
+  async function play(id, { fresh = false } = {}) {
+    teardownPlay?.();
+    teardownPlay = null;
+    fill(root, h('p', { class: 'learn-sub' }, 'Loading…'));
+    try {
+      const data = await api.open(id);
+      const pack = pickSkin(await api.skins(), ctx.prefs.get('storySkin', null));
+      const manifest = pack ? await api.skinManifest(pack) : null;
+      if (disposed) return;
+      const restore = !fresh && data.save ? await api.load(id) : null;
+      teardownPlay = mountPlayer(root, ctx, { data, manifest, restore, exit: showMenu });
+    } catch (err) {
+      if (!disposed) fill(root, h('div', { class: 'learn-card learn-error', role: 'alert' }, h('h2', {}, 'Could not open this scene'), h('p', {}, err.message), button('Back', showMenu)));
+    }
+  }
+}
+
+function mountPlayer(host, ctx, { data, manifest, restore, exit }) {
+  const api = ctx.api.story;
+  const scene = data.scene;
+  const introducedNow = new Set();
+  const pending = new Set();
+  const assets = new Map();
+  const furigana = ctx.settings?.showFurigana !== false;
+  let engine = newEngine(restore);
+  let disposed = false;
+  let typing = null;
+  let auto = false;
+  let autoTimer = null;
+  let completed = false;
+  let tracker = '';
+  let overlay = null;
+
+  const stageBg = h('div', { class: 'story-bg' });
+  const sprites = Object.fromEntries(POSITIONS.map((pos) => [pos, h('div', { class: `story-sprite story-sprite-${pos}` })]));
+  const textBox = h('div', { class: 'story-textbox', role: 'button', tabindex: 0, 'aria-label': 'Dialogue, press space to continue', onclick: onBoxClick });
+  const panel = h('div', { class: 'story-panel' });
+  const hud = h('div', { class: 'story-hud' });
+  const layer = h('div', { class: 'story-overlay', hidden: true });
+  const stage = h('div', { class: 'story-stage' }, stageBg, h('div', { class: 'story-sprites' }, POSITIONS.map((pos) => sprites[pos])), panel, textBox, hud, layer);
+  const view = h('div', { class: 'story-play' }, stage);
+  host.replaceChildren(view);
+
+  document.addEventListener('keydown', onKey);
+  render();
+
+  return () => {
+    disposed = true;
+    stopTyping();
+    clearTimeout(autoTimer);
+    document.removeEventListener('keydown', onKey);
+    view.remove();
+  };
+
+  function newEngine(snapshot) {
+    const skipIntro = Object.entries(data.items).filter(([, s]) => s.state === 'started').map(([id]) => id);
+    try {
+      return createEngine(scene, { restore: snapshot, skipIntro });
+    } catch (err) {
+      toast(`${err.message}. Starting from the beginning.`, 'error');
+      return createEngine(scene, { skipIntro });
+    }
+  }
+
+  function render() {
+    if (disposed) return;
+    stopTyping();
+    clearTimeout(autoTimer);
+    drawStage();
+    drawHud();
+    const frame = engine.frame();
+    panel.replaceChildren();
+    panel.hidden = true;
+    textBox.hidden = true;
+    if (frame.kind === 'say' || frame.kind === 'awkward') return showLine(frame);
+    if (frame.kind === 'intro') return showIntro(frame);
+    if (frame.kind === 'end') return showEnd(frame);
+    return showChallenge(frame);
+  }
+
+  function drawStage() {
+    const { bg, cast } = engine.stage();
+    const background = resolveBackground(manifest, bg, scene.bgImage);
+    stageBg.replaceChildren();
+    stageBg.removeAttribute('style');
+    if (background.source === 'frame') stageBg.style.backgroundImage = `url("${background.src}")`;
+    else if (background.source === 'pack') loadAsset(background, (src) => { stageBg.style.backgroundImage = `url("${src}")`; });
+    else {
+      stageBg.style.background = backgroundFor(background.bg).css;
+      const art = h('div', { class: 'story-bg-art' });
+      art.innerHTML = backgroundSvg(background.bg);
+      stageBg.append(art);
+    }
+    const frame = engine.frame();
+    for (const pos of POSITIONS) sprites[pos].replaceChildren();
+    for (const [char, { expr, pos }] of Object.entries(cast)) {
+      const holder = sprites[pos] ?? sprites.center;
+      const sprite = h('div', { class: `story-char${frame.who === char ? ' speaking' : ''}`, 'data-char': char });
+      const resolved = resolveSprite(manifest, char, expr);
+      if (resolved.source === 'pack') {
+        const img = h('img', { alt: scene.characters[char]?.name ?? char, draggable: 'false' });
+        loadAsset(resolved, (src) => img.setAttribute('src', src));
+        sprite.append(img);
+      } else {
+        sprite.innerHTML = characterSvg(char, expr, scene.characters[char]?.color);
+      }
+      holder.append(sprite);
+    }
+  }
+
+  function loadAsset({ pack, path }, apply) {
+    const key = `${pack}|${path}`;
+    if (!assets.has(key)) assets.set(key, api.skinAsset({ pack, path }));
+    assets.get(key).then((src) => { if (!disposed) apply(src); }).catch(() => { assets.delete(key); });
+  }
+
+  function drawHud() {
+    const progress = engine.progress();
+    fill(
+      hud,
+      h('span', { class: 'story-title', lang: 'ja' }, scene.title),
+      h('span', { class: 'story-progress' }, `${Math.min(progress.index + 1, progress.total)} / ${progress.total}`),
+      tracker ? h('span', { class: 'story-tracker', role: 'status' }, tracker) : null,
+      h('span', { class: 'story-hud-spacer' }),
+      button('Backlog', openBacklog, 'story-chip'),
+      button(auto ? 'Auto: on' : 'Auto: off', () => { auto = !auto; render(); }, 'story-chip', { 'aria-pressed': String(auto) }),
+      button('Save', () => attempt(save), 'story-chip'),
+      button('Load', () => attempt(load), 'story-chip'),
+      button('Exit', leave, 'story-chip'),
+    );
+  }
+
+  function showLine(frame) {
+    textBox.hidden = false;
+    const plate = frame.name ? h('div', { class: 'story-plate', style: scene.characters[frame.who]?.color ? `border-color:${scene.characters[frame.who].color}` : null }, frame.name) : null;
+    const body = h('p', { class: 'story-line', lang: 'ja' });
+    const english = h('p', { class: 'story-en', hidden: true }, frame.en);
+    textBox.replaceChildren(...[plate, body, frame.en ? english : null, h('span', { class: 'story-next', 'aria-hidden': 'true' }, '▾')].filter(Boolean));
+    const started = performance.now();
+    let done = false;
+    const tick = () => {
+      if (disposed) return;
+      const count = visibleCount(frame.text, performance.now() - started);
+      body.textContent = sliceText(frame.text, count);
+      if (isComplete(frame.text, count)) return finish();
+      typing = requestAnimationFrame(tick);
+    };
+    const finish = () => {
+      if (done) return;
+      done = true;
+      stopTyping();
+      textBox.dataset.done = 'true';
+      body.textContent = frame.text;
+      if (furigana) rubyNode(ctx.api.learn, frame.text, { furigana }).then((node) => { if (!disposed && textBox.dataset.done === 'true') body.replaceChildren(...node.childNodes); });
+      english.hidden = false;
+      if (auto) autoTimer = setTimeout(next, autoDelay(frame.text));
+    };
+    textBox.dataset.done = 'false';
+    textBox.finish = finish;
+    tick();
+  }
+
+  function showIntro(frame) {
+    const model = introModel(frame.item, data.items[frame.item] ?? { state: 'untracked', label: frame.item.slice(2), meaning: '' });
+    panel.hidden = false;
+    panel.replaceChildren(
+      h('div', { class: 'story-card-intro' },
+        h('span', { class: 'story-level' }, model.kind === 'grammar' ? 'New grammar' : 'New kanji'),
+        h('h2', { lang: 'ja' }, model.label),
+        model.reading ? h('p', { class: 'story-reading', lang: 'ja' }, model.reading) : null,
+        h('p', {}, model.meaning),
+        model.note ? h('p', { class: 'learn-sub' }, model.note) : null,
+        h('p', { class: 'story-foot' }, model.footnote),
+        button(model.action, () => attempt(async () => {
+          if (data.items[frame.item]?.state === 'new') {
+            const out = await api.learn(frame.item);
+            if (out.started) {
+              introducedNow.add(frame.item);
+              data.items[frame.item].state = 'started';
+            }
+          }
+          engine.advance();
+          render();
+        }), 'story-btn primary'),
+      ),
+    );
+    panel.querySelector('button')?.focus();
+  }
+
+  function showChallenge(frame) {
+    const { beat } = frame;
+    panel.hidden = false;
+    const prompt = h('div', { class: 'story-prompt' }, frame.name ? h('span', { class: 'story-plate' }, frame.name) : null, beat.prompt ? h('p', { lang: 'en' }, beat.prompt) : null);
+    const feedback = h('p', { class: 'story-feedback', role: 'status', 'aria-live': 'polite' }, frame.attempts > 0 ? 'Try again.' : '');
+    if (beat.type === 'reading') {
+      const display = h('p', { class: 'story-display', lang: 'ja' }, ...displayParts(beat));
+      const input = h('input', { class: 'story-input', type: 'text', lang: 'ja', autocomplete: 'off', autocapitalize: 'off', spellcheck: 'false', placeholder: 'Type the reading', 'aria-label': 'Reading in kana',
+        oninput: (event) => { event.target.value = typedKana(event.target.value); },
+        onkeydown: (event) => {
+          if (event.key !== 'Enter') return;
+          event.preventDefault();
+          event.stopPropagation();
+          submit(typedKana(input.value, { final: true }), feedback);
+        } });
+      panel.replaceChildren(prompt, display, input, feedback, button('Decode', () => submit(typedKana(input.value, { final: true }), feedback), 'story-btn primary'));
+      input.focus();
+      return;
+    }
+    const options = beat.type === 'choice' ? beat.options.map((o) => o.text) : beat.options;
+    panel.replaceChildren(
+      prompt,
+      beat.display ? h('p', { class: 'story-display', lang: 'ja' }, beat.display) : null,
+      h('div', { class: 'story-options' }, options.map((text, index) => h('button', { type: 'button', class: 'story-option', lang: beat.type === 'choice' ? 'ja' : 'en', onclick: () => submit(index, feedback) }, h('kbd', {}, String(index + 1)), ' ', text))),
+      feedback,
+    );
+    panel.querySelector('button')?.focus();
+  }
+
+  function displayParts(beat) {
+    if (!beat.target) return [beat.display];
+    const at = beat.display.indexOf(beat.target);
+    return [beat.display.slice(0, at), h('mark', {}, beat.target), beat.display.slice(at + beat.target.length)];
+  }
+
+  function submit(value, feedback) {
+    const out = engine.answer(value);
+    if (out.result === 'invalid') {
+      feedback.textContent = out.hint ?? 'Give an answer first.';
+      return;
+    }
+    flushReports();
+    render();
+  }
+
+  function flushReports() {
+    for (const report of engine.takeReports()) {
+      const task = api.report({ item: report.item, incorrectCount: report.incorrectCount, introducedNow: introducedNow.has(report.item) })
+        .then((response) => {
+          tracker = reportLine(report.item, response);
+          if (!disposed) drawHud();
+        })
+        .catch((err) => toast(err.message, 'error'))
+        .finally(() => pending.delete(task));
+      introducedNow.delete(report.item);
+      pending.add(task);
+    }
+  }
+
+  async function showEnd(frame) {
+    textBox.hidden = true;
+    panel.hidden = false;
+    const summary = endSummary(frame.summary);
+    panel.replaceChildren(h('p', { class: 'learn-sub' }, 'Saving your results…'));
+    await Promise.allSettled([...pending]);
+    if (disposed) return;
+    if (!completed) {
+      completed = true;
+      try {
+        await api.complete({ id: scene.id, stars: frame.summary.stars, accuracy: frame.summary.accuracy, affection: frame.summary.affection, gallery: frame.summary.gallery });
+      } catch (err) {
+        toast(err.message, 'error');
+      }
+    }
+    if (disposed) return;
+    panel.replaceChildren(
+      h('div', { class: 'story-card-intro story-end' },
+        h('span', { class: 'story-level' }, 'Scene complete'),
+        h('h2', {}, summary.stars),
+        h('p', {}, summary.line),
+        summary.affection.map(([char, delta]) => h('p', { class: 'story-foot' }, `${scene.characters[char]?.name ?? char}  ${delta > 0 ? '+' : ''}${delta}`)),
+        summary.gallery.map((g) => h('p', { class: 'story-foot' }, `Unlocked: ${g.title}`)),
+        h('div', { class: 'story-card-actions' }, button('Replay', () => { completed = false; engine = newEngine(null); tracker = ''; render(); }), button('Back to Story', exit, 'story-btn primary')),
+      ),
+    );
+  }
+
+  function next() {
+    if (overlay) return;
+    const frame = engine.frame();
+    if (frame.kind !== 'say' && frame.kind !== 'awkward') return;
+    engine.advance();
+    render();
+  }
+
+  function onBoxClick() {
+    if (textBox.dataset.done === 'false') textBox.finish?.();
+    else next();
+  }
+
+  function onKey(event) {
+    if (disposed) return;
+    if (event.key === 'Escape') {
+      if (overlay) closeOverlay();
+      else leave();
+      return;
+    }
+    if (event.target?.closest?.('input, textarea, select')) return;
+    if (event.key === ' ' || event.key === 'Enter') {
+      if (overlay || event.target?.closest?.('button')) return;
+      event.preventDefault();
+      if (!textBox.hidden) onBoxClick();
+    } else if (event.key.toLowerCase() === 'b') {
+      openBacklog();
+    } else if (/^[1-4]$/.test(event.key)) {
+      panel.querySelectorAll('.story-option')[Number(event.key) - 1]?.click();
+    }
+  }
+
+  function stopTyping() {
+    if (typing) cancelAnimationFrame(typing);
+    typing = null;
+  }
+
+  function openBacklog() {
+    overlay = 'backlog';
+    layer.hidden = false;
+    layer.replaceChildren(
+      h('div', { class: 'story-backlog', role: 'dialog', 'aria-label': 'Backlog' },
+        h('header', {}, h('h2', {}, 'Backlog'), button('Close', closeOverlay, 'story-chip')),
+        h('ol', {}, engine.backlog().map((e) => h('li', {}, e.name ? h('strong', {}, `${e.name}  `) : null, h('span', { lang: 'ja' }, e.text), e.en ? h('small', {}, e.en) : null))),
+      ),
+    );
+    layer.querySelector('ol')?.lastElementChild?.scrollIntoView?.();
+  }
+
+  function closeOverlay() {
+    overlay = null;
+    layer.hidden = true;
+    layer.replaceChildren();
+  }
+
+  async function save() {
+    await api.save({ id: scene.id, snapshot: engine.snapshot() });
+    toast('Saved');
+  }
+
+  async function load() {
+    const snapshot = await api.load(scene.id);
+    if (!snapshot) return toast('No save for this scene yet');
+    engine = newEngine(snapshot);
+    completed = false;
+    render();
+  }
+
+  function leave() {
+    if (engine.isFinished() || window.confirm('Leave this scene? Unsaved progress is lost. Answers already reported to your reviews are kept.')) exit();
+  }
+}

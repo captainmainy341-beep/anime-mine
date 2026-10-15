@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "id": "n4-ch1",
+  "order": 4,
+  "title": "Chapter 4: ぶんかさい",
+  "summary": "The school festival is close. Plans, reasons and one very tired Sora.",
+  "jlpt": "N4",
+  "source": "authored",
+  "bg": "festival-hall",
+  "characters": {
+    "mio": { "name": "みお", "color": "#f3a0b6" },
+    "sora": { "name": "そら", "color": "#a2befa" }
+  },
+  "glossary": {
+    "g:n4-tsumori": { "label": "〜つもり", "meaning": "intend to", "note": "Dictionary form + つもり: 行くつもり." },
+    "g:n4-node-because": { "label": "〜ので", "meaning": "because", "note": "Plain form + ので gives a softer reason than から." },
+    "g:n4-sugiru": { "label": "〜すぎる", "meaning": "too much", "note": "Verb stem or adjective stem + すぎる." },
+    "g:n4-ta-hou-ga-ii": { "label": "〜たほうがいい", "meaning": "had better", "note": "Past plain form + ほうがいい gives advice." },
+    "k:祭": { "label": "祭", "reading": "まつ(り)", "meaning": "festival" },
+    "k:準": { "label": "準", "reading": "じゅん", "meaning": "level, semi-" },
+    "k:備": { "label": "備", "reading": "び", "meaning": "provide, equip" }
+  },
+  "beats": [
+    { "type": "bg", "bg": "festival-hall" },
+    { "type": "say", "who": null, "text": "文化祭まで あと 三日。教室は 大さわぎだ。", "en": "Three days until the school festival. The classroom is in an uproar." },
+    { "type": "show", "char": "mio", "expr": "smile", "pos": "left" },
+    { "type": "intro", "item": "k:祭" },
+    { "type": "reading", "item": "k:祭", "display": "お祭り", "target": "祭", "prompt": "The banner on the wall says お祭り. Read it.", "answers": ["おまつり"] },
+    { "type": "intro", "item": "g:n4-tsumori" },
+    { "type": "choice", "item": "g:n4-tsumori", "who": "mio", "prompt": "Mio asks what you will do. Say: \"I intend to run the cafe stall.\"", "options": [
+      { "text": "カフェの店を 出すつもりです。", "correct": true },
+      { "text": "カフェの店を 出したつもります。", "awkward": { "who": "mio", "text": "「つもります」…？ 「つもりです」だよ。", "en": "\"Tsumorimasu\"...? It's \"tsumori desu\"." } },
+      { "text": "カフェの店を 出すつもりが。", "awkward": { "who": "mio", "text": "文が おわって ない みたい…。", "en": "The sentence doesn't seem finished..." } }
+    ] },
+    { "type": "show", "char": "sora", "expr": "tired", "pos": "right" },
+    { "type": "say", "who": "sora", "text": "…ねむい。きのうの よる、じゅんびを しすぎた。", "en": "...Sleepy. I prepared too much last night." },
+    { "type": "intro", "item": "k:準" },
+    { "type": "reading", "item": "k:準", "display": "準備", "target": "準", "prompt": "The checklist says 準備. Read it.", "answers": ["じゅんび"] },
+    { "type": "intro", "item": "k:備" },
+    { "type": "meaning", "item": "k:備", "display": "備", "prompt": "In 準備, 備 carries the sense of...?", "options": ["provide / equip", "festival", "mountain", "river"], "correct": 0 },
+    { "type": "intro", "item": "g:n4-sugiru" },
+    { "type": "choice", "item": "g:n4-sugiru", "who": "mio", "prompt": "Tease Sora: \"You worked too much.\"", "options": [
+      { "text": "そらは 働きすぎだよ。", "correct": true },
+      { "text": "そらは 働くすぎだよ。", "awkward": { "who": "sora", "text": "…「働き」だろ。つかれてても わかる。", "en": "...It's \"hataraki\". Even tired, I know that." } },
+      { "text": "そらは 働きすぎ ない よ。", "awkward": { "who": "sora", "text": "それは ちょっと いみが ちがう。", "en": "That means something a bit different." } }
+    ] },
+    { "type": "intro", "item": "g:n4-ta-hou-ga-ii" },
+    { "type": "choice", "item": "g:n4-ta-hou-ga-ii", "who": "sora", "prompt": "Advise Sora: \"You had better sleep early today.\"", "options": [
+      { "text": "今日は 早く 寝たほうがいいよ。", "correct": true },
+      { "text": "今日は 早く 寝るたほうがいいよ。", "awkward": { "who": "sora", "text": "「寝るた」…？ 形が へんだ。", "en": "\"Neruta\"...? The form is strange." } },
+      { "text": "今日は 早く 寝てほうがいいよ。", "awkward": { "who": "sora", "text": "「寝て」じゃ なくて…「寝た」だろ。", "en": "Not \"nete\" -- \"neta\", right?" } }
+    ] },
+    { "type": "intro", "item": "g:n4-node-because" },
+    { "type": "choice", "item": "g:n4-node-because", "who": "sora", "prompt": "Sora gives a reason: \"Because I'm tired, I'll go home.\"", "options": [
+      { "text": "つかれたので、帰ります。", "correct": true },
+      { "text": "つかれたのに、帰ります。", "awkward": { "who": "mio", "text": "「のに」だと 「つかれたけど…」みたいな いみに なるよ。", "en": "\"Noni\" would mean something like \"despite being tired...\"." } },
+      { "text": "つかれるので たから、帰ります。", "awkward": { "who": "mio", "text": "りゆうを ふたつ つないだ みたい…！", "en": "Looks like two reasons got glued together...!" } }
+    ] },
+    { "type": "affection", "char": "sora", "delta": 2 },
+    { "type": "cg", "id": "festival-night", "title": "Festival preparations" },
+    { "type": "say", "who": "mio", "text": "あしたも がんばろうね、そら、ゆうきさん！", "en": "Let's do our best tomorrow too, Sora, Yuuki!" }
+  ]
+}

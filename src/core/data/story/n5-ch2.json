@@ -1,0 +1,64 @@
+{
+  "schema": 1,
+  "id": "n5-ch2",
+  "order": 2,
+  "title": "Chapter 2: ほうかご",
+  "summary": "After school Mio invites you to the cafe by the river. Practise inviting, liking and saying \"me too\".",
+  "jlpt": "N5",
+  "source": "authored",
+  "bg": "school-gate-evening",
+  "characters": {
+    "mio": { "name": "みお", "color": "#f3a0b6" },
+    "sora": { "name": "そら", "color": "#a2befa" }
+  },
+  "glossary": {
+    "g:n5-masenka": { "label": "〜ませんか", "meaning": "would you like to...?", "note": "A polite invitation: verb stem + ませんか." },
+    "g:n5-mashou": { "label": "〜ましょう", "meaning": "let's...", "note": "Verb stem + ましょう suggests doing something together." },
+    "g:n5-mo": { "label": "〜も", "meaning": "also / too", "note": "も replaces は or が to say \"also\"." },
+    "g:n5-ga-suki": { "label": "〜が好き", "meaning": "like (something)", "note": "The thing you like is marked with が." },
+    "k:食": { "label": "食", "reading": "しょく / た(べる)", "meaning": "eat, food" },
+    "k:水": { "label": "水", "reading": "すい / みず", "meaning": "water" },
+    "k:山": { "label": "山", "reading": "さん / やま", "meaning": "mountain" },
+    "k:川": { "label": "川", "reading": "かわ", "meaning": "river" }
+  },
+  "beats": [
+    { "type": "say", "who": null, "text": "放課後。校門の前で、みおが 手を ふっている。", "en": "After school. Mio is waving at the school gate." },
+    { "type": "show", "char": "mio", "expr": "smile", "pos": "left" },
+    { "type": "say", "who": "mio", "text": "ゆうきさん、いっしょに かえろう！", "en": "Yuuki, let's go home together!" },
+    { "type": "intro", "item": "g:n5-masenka" },
+    { "type": "choice", "item": "g:n5-masenka", "who": "mio", "prompt": "Invite Mio to the cafe with \"Won't you come to the cafe with me?\"", "options": [
+      { "text": "いっしょに カフェに 行きませんか。", "correct": true },
+      { "text": "いっしょに カフェに 行きますか ません。", "awkward": { "who": "mio", "text": "ごめん、ちょっと なに いってるか…！", "en": "Sorry, I can't quite tell what you're saying...!" } },
+      { "text": "いっしょに カフェに 行きません。", "awkward": { "who": "mio", "text": "え、「行きません」…？ 行かないの？", "en": "Eh, \"I won't go\"...? You're not going?" } }
+    ] },
+    { "type": "say", "who": "mio", "text": "いいね！ あの 川の そばの カフェでしょ？", "en": "Nice! The cafe by the river, right?" },
+    { "type": "intro", "item": "k:川" },
+    { "type": "bg", "bg": "riverside-evening" },
+    { "type": "reading", "item": "k:川", "display": "川", "prompt": "The sign on the bridge. Read the kanji.", "answers": ["かわ"] },
+    { "type": "show", "char": "sora", "expr": "neutral", "pos": "right" },
+    { "type": "say", "who": "sora", "text": "…おそいよ。もう 先に 来てた。", "en": "...You're late. I got here first." },
+    { "type": "say", "who": "mio", "text": "そら！ ゆうきさん、これは ともだちの そら。", "en": "Sora! Yuuki, this is my friend Sora." },
+    { "type": "intro", "item": "g:n5-mashou" },
+    { "type": "choice", "item": "g:n5-mashou", "who": "sora", "prompt": "Suggest: \"Let's drink something!\"", "options": [
+      { "text": "なにか 飲みましょう。", "correct": true },
+      { "text": "なにか 飲みました ましょう。", "awkward": { "who": "sora", "text": "…？ ことばが まざってる。", "en": "...? The words are all mixed up." } },
+      { "text": "なにか 飲むましょう。", "awkward": { "who": "sora", "text": "「飲む」じゃなくて、「飲み」…だろ。", "en": "Not \"nomu\" -- \"nomi\"... right?" } }
+    ] },
+    { "type": "intro", "item": "k:水" },
+    { "type": "reading", "item": "k:水", "display": "お水", "target": "水", "prompt": "The menu has a free item at the top. Read it.", "answers": ["おみず"] },
+    { "type": "intro", "item": "k:食" },
+    { "type": "reading", "item": "k:食", "display": "食べる", "target": "食", "prompt": "The special of the day is written as 食べる. How do you read it?", "answers": ["たべる"] },
+    { "type": "intro", "item": "g:n5-mo" },
+    { "type": "say", "who": "sora", "text": "ぼくは コーヒーが 好き。みおは？", "en": "I like coffee. Mio?" },
+    { "type": "choice", "item": "g:n5-mo", "who": "mio", "prompt": "Say: \"I like coffee too.\"", "options": [
+      { "text": "わたしも コーヒーが 好き。", "correct": true },
+      { "text": "わたしも コーヒーも 好き。", "awkward": { "who": "sora", "text": "「も」が ふたつ…？ ちょっと へん。", "en": "Two \"mo\"...? A bit odd." } },
+      { "text": "わたしを コーヒーが 好き。", "awkward": { "who": "mio", "text": "わたしを…？ ふふ、「も」だよ。", "en": "Me...? Hehe, it's \"mo\"." } }
+    ] },
+    { "type": "intro", "item": "k:山" },
+    { "type": "meaning", "item": "k:山", "display": "山", "prompt": "Beyond the window you see 山. What is it?", "options": ["mountain", "river", "water", "tree"], "correct": 0 },
+    { "type": "affection", "char": "sora", "delta": 2 },
+    { "type": "cg", "id": "cafe-by-the-river", "title": "The cafe by the river" },
+    { "type": "say", "who": "mio", "text": "また 来ようね。三人で！", "en": "Let's come again. The three of us!" }
+  ]
+}
