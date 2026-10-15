@@ -235,3 +235,20 @@ On a clean checkout with `npm ci`, `npm test` already fails in this sandbox befo
 `test/media.test.js` "screenshot with censorSubs ..." fails deterministically (the bundled ffmpeg lacks a filter),
 and `test/desubber.test.js` / converter timing tests fail intermittently under parallel load. Everything else,
 including all new Story tests, passes.
+
+## Story home, lessons and the full arc (update)
+
+### Netflix-style home
+`storyHomeModel.mjs` (pure) and `storyHome.mjs` (DOM) replace the old card grid: a rotating billboard (continue / next chapter / next Genki lesson, parallax and drifting petals, leaves or fireflies by season), a row per JLPT season with progress rings and "Up next", a "Continue where you left off" row, the Genki path, anime and AI rows, a gallery of every picture (locked until the scene is finished) and a Bonds row. Clicking a tile opens a detail sheet (what grammar and kanji it uses, steps, buttons). Art is the drawn default pack only, so tiles need no assets. Styles: `css/story-home.css`. Motion is switched off under `prefers-reduced-motion`.
+
+### Main story, N5 to N1
+30 chapters, six per level (`n5-ch1..6`, `n4-ch1..6`, `n3-ch1..6`, `n2-ch1..6`, `n1-ch1..6`), `order` 1 to 30 and titles "Chapter N: ...". Arc: Yuuki arrives at Sakuragaoka (N5), the festival and Kyoto trip (N4), saving the riverside cafe (N3), Tokyo five years on (N2), the ten-year promise (N1). Each chapter tests at least three grammar points of its own level (no point repeats within a level) and at least two kanji. `test/storyArc.test.js` enforces this. Nine new drawn backgrounds were added to `defaultSkin.mjs`.
+
+### Learn first (Genki lessons)
+`src/core/data/lessons/genki-l01..12.json` (schema and validator in `src/core/storyLessons.js`): words, grammar patterns with animated chunk-by-chunk examples, and exercises (gap, pick, word order, type-in kana). `lessonModel.mjs` builds the steps (word cards and match-up, each pattern then two exercises, mixed practice with misses coming back once), grades answers and tracks XP and streaks; `lesson.mjs` is the DOM. A lesson never touches the SRS by itself; pattern cards can add a grammar point to the learner's reviews through `story:learn`. IPC: `story:lesson`, `story:lessonDone`; progress lives in `story.json` under `lessons`. The test suite checks that every `g:genki-*` point used by a story scene is taught by its lesson.
+
+### Manual check (headless Chromium, real renderer and real handlers)
+Home, detail sheet, and a full Genki lesson 3 run (cards, match-up, pattern, exercise with feedback) rendered without console errors. Not verified: audio (speech synthesis), furigana (stubbed in the harness), and a run inside Electron itself.
+
+### Not done
+Genki II (lessons 13 to 23) has neither stories nor primers yet.
