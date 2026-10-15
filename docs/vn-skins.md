@@ -49,10 +49,12 @@ Pack names use letters, digits, space, `.`, `_` and `-` (up to 60 characters).
 ```
 
 - `characters`: character id -> expression -> image path. Character ids are the ids used by the scenes
-  (the shipped story uses `mio`, `sora`, `tanaka`; anime-line scenes use `line`). Expression ids used by the
+  (the shipped story uses `mio`, `sora`, `tanaka`; the Genki path uses `hana`, `leo`, `mori`, `tomi`;
+  anime-line scenes use `line`). Expression ids used by the
   shipped story are `neutral`, `smile`, `tired`, `surprised` and `sad`.
 - `backgrounds`: background id -> image path. The shipped story uses `classroom-morning`,
-  `school-gate-evening`, `riverside-evening`, `park-day`, `festival-hall` and `anime-default`.
+  `school-gate-evening`, `riverside-evening`, `park-day`, `festival-hall`, `cafe`, `station-day`,
+  `home-evening`, `beach-day` and `anime-default` (`shop` also has a drawn default).
 - `name`, `author` and `license` are informational. Keep the license of any art you include.
 - Ids are lowercase letters, digits, `-` and `_`.
 
