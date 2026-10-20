@@ -66,11 +66,110 @@ async function screenshot(name) {
     const rect = await evaluate(() => { const r = document.querySelector('.manga-block').getBoundingClientRect(); return { x: Math.round(r.x + r.width / 2), y: Math.round(r.y + r.height / 2) }; });
     win.webContents.sendInputEvent({ type: 'mouseDown', ...rect, button: 'left', clickCount: 1 });
     win.webContents.sendInputEvent({ type: 'mouseUp', ...rect, button: 'left', clickCount: 1 });
+    await waitFor(() => document.querySelectorAll('.manga-bubble .manga-word').length > 0, 'tokenized bubble');
+    assert.equal(await evaluate(() => !!document.querySelector('.manga-panel:not([hidden])')), false, 'plain click does not open the side panel');
+    const fits = await evaluate(() => {
+      const b = document.querySelector('.manga-bubble').getBoundingClientRect();
+      const r = document.querySelector('.manga-reader').getBoundingClientRect();
+      return b.left >= r.left && b.top >= r.top && b.right <= r.right && b.bottom <= r.bottom;
+    });
+    assert.ok(fits, 'bubble is inside the reader');
+    await screenshot('manga-bubble');
+    await evaluate(() => document.querySelector('.manga-bubble .manga-word').click());
+    await waitFor(() => !!document.querySelector('.manga-bubble .manga-bubble-card, .manga-bubble .manga-bubble-body > p.muted:not(:only-child)') && !/Loading/.test(document.querySelector('.manga-bubble').innerText), 'bubble lookup');
+    await screenshot('manga-lookup');
+    console.log('PASS block click opens the bubble with tokens and a lookup');
+
+    await evaluate(() => {
+      const btn = [...document.querySelectorAll('.manga-bubble-modes button')].find((b) => b.textContent === 'AI translate');
+      btn.click();
+    });
+    await waitFor(() => !/Translating/.test(document.querySelector('.manga-bubble').innerText), 'AI translate settles');
+    const ai = await evaluate(() => ({
+      mode: localStorage.getItem('animeMine.mangaBubbleMode'),
+      text: document.querySelector('.manga-bubble-body').innerText,
+      active: document.querySelector('.manga-bubble-modes button.on').textContent,
+    }));
+    assert.equal(ai.mode, 'ai');
+    assert.equal(ai.active, 'AI translate');
+    assert.ok(ai.text.trim().length > 0, 'AI mode shows a result or an inline error');
+    console.log('PASS AI translate toggle persists and renders', JSON.stringify(ai.text.slice(0, 80)));
+    await evaluate(() => {
+      [...document.querySelectorAll('.manga-bubble-modes button')].find((b) => b.textContent === 'Dictionary').click();
+    });
+    assert.equal(await evaluate(() => localStorage.getItem('animeMine.mangaBubbleMode')), 'dict');
+
+    await evaluate(() => window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true })));
+    await delay(100);
+    assert.equal(await evaluate(() => !!document.querySelector('.manga-bubble')), false, 'Escape closes the bubble');
+    assert.equal(await evaluate(() => !!document.querySelector('.manga-reader')), true, 'first Escape keeps the reader open');
+    console.log('PASS Escape closes the bubble first');
+
+    const drag = await evaluate(() => {
+      const block = document.querySelector('.manga-block');
+      const node = block.firstChild;
+      const vertical = block.classList.contains('vertical');
+      const charRect = (i) => { const r = document.createRange(); r.setStart(node, i); r.setEnd(node, i + 1); return r.getBoundingClientRect(); };
+      const first = charRect(0);
+      const last = charRect(Math.min(2, node.length - 1));
+      return vertical
+        ? { from: { x: Math.round(first.x + first.width / 2), y: Math.round(first.y + 2) }, to: { x: Math.round(last.x + last.width / 2), y: Math.round(last.bottom - 2) } }
+        : { from: { x: Math.round(first.x + 2), y: Math.round(first.y + first.height / 2) }, to: { x: Math.round(last.right - 2), y: Math.round(last.y + last.height / 2) } };
+    });
+    const mid = { x: Math.round((drag.from.x + drag.to.x) / 2), y: Math.round((drag.from.y + drag.to.y) / 2) };
+    const pageBefore = await evaluate(() => document.querySelector('.manga-progress').textContent);
+    win.webContents.sendInputEvent({ type: 'mouseDown', ...drag.from, button: 'left', clickCount: 1 });
+    win.webContents.sendInputEvent({ type: 'mouseMove', ...mid, button: 'left', modifiers: ['leftButtonDown'] });
+    win.webContents.sendInputEvent({ type: 'mouseMove', ...drag.to, button: 'left', modifiers: ['leftButtonDown'] });
+    win.webContents.sendInputEvent({ type: 'mouseUp', ...drag.to, button: 'left', clickCount: 1 });
+    const picked = await evaluate(() => window.getSelection().toString().replace(/\s+/g, ''));
+    assert.ok(picked.length > 0, 'dragging inside a block selects text');
+    await waitFor(() => !!document.querySelector('.manga-bubble'), 'selection bubble');
+    const shown = await evaluate(() => document.querySelector('.manga-bubble-head strong').textContent);
+    assert.equal(shown, picked, 'bubble shows the selected substring');
+    await waitFor(() => !/Loading/.test(document.querySelector('.manga-bubble').innerText), 'selection lookup');
+    await screenshot('manga-bubble-selection');
+    console.log(`PASS selecting text opens the bubble for ${JSON.stringify(picked)}`);
+
+    const outside = await evaluate(() => {
+      const img = document.querySelector('.manga-img');
+      const r = img.getBoundingClientRect();
+      const blocks = [...document.querySelectorAll('.manga-block')].map((el) => el.getBoundingClientRect());
+      for (let fy = 0.1; fy < 0.95; fy += 0.05) {
+        for (let fx = 0.3; fx < 0.7; fx += 0.05) {
+          const x = Math.round(r.left + r.width * fx);
+          const y = Math.round(r.top + r.height * fy);
+          if (document.elementFromPoint(x, y) === img && !blocks.some((b) => x >= b.left - 4 && x <= b.right + 4 && y >= b.top - 4 && y <= b.bottom + 4)) return { x, y };
+        }
+      }
+      return null;
+    });
+    assert.ok(outside, 'found a page point outside every block');
+    win.webContents.sendInputEvent({ type: 'mouseDown', ...outside, button: 'left', clickCount: 1 });
+    win.webContents.sendInputEvent({ type: 'mouseUp', ...outside, button: 'left', clickCount: 1 });
+    await delay(200);
+    const after = await evaluate(() => ({
+      bubble: !!document.querySelector('.manga-bubble'),
+      selection: window.getSelection().toString(),
+      page: document.querySelector('.manga-progress').textContent,
+    }));
+    assert.equal(after.bubble, false, 'clicking the page outside any block closes the bubble');
+    assert.equal(after.selection, '', 'selection is cleared');
+    assert.equal(after.page, pageBefore, 'page did not turn');
+    console.log('PASS clicking outside a block closes the bubble, clears the selection, keeps the page');
+
+    win.webContents.sendInputEvent({ type: 'mouseDown', ...drag.from, button: 'left', clickCount: 1 });
+    win.webContents.sendInputEvent({ type: 'mouseMove', ...drag.to, button: 'left', modifiers: ['leftButtonDown'] });
+    win.webContents.sendInputEvent({ type: 'mouseUp', ...drag.to, button: 'left', clickCount: 1 });
+    await waitFor(() => !!document.querySelector('.manga-bubble'), 'second selection bubble');
+
+    await evaluate(() => [...document.querySelectorAll('.manga-bubble-actions button')].find((b) => b.textContent === 'More…').click());
     await waitFor(() => document.querySelectorAll('.manga-panel .manga-word').length > 0, 'tokenized panel');
+    assert.equal(await evaluate(() => !!document.querySelector('.manga-bubble')), false, 'More… closes the bubble');
     await evaluate(() => document.querySelector('.manga-panel .manga-word').click());
     await delay(600);
-    await screenshot('manga-lookup');
-    console.log('PASS block click tokenizes the sentence and opens lookup');
+    await screenshot('manga-panel');
+    console.log('PASS More… opens the side panel');
     await evaluate(() => [...document.querySelectorAll('.manga-panel button')].find((b) => b.textContent === 'Details').click());
     await delay(1500); console.log('DBG', await evaluate(() => JSON.stringify({wc: !!document.querySelector('.wordcard'), txt: document.querySelector('.wordcard')?.innerText?.slice(0, 300), err: window.smokeErrors})));
     await screenshot('manga-wordcard');

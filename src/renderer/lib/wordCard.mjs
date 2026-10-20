@@ -1,5 +1,6 @@
 // Shared word/kanji detail drawer. Self-contained: it injects its own <section class="wordcard">.
 import { attempt, fill, h, toast } from './ui.mjs';
+import { withIcon } from './doodleIcons.mjs';
 import {
   STATUS_META, STATUS_ORDER, formatPct, frequencyLabel, kanjiFacts, missingDownloads,
   pitchLabelFromPattern, rubyParts, splitAround,
@@ -73,7 +74,7 @@ function mountCard(container, start, { onClose, onChanged }) {
   function renderHead() {
     const current = stack.at(-1);
     fill(head, 
-      stack.length > 1 ? h('button', { class: 'ghost small', onclick: back }, '← Back') : null,
+      stack.length > 1 ? h('button', { class: 'ghost small', onclick: back }, withIcon('back', 'Back')) : null,
       h('span', { class: 'wordcard-head-title' }, current.kind === 'word' ? 'Word' : 'Kanji'),
       h('button', { class: 'ghost small wordcard-close', 'aria-label': 'Close', onclick: close }, '×'),
     );

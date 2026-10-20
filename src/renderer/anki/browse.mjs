@@ -1,4 +1,5 @@
 import { attempt, fill, h, toast } from '../lib/ui.mjs';
+import { doodle, withIcon } from '../lib/doodleIcons.mjs';
 import { renderGrammarGuide } from '../lib/grammarGuide.mjs';
 import { stateBadge } from '../lib/ankiView.mjs';
 import {
@@ -519,7 +520,7 @@ export function mountBrowse(container, ctx) {
                   else s.collapsed.delete(node.path);
                   renderSide();
                 },
-              }, open ? '▾' : '▸')
+              }, doodle(open ? 'down' : 'right'))
             : h('span', { class: 'bw-arrow-gap' });
           return h(
             'li',
@@ -747,7 +748,7 @@ export function mountBrowse(container, ctx) {
         'button',
         { type: 'button', class: 'bw-sort', onclick: () => sortBy(col.sort) },
         col.label,
-        h('span', { class: 'bw-arrow-sort', 'aria-hidden': 'true' }, active ? (s.sort.desc ? ' ▼' : ' ▲') : ''),
+        h('span', { class: 'bw-arrow-sort', 'aria-hidden': 'true' }, active ? doodle(s.sort.desc ? 'down' : 'up') : ''),
       ),
     );
   }
@@ -964,7 +965,7 @@ export function mountBrowse(container, ctx) {
       { class: 'bw-card-pane' },
       shotBox(card.picture),
       h('div', { class: 'bw-row-actions' },
-        h('button', { type: 'button', class: 'bw-btn', disabled: !card.audio, onclick: () => playAudio(card.audio) }, '▶ Play audio'),
+        h('button', { type: 'button', class: 'bw-btn', disabled: !card.audio, onclick: () => playAudio(card.audio) }, withIcon('play', 'Play audio')),
         h('button', { type: 'button', class: 'bw-btn', disabled: readOnly, title: readOnly ? 'Sample data is read-only' : null, onclick: () => openInAnki(card) }, 'Open in Anki'),
       ),
       fieldRows,

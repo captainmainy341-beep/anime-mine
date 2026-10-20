@@ -265,3 +265,59 @@ test('screenshot cover never samples inside the box and still paints tiny boxes'
   assert.equal(tiny[0], 0xff)
   assert.notDeepEqual(tiny, plain)
 })
+
+test('screenshotArgs swaps the white/navy detector for the wand key when one is given', () => {
+  const cover = {x: .1, y: .8, w: .8, h: .12}
+  const key = {colors: [[250, 30, 30]], tolerance: 24}
+  const graph = argAfter(screenshotArgs({video: '/v/ep.mkv', time: 1, maxWidth: 640, censorSubs: true, cover, key}), '-filter_complex')
+  assert.match(graph, /abs\(r\(X,Y\)-250\)/)
+  assert.match(graph, /maskedmerge/)
+  assert.match(graph, /drawbox=x=0:y=0:w=iw:h=ih\*0\.660000/)
+  const plain = argAfter(screenshotArgs({video: '/v/ep.mkv', time: 1, maxWidth: 640, censorSubs: true, cover}), '-filter_complex')
+  assert.doesNotMatch(plain, /abs\(r\(X,Y\)-250\)/)
+  const invalid = argAfter(screenshotArgs({video: '/v/ep.mkv', time: 1, maxWidth: 640, censorSubs: true, cover, key: {colors: []}}), '-filter_complex')
+  assert.doesNotMatch(invalid, /abs\(r\(X,Y\)-/)
+  const unused = screenshotArgs({video: '/v/ep.mkv', time: 1, maxWidth: 640, cover, key})
+  assert.doesNotMatch(argAfter(unused, '-filter_complex'), /abs\(r\(X,Y\)-250\)/)
+})
+
+test('screenshot with a wand key removes a red caption the built-in detector ignores, and spares the rest', async t => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'anime-mine-wand-'))
+  t.after(() => fs.rmSync(dir, {recursive: true, force: true}))
+  const video = path.join(dir, 'v.mp4')
+  const caption = "drawtext=text='HELLO WORLD':fontsize=40:fontcolor=0xff2020:x=(w-text_w)/2"
+  const made = spawnSync(ffmpegStatic, ['-hide_banner', '-loglevel', 'error', '-f', 'lavfi', '-i', 'color=c=0x806040:s=640x360:d=1:r=10',
+    '-vf', `${caption}:y=300,${caption}:y=20`, '-pix_fmt', 'yuv420p', video], {stdio: 'pipe'})
+  assert.equal(made.status, 0, made.stderr?.toString())
+  const rgb = jpeg => spawnSync(ffmpegStatic, ['-hide_banner', '-loglevel', 'error', '-i', 'pipe:0', '-f', 'rawvideo', '-pix_fmt', 'rgb24', 'pipe:1'], {input: jpeg, maxBuffer: 1 << 24}).stdout
+  const redPixels = (frame, from, to) => {
+    let count = 0
+    for (let p = from * 640 * 3; p < to * 640 * 3; p += 3) if (frame[p] > 200 && frame[p + 1] < 100 && frame[p + 2] < 100) count++
+    return count
+  }
+  const plain = rgb(await screenshot({video, time: 0.5}))
+  const built = rgb(await screenshot({video, time: 0.5, censorSubs: true}))
+  const keyed = rgb(await screenshot({video, time: 0.5, censorSubs: true, key: {colors: [[255, 32, 32]], tolerance: 40}}))
+  assert.ok(redPixels(plain, 295, 350) > 500, 'fixture has a red caption at the bottom')
+  assert.ok(redPixels(built, 295, 350) > 500, 'built-in white/navy detector leaves red text alone')
+  assert.equal(redPixels(keyed, 295, 350), 0, 'wand key removes the red text')
+  assert.ok(redPixels(keyed, 0, 70) > 500, 'text outside the lower search band is untouched')
+})
+
+test('screenshot with a cover touching the left edge or full width still censors the caption', async t => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'anime-mine-edge-'))
+  t.after(() => fs.rmSync(dir, {recursive: true, force: true}))
+  const video = path.join(dir, 'v.mp4')
+  const caption = "drawtext=text='HELLO WORLD':fontsize=40:fontcolor=0xff2020:x=(w-text_w)/2:y=300"
+  const made = spawnSync(ffmpegStatic, ['-hide_banner', '-loglevel', 'error', '-f', 'lavfi', '-i', 'color=c=0x806040:s=640x360:d=1:r=10',
+    '-vf', caption, '-pix_fmt', 'yuv420p', video], {stdio: 'pipe'})
+  assert.equal(made.status, 0, made.stderr?.toString())
+  const key = {colors: [[255, 32, 32]], tolerance: 40}
+  for (const cover of [{x: 0, y: 0.75, w: 1, h: 0.25}, {x: 0.02, y: 0, w: 0.96, h: 1}]) {
+    const frame = spawnSync(ffmpegStatic, ['-hide_banner', '-loglevel', 'error', '-i', 'pipe:0', '-f', 'rawvideo', '-pix_fmt', 'rgb24', 'pipe:1'],
+      {input: await screenshot({video, time: 0.5, censorSubs: true, cover, key}), maxBuffer: 1 << 24}).stdout
+    let red = 0
+    for (let p = 0; p < frame.length; p += 3) if (frame[p] > 200 && frame[p + 1] < 100 && frame[p + 2] < 100) red++
+    assert.equal(red, 0, `cover ${JSON.stringify(cover)} left ${red} red pixels`)
+  }
+})

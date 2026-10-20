@@ -903,7 +903,7 @@ test('anki:preview returns the clip audio and frame as data URLs using clamped p
   });
   assert.deepEqual(log.media.map((item) => item.args), [
     { video: '/v/a.mkv', start: 10, end: 14, padStart: 5, padEnd: 0.4, audioStream: 1 },
-    { video: '/v/a.mkv', time: 12, censorSubs: true, cover: null },
+    { video: '/v/a.mkv', time: 12, censorSubs: true, cover: null, key: null },
   ]);
   await assert.rejects(call('anki:preview', { videoPath: '/v/a.mkv', cue: { start: 5, end: 2 } }), /0 <= start < end/);
   assert.equal(log.media.length, 2);

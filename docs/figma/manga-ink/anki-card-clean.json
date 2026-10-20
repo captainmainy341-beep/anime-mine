@@ -1,0 +1,1170 @@
+{
+ "t": "Fra",
+ "n": "Anki Card Clean",
+ "x": 0,
+ "y": 0,
+ "w": 1440,
+ "h": 1000,
+ "fill": "#f5f2ea",
+ "k": [
+  {
+   "t": "Fra",
+   "n": "Nav strip",
+   "x": 0,
+   "y": 0,
+   "w": 200,
+   "h": 1000,
+   "fill": "#0a0a0a"
+  },
+  {
+   "t": "Fra",
+   "n": "Nav active",
+   "x": 0,
+   "y": 404,
+   "w": 200,
+   "h": 44,
+   "fill": "#f5f2ea"
+  },
+  {
+   "t": "Tex",
+   "n": "アニメ",
+   "x": 28,
+   "y": 32,
+   "w": 84,
+   "h": 41,
+   "fill": "#f5f2ea",
+   "text": "アニメ",
+   "font": "Dela Gothic One Regular",
+   "size": 28
+  },
+  {
+   "t": "Tex",
+   "n": "マイン",
+   "x": 28,
+   "y": 72,
+   "w": 84,
+   "h": 41,
+   "fill": "#f5f2ea",
+   "text": "マイン",
+   "font": "Dela Gothic One Regular",
+   "size": 28
+  },
+  {
+   "t": "Fra",
+   "n": "Mark",
+   "x": 28,
+   "y": 118,
+   "w": 40,
+   "h": 3,
+   "fill": "#ff2e6e"
+  },
+  {
+   "t": "Tex",
+   "n": "LIBRARY",
+   "x": 28,
+   "y": 181,
+   "w": 62,
+   "h": 19,
+   "fill": "#f5f2ea",
+   "text": "LIBRARY",
+   "font": "Zen Kaku Gothic New Bold",
+   "size": 13,
+   "ls": "1.5px"
+  },
+  {
+   "t": "Tex",
+   "n": "棚",
+   "x": 132,
+   "y": 181,
+   "w": 13,
+   "h": 19,
+   "fill": "#f5f2ea",
+   "text": "棚",
+   "font": "Zen Kaku Gothic New Medium",
+   "size": 13
+  },
+  {
+   "t": "Tex",
+   "n": "LEARN",
+   "x": 28,
+   "y": 239,
+   "w": 48,
+   "h": 19,
+   "fill": "#f5f2ea",
+   "text": "LEARN",
+   "font": "Zen Kaku Gothic New Bold",
+   "size": 13,
+   "ls": "1.5px"
+  },
+  {
+   "t": "Tex",
+   "n": "勉強",
+   "x": 132,
+   "y": 239,
+   "w": 26,
+   "h": 19,
+   "fill": "#f5f2ea",
+   "text": "勉強",
+   "font": "Zen Kaku Gothic New Medium",
+   "size": 13
+  },
+  {
+   "t": "Tex",
+   "n": "MANGA",
+   "x": 28,
+   "y": 297,
+   "w": 51,
+   "h": 19,
+   "fill": "#f5f2ea",
+   "text": "MANGA",
+   "font": "Zen Kaku Gothic New Bold",
+   "size": 13,
+   "ls": "1.5px"
+  },
+  {
+   "t": "Tex",
+   "n": "漫画",
+   "x": 132,
+   "y": 297,
+   "w": 26,
+   "h": 19,
+   "fill": "#f5f2ea",
+   "text": "漫画",
+   "font": "Zen Kaku Gothic New Medium",
+   "size": 13
+  },
+  {
+   "t": "Tex",
+   "n": "VOCAB",
+   "x": 28,
+   "y": 355,
+   "w": 49,
+   "h": 19,
+   "fill": "#f5f2ea",
+   "text": "VOCAB",
+   "font": "Zen Kaku Gothic New Bold",
+   "size": 13,
+   "ls": "1.5px"
+  },
+  {
+   "t": "Tex",
+   "n": "語彙",
+   "x": 132,
+   "y": 355,
+   "w": 26,
+   "h": 19,
+   "fill": "#f5f2ea",
+   "text": "語彙",
+   "font": "Zen Kaku Gothic New Medium",
+   "size": 13
+  },
+  {
+   "t": "Tex",
+   "n": "ANKI",
+   "x": 28,
+   "y": 413,
+   "w": 34,
+   "h": 19,
+   "fill": "#0a0a0a",
+   "text": "ANKI",
+   "font": "Zen Kaku Gothic New Bold",
+   "size": 13,
+   "ls": "1.5px"
+  },
+  {
+   "t": "Tex",
+   "n": "カード",
+   "x": 132,
+   "y": 413,
+   "w": 39,
+   "h": 19,
+   "fill": "#0a0a0a",
+   "text": "カード",
+   "font": "Zen Kaku Gothic New Medium",
+   "size": 13
+  },
+  {
+   "t": "Tex",
+   "n": "SETTINGS",
+   "x": 28,
+   "y": 471,
+   "w": 71,
+   "h": 19,
+   "fill": "#f5f2ea",
+   "text": "SETTINGS",
+   "font": "Zen Kaku Gothic New Bold",
+   "size": 13,
+   "ls": "1.5px"
+  },
+  {
+   "t": "Tex",
+   "n": "設定",
+   "x": 132,
+   "y": 471,
+   "w": 26,
+   "h": 19,
+   "fill": "#f5f2ea",
+   "text": "設定",
+   "font": "Zen Kaku Gothic New Medium",
+   "size": 13
+  },
+  {
+   "t": "Fra",
+   "n": "Panel Header",
+   "x": 224,
+   "y": 28,
+   "w": 1184,
+   "h": 110,
+   "fill": "#0a0a0a",
+   "stroke": "#0a0a0a",
+   "sw": 3,
+   "k": [
+    {
+     "t": "Fra",
+     "n": "Speed lines",
+     "x": 224,
+     "y": 28,
+     "w": 1184,
+     "h": 110,
+     "k": [
+      {
+       "t": "Vec",
+       "n": "Rays",
+       "x": 84,
+       "y": -817,
+       "w": 1800,
+       "h": 1800,
+       "fill": "#f5f2ea"
+      }
+     ]
+    },
+    {
+     "t": "Fra",
+     "n": "Title plate",
+     "x": 252,
+     "y": 46,
+     "w": 300,
+     "h": 74,
+     "fill": "#0a0a0a",
+     "k": [
+      {
+       "t": "Tex",
+       "n": "Kanji",
+       "x": 252,
+       "y": 46,
+       "w": 207,
+       "h": 68,
+       "fill": "#f5f2ea",
+       "text": "Review",
+       "font": "Dela Gothic One Regular",
+       "size": 50,
+       "lh": "68px"
+      }
+     ]
+    },
+    {
+     "t": "Fra",
+     "n": "Progress plate",
+     "x": 924,
+     "y": 56,
+     "w": 460,
+     "h": 54,
+     "fill": "#f5f2ea",
+     "k": [
+      {
+       "t": "Tex",
+       "n": "LESSON 1 OF 5",
+       "x": 940,
+       "y": 64,
+       "w": 184,
+       "h": 17,
+       "fill": "#0a0a0a",
+       "text": "CARD 14 OF 86  ·  MINING",
+       "font": "Zen Kaku Gothic New Bold",
+       "size": 12,
+       "ls": "2px"
+      },
+      {
+       "t": "Fra",
+       "n": "Track",
+       "x": 940,
+       "y": 88,
+       "w": 428,
+       "h": 10,
+       "fill": "#ebe7dc",
+       "stroke": "#0a0a0a",
+       "sw": 1.5
+      },
+      {
+       "t": "Fra",
+       "n": "Progress",
+       "x": 940,
+       "y": 88,
+       "w": 70,
+       "h": 10,
+       "fill": "#ff2e6e",
+       "stroke": "#0a0a0a",
+       "sw": 1.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "t": "Fra",
+   "n": "Panel Front",
+   "x": 224,
+   "y": 162,
+   "w": 580,
+   "h": 620,
+   "fill": "#f5f2ea",
+   "stroke": "#0a0a0a",
+   "sw": 1.5,
+   "k": [
+    {
+     "t": "Fra",
+     "n": "Tag Front · question",
+     "x": 252,
+     "y": 186,
+     "w": 137,
+     "h": 36,
+     "fill": "#0a0a0a",
+     "stroke": "#0a0a0a",
+     "sw": 1.5,
+     "k": [
+      {
+       "t": "Tex",
+       "n": "Front · question",
+       "x": 268,
+       "y": 193,
+       "w": 105,
+       "h": 22,
+       "fill": "#f5f2ea",
+       "text": "Front · question",
+       "font": "Zen Kaku Gothic New Bold",
+       "size": 15
+      }
+     ]
+    },
+    {
+     "t": "Fra",
+     "n": "Screenshot",
+     "x": 252,
+     "y": 238,
+     "w": 524,
+     "h": 290,
+     "fill": "#0a0a0a",
+     "stroke": "#0a0a0a",
+     "sw": 3,
+     "k": [
+      {
+       "t": "Vec",
+       "n": "Scene rays",
+       "x": -386,
+       "y": -517,
+       "w": 1800,
+       "h": 1800,
+       "fill": "#f5f2ea"
+      },
+      {
+       "t": "Fra",
+       "n": "Source chip",
+       "x": 268,
+       "y": 476,
+       "w": 172,
+       "h": 36,
+       "fill": "#f5f2ea",
+       "stroke": "#0a0a0a",
+       "sw": 1.5,
+       "k": [
+        {
+         "t": "Tex",
+         "n": "E04  ·  12:34",
+         "x": 319,
+         "y": 484,
+         "w": 71,
+         "h": 20,
+         "fill": "#0a0a0a",
+         "text": "E04  ·  12:34",
+         "font": "Zen Kaku Gothic New Bold",
+         "size": 14
+        }
+       ]
+      },
+      {
+       "t": "Fra",
+       "n": "Audio button",
+       "x": 704,
+       "y": 460,
+       "w": 56,
+       "h": 52,
+       "fill": "#f5f2ea",
+       "stroke": "#0a0a0a",
+       "sw": 3,
+       "k": [
+        {
+         "t": "Vec",
+         "n": "icon sound",
+         "x": 722,
+         "y": 478,
+         "w": 21,
+         "h": 17,
+         "stroke": "#0a0a0a",
+         "sw": 1.600000023841858
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "t": "Tex",
+     "n": "本当に",
+     "x": 252,
+     "y": 560,
+     "w": 126,
+     "h": 61,
+     "fill": "#0a0a0a",
+     "text": "本当に",
+     "font": "Zen Kaku Gothic New Black",
+     "size": 42
+    },
+    {
+     "t": "Tex",
+     "n": "大丈夫",
+     "x": 382,
+     "y": 560,
+     "w": 126,
+     "h": 61,
+     "fill": "#0a0a0a",
+     "text": "大丈夫",
+     "font": "Zen Kaku Gothic New Black",
+     "size": 42
+    },
+    {
+     "t": "Fra",
+     "n": "Word underline",
+     "x": 382,
+     "y": 615,
+     "w": 126,
+     "h": 6,
+     "fill": "#ff2e6e"
+    },
+    {
+     "t": "Tex",
+     "n": "なの？",
+     "x": 512,
+     "y": 560,
+     "w": 126,
+     "h": 61,
+     "fill": "#0a0a0a",
+     "text": "なの？",
+     "font": "Zen Kaku Gothic New Black",
+     "size": 42
+    },
+    {
+     "t": "Tex",
+     "n": "What does the underlined",
+     "x": 252,
+     "y": 630,
+     "w": 286,
+     "h": 25,
+     "fill": "#5c5a55",
+     "text": "What does the underlined word mean?",
+     "font": "Zen Kaku Gothic New Medium",
+     "size": 17
+    },
+    {
+     "t": "Fra",
+     "n": "Divider",
+     "x": 252,
+     "y": 702,
+     "w": 524,
+     "h": 2,
+     "fill": "#0a0a0a"
+    },
+    {
+     "t": "Fra",
+     "n": "Chip Mining",
+     "x": 252,
+     "y": 722,
+     "w": 66,
+     "h": 30,
+     "fill": "#f5f2ea",
+     "stroke": "#0a0a0a",
+     "sw": 1.5,
+     "r": 15,
+     "k": [
+      {
+       "t": "Tex",
+       "n": "Mining",
+       "x": 266,
+       "y": 727,
+       "w": 38,
+       "h": 19,
+       "fill": "#0a0a0a",
+       "text": "Mining",
+       "font": "Zen Kaku Gothic New Medium",
+       "size": 13
+      }
+     ]
+    },
+    {
+     "t": "Fra",
+     "n": "Chip New card",
+     "x": 336,
+     "y": 722,
+     "w": 82,
+     "h": 30,
+     "fill": "#f5f2ea",
+     "stroke": "#0a0a0a",
+     "sw": 1.5,
+     "r": 15,
+     "k": [
+      {
+       "t": "Tex",
+       "n": "New card",
+       "x": 350,
+       "y": 727,
+       "w": 54,
+       "h": 19,
+       "fill": "#0a0a0a",
+       "text": "New card",
+       "font": "Zen Kaku Gothic New Medium",
+       "size": 13
+      }
+     ]
+    },
+    {
+     "t": "Fra",
+     "n": "Chip JLPT N4",
+     "x": 450,
+     "y": 722,
+     "w": 78,
+     "h": 30,
+     "fill": "#f5f2ea",
+     "stroke": "#0a0a0a",
+     "sw": 1.5,
+     "r": 15,
+     "k": [
+      {
+       "t": "Tex",
+       "n": "JLPT N4",
+       "x": 464,
+       "y": 727,
+       "w": 50,
+       "h": 19,
+       "fill": "#0a0a0a",
+       "text": "JLPT N4",
+       "font": "Zen Kaku Gothic New Medium",
+       "size": 13
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "t": "Fra",
+   "n": "Panel Back",
+   "x": 820,
+   "y": 162,
+   "w": 588,
+   "h": 620,
+   "fill": "#f5f2ea",
+   "stroke": "#0a0a0a",
+   "sw": 1.5,
+   "k": [
+    {
+     "t": "Fra",
+     "n": "Back card",
+     "x": 848,
+     "y": 190,
+     "w": 532,
+     "h": 564,
+     "fill": "#f5f2ea",
+     "k": [
+      {
+       "t": "Fra",
+       "n": "Tag Back · answer",
+       "x": 872,
+       "y": 212,
+       "w": 123,
+       "h": 36,
+       "fill": "#0a0a0a",
+       "stroke": "#0a0a0a",
+       "sw": 1.5,
+       "k": [
+        {
+         "t": "Tex",
+         "n": "Back · answer",
+         "x": 888,
+         "y": 219,
+         "w": 91,
+         "h": 22,
+         "fill": "#f5f2ea",
+         "text": "Back · answer",
+         "font": "Zen Kaku Gothic New Bold",
+         "size": 15
+        }
+       ]
+      },
+      {
+       "t": "Tex",
+       "n": "大丈夫",
+       "x": 872,
+       "y": 260,
+       "w": 228,
+       "h": 110,
+       "fill": "#0a0a0a",
+       "text": "大丈夫",
+       "font": "Zen Kaku Gothic New Black",
+       "size": 76
+      },
+      {
+       "t": "Fra",
+       "n": "Underline",
+       "x": 874,
+       "y": 368,
+       "w": 120,
+       "h": 6,
+       "fill": "#ff2e6e"
+      },
+      {
+       "t": "Tex",
+       "n": "だいじょうぶ",
+       "x": 876,
+       "y": 384,
+       "w": 132,
+       "h": 32,
+       "fill": "#5c5a55",
+       "text": "だいじょうぶ",
+       "font": "Zen Kaku Gothic New Medium",
+       "size": 22
+      },
+      {
+       "t": "Vec",
+       "n": "icon sound",
+       "x": 1018,
+       "y": 388,
+       "w": 21,
+       "h": 17,
+       "stroke": "#0a0a0a",
+       "sw": 1.600000023841858
+      },
+      {
+       "t": "Fra",
+       "n": "Pitch plate",
+       "x": 1180,
+       "y": 274,
+       "w": 176,
+       "h": 64,
+       "fill": "#f5f2ea",
+       "stroke": "#0a0a0a",
+       "sw": 1.5,
+       "k": [
+        {
+         "t": "Tex",
+         "n": "PITCH  [0] HEIBAN",
+         "x": 1190,
+         "y": 280,
+         "w": 109,
+         "h": 16,
+         "fill": "#5c5a55",
+         "text": "PITCH  [0] HEIBAN",
+         "font": "Zen Kaku Gothic New Bold",
+         "size": 11,
+         "ls": "1px"
+        },
+        {
+         "t": "Vec",
+         "n": "Pitch line",
+         "x": 1198,
+         "y": 304,
+         "w": 120,
+         "h": 16,
+         "stroke": "#ff2e6e",
+         "sw": 2.4000000953674316
+        },
+        {
+         "t": "Fra",
+         "n": "mora",
+         "x": 1194,
+         "y": 316,
+         "w": 8,
+         "h": 8,
+         "fill": "#f5f2ea",
+         "stroke": "#0a0a0a",
+         "sw": 2,
+         "r": 4
+        },
+        {
+         "t": "Fra",
+         "n": "mora",
+         "x": 1224,
+         "y": 300,
+         "w": 8,
+         "h": 8,
+         "fill": "#0a0a0a",
+         "stroke": "#0a0a0a",
+         "sw": 2,
+         "r": 4
+        },
+        {
+         "t": "Fra",
+         "n": "mora",
+         "x": 1254,
+         "y": 300,
+         "w": 8,
+         "h": 8,
+         "fill": "#0a0a0a",
+         "stroke": "#0a0a0a",
+         "sw": 2,
+         "r": 4
+        },
+        {
+         "t": "Fra",
+         "n": "mora",
+         "x": 1284,
+         "y": 300,
+         "w": 8,
+         "h": 8,
+         "fill": "#0a0a0a",
+         "stroke": "#0a0a0a",
+         "sw": 2,
+         "r": 4
+        },
+        {
+         "t": "Fra",
+         "n": "mora",
+         "x": 1314,
+         "y": 300,
+         "w": 8,
+         "h": 8,
+         "fill": "#0a0a0a",
+         "stroke": "#0a0a0a",
+         "sw": 2,
+         "r": 4
+        }
+       ]
+      },
+      {
+       "t": "Tex",
+       "n": "all right; safe; certain",
+       "x": 872,
+       "y": 440,
+       "w": 266,
+       "h": 41,
+       "fill": "#0a0a0a",
+       "text": "all right; safe; certain",
+       "font": "Zen Kaku Gothic New Bold",
+       "size": 28
+      },
+      {
+       "t": "Fra",
+       "n": "Chip na-adjective",
+       "x": 872,
+       "y": 490,
+       "w": 100,
+       "h": 30,
+       "fill": "#f5f2ea",
+       "stroke": "#0a0a0a",
+       "sw": 1.5,
+       "r": 15,
+       "k": [
+        {
+         "t": "Tex",
+         "n": "na-adjective",
+         "x": 886,
+         "y": 495,
+         "w": 72,
+         "h": 19,
+         "fill": "#0a0a0a",
+         "text": "na-adjective",
+         "font": "Zen Kaku Gothic New Medium",
+         "size": 13
+        }
+       ]
+      },
+      {
+       "t": "Fra",
+       "n": "Chip common",
+       "x": 990,
+       "y": 490,
+       "w": 76,
+       "h": 30,
+       "fill": "#f5f2ea",
+       "stroke": "#0a0a0a",
+       "sw": 1.5,
+       "r": 15,
+       "k": [
+        {
+         "t": "Tex",
+         "n": "common",
+         "x": 1004,
+         "y": 495,
+         "w": 48,
+         "h": 19,
+         "fill": "#0a0a0a",
+         "text": "common",
+         "font": "Zen Kaku Gothic New Medium",
+         "size": 13
+        }
+       ]
+      },
+      {
+       "t": "Fra",
+       "n": "Divider",
+       "x": 872,
+       "y": 548,
+       "w": 484,
+       "h": 2,
+       "fill": "#0a0a0a"
+      },
+      {
+       "t": "Tex",
+       "n": "本当に大丈夫なの？",
+       "x": 872,
+       "y": 568,
+       "w": 234,
+       "h": 38,
+       "fill": "#0a0a0a",
+       "text": "本当に大丈夫なの？",
+       "font": "Zen Kaku Gothic New Bold",
+       "size": 26
+      },
+      {
+       "t": "Tex",
+       "n": "\"Are you really okay?\"",
+       "x": 872,
+       "y": 610,
+       "w": 192,
+       "h": 29,
+       "fill": "#5c5a55",
+       "text": "\"Are you really okay?\"",
+       "font": "Zen Kaku Gothic New Medium",
+       "size": 20
+      },
+      {
+       "t": "Tex",
+       "n": "Kono Subarashii S3  ·  E",
+       "x": 872,
+       "y": 690,
+       "w": 224,
+       "h": 22,
+       "fill": "#5c5a55",
+       "text": "Kono Subarashii S3  ·  E04  ·  12:34",
+       "font": "Zen Kaku Gothic New Medium",
+       "size": 15
+      },
+      {
+       "t": "Fra",
+       "n": "Divider 2",
+       "x": 872,
+       "y": 676,
+       "w": 484,
+       "h": 2,
+       "fill": "#ebe7dc"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "t": "Fra",
+   "n": "Panel Rating",
+   "x": 224,
+   "y": 798,
+   "w": 1184,
+   "h": 172,
+   "fill": "#f5f2ea",
+   "stroke": "#0a0a0a",
+   "sw": 1.5,
+   "k": [
+    {
+     "t": "Fra",
+     "n": "Tag How well did you remember it?",
+     "x": 252,
+     "y": 818,
+     "w": 235,
+     "h": 36,
+     "fill": "#0a0a0a",
+     "stroke": "#0a0a0a",
+     "sw": 1.5,
+     "k": [
+      {
+       "t": "Tex",
+       "n": "How well did you remembe",
+       "x": 268,
+       "y": 825,
+       "w": 203,
+       "h": 22,
+       "fill": "#f5f2ea",
+       "text": "How well did you remember it?",
+       "font": "Zen Kaku Gothic New Bold",
+       "size": 15
+      }
+     ]
+    },
+    {
+     "t": "Tex",
+     "n": "Space shows the answer  ",
+     "x": 1066,
+     "y": 825,
+     "w": 314,
+     "h": 22,
+     "fill": "#5c5a55",
+     "text": "Space shows the answer  ·  1 to 4 rates the card",
+     "font": "Zen Kaku Gothic New Medium",
+     "size": 15
+    },
+    {
+     "t": "Fra",
+     "n": "Rate Again",
+     "x": 252,
+     "y": 874,
+     "w": 270,
+     "h": 74,
+     "fill": "#f5f2ea",
+     "stroke": "#0a0a0a",
+     "sw": 1.5,
+     "k": [
+      {
+       "t": "Fra",
+       "n": "Key 1",
+       "x": 270,
+       "y": 897,
+       "w": 28,
+       "h": 28,
+       "fill": "#f5f2ea",
+       "stroke": "#0a0a0a",
+       "sw": 1.5,
+       "k": [
+        {
+         "t": "Tex",
+         "n": "1",
+         "x": 281,
+         "y": 901,
+         "w": 6,
+         "h": 20,
+         "fill": "#0a0a0a",
+         "text": "1",
+         "font": "Zen Kaku Gothic New Bold",
+         "size": 14
+        }
+       ]
+      },
+      {
+       "t": "Tex",
+       "n": "Again",
+       "x": 314,
+       "y": 894,
+       "w": 61,
+       "h": 35,
+       "fill": "#0a0a0a",
+       "text": "Again",
+       "font": "Zen Kaku Gothic New Bold",
+       "size": 24
+      },
+      {
+       "t": "Tex",
+       "n": "<1m",
+       "x": 471,
+       "y": 899,
+       "w": 31,
+       "h": 25,
+       "fill": "#5c5a55",
+       "text": "<1m",
+       "font": "Zen Kaku Gothic New Medium",
+       "size": 17
+      }
+     ]
+    },
+    {
+     "t": "Fra",
+     "n": "Rate Hard",
+     "x": 538,
+     "y": 874,
+     "w": 270,
+     "h": 74,
+     "fill": "#f5f2ea",
+     "stroke": "#0a0a0a",
+     "sw": 1.5,
+     "k": [
+      {
+       "t": "Fra",
+       "n": "Key 2",
+       "x": 556,
+       "y": 897,
+       "w": 28,
+       "h": 28,
+       "fill": "#f5f2ea",
+       "stroke": "#0a0a0a",
+       "sw": 1.5,
+       "k": [
+        {
+         "t": "Tex",
+         "n": "2",
+         "x": 567,
+         "y": 901,
+         "w": 7,
+         "h": 20,
+         "fill": "#0a0a0a",
+         "text": "2",
+         "font": "Zen Kaku Gothic New Bold",
+         "size": 14
+        }
+       ]
+      },
+      {
+       "t": "Tex",
+       "n": "Hard",
+       "x": 600,
+       "y": 894,
+       "w": 53,
+       "h": 35,
+       "fill": "#0a0a0a",
+       "text": "Hard",
+       "font": "Zen Kaku Gothic New Bold",
+       "size": 24
+      },
+      {
+       "t": "Tex",
+       "n": "6m",
+       "x": 766,
+       "y": 899,
+       "w": 22,
+       "h": 25,
+       "fill": "#5c5a55",
+       "text": "6m",
+       "font": "Zen Kaku Gothic New Medium",
+       "size": 17
+      }
+     ]
+    },
+    {
+     "t": "Fra",
+     "n": "Rate Good",
+     "x": 824,
+     "y": 874,
+     "w": 270,
+     "h": 74,
+     "fill": "#0a0a0a",
+     "stroke": "#0a0a0a",
+     "sw": 3,
+     "k": [
+      {
+       "t": "Fra",
+       "n": "Key 3",
+       "x": 842,
+       "y": 897,
+       "w": 28,
+       "h": 28,
+       "fill": "#f5f2ea",
+       "stroke": "#f5f2ea",
+       "sw": 1.5,
+       "k": [
+        {
+         "t": "Tex",
+         "n": "3",
+         "x": 853,
+         "y": 901,
+         "w": 7,
+         "h": 20,
+         "fill": "#0a0a0a",
+         "text": "3",
+         "font": "Zen Kaku Gothic New Bold",
+         "size": 14
+        }
+       ]
+      },
+      {
+       "t": "Tex",
+       "n": "Good",
+       "x": 886,
+       "y": 894,
+       "w": 56,
+       "h": 35,
+       "fill": "#f5f2ea",
+       "text": "Good",
+       "font": "Zen Kaku Gothic New Bold",
+       "size": 24
+      },
+      {
+       "t": "Tex",
+       "n": "3d",
+       "x": 1056,
+       "y": 899,
+       "w": 18,
+       "h": 25,
+       "fill": "#cfcabd",
+       "text": "3d",
+       "font": "Zen Kaku Gothic New Medium",
+       "size": 17
+      }
+     ]
+    },
+    {
+     "t": "Fra",
+     "n": "Rate Easy",
+     "x": 1110,
+     "y": 874,
+     "w": 270,
+     "h": 74,
+     "fill": "#f5f2ea",
+     "stroke": "#0a0a0a",
+     "sw": 1.5,
+     "k": [
+      {
+       "t": "Fra",
+       "n": "Key 4",
+       "x": 1128,
+       "y": 897,
+       "w": 28,
+       "h": 28,
+       "fill": "#f5f2ea",
+       "stroke": "#0a0a0a",
+       "sw": 1.5,
+       "k": [
+        {
+         "t": "Tex",
+         "n": "4",
+         "x": 1139,
+         "y": 901,
+         "w": 7,
+         "h": 20,
+         "fill": "#0a0a0a",
+         "text": "4",
+         "font": "Zen Kaku Gothic New Bold",
+         "size": 14
+        }
+       ]
+      },
+      {
+       "t": "Tex",
+       "n": "Easy",
+       "x": 1172,
+       "y": 894,
+       "w": 50,
+       "h": 35,
+       "fill": "#0a0a0a",
+       "text": "Easy",
+       "font": "Zen Kaku Gothic New Bold",
+       "size": 24
+      },
+      {
+       "t": "Tex",
+       "n": "5d",
+       "x": 1342,
+       "y": 899,
+       "w": 18,
+       "h": 25,
+       "fill": "#5c5a55",
+       "text": "5d",
+       "font": "Zen Kaku Gothic New Medium",
+       "size": 17
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

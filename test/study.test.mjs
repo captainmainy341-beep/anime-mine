@@ -51,8 +51,8 @@ test('cardDocument has a readable light fallback and leaves layout to the deck C
 test('app-themed cards use the app palette without changing the card content or CSP', () => {
   const doc = cardDocument(card, 'answer', { theme: 'app' });
   assert.match(doc, /class="card am-card"/);
-  assert.match(doc, /--am-panel:\s*#161a22/);
-  assert.match(doc, /--am-accent:\s*#f38bb0/);
+  assert.match(doc, /--am-panel:\s*#181c1e/);
+  assert.match(doc, /--am-accent:\s*#edc789/);
   assert.ok(doc.includes('<i>cat</i>'));
   assert.match(doc, /default-src 'none'; img-src data:; media-src data:; style-src 'unsafe-inline'/);
   assert.doesNotMatch(doc, /allow-scripts/);
@@ -60,7 +60,7 @@ test('app-themed cards use the app palette without changing the card content or 
 
 test('app theme bounds images without removing the native card-style option', () => {
   const doc = cardDocument(card, 'answer', { theme: 'app' });
-  assert.match(doc, /max-height:\s*170px/);
+  assert.match(doc, /max-height:\s*215px/);
   assert.match(doc, /object-fit:\s*contain/);
   assert.doesNotMatch(cardDocument(card, 'answer'), /am-card/);
 });

@@ -1,4 +1,5 @@
 import { attempt, fill, h, toast } from './lib/ui.mjs';
+import { doodle } from './lib/doodleIcons.mjs';
 import { createLimiter } from './lib/libraryView.mjs';
 import { mountWordCard } from './lib/wordCard.mjs';
 import {
@@ -406,8 +407,8 @@ function mountDifficulty(panel) {
   function renderTables() {
     for (const [key, button] of sortButtons) {
       const [, label] = WORK_COLUMNS.find(([k]) => k === key);
-      const arrow = state.sort.key === key ? (state.sort.dir === 'asc' ? ' ↑' : ' ↓') : '';
-      button.textContent = `${label}${arrow}`;
+      const arrow = state.sort.key === key ? (state.sort.dir === 'asc' ? 'up' : 'down') : '';
+      button.replaceChildren(label, ...(arrow ? [' ', doodle(arrow)] : []));
     }
     for (const kind of KINDS) {
       const rows = sortWorks(filterWorks(state.works[kind], query), state.sort.key, state.sort.dir).map(withCoverage);

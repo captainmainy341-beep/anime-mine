@@ -2,6 +2,7 @@ const {spawn} = require('child_process')
 const path = require('path')
 const ffmpegStatic = require('ffmpeg-static')
 const {normalizeCover} = require('./cover')
+const {keyMaskFilter, normalizeKey} = require('./subKey')
 
 const JAPANESE_AUDIO = '0:a:m:language:jpn'
 const FIRST_AUDIO = '0:a:0'
@@ -63,19 +64,28 @@ const NAVY = "geq=r='if(lt(r(X,Y),70)*lt(g(X,Y),70)*gt(b(X,Y),r(X,Y)+18)*lt(b(X,
 // Removes white-with-navy-outline burned-in subtitles by filling the text mask from the surrounding picture
 // (blur of the unmasked pixels, normalised by how many of them there are); soft-sub video is untouched.
 // Without a region it only looks in the lower third.
-function censorFilter(maxWidth, region = null, out = 'o') {
+function censorFilter(maxWidth, region = null, out = 'o', key = null) {
   const keep = region
     ? [
-      `drawbox=x=0:y=0:w=iw:h=ih*${pct(region.y0)}:color=black:t=fill`,
-      `drawbox=x=0:y=0:w=iw*${pct(region.x0)}:h=ih:color=black:t=fill`,
-      `drawbox=x=iw*${pct(region.x1)}:y=0:w=iw:h=ih:color=black:t=fill`,
-    ].join(',')
+      region.y0 > 0 && `drawbox=x=0:y=0:w=iw:h=ih*${pct(region.y0)}:color=black:t=fill`,
+      region.x0 > 0 && `drawbox=x=0:y=0:w=iw*${pct(region.x0)}:h=ih:color=black:t=fill`,
+      region.x1 < 1 && `drawbox=x=iw*${pct(region.x1)}:y=0:w=iw:h=ih:color=black:t=fill`,
+    ].filter(Boolean).join(',') || 'null'
     : 'drawbox=x=0:y=0:w=iw:h=ih*0.62:color=black:t=fill'
+  // A wand key (sampled colours + tolerance) replaces the built-in white/navy detector.
+  const mask = key
+    ? [
+      `scale='min(${maxWidth},iw)':-2,format=gbrp,split=3[a][b][d]`,
+      `[b]${keyMaskFilter(key)},format=gbrp,extractplanes=r,${MASK_GROW},dilation,${keep},format=gbrp,split=2[m][mv]`,
+    ]
+    : [
+      `scale='min(${maxWidth},iw)':-2,format=gbrp,split=4[a][b][c][d]`,
+      `[b]${WHITE},format=gbrp,extractplanes=r,${MASK_GROW}[w]`,
+      `[c]${NAVY},format=gbrp,extractplanes=r,${MASK_GROW}[n]`,
+      `[w][n]blend=all_mode=multiply,${MASK_GROW},${MASK_GROW},${MASK_GROW},${keep},format=gbrp,split=2[m][mv]`,
+    ]
   return [
-    `scale='min(${maxWidth},iw)':-2,format=gbrp,split=4[a][b][c][d]`,
-    `[b]${WHITE},format=gbrp,extractplanes=r,${MASK_GROW}[w]`,
-    `[c]${NAVY},format=gbrp,extractplanes=r,${MASK_GROW}[n]`,
-    `[w][n]blend=all_mode=multiply,${MASK_GROW},${MASK_GROW},${MASK_GROW},${keep},format=gbrp,split=2[m][mv]`,
+    ...mask,
     '[mv]negate[v];[v]split=2[v1][v2]',
     '[d][v1]blend=all_mode=multiply,boxblur=20:3[num]',
     '[v2]boxblur=20:3[den]',
@@ -111,10 +121,10 @@ function textRegion({x, y, w}) {
   return {x0: Math.max(0, x - 0.04), x1: Math.min(1, x + w + 0.04), y0: Math.max(0, y - 0.14)}
 }
 
-function screenshotArgs({video, time, maxWidth, censorSubs = false, cover = null}) {
+function screenshotArgs({video, time, maxWidth, censorSubs = false, cover = null, key = null}) {
   requireAbsolute(video)
   const box = normalizeCover(cover)
-  const filter = censorSubs ? ['-filter_complex', censorFilter(maxWidth, box ? textRegion(box) : null), '-map', '[o]']
+  const filter = censorSubs ? ['-filter_complex', censorFilter(maxWidth, box ? textRegion(box) : null, 'o', normalizeKey(key)), '-map', '[o]']
     : box ? ['-filter_complex', coverFilter(maxWidth, box), '-map', '[o]']
     : ['-vf', `scale='min(${maxWidth},iw)':-2`]
   return [
@@ -143,8 +153,8 @@ async function extractAudio({video, start, end, padStart = 0.15, padEnd = 0.25, 
   }
 }
 
-async function screenshot({video, time, maxWidth = 640, censorSubs = false, cover = null}) {
-  return runFfmpeg(screenshotArgs({video, time, maxWidth, censorSubs, cover}))
+async function screenshot({video, time, maxWidth = 640, censorSubs = false, cover = null, key = null}) {
+  return runFfmpeg(screenshotArgs({video, time, maxWidth, censorSubs, cover, key}))
 }
 
 const SILENCE_TRIM = 'areverse,silenceremove=start_periods=1:start_threshold=-50dB,areverse'

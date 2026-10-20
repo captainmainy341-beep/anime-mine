@@ -2,6 +2,7 @@ import { coverToPixels, expandCover, pictureRect, rectFromDrag, sourceBand } fro
 import { findCueIndex, neighborIndex } from './lib/cues.mjs';
 import { furigana } from './lib/furigana.mjs';
 import { tokenizeCached } from './lib/nlp.mjs';
+import { addKeyColor, dilateMask, keyMask, maskToRgba, setKeyTolerance } from './lib/subKey.mjs';
 import {
   audioLabel,
   createGeneration,
@@ -18,10 +19,14 @@ import {
 import { toSegments } from './lib/segments.mjs';
 import { attempt, fill, h, toast } from './lib/ui.mjs';
 import { createPopup } from './popup.mjs';
+import { withIcon } from './lib/doodleIcons.mjs';
 
 const api = window.api;
 
 const SAVE_INTERVAL_MS = 5000;
+const KEY_MAX_WIDTH = 960;
+const KEY_MASK_RADIUS = 2;
+const WAND_PREVIEW = 'rgba(255, 0, 200, 0.75)';
 const KEYS_HELP =
   'Space play/pause · ←/→ previous/next line · R replay line · L loop line · [/] subtitle offset · M mine word or sentence · Shift+M mine sentence · Esc close';
 
@@ -84,6 +89,9 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
   let lastWord = null;
   const toggleControls = [];
   let cover = null;
+  let key = null;
+  let wand = false;
+  let coverMenuOpen = false;
   let editing = false;
   let coverSuppressed = false;
   let dragStart = null;
@@ -92,6 +100,10 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
   const video = h('video', { controls: true, preload: 'metadata' });
   const overlay = h('div', { class: 'subtitle-overlay' });
   const coverCanvas = h('canvas', { class: 'cover-canvas', hidden: true });
+  const keyCanvas = document.createElement('canvas');
+  const pixelCanvas = document.createElement('canvas');
+  pixelCanvas.width = 1;
+  pixelCanvas.height = 1;
   const coverDraft = h('div', { class: 'cover-draft', hidden: true });
   const coverLayer = h('div', { class: 'cover-layer' }, coverCanvas, coverDraft);
   const codecError = h(
@@ -116,8 +128,34 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
   const cueList = h('ol', { class: 'cue-list' });
   const ankiChip = h('span', { class: 'chip' }, 'Anki…');
   const subsButton = h('button', { class: 'ghost small', onclick: toggleSubs }, 'Subtitles on');
-  const coverButton = h('button', { class: 'ghost small toggle', onclick: toggleCoverEdit }, 'Cover subs');
-  const clearCoverButton = h('button', { class: 'ghost small', hidden: true, onclick: clearCover }, 'Clear cover');
+  const coverButton = h('button', { class: 'ghost small toggle', onclick: toggleCoverMenu }, 'Cover subs');
+  const boxButton = h('button', { class: 'ghost small toggle', onclick: toggleCoverEdit }, 'Box');
+  const clearCoverButton = h('button', { class: 'ghost small', hidden: true, onclick: clearCover }, 'Remove');
+  const coverHint = h('p', { class: 'cover-hint' });
+  const wandButton = h(
+    'button',
+    { class: 'ghost small toggle', hidden: true, title: 'Click a subtitle letter (and its outline) to cover only those pixels', onclick: toggleWand },
+    'Wand',
+  );
+  const wandTolerance = h('input', {
+    type: 'range',
+    class: 'wand-tolerance',
+    min: '4',
+    max: '96',
+    step: '1',
+    hidden: true,
+    title: 'Wand tolerance',
+    oninput: onToleranceInput,
+    onchange: onToleranceChange,
+  });
+  const clearKeyButton = h('button', { class: 'ghost small', hidden: true, onclick: clearKey }, 'Reset colours');
+  const coverMenu = h(
+    'div',
+    { class: 'cover-menu', hidden: true },
+    coverHint,
+    h('div', { class: 'cover-menu-row' }, boxButton, wandButton, clearCoverButton),
+    h('div', { class: 'cover-menu-row' }, wandTolerance, clearKeyButton),
+  );
   const offsetChip = h('button', { class: 'chip', hidden: true, onclick: () => setSubOffset(0) }, '');
   const syncedChip = h('span', { class: 'chip', hidden: true }, 'Auto-synced');
   const audioSelect = h('select', { class: 'track-select', hidden: true, onchange: (e) => changeAudio(Number(e.target.value)) });
@@ -152,8 +190,10 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
   function onKey(e) {
     if (isTypingTarget(e.target) || e.ctrlKey || e.metaKey || e.altKey) return;
     const name = e.key.toLowerCase();
-    if (editing && name === 'escape') {
+    if ((editing || wand || coverMenuOpen) && name === 'escape') {
       e.preventDefault();
+      coverMenuOpen = false;
+      wand = false;
       setEditing(false);
       return;
     }
@@ -170,7 +210,7 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
       h(
         'header',
         { class: 'player-head' },
-        h('button', { class: 'ghost small', onclick: onBack }, '← Library'),
+        h('button', { class: 'ghost small', onclick: onBack }, withIcon('back', 'Library')),
         h('h2', { class: 'player-title', title: episode.name }, episode.name),
         h(
           'div',
@@ -184,7 +224,6 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
           syncedChip,
           subsButton,
           coverButton,
-          clearCoverButton,
         ),
       ),
       h(
@@ -193,7 +232,7 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
         h(
           'div',
           { class: 'stage' },
-          h('div', { class: 'video-wrap' }, video, coverLayer, overlay, prepareCard, codecError),
+          h('div', { class: 'video-wrap' }, video, coverLayer, coverMenu, overlay, prepareCard, codecError),
           h('div', { class: 'tracks' }, audioSelect, subSelect),
           noSubs,
           nextButton,
@@ -262,8 +301,31 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
   }
 
   function syncCoverUi() {
+    coverMenu.hidden = !coverMenuOpen;
+    coverButton.classList.toggle('on', coverMenuOpen || cover !== null);
+    boxButton.classList.toggle('on', editing);
     clearCoverButton.hidden = !cover;
-    coverButton.classList.toggle('on', editing);
+    wandButton.hidden = !cover;
+    wandButton.classList.toggle('on', wand);
+    wandTolerance.hidden = !(wand && key);
+    if (key) wandTolerance.value = String(key.tolerance);
+    clearKeyButton.hidden = !(wand && key);
+    coverMenu.querySelectorAll('.cover-menu-row').forEach((row) => {
+      row.hidden = [...row.children].every((child) => child.hidden);
+    });
+    coverHint.textContent = wand
+      ? key ? 'Click more letters or outlines. Slide to fine-tune.' : 'Pause, then click a subtitle letter.'
+      : editing ? 'Drag a box over the subtitles.' : 'Subtitles are covered.';
+    coverLayer.classList.toggle('editing', editing || wand);
+  }
+
+  function toggleCoverMenu() {
+    coverMenuOpen = !coverMenuOpen;
+    editing = coverMenuOpen && !cover;
+    wand = false;
+    cancelDrag();
+    syncCoverUi();
+    drawCover();
   }
 
   function toggleCoverEdit() {
@@ -272,13 +334,63 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
 
   function setEditing(on) {
     editing = on;
+    if (on) wand = false;
     cancelDrag();
-    coverLayer.classList.toggle('editing', on);
     syncCoverUi();
+    drawCover();
+  }
+
+  function toggleWand() {
+    wand = !wand;
+    if (wand) editing = false;
+    cancelDrag();
+    syncCoverUi();
+    drawCover();
+  }
+
+  function clearKey() {
+    attempt(() => saveKey(null));
+  }
+
+  async function saveKey(next) {
+    const saved = await api.settings.set({ subtitleKey: next });
+    key = saved?.subtitleKey ?? next;
+    syncCoverUi();
+    drawCover();
+  }
+
+  function onToleranceInput() {
+    if (!key) return;
+    key = setKeyTolerance(key, Number(wandTolerance.value));
+    drawCover();
+  }
+
+  function onToleranceChange() {
+    if (key) attempt(() => saveKey(key));
+  }
+
+  function sampleWand(e) {
+    if (e.button !== 0 || !video.videoWidth) return;
+    const pic = currentPicture();
+    const point = coverPoint(e);
+    const fx = (point.x - pic.left) / pic.width;
+    const fy = (point.y - pic.top) / pic.height;
+    if (fx < 0 || fx > 1 || fy < 0 || fy > 1) return;
+    const px = Math.min(video.videoWidth - 1, Math.floor(fx * video.videoWidth));
+    const py = Math.min(video.videoHeight - 1, Math.floor(fy * video.videoHeight));
+    const ctx = pixelCanvas.getContext('2d', { willReadFrequently: true });
+    ctx.drawImage(video, px, py, 1, 1, 0, 0, 1, 1);
+    const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data;
+    attempt(() => saveKey(addKeyColor(key, [r, g, b])));
   }
 
   function clearCover() {
-    attempt(() => saveCover(null));
+    wand = false;
+    editing = false;
+    attempt(async () => {
+      await saveKey(null);
+      await saveCover(null);
+    });
   }
 
   async function saveCover(next) {
@@ -298,6 +410,10 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
   }
 
   function onCoverDown(e) {
+    if (wand) {
+      sampleWand(e);
+      return;
+    }
     if (!editing || e.button !== 0 || !video.videoWidth) return;
     dragStart = coverPoint(e);
     coverLayer.setPointerCapture(e.pointerId);
@@ -349,12 +465,40 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
     const band = sourceBand(area, video.videoWidth, video.videoHeight);
     const ctx = coverCanvas.getContext('2d');
     ctx.clearRect(0, 0, width, height);
+    coverCanvas.classList.toggle('keyed', key !== null);
+    if (key && wand) {
+      ctx.fillStyle = WAND_PREVIEW;
+      ctx.fillRect(0, 0, width, height);
+    } else {
+      ctx.save();
+      ctx.filter = 'blur(14px)';
+      ctx.translate(0, height);
+      ctx.scale(1, -1);
+      const pad = 28;
+      ctx.drawImage(video, band.sx, band.sy, band.sw, band.sh, -pad, -pad, width + pad * 2, height + pad * 2);
+      ctx.restore();
+    }
+    if (key) keepKeyedPixels(ctx, area, width, height);
+  }
+
+  // Keeps the cover only where the frame matches the wand's key colours, so everything else in the box shows through.
+  function keepKeyedPixels(ctx, area, width, height) {
+    const sw = area.w * video.videoWidth;
+    const sh = area.h * video.videoHeight;
+    const scale = Math.min(1, KEY_MAX_WIDTH / sw);
+    const kw = Math.max(1, Math.round(sw * scale));
+    const kh = Math.max(1, Math.round(sh * scale));
+    if (keyCanvas.width !== kw) keyCanvas.width = kw;
+    if (keyCanvas.height !== kh) keyCanvas.height = kh;
+    const kctx = keyCanvas.getContext('2d', { willReadFrequently: true });
+    kctx.drawImage(video, area.x * video.videoWidth, area.y * video.videoHeight, sw, sh, 0, 0, kw, kh);
+    const pixels = kctx.getImageData(0, 0, kw, kh);
+    const mask = dilateMask(keyMask(pixels.data, kw, kh, key), kw, kh, KEY_MASK_RADIUS);
+    kctx.putImageData(new ImageData(maskToRgba(mask, [0, 0, 0], pixels.data), kw, kh), 0, 0);
     ctx.save();
-    ctx.filter = 'blur(14px)';
-    ctx.translate(0, height);
-    ctx.scale(1, -1);
-    const pad = 28;
-    ctx.drawImage(video, band.sx, band.sy, band.sw, band.sh, -pad, -pad, width + pad * 2, height + pad * 2);
+    ctx.globalCompositeOperation = 'destination-in';
+    ctx.filter = 'blur(1px)';
+    ctx.drawImage(keyCanvas, 0, 0, width, height);
     ctx.restore();
   }
 
@@ -378,6 +522,7 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
     if (!alive) return;
     syncToggles();
     cover = settings.subtitleCover ?? null;
+    key = settings.subtitleKey ?? null;
     syncCoverUi();
     const probe = await api.media.probe(episode.path);
     if (!alive) return;

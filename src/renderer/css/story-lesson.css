@@ -43,7 +43,7 @@
 .lesson-hook { font-size:17px; line-height:1.65; color:var(--text); margin:0; }
 .lesson-goals { list-style:none; margin:0; padding:0; display:grid; gap:8px; }
 .lesson-goals li { padding:10px 14px 10px 40px; background:var(--panel-2); border:1px solid var(--line); border-radius:12px; position:relative; }
-.lesson-goals li::before { content:'✦'; position:absolute; left:14px; color:var(--accent); }
+.lesson-goals li::before { content:''; position:absolute; left:15px; top:17px; width:12px; height:1.5px; background:var(--accent); border-radius:2px; }
 .lesson-facts { display:flex; flex-wrap:wrap; gap:8px; }
 .lesson-facts span { padding:5px 12px; border-radius:16px; background:var(--accent-soft); color:var(--accent); font-size:13px; }
 .lesson-note { color:var(--muted); font-size:12px; margin:0; }

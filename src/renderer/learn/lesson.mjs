@@ -3,6 +3,7 @@ import { rubyNode } from './ruby.mjs';
 import { typedKana } from './vn/challenge.mjs';
 import { characterSvg } from './vn/defaultSkin.mjs';
 import { createLessonRun, createMatchGame, exampleChunks, formulaChips, lessonSummaryLine, mulberry32, orderTiles, sectionSpans, shuffledPick, startablePoints, tutorLine } from './lessonModel.mjs';
+import { doodle, withIcon } from '../lib/doodleIcons.mjs';
 
 const button = (label, onclick, className = 'story-btn', props = {}) => h('button', { type: 'button', class: className, onclick, ...props }, label);
 const MOODS = { good: 'smile', bad: 'sad', idle: 'neutral', cheer: 'surprised' };
@@ -35,7 +36,7 @@ export function mountLesson(host, ctx, { data, tutor = { char: 'hana', color: '#
   const root = h(
     'section',
     { class: 'lesson', 'aria-label': `Lesson ${lesson.lesson}: ${lesson.title}` },
-    h('header', { class: 'lesson-top' }, button('✕', leave, 'lesson-close', { 'aria-label': 'Leave the lesson', title: 'Leave (Esc)' }), bar, xp, streak),
+    h('header', { class: 'lesson-top' }, button(doodle('close'), leave, 'lesson-close', { 'aria-label': 'Leave the lesson', title: 'Leave (Esc)' }), bar, xp, streak),
     body,
     h('footer', { class: 'lesson-foot' }, h('div', { class: 'lesson-tutor' }, avatar), h('div', { class: 'lesson-mid' }, bubble, feedback), go),
   );
@@ -80,8 +81,8 @@ export function mountLesson(host, ctx, { data, tutor = { char: 'hana', color: '#
     bar.setAttribute('aria-valuenow', String(percent));
     const spans = sectionSpans(run.steps);
     fill(barTicks, spans.map((s) => h('span', { style: `left:${(s.from / (run.steps.length - 1)) * 100}%` }, s.label)));
-    xp.textContent = `⚡ ${run.stats.xp}`;
-    streak.textContent = `🔥 ${run.stats.streak}`;
+    fill(xp, withIcon('bolt', String(run.stats.xp)));
+    fill(streak, withIcon('flame', String(run.stats.streak)));
     streak.classList.toggle('hot', run.stats.streak >= 3);
   }
 
@@ -129,7 +130,7 @@ export function mountLesson(host, ctx, { data, tutor = { char: 'hana', color: '#
           h('span', {}, h('b', {}, String(lesson.vocab.length)), ' words'),
           h('span', {}, h('b', {}, String(lesson.points.length)), ' patterns'),
           h('span', {}, h('b', {}, String(lesson.drills.length)), ' exercises'),
-          h('span', {}, '≈ ', h('b', {}, String(lesson.minutes)), ' min')),
+          h('span', {}, 'about ', h('b', {}, String(lesson.minutes)), ' min')),
         h('p', { class: 'lesson-note' }, 'Nothing here counts as a review. It is a warm-up so the story scene feels easy.'),
       ),
       'intro',
@@ -143,11 +144,11 @@ export function mountLesson(host, ctx, { data, tutor = { char: 'hana', color: '#
     const cards = step.words.map((word, i) => {
       const card = h('div', { class: 'lesson-card', role: 'button', tabindex: '0', 'aria-pressed': 'false', 'aria-label': `${word.ja}, ${word.reading}: tap to see the meaning`, style: `--i:${i}` },
         h('div', { class: 'face front' },
-          h('span', { class: 'emoji', 'aria-hidden': 'true' }, word.emoji ?? '✦'),
+          h('span', { class: 'emoji', 'aria-hidden': 'true' }, doodle('spark')),
           h('span', { class: 'ja', lang: 'ja' }, word.ja),
           word.reading !== word.ja ? h('span', { class: 'kana', lang: 'ja' }, word.reading) : null),
         h('div', { class: 'face back' }, h('span', { class: 'en' }, word.en), h('span', { class: 'ja-small', lang: 'ja' }, word.ja)),
-        h('button', { type: 'button', class: 'lesson-speak', 'aria-label': `Hear ${word.ja}`, onclick: (event) => { event.stopPropagation(); ctx.speak?.(word.reading || word.ja); } }, '🔊'));
+        h('button', { type: 'button', class: 'lesson-speak', 'aria-label': `Hear ${word.ja}`, onclick: (event) => { event.stopPropagation(); ctx.speak?.(word.reading || word.ja); } }, doodle('sound')));
       const flip = () => {
         const on = !card.classList.contains('flipped');
         card.classList.toggle('flipped', on);
@@ -214,7 +215,7 @@ export function mountLesson(host, ctx, { data, tutor = { char: 'hana', color: '#
         paintPending();
         if (out.done) {
           const clean = game.misses === 0;
-          setTutor(clean ? 'cheer' : 'good', clean ? 'Perfect round! ✨' : tutorLine('good', game.misses));
+          setTutor(clean ? 'cheer' : 'good', clean ? 'Perfect round!' : tutorLine('good', game.misses));
           status.textContent = clean ? 'All matched with no mistakes.' : `All matched. ${game.misses} slip${game.misses === 1 ? '' : 's'}.`;
           setAction('Continue', () => {
             run.finishMatch(game.misses);
@@ -274,11 +275,11 @@ export function mountLesson(host, ctx, { data, tutor = { char: 'hana', color: '#
         const out = await api.learn(point.id);
         if (out.started) {
           items[point.id].state = 'started';
-          adder.replaceWith(h('span', { class: 'lesson-added' }, '✓ In your reviews'));
+          adder.replaceWith(h('span', { class: 'lesson-added' }, withIcon('check', 'In your reviews')));
           toast(`${point.title} added to your reviews`);
         } else toast('Could not start this one yet', 'error');
       }), 'story-chip lesson-add', { title: 'Start this grammar point in your SRS reviews' })
-      : state === 'started' ? h('span', { class: 'lesson-added' }, '✓ In your reviews') : null;
+      : state === 'started' ? h('span', { class: 'lesson-added' }, withIcon('check', 'In your reviews')) : null;
 
     swap(
       h('div', { class: 'lesson-concept' },
@@ -294,13 +295,13 @@ export function mountLesson(host, ctx, { data, tutor = { char: 'hana', color: '#
           chunksEl,
           enEl,
           h('div', { class: 'lesson-theater-controls' },
-            button('◀', () => showExample(exampleIndex - 1), 'story-chip', { 'aria-label': 'Previous example' }),
+            button(doodle('back'), () => showExample(exampleIndex - 1), 'story-chip', { 'aria-label': 'Previous example' }),
             dots,
-            button('▶', () => showExample(exampleIndex + 1), 'story-chip', { 'aria-label': 'Next example' }),
-            button('🔊', speakExample, 'story-chip', { 'aria-label': 'Hear it' }),
-            button('↻', () => showExample(exampleIndex), 'story-chip', { 'aria-label': 'Replay animation' }))),
-        point.tip ? h('p', { class: 'lesson-callout tip' }, h('b', {}, '💡 Tip '), point.tip) : null,
-        point.watch ? h('p', { class: 'lesson-callout watch' }, h('b', {}, '⚠️ Watch out '), point.watch) : null,
+            button(doodle('next'), () => showExample(exampleIndex + 1), 'story-chip', { 'aria-label': 'Next example' }),
+            button(doodle('sound'), speakExample, 'story-chip', { 'aria-label': 'Hear it' }),
+            button(doodle('replay'), () => showExample(exampleIndex), 'story-chip', { 'aria-label': 'Replay animation' }))),
+        point.tip ? h('p', { class: 'lesson-callout tip' }, h('b', {}, withIcon('bulb', 'Tip')), point.tip) : null,
+        point.watch ? h('p', { class: 'lesson-callout watch' }, h('b', {}, withIcon('warn', 'Watch out')), point.watch) : null,
       ),
       'concept',
     );
@@ -325,7 +326,7 @@ export function mountLesson(host, ctx, { data, tutor = { char: 'hana', color: '#
       bubble.hidden = true;
       feedback.hidden = false;
       feedback.className = `lesson-feedback ${result.ok ? 'ok' : 'bad'}`;
-      fill(feedback, h('strong', {}, result.ok ? `✓ ${word}` : `✗ Answer: ${result.expected}`), drill.why ? h('p', {}, drill.why) : null);
+      fill(feedback, h('strong', {}, result.ok ? withIcon('check', word) : withIcon('close', `Answer: ${result.expected}`)), drill.why ? h('p', {}, drill.why) : null);
       drawChrome();
       setAction('Continue', next, { tone: result.ok ? 'primary ok' : 'primary bad' });
       go.focus();
@@ -416,7 +417,7 @@ export function mountLesson(host, ctx, { data, tutor = { char: 'hana', color: '#
         const out = await api.learn(point.id);
         if (out.started) {
           items[point.id].state = 'started';
-          btn.textContent = `✓ ${point.title}`;
+          fill(btn, withIcon('check', point.title));
           btn.disabled = true;
           toast(`${point.title} added to your reviews`);
         }
@@ -427,13 +428,13 @@ export function mountLesson(host, ctx, { data, tutor = { char: 'hana', color: '#
       h('div', { class: 'lesson-done' },
         confetti,
         h('span', { class: 'story-level' }, 'Lesson complete'),
-        h('h1', {}, `${lesson.title} ✓`),
+        h('h1', {}, lesson.title, ' ', doodle('check')),
         h('div', { class: 'lesson-results' },
           h('div', {}, h('b', {}, String(summary.words)), h('span', {}, 'words met')),
           h('div', {}, h('b', {}, String(lesson.points.length)), h('span', {}, 'patterns')),
           h('div', {}, h('b', {}, `${summary.accuracy}%`), h('span', {}, 'first-try')),
           h('div', {}, h('b', {}, String(summary.xp)), h('span', {}, 'XP'))),
-        summary.bestStreak >= 3 ? h('p', { class: 'lesson-sub' }, `Best streak: ${summary.bestStreak} in a row 🔥`) : null,
+        summary.bestStreak >= 3 ? h('p', { class: 'lesson-sub' }, withIcon('flame', `Best streak: ${summary.bestStreak} in a row`)) : null,
         reviewButtons.length ? h('div', { class: 'lesson-review' }, h('p', { class: 'lesson-sub' }, 'Want these in your spaced-repetition reviews?'), h('div', { class: 'story-card-actions' }, reviewButtons)) : null,
         h('div', { class: 'story-card-actions lesson-done-actions' },
           button('Practice again', () => { run = createLessonRun(lesson); saved = false; render(); }, 'story-btn'),
@@ -441,7 +442,7 @@ export function mountLesson(host, ctx, { data, tutor = { char: 'hana', color: '#
       ),
       'done',
     );
-    setAction('Start the story ▶', onStory);
+    setAction('Start the story', onStory);
     go.classList.add('pulse');
   }
 

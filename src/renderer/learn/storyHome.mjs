@@ -1,6 +1,7 @@
 import { fill, h } from '../lib/ui.mjs';
 import { backgroundFor, backgroundSvg, characterSvg } from './vn/defaultSkin.mjs';
 import { continueRow, currentSeason, featured, genkiRows, heroCopy, isDone, nudges, seasonRows, sheetActions, statusLabel, storyProgress, tileProgress, titleParts } from './storyHomeModel.mjs';
+import { doodle, withIcon } from '../lib/doodleIcons.mjs';
 
 const ROTATE_MS = 9000;
 const button = (label, onclick, className = 'story-btn', props = {}) => h('button', { type: 'button', class: className, onclick, ...props }, label);
@@ -120,10 +121,10 @@ export function mountHome(root, list, actions) {
           h('span', { class: 'nf-eyebrow' }, copy.eyebrow),
           h('h2', { class: 'nf-hero-title', lang: 'ja' }, copy.title),
           h('p', { class: 'nf-hero-sum' }, copy.summary),
-          h('div', { class: 'nf-meta' }, meta.map((m) => h('span', {}, m)), done ? h('span', { class: 'ok' }, '✓ Completed') : null),
+          h('div', { class: 'nf-meta' }, meta.map((m) => h('span', {}, m)), done ? h('span', { class: 'ok' }, withIcon('check', 'Completed')) : null),
           h('div', { class: 'nf-hero-actions' },
-            button(`▶  ${copy.cta}`, () => (item.kind === 'genki' && !item.scene.primer?.done ? actions.onLesson(item.scene.id) : actions.onPlay(item.scene.id)), 'nf-play'),
-            button('ⓘ  More info', () => openSheet(item.scene), 'nf-info'))),
+            button(withIcon('play', copy.cta), () => (item.kind === 'genki' && !item.scene.primer?.done ? actions.onLesson(item.scene.id) : actions.onPlay(item.scene.id)), 'nf-play'),
+            button(withIcon('info', 'More info'), () => openSheet(item.scene), 'nf-info'))),
       );
     });
     const dots = items.length > 1 ? h('div', { class: 'nf-dots', role: 'tablist', 'aria-label': 'Featured' }, items.map((_, i) => h('button', { type: 'button', class: `nf-dot${i === 0 ? ' on' : ''}`, role: 'tab', 'aria-label': `Featured ${i + 1}`, onclick: () => show(i) }, h('i', {})))) : null;
@@ -184,10 +185,10 @@ export function mountHome(root, list, actions) {
       h('div', { class: 'nf-tile-shade' }),
       h('span', { class: 'nf-badge' }, label),
       up ? h('span', { class: 'nf-up' }, 'Up next') : null,
-      status === 'done' ? h('span', { class: 'nf-check', title: 'Completed' }, '✓') : null,
+      status === 'done' ? h('span', { class: 'nf-check', title: 'Completed' }, doodle('check')) : null,
       summary.primer ? h('div', { class: 'nf-steps', title: 'Learn first, then the story' },
-        h('span', { class: summary.primer.done ? 'on' : '' }, '① Learn'),
-        h('span', { class: isDone(summary) ? 'on' : '' }, '② Story')) : null,
+        h('span', { class: summary.primer.done ? 'on' : '' }, '1  Learn'),
+        h('span', { class: isDone(summary) ? 'on' : '' }, '2  Story')) : null,
       h('div', { class: 'nf-tile-info' },
         h('h3', { lang: 'ja' }, parts.name),
         h('p', {}, statusLabel(status) || summary.covers || `${summary.challenges} challenges`)),
@@ -195,8 +196,8 @@ export function mountHome(root, list, actions) {
       h('div', { class: 'nf-tile-hover' },
         h('p', {}, summary.summary || summary.covers || ''),
         h('div', { class: 'nf-tile-actions' },
-          button('▶', (event) => { event.stopPropagation(); (summary.primer && !summary.primer.done ? actions.onLesson : actions.onPlay)(summary.id); }, 'nf-round', { 'aria-label': summary.primer && !summary.primer.done ? 'Start lesson' : 'Play' }),
-          button('ⓘ', (event) => { event.stopPropagation(); open(); }, 'nf-round', { 'aria-label': 'More info' }))),
+          button(doodle('play'), (event) => { event.stopPropagation(); (summary.primer && !summary.primer.done ? actions.onLesson : actions.onPlay)(summary.id); }, 'nf-round', { 'aria-label': summary.primer && !summary.primer.done ? 'Start lesson' : 'Play' }),
+          button(doodle('info'), (event) => { event.stopPropagation(); open(); }, 'nf-round', { 'aria-label': 'More info' }))),
     );
     return el;
   }
@@ -233,7 +234,7 @@ export function mountHome(root, list, actions) {
   function buildAi() {
     const scenes = list.ai?.scenes ?? [];
     const plus = h('article', { class: 'nf-tile nf-plus', tabindex: '0', role: 'button', onclick: actions.onGenerate, onkeydown: (e) => { if (e.key === 'Enter') actions.onGenerate(); } },
-      h('div', { class: 'nf-plus-body' }, h('span', { class: 'nf-plus-mark' }, '✦'), h('h3', {}, 'Generate a side quest'), h('p', {}, 'Your AI provider writes a fresh scene around what you are studying. Saved, so replays are free.')));
+      h('div', { class: 'nf-plus-body' }, h('span', { class: 'nf-plus-mark' }, doodle('spark')), h('h3', {}, 'Generate a side quest'), h('p', {}, 'Your AI provider writes a fresh scene around what you are studying. Saved, so replays are free.')));
     return h('section', { class: 'nf-row', 'data-key': 'ai', style: '--accent-season:#c9a7ff' },
       h('header', { class: 'nf-row-head' }, h('div', {}, h('h2', {}, 'Side quests'), h('p', { class: 'nf-row-sub' }, 'Written for you by your AI provider.'))),
       h('div', { class: 'nf-track-wrap' }, h('div', { class: 'nf-track' }, scenes.map((s) => tile(s)), plus)));
@@ -246,7 +247,7 @@ export function mountHome(root, list, actions) {
     const tiles = pictures.map((p) => {
       const on = unlocked.has(p.id);
       const el = h('figure', { class: `nf-cg${on ? ' on' : ''}`, title: on ? p.title : 'Finish the scene to unlock' }, artNode(p.scene, { cast: 2, expr: 'smile' }), h('figcaption', {}, on ? p.title : '???'));
-      if (!on) el.append(h('span', { class: 'nf-lock', 'aria-hidden': 'true' }, '🔒'));
+      if (!on) el.append(h('span', { class: 'nf-lock', 'aria-hidden': 'true' }, doodle('lock')));
       return el;
     });
     return h('section', { class: 'nf-row', 'data-key': 'gallery', style: '--accent-season:#f38bb0' },
@@ -287,21 +288,21 @@ export function mountHome(root, list, actions) {
     const steps = primer
       ? h('div', { class: 'nf-sheet-steps' },
         h('div', { class: `nf-step${primer.done ? ' done' : ' now'}` },
-          h('span', { class: 'n' }, primer.done ? '✓' : '1'),
+          h('span', { class: 'n' }, primer.done ? doodle('check') : '1'),
           h('div', {}, h('strong', {}, 'Learn first'), h('p', {}, `${primer.words} words · ${primer.patterns} patterns · ${primer.drills} exercises · about ${primer.minutes} min`), primer.done ? h('small', {}, `Best first-try: ${Math.round(primer.accuracy * 100)}%`) : null)),
         h('div', { class: `nf-step${isDone(summary) ? ' done' : primer.done ? ' now' : ''}` },
-          h('span', { class: 'n' }, isDone(summary) ? '✓' : '2'),
+          h('span', { class: 'n' }, isDone(summary) ? doodle('check') : '2'),
           h('div', {}, h('strong', {}, 'Play the story'), h('p', {}, `${summary.beats} beats · ${summary.challenges} challenges that use what you just learned`))))
       : null;
     const play = () => { close(); actions.onPlay(summary.id); };
     const fresh = () => { close(); actions.onRestart(summary.id); };
     const lesson = () => { close(); actions.onLesson(summary.id); };
     const buttons = h('div', { class: 'nf-sheet-actions' },
-      act.lesson ? button(`📖  ${act.lesson}`, lesson, act.lessonPrimary ? 'nf-play' : 'nf-info') : null,
-      button(`▶  ${act.play}`, play, act.playPrimary ? 'nf-play' : 'nf-info'),
+      act.lesson ? button(withIcon('book', act.lesson), lesson, act.lessonPrimary ? 'nf-play' : 'nf-info') : null,
+      button(withIcon('play', act.play), play, act.playPrimary ? 'nf-play' : 'nf-info'),
       act.restart ? button(act.restart, fresh, 'nf-info') : null);
     const dialog = h('div', { class: 'nf-sheet', role: 'dialog', 'aria-modal': 'true', 'aria-label': parts.name, style: `--accent-season:${accent}` },
-      h('div', { class: 'nf-sheet-hero' }, artNode(summary, { cast: 3 }), h('div', { class: 'nf-shade' }), button('✕', close, 'nf-sheet-x', { 'aria-label': 'Close' }),
+      h('div', { class: 'nf-sheet-hero' }, artNode(summary, { cast: 3 }), h('div', { class: 'nf-shade' }), button(doodle('close'), close, 'nf-sheet-x', { 'aria-label': 'Close' }),
         h('div', { class: 'nf-copy' }, h('span', { class: 'nf-eyebrow' }, summary.lesson ? `Genki path · Lesson ${summary.lesson}` : `${summary.jlpt} · ${parts.label}`), h('h2', { class: 'nf-hero-title', lang: 'ja' }, parts.name))),
       h('div', { class: 'nf-sheet-body' },
         h('div', { class: 'nf-sheet-main' },
@@ -312,7 +313,7 @@ export function mountHome(root, list, actions) {
         h('aside', { class: 'nf-sheet-side' },
           grammar.length ? h('div', {}, h('h3', {}, 'Grammar you will use'), h('div', { class: 'nf-learn' }, chips(grammar))) : null,
           kanji.length ? h('div', {}, h('h3', {}, 'Kanji you will read'), h('div', { class: 'nf-learn' }, chips(kanji))) : null,
-          summary.pictures?.length ? h('p', { class: 'nf-sheet-pic' }, `🖼  Unlocks: ${summary.pictures.map((p) => p.title).join(', ')}`) : null)),
+          summary.pictures?.length ? h('p', { class: 'nf-sheet-pic' }, withIcon('image', `Unlocks: ${summary.pictures.map((p) => p.title).join(', ')}`)) : null)),
     );
     const backdrop = h('div', { class: 'nf-backdrop', onclick: (event) => { if (event.target === backdrop) close(); } }, dialog);
     const onKey = (event) => { if (event.key === 'Escape') { event.stopPropagation(); close(); } };

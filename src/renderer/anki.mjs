@@ -1,4 +1,5 @@
 import { attempt, fill, h, toast } from './lib/ui.mjs';
+import { withIcon } from './lib/doodleIcons.mjs';
 import { mountDeckOptions } from './lib/ankiDeckOptions.mjs';
 import { currentPreset } from './lib/ankiOptionsModel.mjs';
 import { grammarPanel } from './lib/grammarPanel.mjs';
@@ -489,7 +490,7 @@ export function mountAnki(container) {
       h('div', { class: 'anki-lab' }, 'Mined this week'),
       h('div', { class: 'big-num' }, String(o.minedThisWeek ?? 0), h('small', {}, ' cards')),
       h('div', { class: 'anki-sub' }, recent || 'Cards you mine from the player appear here.'),
-      h('div', { class: 'card-foot' }, button('See all mined ▸', () => switchTab('mined'), 'ghost small')),
+      h('div', { class: 'card-foot' }, button(withIcon('right', 'See all mined').reverse(), () => switchTab('mined'), 'ghost small')),
     );
   }
 
@@ -653,7 +654,7 @@ export function mountAnki(container) {
     studyUI = {
       frame: h('iframe', { class: 'study-card', sandbox: '', title: 'Study card', tabindex: '-1' }),
       remaining: h('span', { class: 'anki-sub study-remaining' }),
-      replay: button('▶ Replay', () => {
+      replay: button(withIcon('play', 'Replay'), () => {
         const audio = state.study.cards[state.study.index]?.audio;
         if (audio) playStudyAudio(audio);
       }, 'ghost small'),

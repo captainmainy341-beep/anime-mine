@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
+  blockFontSize,
   clampZoom,
   createPager,
   cropRect,
@@ -8,6 +9,7 @@ import {
   fitViewport,
   hitTestBlock,
   nextVolume,
+  placeBubble,
   preloadWindow,
   previousVolume,
   progressLabel,
@@ -265,4 +267,77 @@ test('previousVolume returns the preceding volume or null at the start', () => {
   assert.deepEqual(previousVolume(series, 'c'), { id: 'b' });
   assert.equal(previousVolume(series, 'a'), null);
   assert.equal(previousVolume(series, 'missing'), null);
+});
+
+const viewport = { left: 100, top: 50, right: 900, bottom: 650 };
+const anchorAt = (left, top, w = 40, h = 80) => ({ left, top, right: left + w, bottom: top + h });
+
+test('placeBubble prefers the left of the anchor, relative to the viewport', () => {
+  const out = placeBubble(anchorAt(600, 200), { width: 300, height: 150 }, viewport);
+  assert.deepEqual(out, { left: 600 - 8 - 300 - 100, top: 150, side: 'left' });
+});
+
+test('placeBubble falls back to right, then below, then above', () => {
+  const size = { width: 300, height: 150 };
+  assert.equal(placeBubble(anchorAt(150, 200), size, viewport).side, 'right');
+  assert.equal(placeBubble(anchorAt(150, 200), size, viewport).left, 150 + 40 + 8 - 100);
+  const wide = { left: 100, top: 50, right: 500, bottom: 650 };
+  const below = placeBubble(anchorAt(100, 100, 400, 100), { width: 350, height: 150 }, wide);
+  assert.equal(below.side, 'below');
+  assert.equal(below.top, 100 + 100 + 8 - 50);
+  const above = placeBubble(anchorAt(100, 480, 400, 100), { width: 350, height: 150 }, wide);
+  assert.equal(above.side, 'above');
+  assert.equal(above.top, 480 - 8 - 150 - 50);
+});
+
+test('placeBubble clamps inside the viewport', () => {
+  const vertical = placeBubble(anchorAt(600, 600), { width: 200, height: 150 }, viewport);
+  assert.equal(vertical.side, 'left');
+  assert.equal(vertical.top, 650 - 150 - 50);
+  const topEdge = placeBubble(anchorAt(600, 0), { width: 200, height: 150 }, viewport);
+  assert.equal(topEdge.top, 0);
+  const huge = placeBubble(anchorAt(300, 300), { width: 2000, height: 2000 }, viewport);
+  assert.equal(huge.left, 0);
+  assert.equal(huge.top, 0);
+  for (const a of [anchorAt(100, 50), anchorAt(860, 570), anchorAt(0, 0), anchorAt(1000, 700)]) {
+    const out = placeBubble(a, { width: 340, height: 220 }, viewport);
+    assert.ok(out.left >= 0 && out.left + 340 <= 800, `left ${out.left}`);
+    assert.ok(out.top >= 0 && out.top + 220 <= 600, `top ${out.top}`);
+  }
+});
+
+test('blockFontSize fills the box along the text direction', () => {
+  assert.equal(blockFontSize({ boxW: 40, boxH: 200, chars: 10, vertical: true, lines: 1 }), 19.8);
+  assert.equal(blockFontSize({ boxW: 200, boxH: 40, chars: 10, vertical: false, lines: 1 }), 19.8);
+  assert.equal(blockFontSize({ boxW: 62, boxH: 102, chars: 10, vertical: true, lines: 2 }), 20);
+  assert.equal(blockFontSize({ boxW: 200, boxH: 40, chars: 10, vertical: true, lines: 1 }), 8);
+});
+
+test('blockFontSize without lines picks the line count that fits the box', () => {
+  const size = blockFontSize({ boxW: 100, boxH: 100, chars: 20, vertical: true });
+  assert.ok(size > 8 && size < 64);
+  assert.equal(blockFontSize({ boxW: 3, boxH: 400, chars: 10, vertical: true }), 8);
+  assert.equal(blockFontSize({ boxW: 900, boxH: 900, chars: 1, vertical: false }), 64);
+  assert.equal(blockFontSize({ boxW: 0, boxH: 0, chars: 0 }), 8);
+});
+
+for (const vertical of [true, false]) {
+  test(`blockFontSize never needs more lines than fit (${vertical ? 'vertical' : 'horizontal'} 40x200 / 200x40, 10 chars)`, () => {
+    const [boxW, boxH] = vertical ? [40, 200] : [200, 40];
+    const along = (vertical ? boxH : boxW) - 2;
+    const across = (vertical ? boxW : boxH) - 2;
+    const size = blockFontSize({ boxW, boxH, chars: 10, vertical });
+    assert.ok(size >= 8);
+    const fits = [1, 2, 3, 4, 5, 10].filter((n) => Math.ceil(10 / n) * size <= along + 1e-6 && n * size * 1.1 <= across + 1e-6);
+    assert.ok(fits.length > 0, `size ${size} fits no line count`);
+    for (const n of [1, 2, 3, 4, 5, 10]) {
+      assert.ok(Math.min(across / (n * 1.1), along / Math.ceil(10 / n)) <= size + 0.05, `n=${n} would allow a larger font`);
+    }
+  });
+}
+
+test('blockFontSize rounds down so a dense vertical block never needs an extra column', () => {
+  const size = blockFontSize({ boxW: 40, boxH: 200, chars: 32, vertical: true });
+  const perColumn = Math.floor(198 / size);
+  assert.ok(Math.ceil(32 / perColumn) * size * 1.1 <= 38, `size ${size} overflows`);
 });
