@@ -12,6 +12,7 @@ import { attempt, h, fill, toast } from './lib/ui.mjs';
 const VIEWS = {
   home: mountHome,
   levels: mountLevels,
+  vocab: (el, ctx, arg) => mountLevels(el, ctx, tabArgs('vocab', arg)),
   item: mountItem,
   session: mountSession,
   grammar: mountGrammar,
@@ -21,16 +22,33 @@ const VIEWS = {
   settings: mountLearnSettings,
 };
 
-const TABS = [
+// The Learn tab strip (Manga Ink): Home, Kanji, Vocab, Grammar, Story, Stats, Settings. Kept as data so the tab
+// mapping can be tested without a DOM.
+export const LEARN_TABS = [
   ['home', 'Home'],
   ['levels', 'Kanji'],
+  ['vocab', 'Vocab'],
   ['grammar', 'Grammar'],
   ['story', 'Story'],
   ['stats', 'Stats'],
   ['settings', 'Settings'],
 ];
 
+const TABS = LEARN_TABS;
 const TAB_FOR_VIEW = { item: 'levels', point: 'grammar' };
+
+// Drill-downs keep the tab they came from (a kanji opened from Vocab keeps Vocab selected).
+export function viewTab(view, inherited) {
+  if (view === 'item') return inherited ?? TAB_FOR_VIEW.item;
+  return TAB_FOR_VIEW[view] ?? view;
+}
+
+// The Vocab tab is the same levels browser with type 'vocab'; See all passes { all: true } through untouched.
+export function tabArgs(tab, arg) {
+  if (tab === 'vocab') return { ...(arg ?? {}), type: 'vocab' };
+  if (tab === 'levels') return { ...(arg ?? {}), type: arg?.type ?? 'kanji' };
+  return arg;
+}
 
 function readPref(key, fallback) {
   const raw = localStorage.getItem(`learn.${key}`);
@@ -53,6 +71,7 @@ export function mountLearn(container, { onWatch }) {
     api,
     go,
     back,
+    canBack: () => stack.length > 1,
     toast,
     settings: null,
     reloadSettings,
@@ -100,7 +119,8 @@ export function mountLearn(container, { onWatch }) {
   }
 
   function go(view, arg) {
-    stack.push({ view, arg });
+    const from = current();
+    stack.push({ view, arg, tab: viewTab(view, tabOf(from)) });
     show();
   }
 
@@ -111,6 +131,10 @@ export function mountLearn(container, { onWatch }) {
 
   function current() {
     return stack.at(-1) ?? { view: 'home', arg: undefined };
+  }
+
+  function tabOf(entry) {
+    return entry?.tab ?? viewTab(entry?.view);
   }
 
   function show() {
@@ -126,7 +150,7 @@ export function mountLearn(container, { onWatch }) {
       return;
     }
     tabs.hidden = false;
-    const active = TAB_FOR_VIEW[view] ?? view;
+    const active = tabOf(current());
     fill(
       tabs,
       TABS.map(([key, label], index) =>
@@ -143,12 +167,12 @@ export function mountLearn(container, { onWatch }) {
               event.preventDefault();
               const next = event.key === 'Home' ? 0 : event.key === 'End' ? TABS.length - 1 : (index + (event.key === 'ArrowRight' ? 1 : TABS.length - 1)) % TABS.length;
               const nextKey = TABS[next][0]; stack.length = 0;
-              if (nextKey !== 'home') stack.push({ view:nextKey });
+              if (nextKey !== 'home') stack.push({ view:nextKey, tab:nextKey });
               show(); tabs.querySelector('[aria-selected="true"]')?.focus();
             },
             onclick: () => {
               stack.length = 0;
-              if (key !== 'home') stack.push({ view: key });
+              if (key !== 'home') stack.push({ view: key, tab: key });
               show();
             },
           },

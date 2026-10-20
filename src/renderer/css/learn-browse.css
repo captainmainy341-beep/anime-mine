@@ -473,3 +473,55 @@
   padding: 6px 8px;
   font: inherit;
 }
+
+/* ---------- Manga Ink: Kanji / Vocab Explore host and "See all" browse (slice S3) ---------- */
+.learn-explore-host {
+  display: block;
+  min-width: 0;
+}
+
+.learn-browse-loading {
+  margin: 0;
+  padding: 10px 0;
+  color: var(--ink-mute, var(--muted));
+  font-size: 15px;
+}
+
+.learn-browse-all {
+  gap: 18px;
+}
+
+/* Back link from the full browse to the Explore screen: caps label with the red rule used for links. */
+.learn-browse-explore {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: max-content;
+  padding: 1px 0 4px;
+  border: 0;
+  border-bottom: 3px solid var(--ink-red, #ff2e6e);
+  border-radius: 0;
+  background: none;
+  color: var(--ink, var(--text));
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.learn-browse-explore .doodle {
+  --doodle-stroke: 3;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+}
+
+.learn-browse-explore:hover:not(:disabled),
+.learn-browse-explore:focus-visible {
+  transform: none;
+  box-shadow: none;
+  background: none;
+  color: var(--ink, var(--text));
+}

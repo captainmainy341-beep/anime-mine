@@ -1,0 +1,79 @@
+{
+  "levelOverview": [
+    {
+      "level": 1,
+      "radicals": { "total": 4, "started": 4, "passed": 4 },
+      "kanji": { "total": 20, "started": 20, "passed": 19 },
+      "vocab": { "total": 20, "started": 20, "passed": 18 },
+      "current": false,
+      "locked": false
+    },
+    {
+      "level": 2,
+      "radicals": { "total": 3, "started": 3, "passed": 3 },
+      "kanji": { "total": 25, "started": 22, "passed": 18 },
+      "vocab": { "total": 10, "started": 8, "passed": 5 },
+      "current": false,
+      "locked": false
+    },
+    {
+      "level": 3,
+      "radicals": { "total": 3, "started": 1, "passed": 0 },
+      "kanji": { "total": 25, "started": 6, "passed": 2 },
+      "vocab": { "total": 30, "started": 7, "passed": 2 },
+      "current": true,
+      "locked": false
+    },
+    {
+      "level": 4,
+      "radicals": { "total": 0, "started": 0, "passed": 0 },
+      "kanji": { "total": 25, "started": 0, "passed": 0 },
+      "vocab": { "total": 12, "started": 0, "passed": 0 },
+      "current": false,
+      "locked": true
+    },
+    {
+      "level": 5,
+      "radicals": { "total": 0, "started": 0, "passed": 0 },
+      "kanji": { "total": 25, "started": 0, "passed": 0 },
+      "vocab": { "total": 3, "started": 2, "passed": 1 },
+      "current": false,
+      "locked": false
+    },
+    {
+      "level": 6,
+      "radicals": { "total": 0, "started": 0, "passed": 0 },
+      "kanji": { "total": 0, "started": 0, "passed": 0 },
+      "vocab": { "total": 5, "started": 0, "passed": 0 },
+      "current": false,
+      "locked": true
+    }
+  ],
+  "kanjiRows": [
+    { "id": "k:学", "kind": "kanji", "label": "学", "sub": "study", "level": 3, "stage": 5, "groupKey": "guru", "locked": false },
+    { "id": "k:校", "kind": "kanji", "label": "校", "sub": "school", "level": 3, "stage": 5, "groupKey": "guru", "locked": false },
+    { "id": "k:先", "kind": "kanji", "label": "先", "sub": "previous", "level": 3, "stage": 2, "groupKey": "apprentice", "locked": false },
+    { "id": "k:生", "kind": "kanji", "label": "生", "sub": "life", "level": 3, "stage": 0, "groupKey": null, "locked": false },
+    { "id": "k:友", "kind": "kanji", "label": "友", "sub": "friend", "level": 3, "stage": 0, "groupKey": null, "locked": false },
+    { "id": "k:家", "kind": "kanji", "label": "家", "sub": "house, home", "level": 3, "stage": 0, "groupKey": null, "locked": false },
+    { "id": "k:年", "kind": "kanji", "label": "年", "sub": "year", "level": 3, "stage": 0, "groupKey": null, "locked": false },
+    { "id": "k:時", "kind": "kanji", "label": "時", "sub": "time", "level": 3, "stage": 0, "groupKey": null, "locked": false },
+    { "id": "k:分", "kind": "kanji", "label": "分", "sub": "minute, part", "level": 3, "stage": 0, "groupKey": null, "locked": false },
+    { "id": "k:今", "kind": "kanji", "label": "今", "sub": "now", "level": 3, "stage": 0, "groupKey": null, "locked": true }
+  ],
+  "vocabRows": [
+    { "id": "v:1", "kind": "vocab", "label": "食べる", "sub": "to eat", "level": 3, "stage": 5, "groupKey": "guru", "locked": false },
+    { "id": "v:2", "kind": "vocab", "label": "飲む", "sub": "to drink", "level": 3, "stage": 1, "groupKey": "apprentice", "locked": false },
+    { "id": "v:3", "kind": "vocab", "label": "お水", "sub": "water", "level": 3, "stage": 0, "groupKey": null, "locked": false },
+    { "id": "v:4", "kind": "vocab", "label": "お茶", "sub": "tea", "level": 3, "stage": 0, "groupKey": null, "locked": false },
+    { "id": "v:5", "kind": "vocab", "label": "肉", "sub": "meat", "level": 3, "stage": 0, "groupKey": null, "locked": false },
+    { "id": "v:6", "kind": "vocab", "label": "魚", "sub": "fish", "level": 3, "stage": 0, "groupKey": null, "locked": false },
+    { "id": "v:7", "kind": "vocab", "label": "野菜", "sub": "vegetable", "level": 3, "stage": 0, "groupKey": null, "locked": false },
+    { "id": "v:8", "kind": "vocab", "label": "おいしい", "sub": "delicious", "level": 3, "stage": 0, "groupKey": null, "locked": true }
+  ],
+  "cards": {
+    "k:時": { "id": "k:時", "kind": "kanji", "stage": 0, "level": 3, "char": "時", "meanings": ["time"], "readingText": "ジ / とき", "components": [] },
+    "k:分": { "id": "k:分", "kind": "kanji", "stage": 0, "level": 3, "char": "分", "meanings": ["minute, part"], "readingText": "フン / ぶん / わ.ける", "components": [] },
+    "k:学": { "id": "k:学", "kind": "kanji", "stage": 5, "level": 3, "char": "学", "meanings": ["study"], "readingText": "ガク / まな.ぶ", "components": [] }
+  }
+}
