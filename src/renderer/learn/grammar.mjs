@@ -1,16 +1,135 @@
 import { attempt, fill, h, toast } from '../lib/ui.mjs';
 import { clozeParts, jlptList } from '../lib/learnView.mjs';
-import { defaultJlpt, dueInLevel, levelSummary, pointStatus, timecode, videoTitle, exampleHit, highlightSegments } from './grammarModel.mjs';
+import { defaultJlpt, dueInLevel, levelSummary, pointStatus, timecode, videoTitle, exampleHit, highlightSegments, grammarBatchSize, grammarExplore, grammarLessons } from './grammarModel.mjs';
 import { trailWindow, practiceVerdict, acceptedPracticeAnswers } from './courseModel.mjs';
+import { nextLesson } from './exploreModel.mjs';
+import { mountExplore } from './exploreView.mjs';
 import { rubyNode } from './ruby.mjs';
 import { speak, canSpeak } from './speak.mjs';
 import { scanSummary } from './homeModel.mjs';
 import { icon } from './icons.mjs';
+import { doodle } from '../lib/doodleIcons.mjs';
 
 const button = (label, action, className = 'learn-g-btn', props = {}) => h('button', { type:'button', class:className, onclick:action, ...props }, label);
 const chip = (text, className = '') => h('span', { class:`course-chip ${className}` }, text);
 
+// Grammar opens on the Manga Ink Explore screen; "See all" opens the existing course view.
 export function mountGrammar(el, ctx, arg = {}) {
+  if (arg?.all === true) return mountCourse(el, ctx, arg);
+  return mountExploreGrammar(el, ctx, arg);
+}
+
+function exploreLevel(stats, arg, ctx) {
+  const preferred = arg?.jlpt ?? ctx?.prefs?.get?.('grammarLevel', null) ?? null;
+  return jlptList().includes(preferred) ? preferred : defaultJlpt(stats?.jlpt);
+}
+
+function mountExploreGrammar(el, ctx, arg = {}) {
+  const api = ctx.api.learn;
+  let disposed = false;
+  let seq = 0;
+  let view = null;
+  let model = null;
+  let jlpt = null;
+  let filter = 'all';
+  load();
+  return () => {
+    disposed = true;
+    seq += 1;
+    view?.destroy();
+    view = null;
+  };
+
+  async function load() {
+    const mine = ++seq;
+    showLoading();
+    try {
+      const [stats, due] = await Promise.all([api.stats(), api.reviews({ scope:'grammar' })]);
+      if (stale(mine)) return;
+      jlpt = exploreLevel(stats, arg, ctx);
+      const rows = await api.browse({ type:'grammar', jlpt });
+      if (stale(mine)) return;
+      const dueIds = new Set((Array.isArray(due) ? due : []).map((card) => card?.id).filter(Boolean));
+      const annotated = (Array.isArray(rows) ? rows : []).map((row) => ({ ...row, due: dueIds.has(row.id) }));
+      const lessons = grammarLessons(annotated, grammarBatchSize(ctx.settings));
+      const next = nextLesson(lessons);
+      let cards = [];
+      if (next && typeof api.lessons === 'function') {
+        try {
+          cards = await api.lessons({ scope:'grammar', jlpt, ids: next.ids });
+        } catch {
+          cards = [];
+        }
+        if (stale(mine)) return;
+      }
+      model = grammarExplore(lessons, { cards, filter });
+      view?.destroy();
+      view = null;
+      el.replaceChildren();
+      view = mountExplore(el, viewProps());
+    } catch (err) {
+      if (!stale(mine)) showError(err);
+    }
+  }
+
+  function stale(mine) {
+    return disposed || mine !== seq;
+  }
+
+  function showLoading() {
+    view?.destroy();
+    view = null;
+    el.replaceChildren(h('section', { class:'ink-screen ink-explore' }, h('p', { class:'ink-explore-loading' }, 'Loading grammar lessons…')));
+  }
+
+  function showError(err) {
+    view?.destroy();
+    view = null;
+    el.replaceChildren(h('section', { class:'ink-screen ink-explore' },
+      h('div', { class:'ink-panel ink-explore-error', role:'alert' },
+        h('h2', {}, 'Could not load grammar'),
+        h('p', {}, err?.message ?? 'Unknown error'),
+        h('button', { type:'button', class:'ink-toggle', onclick:load }, 'Try again'))));
+  }
+
+  function viewProps() {
+    const next = model.next;
+    return {
+      title: 'Explore Grammar',
+      header: model.header,
+      lesson: next ? {
+        id: next.id,
+        number: next.number,
+        title: next.title,
+        meta: next.meta,
+        preview: next.preview,
+        previewKind: 'text',
+        isNew: next.isNew,
+        done: next.done,
+        start: () => ctx.go('session', { mode:'lesson', scope:'grammar', jlpt, ids: next.ids }),
+      } : null,
+      progress: model.progress,
+      rows: model.rows.map((row) => ({
+        id: row.id,
+        tile: row.tile,
+        tileKind: 'number',
+        title: row.title,
+        sub: row.sub,
+        status: row.status,
+        open: () => { if (row.firstId) ctx.go('point', row.firstId); },
+      })),
+      filter,
+      onFilter: (value) => {
+        filter = value;
+        view?.update({ filter: value });
+      },
+      seeAll: { ...model.seeAll, onOpen: () => ctx.go('grammar', { all:true, jlpt }) },
+      emptyText: model.emptyText,
+    };
+  }
+}
+
+function mountCourse(el, ctx, arg = {}) {
   const api = ctx.api.learn;
   let disposed = false, seq = 0, searchTimer, unmountPoint;
   const state = { jlpt:arg.jlpt ?? ctx.prefs.get('grammarLevel', null), query:'', selected:arg.selected ?? ctx.prefs.get('grammarPoint', null), rows:[] };
@@ -19,7 +138,8 @@ export function mountGrammar(el, ctx, arg = {}) {
     clearTimeout(searchTimer);
     searchTimer = setTimeout(() => { state.query = event.target.value.trim(); refresh(); }, 180);
   }});
-  const heading = h('header', { class:'course-heading' }, h('div', {}, h('h1', {}, 'Grammar'), h('p', { class:'learn-sub' }, 'Learn a pattern. Try it in a sentence.')), h('div', { class:'course-tools' }, tabs, search));
+  const back = h('button', { type:'button', class:'learn-g-back', onclick:() => ctx.back() }, doodle('back'), h('span', {}, 'Explore'));
+  const heading = h('header', { class:'course-heading' }, h('div', { class:'course-heading-main' }, back, h('div', {}, h('h1', {}, 'Grammar'), h('p', { class:'learn-sub' }, 'Learn a pattern. Try it in a sentence.'))), h('div', { class:'course-tools' }, tabs, search));
   const trail = h('nav', { class:'course-trail', 'aria-label':'Grammar learning trail' });
   const detail = h('div', { class:'course-selected' });
   const catalogue = h('details', { class:'course-catalog' });
