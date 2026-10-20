@@ -96,7 +96,9 @@ export function mountExplore(el, props) -> { update(patch), destroy() }
 props = { title, header: { label, value, max }, lesson: ExploreLesson|null,
           progress: { label, value, max },             // 'KANJI LEARNED' 12/80, 'LESSONS DONE' 3/24
           rows: ExploreRow[], filter: 'all'|'new'|'review', onFilter(filter),
-          seeAll: { total, noun, onOpen }, emptyText }
+          seeAll: { total, noun, onOpen }, emptyText, emptyTitle?, emptyAction? }
+// emptyTitle: heading when lesson is null (default 'All caught up'); emptyAction: { label, onClick } outlined button.
+// Panels are viewport-aware: clamp(620px, 100vh - chrome, 808px).
 ```
 DOM classes (frozen): `section.ink-screen.ink-explore` > `header.ink-hero` + `.ink-explore-grid` > `.ink-explore-lesson.ink-panel.ink-hatch` >
 `.ink-lesson-card.ink-card` (`.ink-tag.ink-tag-caps` YOUR NEXT LESSON, `.ink-stamp` NEW! only when lesson.isNew, `h2.ink-lesson-number`, `.ink-underline`,
@@ -163,6 +165,7 @@ export function ratingBar(buttons, onGrade) -> HTMLElement
 export function createStudyCardView({ onReveal, onGrade, onReplay }) -> { el, update(state), destroy() }
   // state = { frontDoc, backDoc, side: 'question'|'answer', buttons: [{ ease, label, interval }], busy, hasAudio, status, tags?: string[] }
 ```
+Card height: both cards use `height: var(--ink-study-card-h, 620px)`; S8 sets the variable on its study root from the viewport (380..620px).
 DOM: `section.ink-study` > `.ink-study-cards` > `.ink-study-front.ink-card` (`.ink-tag` "Front · question", `iframe.study-card` sandbox="") and
 `.ink-study-back.ink-card` (`.ink-tag` "Back · answer", `iframe.study-card` sandbox="", placeholder before reveal), then `.ink-study-rate.ink-card`
 (`.ink-tag` "How well did you remember it?", hint "Space shows the answer · 1 to 4 rates the card", `ratingBar`). Only Good is black.
