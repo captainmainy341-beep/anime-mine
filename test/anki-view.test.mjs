@@ -1,5 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import {
   forecastBars,
   formatHistory,
@@ -170,4 +171,36 @@ test('modeSummary returns pick for live mode with no visible decks', () => {
 
 test('modeSummary returns ready for live, connected, with visible decks', () => {
   assert.equal(modeSummary({ mode: 'live', connected: true, visibleDecks: ['Core'] }), 'ready');
+});
+
+// The lead's fit defect: at a 1440x1000 window the tab strip + header + a 75px action row + 620px
+// cards + 172px rating panel did not fit. The study root now feeds S9's --ink-study-card-h and the
+// action row is one slim line. 425px = 6 top pad + 27 strip + 2 + 110 header + 16 body gap +
+// 35.5 bar + 16 view gap + 16 rating gap + 172 rating panel + 24 bottom pad.
+test('the study root feeds --ink-study-card-h so the rating panel stays above the fold', () => {
+  const css = readFileSync(new URL('../src/renderer/css/ink-anki.css', import.meta.url), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '');
+  const rules = new Map();
+  for (const [, selector, body] of css.matchAll(/([^{}]+)\{([^{}]*)\}/g)) rules.set(selector.trim(), body);
+  const study = rules.get('.anki .ink-anki-study') ?? '';
+  assert.match(study, /--ink-study-card-h:\s*clamp\(380px,\s*calc\(100vh - 425px\),\s*620px\)/);
+});
+
+test('the study action row is one slim line with small outlined buttons', () => {
+  const css = readFileSync(new URL('../src/renderer/css/ink-anki.css', import.meta.url), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '');
+  const rules = new Map();
+  for (const [, selector, body] of css.matchAll(/([^{}]+)\{([^{}]*)\}/g)) rules.set(selector.trim(), body);
+  const bar = rules.get('.anki .ink-anki-study-bar') ?? '';
+  assert.match(bar, /display:\s*flex/);
+  assert.match(bar, /align-items:\s*center/);
+  // 28px chip + 6px padding + 1.5px border = 35.5px, under the 36px cap.
+  assert.match(bar, /padding-bottom:\s*6px/);
+  const chip = rules.get('.anki .ink-anki-chip') ?? '';
+  assert.match(chip, /height:\s*28px/);
+  assert.match(chip, /font-size:\s*13px/);
+  assert.match(chip, /border:\s*1\.5px solid var\(--ink\)/);
+  const deck = rules.get('.anki .ink-anki-study-deck') ?? '';
+  assert.match(deck, /flex-direction:\s*row/);
+  assert.match(deck, /align-items:\s*baseline/);
+  const path = rules.get('.anki .ink-anki-study-path') ?? '';
+  assert.match(path, /font-size:\s*13px/);
 });
