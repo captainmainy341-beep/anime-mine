@@ -229,7 +229,8 @@ async function measureOverview() {
   await delay(250);
   const createToast = await evaluate(() => [...document.querySelectorAll('.toast')].map((t) => t.textContent).join(' | '));
   console.log('guarded create toast', createToast);
-  assert.match(createToast, /Anki service/);
+  // With S7 merged the sample-mode rejection is the first message; before S7 lands the guard reports the missing service.
+  assert.match(createToast, /Switch to Live mode and connect Anki first|Anki service/);
   await evaluate(new Function('[...document.querySelectorAll(".ink-anki-btn")].find((b) => b.textContent === "Cancel").click()'));
   await waitFor(() => !!document.querySelector('.ink-anki-actions .ink-anki-btn'), 'deck actions restored');
 

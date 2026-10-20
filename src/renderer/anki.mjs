@@ -550,7 +550,7 @@ export function mountAnki(container) {
     return h('div', { class: 'ink-anki-actions' },
       actionButton('plus', 'Create deck', openCreateDeck),
       actionButton('download', 'Import', importPackage),
-      actionButton('sync', 'Sync', syncNow, 'is-sync'));
+      actionButton('sync', 'Sync', syncNow));
   }
 
   function actionButton(icon, label, onclick, extra = '') {
