@@ -246,6 +246,39 @@ function sortInfos(infos, sort, desc, today) {
 const forecastShape = (counts = []) =>
   Array.from({ length: FORECAST_DAYS }, (_, day) => ({ day, count: counts[day] ?? 0 }));
 
+const REVIEW_WINDOW_DAYS = 365;
+const DATE_KEY = /^\d{4}-\d{2}-\d{2}$/;
+
+// Local collection day as YYYY-MM-DD, the shape AnkiConnect uses for daily review counts.
+function dateKey(date) {
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${date.getFullYear()}-${month}-${day}`;
+}
+
+function reviewsByDay(rows, today = new Date()) {
+  if (!Array.isArray(rows)) return [];
+  const end = dateKey(today);
+  const startDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() - (REVIEW_WINDOW_DAYS - 1));
+  const start = dateKey(startDate);
+  const totals = new Map();
+  for (const row of rows) {
+    if (!Array.isArray(row)) continue;
+    const [date, value] = row;
+    if (typeof date !== 'string' || !DATE_KEY.test(date) || date < start || date > end) continue;
+    const count = Math.floor(Number(value));
+    if (!Number.isFinite(count) || count <= 0) continue;
+    totals.set(date, (totals.get(date) ?? 0) + count);
+  }
+  return [...totals.entries()].sort(([a], [b]) => (a < b ? -1 : 1)).map(([date, count]) => ({ date, count }));
+}
+
+function normalizeDeckName(name) {
+  const deck = typeof name === 'string' ? name.trim() : '';
+  if (deck === '') throw new Error('name must be a non-empty string');
+  return deck;
+}
+
 function emptyOverview() {
   return {
     decks: [],
@@ -254,6 +287,7 @@ function emptyOverview() {
     retention30: null,
     streak: null,
     minedThisWeek: 0,
+    reviewsByDay: [],
     mined: [],
   };
 }
@@ -321,8 +355,36 @@ class AnkiBrowser {
       retention30: null,
       streak: null,
       minedThisWeek: count(minedThisWeek),
+      reviewsByDay: await this.reviewActivity(),
       mined: await this.minedCards({ scope, names, noteIds, dueIds: new Set(results[dueNow] ?? []) }),
     };
+  }
+
+  // Collection-wide daily review counts for the last year. Older AnkiConnect builds may not know the action;
+  // the heatmap is decoration, so a missing reply leaves an empty series instead of failing the overview.
+  async reviewActivity() {
+    try {
+      return reviewsByDay(await this.client.invoke('getNumCardsReviewedByDay'));
+    } catch {
+      return [];
+    }
+  }
+
+  async createDeck({ name } = {}) {
+    const deck = normalizeDeckName(name);
+    await this.client.invoke('createDeck', { deck });
+    return { ok: true, name: deck };
+  }
+
+  async importPackage({ path } = {}) {
+    if (typeof path !== 'string' || path.trim() === '') throw new Error('path must be a non-empty string');
+    await this.client.invoke('importPackage', { path });
+    return { imported: true, path };
+  }
+
+  async sync() {
+    await this.client.invoke('sync');
+    return { ok: true };
   }
 
   // One card per note (lowest ord), newest note first, only cards in allowed decks.
@@ -412,9 +474,11 @@ module.exports = {
   cardInfos,
   clampLimit,
   collectionToday,
+  dateKey,
   noteTags,
   normalizeState,
   plainFields,
+  reviewsByDay,
   scopeOf,
   toBrowseCard,
   plainText,

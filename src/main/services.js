@@ -22,6 +22,7 @@ const SUBTITLE_EXTENSIONS = ['srt', 'ass', 'ssa', 'vtt'];
 const SETTINGS_MODE = 0o600;
 const HTML_ESCAPES = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
 const ANKI_MODES = ['hidden', 'sample', 'live'];
+const ANKI_NEEDS_LIVE = 'Switch to Live mode and connect Anki first.';
 
 function defaultSettings() {
   return {
@@ -487,6 +488,35 @@ function createServices({ dataDir, dialog, deps = {}, notify = () => {} }) {
     return { mode, ...overview };
   }
 
+  // Deck creation, package import and sync only ever write to a live Anki; hidden and sample refuse before any side effect.
+  async function liveAnkiUrl() {
+    const { mode, ankiUrl } = await ankiSettings();
+    if (mode !== 'live') throw new Error(ANKI_NEEDS_LIVE);
+    return ankiUrl;
+  }
+
+  async function createAnkiDeck(req) {
+    const ankiUrl = await liveAnkiUrl();
+    const { name } = req ?? {};
+    if (typeof name !== 'string' || name.trim() === '') throw new Error('name must be a non-empty string');
+    return new AnkiBrowser(new AnkiClient(ankiUrl)).createDeck({ name });
+  }
+
+  async function importAnkiPackage() {
+    const ankiUrl = await liveAnkiUrl();
+    const { canceled, filePaths } = await dialog.showOpenDialog({
+      properties: ['openFile'],
+      filters: [{ name: 'Anki packages', extensions: ['apkg', 'colpkg'] }],
+    });
+    if (canceled || !filePaths.length) return { imported: false, path: null };
+    return new AnkiBrowser(new AnkiClient(ankiUrl)).importPackage({ path: filePaths[0] });
+  }
+
+  async function syncAnki() {
+    const ankiUrl = await liveAnkiUrl();
+    return new AnkiBrowser(new AnkiClient(ankiUrl)).sync();
+  }
+
   // Live requests may only name visible decks; no names means all visible decks.
   function liveDecks(visibleDecks, names) {
     if (names === undefined) return visibleDecks;
@@ -849,6 +879,9 @@ function createServices({ dataDir, dialog, deps = {}, notify = () => {} }) {
     'anki:setView': setAnkiView,
     'anki:listDecks': listAnkiDecks,
     'anki:overview': getAnkiOverview,
+    'anki:createDeck': createAnkiDeck,
+    'anki:importPackage': importAnkiPackage,
+    'anki:sync': syncAnki,
     'anki:browse': browseAnki,
     'anki:facets': facetsAnki,
     'anki:cardInfo': cardInfoAnki,
