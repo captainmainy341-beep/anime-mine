@@ -1,55 +1,153 @@
-// Presentation only: no card scripts, remote assets or Anki data changes.
+// Manga Ink app theme for Anki cards shown inside a sandboxed srcdoc iframe.
+// Presentation only: no card scripts, remote assets or Anki data changes, and the CSP/sandbox in
+// lib/study.mjs is untouched. Fonts cannot be loaded from app files inside the sandboxed frame, so the
+// app font is asked for first and a system Japanese stack takes over when it is not installed.
+// Measured from Figma "Anki Card Clean" (6:19781): paper #f5f2ea, ink #0a0a0a, 1.5px rules, red only
+// for the target underline and the word rule.
+
 export const STUDY_THEME = `
-:root { --am-panel: #181c1e; --am-panel-2: #22282a; --am-line: #343b3d; --am-text: #eeeae2; --am-muted: #adb7b9; --am-accent: #edc789; color-scheme: dark; }
-html:has(.am-card), body.am-card { background: var(--am-panel) !important; color: var(--am-text) !important; }
-body.am-card { display: block !important; min-height: 0 !important; margin: 0 !important; padding: 24px 36px !important; font: 17px/1.6 "Hiragino Sans", "Yu Gothic", "Noto Sans JP", system-ui, sans-serif !important; text-align: left !important; overflow-wrap: anywhere; }
-.am-card .wrap, .am-card .card-wrap { display: block !important; width: auto !important; max-width: 100% !important; min-height: 0 !important; margin: 0 !important; padding: 0 !important; border: 0 !important; background: transparent !important; color: inherit !important; }
-.am-card header { margin-bottom: 10px; gap: 6px; }
-.am-card .tags, .am-card .pitch_number { color: var(--am-muted) !important; background: var(--am-panel-2) !important; font: 11px/1.5 system-ui, sans-serif !important; padding: 2px 6px !important; border-radius: 4px; }
-.am-card .am-prompt { margin: 10px 0 20px !important; }
-.am-card .am-sentence { font-size: clamp(24px, 3.1vw, 34px) !important; font-weight: 400 !important; line-height: 2 !important; text-align: left !important; color: #cbd0cf !important; }
-.am-card .am-sentence .am-target { color: var(--am-accent) !important; background: #edc78912 !important; border-bottom: 2px solid #d7b478; padding: 0 .06em; font-size: 1.34em !important; font-weight: 700 !important; line-height: 1.2 !important; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
-.am-card ruby rt { font-size: .4em; color: var(--am-muted); }
-.am-card .am-answer-grid { display: flex; flex-direction: column; gap: 10px; border-top: 1px solid var(--am-line); padding-top: 18px; margin-top: 18px; }
-.am-card .headword_section, .am-card details { min-width: 0; background: transparent !important; border: 0 !important; padding: 0 !important; margin: 0 !important; }
-.am-card .headword_section { display: grid; grid-template-columns: minmax(130px, .3fr) minmax(0, 1fr); align-items: center; gap: 18px; }
-.am-card .vocab { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; margin: 0; }
-.am-card .target_word { order: -1; color: var(--am-accent); font-size: 28px; font-weight: 600; }
-.am-card .target_word::before, .am-card .target_word::after { content: none; }
-.am-card .reading { color: var(--am-muted); font-size: 17px; }
-.am-card .definitions, .am-card .meaning { font-size: 20px; font-weight: 400; line-height: 1.7; }
-.am-card .ensentence, .am-card .translation { color: var(--am-muted) !important; font: 15px/1.8 system-ui, sans-serif; margin: 0; text-align: left; border: 0; padding: 0; }
-.am-card .am-answer-grid .ensentence { margin-top: 2px; }
-.am-card summary { color: var(--am-muted) !important; font: 12px/1.6 system-ui, sans-serif !important; cursor: pointer; }
-.am-card .am-scene { width: 100%; max-width: 100%; margin: 18px auto 0; }
-.am-card .am-scene details { display: block; }
-.am-card .am-scene-images { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 12px; width: 100%; margin: 0 !important; padding: 8px 0 0; }
-.am-card img { max-width: 100%; width: auto !important; height: auto !important; object-fit: contain !important; filter: none !important; border-radius: 7px; }
-.am-card .am-scene img { display: block; max-width: min(100%, 420px) !important; max-height: 215px !important; cursor: zoom-in; }
-.am-card .am-scene .images-details > summary { float: left; color: var(--am-muted); }
-.am-card .am-scene-image { display: block; clear: both; cursor: zoom-in; }
+:root {
+  --am-paper: #f5f2ea;
+  --am-ink: #0a0a0a;
+  --am-muted: #5c5a55;
+  --am-red: #ff2e6e;
+  --am-track: #ebe7db;
+  --am-rule: 1.5px;
+  --am-shot: 290px;
+  --am-font: "Zen Kaku Gothic New", "Hiragino Sans", "Yu Gothic", "Noto Sans JP", "Noto Sans CJK JP", system-ui, sans-serif;
+  color-scheme: light;
+}
+html, body { background: var(--am-paper) !important; color: var(--am-ink) !important; }
+body.am-card {
+  display: block !important; margin: 0 !important; min-height: 0 !important; padding: 0 !important;
+  font: 17px/1.6 var(--am-font) !important; text-align: left !important;
+  overflow-wrap: anywhere; -webkit-font-smoothing: antialiased;
+}
+body.am-card[data-side="answer"] { padding: 0 24px !important; }
+.am-card *, .am-card *::before, .am-card *::after { box-sizing: border-box; }
+.am-card .wrap, .am-card .card-wrap {
+  display: block !important; width: auto !important; max-width: 100% !important; min-height: 0 !important;
+  margin: 0 !important; padding: 0 !important; border: 0 !important; background: transparent !important; color: inherit !important;
+}
+.am-card .wrap .wrap { display: block !important; width: auto !important; padding: 0 !important; border: 0 !important; }
+.am-card .sent-center, .am-card .am-prompt { display: block !important; align-items: stretch !important; justify-content: flex-start !important; flex-flow: column nowrap !important; }
+.am-card header { margin: 0 !important; padding: 0 !important; gap: 0 !important; }
+.am-card header:empty { display: none !important; }
+.am-card .tags { display: inline; color: var(--am-muted) !important; background: none !important; font: 500 13px/1.5 var(--am-font) !important; padding: 0 !important; border-radius: 0 !important; }
+
+/* ---------- Screenshot (scene media): black plate with a 1.5px ink rule ---------- */
+.am-card .am-scene { position: relative; display: block; width: 100%; margin: 0 !important; padding: 0 !important; }
+.am-card .am-scene details, .am-card .images-details, .am-card .am-scene > .images-details { display: block; margin: 0 !important; padding: 0 !important; }
+.am-card .am-scene details[open] > summary, .am-card .am-scene details[open] .images-details > summary { display: none !important; }
+.am-card .am-scene details:not([open]) { margin-top: 24px !important; }
+.am-card .am-scene details:not([open]) .am-enlarge { display: none; }
+.am-card .am-scene summary { list-style: none; }
+.am-card .am-scene summary::-webkit-details-marker { display: none; }
+.am-card .am-scene-images { display: block !important; margin: 0 !important; padding: 0 !important; gap: 0 !important; }
+.am-card .am-scene img {
+  display: block; width: 100% !important; height: var(--am-shot) !important; max-width: 100% !important; max-height: none !important;
+  object-fit: cover !important; object-position: center !important; background: var(--am-ink); border: var(--am-rule) solid var(--am-ink); border-radius: 0 !important;
+}
 .am-card .am-image-toggle { position: absolute; width: 1px; height: 1px; opacity: 0; }
-.am-card .am-enlarge { display: block; width: fit-content; margin-left: auto; color: var(--am-muted); font: 12px/1.6 system-ui, sans-serif; cursor: pointer; }
-.am-card .am-image-toggle:focus-visible + .am-enlarge { outline: 2px solid var(--am-accent); outline-offset: 4px; border-radius: 2px; }
-.am-card .am-image-toggle:checked ~ .am-scene-image img { max-width: 100% !important; max-height: max(340px, 75vh) !important; cursor: zoom-out; }
+.am-card .am-enlarge {
+  position: absolute; top: 16px; right: 16px; z-index: 2; display: block; width: max-content;
+  padding: 5px 10px; background: var(--am-paper); border: var(--am-rule) solid var(--am-ink);
+  color: var(--am-ink); font: 700 11px/16px var(--am-font); letter-spacing: 0.06em; text-transform: uppercase;
+  cursor: zoom-in; opacity: 0; transition: opacity 150ms ease;
+}
+.am-card .am-scene:hover .am-enlarge, .am-card .am-scene:focus-within .am-enlarge { opacity: 1; }
+.am-card .am-image-toggle:checked ~ .am-enlarge { cursor: zoom-out; }
 .am-card .am-image-toggle:checked + .am-enlarge .am-expand, .am-card .am-image-toggle:not(:checked) + .am-enlarge .am-collapse { display: none; }
-.am-card .toggle_furigana_button { display: none; }
-.am-card .am-card-links { margin-top: 18px !important; }
+.am-card .am-image-toggle:focus-visible + .am-enlarge { outline: 2px solid var(--am-ink); outline-offset: 3px; }
+.am-card .am-image-toggle:checked ~ .am-scene-image img {
+  width: auto !important; height: auto !important; max-height: 75vh !important; margin: 0 auto !important; object-fit: contain !important;
+}
+.am-card .am-scene-image { display: block; cursor: zoom-in; }
+
+/* ---------- Prompt sentence ---------- */
+body.am-card[data-side="question"] .am-sentence {
+  display: block !important; margin: 32px 0 0 !important; padding: 0 !important;
+  font: 900 42px/61px var(--am-font) !important; letter-spacing: 0 !important; color: var(--am-ink) !important; text-align: left !important;
+}
+body.am-card[data-side="answer"] .am-sentence {
+  display: block !important; margin: 0 !important; padding: 0 !important;
+  font: 700 26px/38px var(--am-font) !important; letter-spacing: 0 !important; color: var(--am-ink) !important; text-align: left !important;
+}
+.am-card .am-sentence .am-target { color: inherit !important; background: none !important; font: inherit !important; border: 0 !important; padding: 0 !important; }
+body.am-card[data-side="question"] .am-sentence .am-target {
+  text-decoration: underline; text-decoration-color: var(--am-red); text-decoration-thickness: 6px;
+  text-underline-offset: 6px; text-decoration-skip-ink: none;
+}
+body.am-card[data-side="answer"] .am-sentence .am-target { text-decoration: none; }
+.am-card .am-sentence-reading { margin-top: 8px; }
+.am-card .am-sentence-reading summary { color: var(--am-muted); font: 500 13px/1.5 var(--am-font); cursor: pointer; }
+.am-card .am-sentence-reading[open] summary { margin-bottom: 6px; }
+
+/* Front-only footnote under the sentence. */
+.am-card .am-front-hint { margin: 9px 0 0 !important; font: 500 17px/25px var(--am-font) !important; color: var(--am-muted) !important; }
+.am-card .am-divider { height: 2px; background: var(--am-ink); border: 0; }
+body.am-card[data-side="question"] .am-divider { margin: 45px 0 0 !important; }
+body.am-card[data-side="answer"] .am-divider { margin: 28px 0 0 !important; }
+
+/* ---------- Tags as small rounded-rect chips ---------- */
+.am-card .am-tags { display: flex; flex-wrap: wrap; gap: 16px; margin: 20px 0 0; padding: 0; list-style: none; }
+body.am-card[data-side="answer"] .am-tags { margin: 10px 0 0; }
+.am-card .am-tag {
+  display: inline-flex; align-items: center; height: 30px; padding: 0 14px;
+  background: transparent; border: var(--am-rule) solid var(--am-ink); border-radius: 15px;
+  color: var(--am-ink); font: 500 13px/19px var(--am-font); white-space: nowrap;
+}
+
+/* ---------- Revealed answer: headword, reading, meaning ---------- */
+.am-card .am-answer-grid { display: block !important; margin: 0 !important; padding: 0 !important; border: 0 !important; }
+.am-card .headword_section { display: block !important; width: auto !important; margin: 0 !important; padding: 0 !important; border: 0 !important; background: transparent !important; }
+.am-card .vocab { display: block !important; margin: 0 !important; padding: 0 !important; gap: 0 !important; }
+.am-card .target_word { display: block !important; margin: 0 !important; color: var(--am-ink) !important; font: 900 76px/110px var(--am-font) !important; letter-spacing: 0 !important; }
+.am-card .target_word::before, .am-card .target_word::after { content: none !important; }
+.am-card .am-word-rule { display: block; width: 120px; height: 6px; margin: -6px 0 0; background: var(--am-red); }
+.am-card .reading { display: block !important; margin: 10px 0 0 !important; color: var(--am-muted) !important; font: 500 22px/32px var(--am-font) !important; }
+.am-card .definitions, .am-card .meaning { margin: 24px 0 0 !important; color: var(--am-ink) !important; font: 700 28px/41px var(--am-font) !important; }
+.am-card .definition { border: 0 !important; background: transparent !important; margin: 0 !important; padding: 0 !important; }
+.am-card .am-spotlight > .word { color: var(--am-muted); font: 500 17px/25px var(--am-font); margin: 0 0 6px; }
+
+/* Pitch-accent add-on content stays a quiet plate next to the headword. */
+.am-card .pitch { float: right; width: 176px; margin: 0 0 0 16px !important; padding: 6px 10px; border: var(--am-rule) solid var(--am-ink); background: transparent !important; }
+.am-card .pitch_number, .am-card .pitch-number { display: block; margin: 0 0 4px; color: var(--am-muted) !important; font: 700 11px/16px var(--am-font) !important; letter-spacing: 1px !important; text-transform: uppercase; }
+
+/* ---------- Sentence, translation, source ---------- */
+body.am-card[data-side="answer"] .am-prompt { margin: 18px 0 0 !important; padding: 0 !important; }
+.am-card .ensentence, .am-card .translation {
+  margin: 4px 0 0 !important; padding: 0 !important; border: 0 !important;
+  color: var(--am-muted) !important; font: 500 20px/29px var(--am-font) !important; text-align: left !important; background: none !important;
+}
+.am-card .ensentence a.hint, .am-card .translation a.hint { display: none !important; }
+.am-card .ensentence div.hint, .am-card .translation div.hint { display: block !important; }
+.am-card .am-source {
+  margin: 37px 0 0 !important; padding: 14px 0 0 !important; border: 0 !important; border-top: 2px solid var(--am-track) !important;
+  color: var(--am-muted) !important; font: 500 15px/22px var(--am-font) !important; text-align: left !important; background: none !important;
+}
+.am-card .notes { margin: 10px 0 0; color: var(--am-muted) !important; font: 500 15px/22px var(--am-font) !important; }
+.am-card .am-card-links { margin: 24px 0 0 !important; }
+.am-card .am-card-links summary, .am-card details > summary { color: var(--am-muted); font: 500 13px/1.6 var(--am-font); cursor: pointer; }
+.am-card footer { color: var(--am-muted); font: 500 13px/1.6 var(--am-font); gap: 8px; }
 .am-card a { color: var(--am-muted); }
-.am-card hr { border: 0; border-top: 1px solid var(--am-line); margin: 18px 0; }
-.am-card footer { font-size: 12px; gap: 8px; }
-.am-card .notes, .am-card .source { color: var(--am-muted); font-size: 12px; }
-.am-card .definition { border: 0 !important; background: transparent !important; margin: 8px 0 !important; padding: 0 !important; }
-.am-card .am-spotlight > .word { color: var(--am-muted); font-size: 19px; font-weight: 400; margin-bottom: 6px; }
-.am-card .vocab-word { color: var(--am-accent); font-size: 24px; }
-.am-card .cloze { color: var(--am-accent); }
-@media (max-width: 600px) {
- body.am-card { padding: 18px 20px !important; }
- .am-card .am-sentence { font-size: 24px !important; line-height: 1.9 !important; }
- .am-card .am-scene img { max-height: 180px !important; }
- .am-card .headword_section { grid-template-columns: 1fr; gap: 8px; }
- .am-card .target_word { font-size: 25px; }
- .am-card .reading { font-size: 16px; }
- .am-card .definitions, .am-card .meaning { font-size: 18px; }
+.am-card a:hover { color: var(--am-ink); }
+.am-card hr { border: 0; border-top: 2px solid var(--am-track); margin: 24px 0; }
+.am-card ruby rt { font-size: 0.4em; color: var(--am-muted); }
+.am-card .cloze { color: inherit; text-decoration: underline; text-decoration-color: var(--am-red); text-decoration-thickness: 3px; text-decoration-skip-ink: none; }
+.am-card img { max-width: 100%; height: auto; border-radius: 0 !important; filter: none !important; }
+.am-card .am-image-toggle:checked ~ .am-scene-image img { height: auto !important; }
+.am-card .toggle_furigana_button { display: none; }
+
+/* The study iframe is ~524px wide at the 1440 frame, so this is only for genuinely narrow cards. */
+@media (max-width: 380px) {
+  body.am-card[data-side="question"] .am-sentence { font-size: 32px !important; line-height: 46px !important; margin-top: 20px !important; }
+  body.am-card[data-side="answer"] .am-sentence { font-size: 22px !important; line-height: 32px !important; }
+  .am-card .target_word { font-size: 54px !important; line-height: 78px !important; }
+  .am-card .am-word-rule { margin-top: -4px; }
+  .am-card .definitions, .am-card .meaning { font-size: 22px !important; line-height: 33px !important; margin-top: 16px !important; }
+  .am-card .am-scene img { height: 180px !important; }
+  body.am-card[data-side="question"] .am-divider { margin-top: 28px !important; }
+  .am-card .pitch { float: none; width: auto; margin: 12px 0 0 !important; }
 }
 `;

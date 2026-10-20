@@ -1,1 +1,119 @@
-/* Manga Ink: owned by its slice (see docs/manga-ink-contracts.md). */
+/* Manga Ink: Anki card front/back + rating bar (slice S9).
+   Measured from Figma "Anki Card Clean" (node 6:19781), 1440x1000 frame: content starts at x=224,
+   clean frames use 1.5px rules. Black is reserved for the caption tags and the Good button. */
+
+.ink-study { --ink-study-shot: 290px; display: block; min-width: 0; }
+
+/* Front 580 + 16 + back 588 = 1184; both 620 tall. */
+.ink-study-cards {
+  display: grid; grid-template-columns: minmax(0, 580fr) minmax(0, 588fr);
+  gap: 16px; height: 620px; min-height: 0;
+}
+.ink-study-front, .ink-study-back {
+  display: flex; flex-direction: column; min-height: 0; min-width: 0; overflow: hidden;
+}
+/* The 1.5px rules sit inside the 620px box, so the padding carries the frame's remaining 1.5px. */
+.ink-study-front { padding: 22.5px 26.5px 28.5px; }
+.ink-study-back { padding: 26.5px; }
+.ink-study-front > .ink-tag { flex: none; }
+.ink-study-back > .ink-tag { flex: none; margin: 22px 0 0 24px; }
+.ink-study-frame { position: relative; flex: 1 1 auto; min-height: 0; min-width: 0; margin-top: 16px; }
+.ink-study-back .ink-study-frame { margin-top: 12px; }
+.ink-study-frame > iframe.study-card { display: block; width: 100%; height: 100%; border: 0; background: var(--paper, #f5f2ea); }
+.ink-study [hidden] { display: none !important; }
+
+/* Sound icon over the screenshot's bottom-right corner (frame 704,460 inside the 524x290 shot). */
+.ink-study-replay {
+  position: absolute; top: calc(var(--ink-study-shot) - 68px); right: 16px; z-index: 2;
+  display: inline-flex; align-items: center; justify-content: center; width: 56px; height: 52px;
+  padding: 0; background: var(--paper, #f5f2ea); color: var(--ink); border: 1.5px solid var(--ink);
+  border-radius: 0; cursor: pointer;
+}
+.ink-study-replay .doodle { --doodle-stroke: 1.6; width: 21px; height: 17px; margin: 0; }
+.ink-study-replay:not(:disabled):hover { box-shadow: 3px 3px 0 var(--ink); }
+
+/* Calm placeholder before the answer is asked for. */
+.ink-study-placeholder {
+  position: absolute; inset: 0; z-index: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 20px; padding: 0 48px; background: var(--paper, #f5f2ea); text-align: center;
+}
+.ink-study-placeholder .doodle { width: 40px; height: 40px; margin: 0; color: var(--ink-mute, #5c5a55); }
+.ink-study-placeholder-line { margin: 0; max-width: 340px; font-size: 17px; line-height: 26px; color: var(--ink-mute, #5c5a55); }
+.ink-study-placeholder-hint { margin: 0; font-size: 15px; line-height: 22px; color: var(--ink-mute, #5c5a55); }
+.ink-study-reveal {
+  display: inline-flex; align-items: center; height: 54px; padding: 0 26px;
+  background: var(--paper, #f5f2ea); color: var(--ink); border: 1.5px solid var(--ink); border-radius: 0;
+  font-family: var(--font); font-size: 20px; font-weight: 700; line-height: 1; cursor: pointer;
+}
+.ink-study-reveal:not(:disabled):hover { box-shadow: 3px 3px 0 var(--ink); }
+.ink-study-reveal:disabled { opacity: .5; cursor: default; }
+
+/* Chips passed with the card state (front card footer, above the card padding). */
+.ink-study-tags { display: flex; flex-wrap: wrap; flex: none; gap: 16px; margin-top: 14px; }
+.ink-study-tag {
+  display: inline-flex; align-items: center; height: 30px; padding: 0 14px;
+  border: 1.5px solid var(--ink); border-radius: 15px; font-size: 13px; font-weight: 500; line-height: 19px;
+}
+
+/* Rating panel: 1184x172, 1.5px rule. */
+.ink-study-rate { margin-top: 16px; padding: 20px 28px 19px; min-height: 172px; }
+.ink-study-rate-head { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.ink-study-hint {
+  margin: 0 0 0 auto; color: var(--ink-mute, #5c5a55); font-size: 15px; font-weight: 500; line-height: 22px; text-align: right;
+}
+.ink-study-status { margin: 14px 0 0; color: var(--ink-mute, #5c5a55); font-size: 15px; line-height: 22px; }
+.ink-study-status:empty { display: none; }
+
+/* 4 x 270x74 with 16px gaps. */
+.ink-rating { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-top: 20px; }
+.ink-rate {
+  display: flex; align-items: center; min-width: 0; height: 74px; padding: 0 20px 0 17px;
+  background: var(--paper, #f5f2ea); color: var(--ink); border: 1.5px solid var(--ink); border-radius: 0;
+  font-family: var(--font); text-align: left; cursor: pointer;
+}
+.ink-rate-key {
+  display: inline-flex; align-items: center; justify-content: center; flex: none;
+  width: 28px; height: 28px; border: 1.5px solid var(--ink); border-radius: 0;
+  font-family: var(--font); font-size: 14px; font-weight: 700; line-height: 1;
+}
+.ink-rate-label {
+  flex: 1 1 auto; min-width: 0; margin-left: 16px; overflow: hidden;
+  font-size: 24px; font-weight: 700; line-height: 35px; white-space: nowrap; text-overflow: ellipsis;
+}
+.ink-rate-interval {
+  flex: none; margin-left: 12px; color: var(--ink-mute, #5c5a55);
+  font-size: 17px; font-weight: 500; line-height: 25px; text-align: right;
+}
+
+/* Good is the only black button, and the only 3px rule in the rating row. */
+.ink-rate-good { padding: 0 18px 0 15px; background: var(--ink); color: var(--paper, #f5f2ea); border: 3px solid var(--ink); }
+.ink-rate-good .ink-rate-key { background: var(--paper, #f5f2ea); border-color: var(--paper, #f5f2ea); color: var(--ink); }
+.ink-rate-good .ink-rate-interval { color: #cfcabd; }
+
+.ink-rate:not(.ink-rate-good):not(:disabled):hover { box-shadow: 3px 3px 0 var(--ink); }
+.ink-rate-good:not(:disabled):hover { box-shadow: 3px 3px 0 var(--ink); }
+.ink-rate:disabled { opacity: .45; cursor: default; box-shadow: none; }
+.ink-rate:focus-visible, .ink-study-reveal:focus-visible, .ink-study-replay:focus-visible {
+  outline: 2px solid var(--ink); outline-offset: 3px;
+}
+
+@media (max-width: 1180px) {
+  .ink-study-cards { grid-template-columns: minmax(0, 1fr); height: auto; }
+  .ink-study-frame { flex: none; height: 460px; }
+  .ink-study-front, .ink-study-back { height: auto; }
+  .ink-rating { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 720px) {
+  .ink-study-rate { padding: 20px; }
+  .ink-study-rate-head { flex-direction: column; align-items: flex-start; }
+  .ink-study-hint { text-align: left; }
+  .ink-rating { grid-template-columns: minmax(0, 1fr); }
+  .ink-study-front { padding: 20px; }
+  .ink-study-back { padding: 20px; }
+  .ink-study-back > .ink-tag { margin-left: 0; }
+  .ink-study-frame { height: 360px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ink-rate, .ink-study-reveal, .ink-study-replay { transition: none; }
+}
