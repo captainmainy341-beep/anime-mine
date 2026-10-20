@@ -4,6 +4,7 @@ const fs = require('node:fs/promises');
 const os = require('node:os');
 const path = require('node:path');
 const { createServices } = require('../src/main/services');
+const { dateKey } = require('../src/core/ankiBrowse');
 const { MangaLibrary } = require('../src/core/manga');
 
 let root;
@@ -238,10 +239,12 @@ test('exposes every IPC channel from the contract', async () => {
     'anki:browse',
     'anki:cardAction',
     'anki:cardInfo',
+    'anki:createDeck',
     'anki:deckOptions',
     'anki:deleteNote',
     'anki:facets',
     'anki:getView',
+    'anki:importPackage',
     'anki:listDecks',
     'anki:media',
     'anki:mine',
@@ -256,6 +259,7 @@ test('exposes every IPC channel from the contract', async () => {
     'anki:status',
     'anki:studyAnswer',
     'anki:studyQueue',
+    'anki:sync',
     'anki:updateNote',
     'corpus:coverage',
     'corpus:indexAnime',
@@ -719,9 +723,10 @@ test('settings:set writes settings.json readable only by the owner', async () =>
 });
 
 // Anki view: services built with a recording AnkiClient so every AnkiConnect touch is visible.
-async function ankiHarness({ responses = {}, ping = true } = {}) {
+async function ankiHarness({ responses = {}, ping = true, dialogResult = { canceled: true, filePaths: [] } } = {}) {
   const log = newLog();
   const calls = [];
+  const dialogCalls = [];
   class RecordingAnki {
     constructor(url) {
       calls.push({ type: 'client', url });
@@ -748,7 +753,12 @@ async function ankiHarness({ responses = {}, ping = true } = {}) {
   const dir = await fs.mkdtemp(path.join(root, 'anki-'));
   const services = createServices({
     dataDir: dir,
-    dialog: { showOpenDialog: async () => ({ canceled: true, filePaths: [] }) },
+    dialog: {
+      async showOpenDialog(options) {
+        dialogCalls.push(options);
+        return dialogResult;
+      },
+    },
     deps: {
       webPort: 0,
       Library: fakeLibrary(log),
@@ -760,7 +770,7 @@ async function ankiHarness({ responses = {}, ping = true } = {}) {
       systemAudio: fakeSystemAudio(log),
     },
   });
-  return { calls, call: (channel, ...args) => services.handlers[channel](...args), dir, services };
+  return { calls, dialogCalls, call: (channel, ...args) => services.handlers[channel](...args), dir, services };
 }
 
 const invokes = (calls) => calls.filter((c) => c.type !== 'client' && c.type !== 'ping');
@@ -789,6 +799,8 @@ test('sample anki view returns sample data without any AnkiConnect request', asy
   assert.equal(overview.mode, 'sample');
   assert.equal(overview.decks.length, 4);
   assert.equal(overview.forecast.length, 22);
+  assert.ok(overview.reviewsByDay.length > 200);
+  assert.equal(overview.reviewsByDay.at(-1).date, dateKey(new Date()));
   assert.ok(overview.mined.length > 0);
   const { cards } = await call('anki:browse', { deck: decks[0], state: 'all', limit: 5 });
   assert.ok(cards.length > 0);
@@ -902,8 +914,14 @@ test('live anki view reports connected only after a successful ping', async () =
 });
 
 test('live overview only queries decks on the allow-list', async () => {
+  const todayKey = dateKey(new Date());
   const { calls, call } = await ankiHarness({
-    responses: { multi: ({ actions }) => actions.map(() => []), findCards: () => [], findNotes: () => [] },
+    responses: {
+      multi: ({ actions }) => actions.map(() => []),
+      findCards: () => [],
+      findNotes: () => [],
+      getNumCardsReviewedByDay: () => [[todayKey, 12]],
+    },
   });
   await call('anki:setView', { mode: 'live', visibleDecks: ['Visible Deck'] });
 
@@ -911,8 +929,10 @@ test('live overview only queries decks on the allow-list', async () => {
 
   assert.equal(overview.mode, 'live');
   assert.deepEqual(overview.decks.map((deck) => deck.name), ['Visible Deck']);
+  assert.deepEqual(overview.reviewsByDay, [{ date: todayKey, count: 12 }]);
   const queries = invokes(calls).flatMap((c) => (c.action === 'multi' ? c.params.actions : [c.params]))
-    .map((a) => a.params?.query ?? a.query);
+    .map((a) => a.params?.query ?? a.query)
+    .filter((q) => typeof q === 'string');
   assert.ok(queries.length > 0);
   assert.ok(queries.every((q) => !q.includes('Hidden Deck')));
 });
@@ -929,6 +949,63 @@ test('live overview with an empty allow-list returns no decks, zero totals and n
   assert.equal(overview.minedThisWeek, 0);
   assert.deepEqual(overview.mined, []);
   assert.deepEqual(invokes(calls), []);
+});
+
+test('hidden and sample anki modes refuse deck creation, package import and sync without side effects', async () => {
+  const { calls, dialogCalls, call } = await ankiHarness();
+  for (const mode of ['hidden', 'sample']) {
+    await call('anki:setView', { mode, visibleDecks: ['Visible Deck'] });
+    await assert.rejects(call('anki:createDeck', { name: 'New Deck' }), { message: 'Switch to Live mode and connect Anki first.' });
+    await assert.rejects(call('anki:importPackage'), { message: 'Switch to Live mode and connect Anki first.' });
+    await assert.rejects(call('anki:sync'), { message: 'Switch to Live mode and connect Anki first.' });
+  }
+  assert.deepEqual(dialogCalls, []);
+  assert.deepEqual(invokes(calls), []);
+});
+
+test('live createDeck trims the name and rejects blank names before AnkiConnect', async () => {
+  const { calls, call } = await ankiHarness({ responses: { createDeck: () => 1 } });
+  await call('anki:setView', { mode: 'live', visibleDecks: ['Visible Deck'] });
+
+  assert.deepEqual(await call('anki:createDeck', { name: '  Manga Ink  ' }), { ok: true, name: 'Manga Ink' });
+  for (const name of ['', '   ', undefined, 7]) {
+    await assert.rejects(call('anki:createDeck', { name }), { message: 'name must be a non-empty string' });
+  }
+  await assert.rejects(call('anki:createDeck'), { message: 'name must be a non-empty string' });
+  assert.deepEqual(invokes(calls).map((entry) => [entry.action, entry.params]), [['createDeck', { deck: 'Manga Ink' }]]);
+});
+
+test('live importPackage opens the package dialog and imports the chosen file', async () => {
+  const { calls, dialogCalls, call } = await ankiHarness({
+    responses: { importPackage: () => true },
+    dialogResult: { canceled: false, filePaths: ['/packages/core.apkg'] },
+  });
+  await call('anki:setView', { mode: 'live', visibleDecks: ['Visible Deck'] });
+
+  assert.deepEqual(await call('anki:importPackage'), { imported: true, path: '/packages/core.apkg' });
+  assert.deepEqual(dialogCalls, [
+    { properties: ['openFile'], filters: [{ name: 'Anki packages', extensions: ['apkg', 'colpkg'] }] },
+  ]);
+  assert.deepEqual(invokes(calls).map((entry) => [entry.action, entry.params]), [
+    ['importPackage', { path: '/packages/core.apkg' }],
+  ]);
+});
+
+test('cancelling the package dialog reports no import and leaves AnkiConnect alone', async () => {
+  const { calls, dialogCalls, call } = await ankiHarness();
+  await call('anki:setView', { mode: 'live', visibleDecks: ['Visible Deck'] });
+
+  assert.deepEqual(await call('anki:importPackage'), { imported: false, path: null });
+  assert.equal(dialogCalls.length, 1);
+  assert.deepEqual(invokes(calls), []);
+});
+
+test('live sync asks AnkiConnect to sync and reports ok', async () => {
+  const { calls, call } = await ankiHarness({ responses: { sync: () => null } });
+  await call('anki:setView', { mode: 'live', visibleDecks: ['Visible Deck'] });
+
+  assert.deepEqual(await call('anki:sync'), { ok: true });
+  assert.deepEqual(invokes(calls).map((entry) => entry.action), ['sync']);
 });
 
 test('live browse of a deck outside the allow-list throws Deck is hidden', async () => {

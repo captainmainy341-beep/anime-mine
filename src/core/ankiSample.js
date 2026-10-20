@@ -1,4 +1,4 @@
-const { assertMediaName, clampLimit, normalizeState } = require('./ankiBrowse');
+const { assertMediaName, clampLimit, dateKey, normalizeState } = require('./ankiBrowse');
 
 // Fake data for the 'sample' view. Never touches AnkiConnect; ignores the allow-list.
 const DECKS = ['Sample · Core 2k', 'Sample · Anime mining', 'Sample · Grammar', 'Sample · Kanji'];
@@ -26,6 +26,50 @@ const SAMPLE_NOTE_TYPE = 'AnimeMine';
 const MINUTE = 60 * 1000;
 const DAY = 24 * 60 * MINUTE;
 const SAMPLE_NOW = Date.UTC(2026, 9, 12);
+
+// Seeded review history: 365 days of study, ending in the six-day streak the sample overview reports.
+const REVIEW_WINDOW_DAYS = 365;
+const REVIEW_SEED = 0x9e3779b9;
+const SAMPLE_STREAK = 6;
+const SAMPLE_TODAY_REVIEWS = 37;
+
+function mulberry32(seed) {
+  let state = seed >>> 0;
+  return () => {
+    state = (state + 0x6d2b79f5) >>> 0;
+    let t = state;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+// Midnight today, so the generated heatmap always has "today" in its last column.
+function sampleToday() {
+  const now = new Date();
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate());
+}
+
+function sampleReviewsByDay(today = sampleToday()) {
+  const random = mulberry32(REVIEW_SEED);
+  const rows = [];
+  for (let ago = REVIEW_WINDOW_DAYS - 1; ago >= 0; ago--) {
+    const roll = random();
+    const weight = random();
+    const spike = random();
+    const date = dateKey(new Date(today.getFullYear(), today.getMonth(), today.getDate() - ago));
+    if (ago < SAMPLE_STREAK) {
+      rows.push({ date, count: ago === 0 ? SAMPLE_TODAY_REVIEWS : 12 + Math.round(weight * 24) });
+      continue;
+    }
+    if (ago === SAMPLE_STREAK) continue; // a rest day keeps the current streak at exactly six days
+    const chance = ago < 120 ? 0.78 : ago < 240 ? 0.64 : 0.5;
+    if (ago !== REVIEW_WINDOW_DAYS - 1 && roll >= chance) continue;
+    const count = 6 + Math.round(weight * 28) + (spike < 0.08 ? 20 + Math.round(spike * 200) : 0);
+    rows.push({ date, count });
+  }
+  return rows;
+}
 
 const dueTextOf = (card) => {
   if (card.state === 'suspended') return 'suspended';
@@ -113,8 +157,9 @@ class SampleBrowser {
       today: { studied: 37, due: sumOf(decks, 'due'), learning: sumOf(decks, 'learn'), new: sumOf(decks, 'new') },
       forecast: FORECAST.map((count, day) => ({ day, count })),
       retention30: 91,
-      streak: 6,
+      streak: SAMPLE_STREAK,
       minedThisWeek: CARDS.filter((card) => card.deck === MINING_DECK && card.ago <= 7).length,
+      reviewsByDay: sampleReviewsByDay(),
       mined,
     };
   }
@@ -189,4 +234,4 @@ class SampleBrowser {
   }
 }
 
-module.exports = { SampleBrowser, SAMPLE_DECKS: DECKS };
+module.exports = { SampleBrowser, SAMPLE_DECKS: DECKS, sampleReviewsByDay };
