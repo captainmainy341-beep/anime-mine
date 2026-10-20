@@ -4,6 +4,7 @@ import { mountExplore } from './exploreView.mjs';
 import {
   DEFAULT_TYPE,
   TYPE_FILTERS,
+  UP_NEXT_ROWS,
   addWordPayload,
   batchSize,
   exploreLevel,
@@ -15,7 +16,7 @@ import {
   seeAllRoute,
   tileModel,
   vocabExplore,
-  vocabLessonBatch,
+  vocabLevelRows,
 } from './browseModel.mjs';
 
 const SEARCH_DELAY_MS = 200;
@@ -39,6 +40,15 @@ function loadCards(api, ids) {
       }
     }),
   ).then(() => cards);
+}
+
+function hasUnlockedLevelsAfter(levels, levelNumber) {
+  return vocabLevelRows(levels).some(
+    (row) =>
+      row.level > levelNumber &&
+      !row.locked &&
+      Number(row.vocab?.passed ?? 0) < Number(row.vocab?.total ?? 0),
+  );
 }
 
 function mountExploreLevels(el, ctx, arg) {
@@ -75,15 +85,17 @@ function mountExploreLevels(el, ctx, arg) {
       ]);
       if (disposed || current !== seq) return;
       batch = batchSize(arg.batch ?? settings?.lessonBatch);
-      const level = exploreLevel(levels ?? [], type);
-      const rows = level ? await api.browse({ type, level: level.level }) : [];
-      if (disposed || current !== seq) return;
       if (type === 'kanji') {
+        const level = exploreLevel(levels ?? [], 'kanji');
+        const rows = level ? await api.browse({ type: 'kanji', level: level.level }) : [];
+        if (disposed || current !== seq) return;
         const lesson = kanjiLesson({ levels, rows, batch });
         const cards = await loadCards(api, kanjiRowCandidates(rows, lesson?.ids ?? []));
         if (disposed || current !== seq) return;
         model = kanjiExplore({ levels, rows, cards, batch });
       } else {
+        const rows = await loadVocabRows(levels ?? [], () => disposed || current !== seq);
+        if (!rows || disposed || current !== seq) return;
         model = vocabExplore({ levels, rows, batch });
       }
       render();
@@ -93,6 +105,25 @@ function mountExploreLevels(el, ctx, arg) {
       view = null;
       fill(host, h('p', { class: 'learn-browse-error', role: 'alert' }, err.message));
     }
+  }
+
+  // The vocab lesson queue spans levels: an earlier level can still have new words when the current level has moved
+  // on, and Up next needs the batches that follow. Load the unfinished levels in course order and stop as soon as
+  // the next lesson plus its three following batches are known.
+  async function loadVocabRows(levels, stale) {
+    const rows = [];
+    for (const level of vocabLevelRows(levels)) {
+      const total = Number(level?.vocab?.total ?? 0);
+      const passed = Number(level?.vocab?.passed ?? 0);
+      if (total <= 0 || passed >= total) continue;
+      const levelRows = (await api.browse({ type: 'vocab', level: level.level })) ?? [];
+      if (stale()) return null;
+      rows.push(...levelRows);
+      const preview = vocabExplore({ levels, rows, batch });
+      if (preview.rows.length < UP_NEXT_ROWS) continue;
+      if (preview.lesson || !hasUnlockedLevelsAfter(levels, level.level)) break;
+    }
+    return rows;
   }
 
   function render() {
@@ -124,6 +155,12 @@ function mountExploreLevels(el, ctx, arg) {
       onFilter: setFilter,
       seeAll: { ...model.seeAll, onOpen: openSeeAll },
       emptyText: model.emptyText,
+      emptyAction: model.emptyAction
+        ? {
+            label: model.emptyAction.label,
+            onClick: () => ctx.go(model.emptyAction.route.view, model.emptyAction.route.arg),
+          }
+        : null,
     };
   }
 
@@ -147,15 +184,16 @@ function mountExploreLevels(el, ctx, arg) {
       ctx.go('item', row.id);
       return;
     }
-    attempt(async () => {
-      const levelRows = await api.browse({ type: 'vocab', level: row.level });
-      const items = vocabLessonBatch(levelRows, row.batch, batch);
-      if (!items.length) {
-        toast('Pass the kanji in that level to unlock its words.', 'info');
-        return;
-      }
-      startLesson(items.map((item) => item.id));
-    });
+    if (row.ids?.length) {
+      startLesson(row.ids);
+      return;
+    }
+    toast(
+      row.status === 'new'
+        ? 'Pass the kanji in that level to unlock its words.'
+        : 'Nothing new in that lesson right now.',
+      'info',
+    );
   }
 
   function openSeeAll() {
