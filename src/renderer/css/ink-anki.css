@@ -1,1 +1,764 @@
-/* Manga Ink: owned by its slice (see docs/manga-ink-contracts.md). */
+/* Manga Ink: Anki Clean (slice S8). Paper, 1.5px rules, no hatch. Black only on the caption tags, the selected
+   filter states and the Study now / Sync actions; red stays on progress, underlines, the selected deck pip,
+   the active tab rule and the heatmap's today cell. */
+
+.anki.ink-screen {
+  display: block;
+  padding: 6px 32px 24px 24px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  color: var(--ink);
+  background: var(--paper);
+  --accent-soft: var(--paper-2);
+}
+
+/* Slim tab strip above the header, like Learn's: every Anki tab and the data mode stay reachable. */
+.anki .ink-anki-strip {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 25px;
+  margin-bottom: 2px;
+  border-bottom: 1.5px solid var(--ink);
+}
+.anki .ink-anki-tabs {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  min-width: 0;
+}
+.anki .ink-anki-tab {
+  margin-bottom: -1.5px;
+  padding: 2px 0 3px;
+  border: 0;
+  border-bottom: 3px solid transparent;
+  border-radius: 0;
+  background: none;
+  color: var(--ink-mute);
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 17px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.anki .ink-anki-tab:hover:not(:disabled) {
+  transform: none;
+  border-color: transparent;
+  border-bottom-color: var(--ink);
+  background: none;
+  box-shadow: none;
+  color: var(--ink);
+}
+.anki .ink-anki-tab[aria-selected='true'] {
+  border-bottom-color: var(--ink-red);
+  color: var(--ink);
+}
+.anki .ink-anki-strip-actions {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 12px;
+}
+.anki .ink-anki-sample {
+  color: var(--ink-mute);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.anki .ink-anki-strip-btn {
+  height: 22px;
+  padding: 0 9px;
+  border: 1.5px solid var(--ink);
+  border-radius: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.anki .ink-anki-strip-btn:hover:not(:disabled) {
+  transform: none;
+  border-color: var(--ink);
+  background: var(--paper-2);
+  box-shadow: none;
+}
+
+/* Live / Sample / Hidden switch, square and slim. */
+.anki .seg {
+  display: inline-flex;
+  padding: 0;
+  border: 1.5px solid var(--ink);
+  border-radius: 0;
+  background: var(--paper);
+}
+.anki .seg button {
+  height: 22px;
+  padding: 0 9px;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: var(--ink-mute);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.anki .seg button + button { border-left: 1.5px solid var(--ink); }
+.anki .seg button:hover:not(:disabled) {
+  transform: none;
+  background: var(--paper-2);
+  box-shadow: none;
+  color: var(--ink);
+}
+.anki .seg button[aria-pressed='true'] { background: var(--ink); color: var(--paper); }
+.anki .seg button[aria-pressed='true']:hover:not(:disabled) { background: var(--ink); color: var(--paper); }
+
+.anki .ink-anki-body {
+  display: block;
+  margin-top: 16px;
+  min-height: 0;
+}
+.anki .ink-hero { flex: none; }
+.anki .ink-anki-tab-body {
+  display: block;
+  overflow: visible;
+}
+.anki .ink-anki-tab-body.is-browse,
+.anki .ink-anki-tab-body.is-options {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 185px);
+  min-height: 420px;
+  overflow: hidden;
+}
+
+/* Overview: 640px deck panel + 528px deck glance, then the full-width activity panel. */
+.anki .ink-anki-overview {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.anki .ink-anki-top {
+  display: grid;
+  grid-template-columns: 640fr 528fr;
+  gap: 16px;
+  align-items: stretch;
+}
+
+.anki .ink-anki-decks {
+  display: flex;
+  flex-direction: column;
+  height: 500px;
+  padding: 24px 27px 22px;
+}
+.anki .ink-anki-decks > .ink-tag { flex: none; }
+
+.anki .ink-deck-table {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+  margin-top: 16px;
+  border: 1.5px solid var(--ink);
+  background: var(--paper);
+}
+.anki .ink-deck-head,
+.anki .ink-deck-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 70px 70px 70px 68px;
+  padding-left: 20px;
+}
+.anki .ink-deck-head {
+  flex: none;
+  align-items: center;
+  height: 36px;
+  background: var(--paper-2);
+}
+.anki .ink-deck-head-cell {
+  color: var(--ink-mute);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 17px;
+  letter-spacing: 0.1em;
+  text-align: center;
+  text-transform: uppercase;
+}
+.anki .ink-deck-head-cell.is-deck { text-align: left; }
+.anki .ink-deck-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+.anki .ink-deck-row {
+  position: relative;
+  align-items: center;
+  height: 60px;
+  border-top: 1.5px solid var(--ink);
+  background: var(--paper);
+}
+.anki .ink-deck-row.is-selected { background: var(--paper-2); }
+.anki .ink-deck-pip {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 5px;
+  background: transparent;
+}
+.anki .ink-deck-row.is-selected .ink-deck-pip { background: var(--ink-red); }
+.anki .ink-deck-pick {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 1px;
+  height: 100%;
+  min-width: 0;
+  padding: 0 12px 0 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: var(--ink);
+  text-align: left;
+}
+.anki .ink-deck-pick:hover:not(:disabled),
+.anki .ink-deck-pick:active:not(:disabled) {
+  transform: none;
+  border: 0;
+  background: none;
+  box-shadow: none;
+  color: var(--ink);
+}
+.anki .ink-deck-pick:focus-visible { outline: 2px solid var(--ink); outline-offset: -4px; }
+.anki .ink-deck-name {
+  max-width: 100%;
+  overflow: hidden;
+  font-family: var(--font);
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 28px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.anki .ink-deck-sub {
+  color: var(--ink-mute);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 17px;
+}
+.anki .ink-deck-count {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 34px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.anki .ink-deck-count.is-zero { color: #b9b5aa; }
+.anki .ink-deck-more {
+  display: flex;
+  grid-column: 5;
+  align-items: center;
+  justify-content: center;
+  justify-self: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: var(--ink);
+}
+.anki .ink-deck-more .doodle { --doodle-stroke: 3; width: 20px; height: 20px; }
+.anki .ink-deck-more:hover:not(:disabled),
+.anki .ink-deck-more:active:not(:disabled) {
+  transform: none;
+  border: 0;
+  background: none;
+  box-shadow: none;
+}
+.anki .ink-deck-more:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+/* Kebab menu is appended to <body> so the scrolling table cannot clip it. */
+.ink-deck-menu {
+  position: fixed;
+  z-index: 40;
+  width: 176px;
+  padding: 4px;
+  border: 1.5px solid var(--ink);
+  background: var(--paper);
+  box-shadow: 4px 4px 0 var(--ink);
+}
+.ink-deck-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 700;
+  text-align: left;
+}
+.ink-deck-menu-item .doodle { width: 17px; height: 17px; }
+.ink-deck-menu-item:hover:not(:disabled),
+.ink-deck-menu-item:active:not(:disabled) {
+  transform: none;
+  border: 0;
+  background: var(--paper-2);
+  box-shadow: none;
+  color: var(--ink);
+}
+
+.anki .ink-anki-actions {
+  display: flex;
+  flex: none;
+  gap: 16px;
+  margin-top: 18px;
+}
+.anki .ink-anki-btn {
+  display: flex;
+  flex: 1 1 0;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  height: 48px;
+  min-width: 0;
+  padding: 0 12px;
+  border: 1.5px solid var(--ink);
+  border-radius: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 17px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.anki .ink-anki-btn .doodle { --doodle-stroke: 3; width: 16px; height: 16px; margin: 0; }
+.anki .ink-anki-btn:hover:not(:disabled) {
+  transform: none;
+  border-color: var(--ink);
+  background: var(--paper-2);
+  box-shadow: none;
+}
+.anki .ink-anki-btn.is-sync {
+  border-width: 3px;
+  background: var(--ink);
+  color: var(--paper);
+}
+.anki .ink-anki-btn.is-sync:hover:not(:disabled) {
+  background: var(--ink);
+  color: var(--paper);
+  box-shadow: none;
+}
+.anki .ink-anki-btn.is-primary {
+  border-width: 3px;
+  background: var(--paper);
+  color: var(--ink);
+}
+.anki .ink-anki-btn.is-primary:hover:not(:disabled) { background: var(--paper-2); color: var(--ink); }
+.anki .ink-anki-actions.is-form { gap: 10px; }
+.anki .ink-anki-deck-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 48px;
+  padding: 0 14px;
+  border: 1.5px solid var(--ink);
+  border-radius: 0;
+  background: var(--paper-3);
+  color: var(--ink);
+  font-size: 16px;
+}
+.anki .ink-anki-actions.is-form .ink-anki-btn { flex: 0 0 auto; padding: 0 18px; }
+
+/* Selected deck glance. 416px content column inside a 528px panel, matching the frame. */
+.anki .ink-anki-glance {
+  height: 500px;
+  padding: 28px 55px;
+  overflow: hidden;
+}
+.anki .ink-anki-glance-title {
+  margin: 18px 0 0;
+  overflow: hidden;
+  font-family: var(--font-display);
+  font-size: 48px;
+  font-weight: 400;
+  line-height: 70px;
+  letter-spacing: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.anki .ink-anki-glance-underline { width: 110px; margin-top: 2px; }
+.anki .ink-anki-glance-sub {
+  margin: 2px 0 0;
+  overflow: hidden;
+  color: var(--ink-mute);
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 26px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.anki .ink-anki-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 128px);
+  gap: 16px;
+  margin-top: 22px;
+}
+.anki .ink-anki-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 112px;
+  border: 1.5px solid var(--ink);
+  background: var(--paper);
+}
+.anki .ink-anki-stat b {
+  font-family: var(--font-display);
+  font-size: 44px;
+  font-weight: 400;
+  line-height: 56px;
+  letter-spacing: 0;
+}
+.anki .ink-anki-stat span {
+  margin-top: 2px;
+  color: var(--ink-mute);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 17px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.anki .ink-anki-done {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 20px;
+}
+.anki .ink-anki-done-label {
+  color: var(--ink-mute);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.anki .ink-anki-done-value { font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.anki .ink-anki-done-track { margin-top: 9px; }
+.anki .ink-anki-glance .ink-bigbtn.ink-anki-studynow {
+  height: 84px;
+  margin-top: 24px;
+  padding: 0 36px;
+  font-size: 32px;
+}
+
+/* Review activity heatmap. */
+.anki .ink-anki-heat {
+  height: 292px;
+  padding: 24px 26px 17px;
+}
+.anki .ink-anki-heat-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+.anki .ink-anki-heat-range {
+  color: var(--ink-mute);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 36px;
+  white-space: nowrap;
+}
+.anki .ink-heat-body {
+  display: flex;
+  align-items: flex-start;
+  gap: 30px;
+  margin-top: 16px;
+}
+.anki .ink-heat-map {
+  flex: 0 0 660px;
+  max-width: 100%;
+  min-width: 0;
+}
+.anki .ink-heat-main { display: flex; align-items: flex-start; }
+.anki .ink-heat-days {
+  display: grid;
+  flex: 0 0 36px;
+  grid-template-rows: repeat(7, 17px);
+  row-gap: 4px;
+  padding-top: 28px;
+  padding-left: 6px;
+  color: var(--ink-mute);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 17px;
+}
+.anki .ink-heat-days span:nth-child(1) { grid-row: 1; }
+.anki .ink-heat-days span:nth-child(2) { grid-row: 3; }
+.anki .ink-heat-days span:nth-child(3) { grid-row: 5; }
+.anki .ink-heat-scroll {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+.anki .ink-heat-scroll::-webkit-scrollbar { display: none; }
+.anki .ink-heat-canvas { width: 1109px; }
+.anki .ink-heat-months {
+  position: relative;
+  height: 17px;
+  margin-bottom: 11px;
+}
+.anki .ink-heat-month {
+  position: absolute;
+  top: 0;
+  color: var(--ink-mute);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 17px;
+  white-space: nowrap;
+}
+.anki .ink-heat-grid {
+  display: grid;
+  grid-template-columns: repeat(53, 17px);
+  grid-template-rows: repeat(7, 17px);
+  gap: 4px;
+}
+.anki .ink-heat-cell {
+  display: block;
+  width: 17px;
+  height: 17px;
+  background: #ebe7dc;
+}
+.anki .ink-heat-cell.is-level-1 { background: #d9d4c7; }
+.anki .ink-heat-cell.is-level-2 { background: #b3ae9f; }
+.anki .ink-heat-cell.is-level-3 { background: var(--ink); }
+.anki .ink-heat-cell.is-future { background: transparent; }
+.anki .ink-heat-cell.is-today { background: var(--ink-red); }
+.anki .ink-heat-legend {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 12px 0 0 36px;
+  color: var(--ink-mute);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 17px;
+}
+.anki .ink-heat-less { margin-right: 7px; }
+.anki .ink-heat-more { margin-left: 4px; }
+.anki .ink-heat-swatch {
+  display: block;
+  width: 16px;
+  height: 16px;
+  background: #ebe7dc;
+}
+.anki .ink-heat-swatch.is-level-1 { background: #d9d4c7; }
+.anki .ink-heat-swatch.is-level-2 { background: #b3ae9f; }
+.anki .ink-heat-swatch.is-level-3 { background: var(--ink); }
+.anki .ink-heat-stats {
+  display: grid;
+  flex: 0 0 450px;
+  grid-template-columns: repeat(3, 150px);
+  align-content: start;
+  padding-top: 28px;
+}
+.anki .ink-heat-stat {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.anki .ink-heat-stat-label {
+  color: var(--ink-mute);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 16px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.anki .ink-heat-stat-value {
+  margin-top: 6px;
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 400;
+  line-height: 38px;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+.anki .ink-heat-note {
+  grid-column: 1 / -1;
+  max-width: 438px;
+  margin: 26px 0 0;
+  color: var(--ink-mute);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 22px;
+}
+
+/* Old summary / forecast / deck options, kept one click away. */
+.anki .ink-anki-more { margin-top: 16px; }
+.anki .ink-anki-more > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 13px 20px;
+  color: var(--ink-mute);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  list-style: none;
+}
+.anki .ink-anki-more > summary::-webkit-details-marker { display: none; }
+.anki .ink-anki-more > summary .doodle { width: 16px; height: 16px; margin: 0; }
+.anki .ink-anki-more[open] > summary { border-bottom: 1.5px solid var(--ink); color: var(--ink); }
+.anki .ink-anki-more[open] > summary .doodle { transform: rotate(180deg); }
+.anki .ink-anki-more-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 18px 20px 22px;
+}
+.anki .anki-collection-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 26px;
+  color: var(--ink-mute);
+  font-size: 13px;
+}
+
+/* Study: deck bar + the S9 card view (front, back, rating bar). */
+.anki .ink-anki-study {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.anki .ink-anki-study-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 16px;
+  padding-bottom: 10px;
+  border-bottom: 1.5px solid var(--ink);
+}
+.anki .ink-anki-study-deck {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.anki .ink-anki-study-path {
+  overflow: hidden;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 24px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.anki .ink-anki-study-meta {
+  display: flex;
+  color: var(--ink-mute);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 17px;
+}
+.anki .ink-anki-reviewed::before { content: ' · '; }
+.anki .ink-anki-study-status {
+  color: var(--ink-mute);
+  font-size: 12px;
+  font-weight: 500;
+}
+.anki .ink-anki-study-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-left: auto;
+}
+.anki .ink-anki-chip {
+  height: 32px;
+  padding: 0 12px;
+  border: 1.5px solid var(--ink);
+  border-radius: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.anki .ink-anki-chip:hover:not(:disabled) {
+  transform: none;
+  border-color: var(--ink);
+  background: var(--paper-2);
+  box-shadow: none;
+}
+.anki .ink-anki-chip[aria-pressed='true'] { background: var(--ink); color: var(--paper); }
+.anki .ink-anki-study-view { display: flex; flex-direction: column; min-width: 0; }
+.anki .ink-anki-study-view > .ink-study { flex: 1 1 auto; }
+.anki .ink-anki-grammar { border: 1.5px solid var(--ink); background: var(--paper); padding: 4px 20px 16px; }
+.anki .ink-anki-grammar:empty { display: none; }
+
+/* Friendly states (hidden, connect, picker, loading) on paper. */
+.anki .anki-panel {
+  border: 1.5px solid var(--ink);
+  border-radius: 0;
+  background: var(--paper);
+}
+.anki .anki-panel h2 { font-family: var(--font-display); font-size: 26px; font-weight: 400; }
+.anki .anki-panel.picker { max-width: 600px; }
+.anki .deck-check { border: 1.5px solid var(--ink); border-radius: 0; background: var(--paper); }
+.anki .deck-check li + li { border-top: 1.5px solid var(--ink); }
+.anki .study-start .panel-actions { justify-content: center; }
+.anki .study-deck-pick select { border: 1.5px solid var(--ink); border-radius: 0; background: var(--paper-3); }
+
+@media (max-width: 1439px) {
+  .anki .ink-anki-glance { padding: 24px 32px; }
+  .anki .ink-anki-glance-title { font-size: 42px; line-height: 58px; margin-top: 12px; }
+  .anki .ink-anki-glance-underline { margin-top: 8px; }
+  .anki .ink-anki-stats { grid-template-columns: repeat(3, minmax(0, 128px)); }
+  .anki .ink-heat-body { flex-wrap: wrap; }
+  .anki .ink-heat-map { flex: 0 0 min(660px, 100%); }
+  .anki .ink-heat-stats { flex: 1 1 100%; padding-top: 0; }
+  .anki .ink-heat-note { margin-top: 16px; }
+  .anki .ink-anki-heat { height: auto; min-height: 292px; }
+}
+
+@media (max-width: 1150px) {
+  .anki .ink-anki-top { grid-template-columns: minmax(0, 1fr); }
+  .anki .ink-anki-decks { height: auto; min-height: 440px; }
+  .anki .ink-anki-glance { height: auto; }
+  .anki .ink-anki-glance-title { font-size: 40px; line-height: 56px; }
+  .anki .ink-deck-head,
+  .anki .ink-deck-row { grid-template-columns: minmax(0, 1fr) 58px 62px 62px 44px; padding-left: 16px; }
+}
+
+@media (max-width: 720px) {
+  .anki.ink-screen { padding: 6px 16px 22px 12px; }
+  .anki .ink-anki-strip { flex-wrap: wrap; gap: 8px; padding-bottom: 4px; }
+  .anki .ink-anki-tabs { gap: 14px; overflow-x: auto; }
+  .anki .ink-anki-strip-actions { gap: 8px; }
+  .anki .ink-anki-actions { flex-wrap: wrap; }
+  .anki .ink-anki-btn { flex: 1 1 140px; }
+  .anki .ink-anki-glance { padding: 20px 24px; }
+  .anki .ink-anki-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .anki .ink-heat-days { display: none; }
+  .anki .ink-heat-legend { margin-left: 0; }
+  .anki .ink-heat-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
