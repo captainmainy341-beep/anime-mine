@@ -2,7 +2,23 @@
    Frame: docs/figma/manga-ink/explore-kanji.png (1440x1000, content starts at x=224).
    Panels 700 + 16 + 468; lesson card 604x712 inset 45; up-next card 412x752 inset 25. */
 
-.ink-explore { min-width: 0; }
+/* Height budget. The frame is 1000px tall: 28px screen top padding + 110px hero + 24px gap +
+   808px panels + 30px bottom padding. In the app the Learn tab strip (S1 .learn-shell-nav: 40px
+   tall with a 28px top margin) sits above the screen, so the panels give that height back.
+   They fill the viewport down to 620px, never grow past the frame's 808px, and below the
+   minimum the page scrolls instead of shrinking further. */
+.ink-explore {
+  --ink-explore-chrome: 192px;
+  --ink-explore-strip: 0px;
+  --ink-explore-panel-h: clamp(620px, calc(100vh - var(--ink-explore-chrome) - var(--ink-explore-strip)), 808px);
+  /* How much shorter than the 808px frame the panels are (0..188); drives the flexible gaps. */
+  --ink-explore-squeeze: clamp(0px, calc(808px - var(--ink-explore-panel-h)), 188px);
+  --ink-explore-upnext-squeeze: clamp(0px, calc(808px - var(--ink-explore-panel-h)), 98px);
+  --ink-explore-row-squeeze: clamp(0px, calc(808px - var(--ink-explore-panel-h) - 98px), 90px);
+  min-width: 0;
+}
+/* Learn shell: strip height 40 + 28 top margin (ink-theme.css .learn-shell-nav). */
+.page.learn:has(.ink-explore) .ink-explore { --ink-explore-strip: 68px; }
 .ink-explore > .ink-hero { margin-bottom: 24px; }
 
 .ink-explore-grid {
@@ -13,8 +29,8 @@
   min-width: 0;
 }
 
-/* Left hatch panel: 700x808 with the lesson card inset 45px (604x712 at 1440). */
-.ink-explore-lesson { height: 808px; padding: 45px; min-width: 0; }
+/* Left hatch panel: 700 wide with the lesson card inset 45px (604x712 at the 808px frame height). */
+.ink-explore-lesson { height: var(--ink-explore-panel-h); padding: 45px; min-width: 0; }
 .ink-lesson-card {
   display: block; width: 100%; height: 100%; min-width: 0;
   padding: 25px; overflow: visible;
@@ -43,8 +59,12 @@
   overflow-wrap: anywhere;
 }
 
-/* Preview strip: 5 kanji tiles 88x88 (52px Black) or 3 text tiles 172x88. */
-.ink-lesson-preview { display: flex; align-items: stretch; margin-top: 53px; height: 88px; min-width: 0; }
+/* Preview strip: 5 kanji tiles 88x88 (52px Black) or 3 text tiles 172x88.
+   The gaps above the preview, progress and Start absorb the height difference: type and tiles stay put. */
+.ink-lesson-preview {
+  display: flex; align-items: stretch; height: 88px; min-width: 0;
+  margin-top: max(8px, calc(53px - var(--ink-explore-squeeze) * 0.24));
+}
 .ink-lesson-preview.is-kanji { gap: 15px; }
 .ink-lesson-preview.is-text { gap: 16px; }
 .ink-preview-tile {
@@ -63,7 +83,7 @@
 .ink-lesson-preview.is-text.is-long .ink-preview-glyph { font-size: 22px; line-height: 32px; }
 
 /* Progress label + count + track (track 548x10, red fill handled by ink-kit). */
-.ink-lesson-progress { margin-top: 68px; }
+.ink-lesson-progress { margin-top: max(9px, calc(68px - var(--ink-explore-squeeze) * 0.31)); }
 .ink-lesson-progress-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; height: 19px; }
 .ink-explore .ink-lesson-progress-label {
   font-size: 13px; font-weight: 700; line-height: 19px; letter-spacing: 0.08em; text-transform: uppercase;
@@ -75,35 +95,60 @@
 .ink-lesson-progress .ink-track { margin-top: 9px; }
 
 /* One big action: START LESSON, Dela 32, arrow to the right. */
-.ink-explore .ink-explore-start { margin-top: 78px; padding-left: 37px; }
+.ink-explore .ink-explore-start {
+  margin-top: max(9px, calc(78px - var(--ink-explore-squeeze) * 0.37));
+  padding-left: 37px;
+}
 .ink-explore .ink-explore-start .doodle {
   width: 46px; height: 46px; --doodle-stroke: 2.1; margin: 0 -6px 0 0;
 }
 
-/* Calm empty state when every lesson is done: no Start button, no preview strip. */
-.ink-explore .ink-lesson-card.is-empty .ink-lesson-number { font-size: 48px; line-height: 68px; }
-.ink-lesson-card.is-empty .ink-lesson-progress { margin-top: 40px; }
+/* Calm empty state when every lesson is done: a short 40px heading, explanatory copy and
+   an optional paper action. No Start button, no preview strip. */
+.ink-explore .ink-lesson-card.is-empty .ink-lesson-number { font-size: 40px; line-height: 56px; }
+.ink-explore .ink-lesson-empty-text {
+  max-width: 520px; margin: 18px 0 0;
+  font-size: 17px; font-weight: 500; line-height: 26px; letter-spacing: 0;
+  color: var(--ink-mute); overflow-wrap: anywhere;
+}
+.ink-lesson-card.is-empty .ink-lesson-progress { margin-top: 32px; }
+.ink-explore .ink-empty-action {
+  display: inline-flex; align-items: center; height: 64px; margin-top: 24px; padding: 0 28px;
+  border: 3px solid var(--ink); border-radius: 0 !important; background: var(--paper); color: var(--ink);
+  font-family: var(--font); font-size: 20px; font-weight: 700; line-height: 29px; letter-spacing: 0;
+  cursor: pointer;
+}
+.ink-explore .ink-empty-action:hover:not(:disabled) { background: var(--paper-3); color: var(--ink); }
+.ink-explore .ink-empty-action:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
 
-/* Right hatch panel: 468x808, up-next card inset 25 (412x752 at 1440). */
-.ink-explore-upnext { height: 808px; padding: 25px; min-width: 0; }
+/* Right hatch panel: 468 wide, up-next card inset 25 (412x752 at the 808px frame height). */
+.ink-explore-upnext { height: var(--ink-explore-panel-h); padding: 25px; min-width: 0; }
 .ink-upnext-card {
   display: flex; flex-direction: column; width: 100%; height: 100%; min-width: 0;
   padding: 21px;
 }
 
-.ink-explore-filters { display: flex; align-items: center; gap: 12px; }
+.ink-explore-filters { display: flex; flex: none; align-items: center; gap: 12px; }
 .ink-explore .ink-toggle { flex: none; font-family: var(--font); }
 .ink-explore .ink-toggle[data-filter='all'] { min-width: 72px; }
 .ink-explore .ink-toggle[data-filter='new'] { min-width: 80px; }
 .ink-explore .ink-toggle[data-filter='review'] { min-width: 104px; }
-.ink-explore-upnext .ink-tag { margin-top: 32px; }
+/* Vertical rhythm in the up-next card: margins give way first, then rows shrink 140 -> 112.
+   Slopes reach the 7/7/5/7px minima exactly at the 98px margin budget, so fixed chrome never flexes. */
+.ink-explore-upnext .ink-tag {
+  flex: none;
+  margin-top: max(7px, calc(32px - var(--ink-explore-upnext-squeeze) * 0.255));
+}
 
 .ink-upnext-list {
-  display: flex; flex-direction: column; gap: 20px;
-  margin-top: 24px; min-width: 0;
+  display: flex; flex: none; flex-direction: column;
+  gap: max(5px, calc(20px - var(--ink-explore-upnext-squeeze) * 0.153));
+  margin-top: max(7px, calc(24px - var(--ink-explore-upnext-squeeze) * 0.174));
+  min-width: 0;
 }
 .ink-explore .ink-row {
-  display: flex; align-items: center; width: 100%; height: 140px;
+  display: flex; align-items: center; width: 100%;
+  height: max(112px, calc(140px - var(--ink-explore-row-squeeze) * 0.311));
   padding: 0 18px 0 17px; border: 3px solid var(--ink); border-radius: 0 !important;
   background: var(--paper); color: var(--ink); text-align: left; font-family: var(--font); cursor: pointer;
 }
@@ -132,14 +177,15 @@
 }
 
 .ink-upnext-empty {
-  display: flex; align-items: center; height: 140px; margin: 0; padding: 0;
+  margin: 20px 0 0; padding: 0;
   font-size: 15px; font-weight: 500; line-height: 22px; color: var(--ink-mute);
 }
 
 /* See all 364x72: Bold 20 label with the red underline, arrow right. */
 .ink-explore .ink-seeall {
   display: flex; align-items: center; justify-content: space-between;
-  width: 100%; height: 72px; margin-top: 34px; padding: 0 21px;
+  flex: none; width: 100%; height: 72px; padding: 0 21px;
+  margin-top: max(7px, calc(34px - var(--ink-explore-upnext-squeeze) * 0.276));
   border: 3px solid var(--ink); border-radius: 0 !important; background: var(--paper); color: var(--ink);
   font-family: var(--font); text-align: left; cursor: pointer;
 }
@@ -173,9 +219,11 @@
   outline: 3px solid var(--ink); outline-offset: 3px;
 }
 
-/* Narrow windows: stack the two panels rather than squeezing the 5-tile preview strip. */
+/* Narrow windows: stack the two panels rather than squeezing the 5-tile preview strip.
+   The stacked layout is taller than the viewport anyway, so use the comfortable frame rhythm. */
 @media (max-width: 1120px) {
   .ink-explore-grid { grid-template-columns: minmax(0, 1fr); }
+  .ink-explore { --ink-explore-squeeze: 0px; --ink-explore-upnext-squeeze: 0px; --ink-explore-row-squeeze: 0px; }
   .ink-explore-lesson, .ink-explore-upnext { height: auto; min-height: 0; }
   .ink-lesson-card { height: auto; min-height: 712px; }
   .ink-upnext-card { height: auto; min-height: 752px; }

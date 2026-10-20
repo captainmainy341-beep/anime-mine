@@ -321,17 +321,89 @@ test('see all shows the model label and calls onOpen', () => {
   assert.equal(opens, 1);
 });
 
-test('lesson null renders the calm caught-up state without a Start button', () => {
+test('lesson null renders a short caught-up heading, copy and no Start button', () => {
   const { root } = mount(fixtureProps({ lesson: null }));
   const card = one(root, 'ink-lesson-card');
   assert.ok(card.classList.contains('is-empty'));
   assert.equal(one(root, 'ink-lesson-number').textContent, 'All caught up');
+  assert.equal(one(root, 'ink-lesson-empty-text').textContent, 'Every lesson in this set is done.');
   assert.equal(byClass(root, 'ink-explore-start').length, 0);
+  assert.equal(byClass(root, 'ink-bigbtn').length, 0);
   assert.equal(byClass(root, 'ink-underline').length, 1);
   one(root, 'ink-lesson-progress');
 
+  // emptyText is explanatory copy, never the lesson-number heading.
   const custom = mount(fixtureProps({ lesson: null, emptyText: 'Nothing queued' })).root;
-  assert.equal(one(custom, 'ink-lesson-number').textContent, 'Nothing queued');
+  assert.equal(one(custom, 'ink-lesson-number').textContent, 'All caught up');
+  assert.equal(one(custom, 'ink-lesson-empty-text').textContent, 'Nothing queued');
+
+  const blank = mount(fixtureProps({ lesson: null, emptyText: '' })).root;
+  assert.equal(byClass(blank, 'ink-lesson-empty-text').length, 0);
+  assert.equal(one(blank, 'ink-lesson-number').textContent, 'All caught up');
+});
+
+test('emptyAction renders a paper outlined button, not the black Start button', () => {
+  let clicks = 0;
+  const emptyAction = { label: 'Review what you know', onClick: () => { clicks += 1; } };
+  const { root } = mount(fixtureProps({ lesson: null, emptyAction }));
+  const actions = byClass(root, 'ink-empty-action');
+  assert.equal(actions.length, 1);
+  assert.equal(actions[0].tagName, 'BUTTON');
+  assert.equal(actions[0].getAttribute('type'), 'button');
+  assert.equal(actions[0].textContent, 'Review what you know');
+  assert.equal(actions[0].classList.contains('ink-bigbtn'), false);
+  assert.equal(actions[0].classList.contains('ink-explore-start'), false);
+  assert.equal(byClass(root, 'ink-explore-start').length, 0);
+  actions[0].click();
+  assert.equal(clicks, 1);
+
+  // No action unless the caller provides a label, and never alongside a real lesson.
+  assert.equal(byClass(mount(fixtureProps({ lesson: null })).root, 'ink-empty-action').length, 0);
+  assert.equal(byClass(mount(fixtureProps({ emptyAction })).root, 'ink-empty-action').length, 0);
+  assert.equal(byClass(mount(fixtureProps({ lesson: null, emptyAction: { label: '' } })).root, 'ink-empty-action').length, 0);
+});
+
+test('update() can add and remove the empty copy and action', () => {
+  let clicks = 0;
+  const { root, view } = mount();
+  view.update({
+    lesson: null,
+    emptyText: 'Nothing queued',
+    emptyAction: { label: 'Open the full list', onClick: () => { clicks += 1; } },
+  });
+  assert.equal(one(root, 'ink-lesson-number').textContent, 'All caught up');
+  assert.equal(one(root, 'ink-lesson-empty-text').textContent, 'Nothing queued');
+  one(root, 'ink-empty-action').click();
+  assert.equal(clicks, 1);
+
+  view.update({ emptyAction: null });
+  assert.equal(byClass(root, 'ink-empty-action').length, 0);
+  assert.equal(byClass(root, 'ink-explore-start').length, 0);
+
+  // Bringing the lesson back restores exactly one Start button and drops the empty copy.
+  view.update({ lesson: { ...kanjiFixture.lesson, start() {} } });
+  assert.equal(byClass(root, 'ink-empty-action').length, 0);
+  assert.equal(byClass(root, 'ink-lesson-empty-text').length, 0);
+  assert.equal(byClass(root, 'ink-explore-start').length, 1);
+});
+
+test('CSS keeps the empty state modest and the panels viewport-aware', () => {
+  const css = fs.readFileSync(
+    path.join(path.dirname(fileURLToPath(import.meta.url)), '../src/renderer/css/ink-explore.css'),
+    'utf8',
+  );
+  // The caught-up heading is ~40px, not the 64px lesson size; the copy is normal muted text.
+  assert.match(css, /\.ink-lesson-card\.is-empty \.ink-lesson-number \{[^}]*font-size: 40px/);
+  assert.match(css, /\.ink-lesson-empty-text \{[^}]*font-size: 17px[^}]*color: var\(--ink-mute\)/);
+  assert.match(css, /\.ink-empty-action \{[^}]*border: 3px solid var\(--ink\)[^}]*background: var\(--paper\)/);
+  // The filtered-empty line is a small line, not a 140px block.
+  const emptyRule = css.match(/\.ink-upnext-empty \{([^}]*)\}/)?.[1] ?? '';
+  assert.equal(/height:\s*140px/.test(emptyRule), false);
+  assert.match(emptyRule, /font-size: 15px/);
+  // Panels fill the viewport between 620 and the frame's 808, never past it.
+  assert.match(css, /--ink-explore-panel-h: clamp\(620px, calc\(100vh - var\(--ink-explore-chrome\) - var\(--ink-explore-strip\)\), 808px\)/);
+  assert.match(css, /\.page\.learn:has\(\.ink-explore\) \.ink-explore \{ --ink-explore-strip: 68px; \}/);
+  assert.match(css, /height: max\(112px, calc\(140px - var\(--ink-explore-row-squeeze\)/);
 });
 
 test('update() patches the header, lesson, progress, rows and filter in place', () => {

@@ -6,12 +6,22 @@ import { doodle } from '../lib/doodleIcons.mjs';
 import { inkHeader, inkPercent, setInkHeader } from '../lib/inkHeader.mjs';
 import { EXPLORE_FILTERS, UP_NEXT_LIMIT, seeAllLabel, upNext } from './exploreModel.mjs';
 
-const CAUGHT_UP_TEXT = 'All caught up';
+// Empty state: a short heading in the lesson-number face, the caller's emptyText as normal copy,
+// and an optional paper action. "All caught up" must not be set in the 64px lesson size.
+const CAUGHT_UP_TITLE = 'All caught up';
+const EMPTY_LESSON_TEXT = 'Every lesson in this set is done.';
 const EMPTY_ROWS_TEXT = 'Nothing here yet.';
 
 function progressNumber(value) {
   const n = Number(value);
   return Number.isFinite(n) ? n : 0;
+}
+
+function normaliseEmptyAction(action) {
+  if (!action) return null;
+  const label = String(action.label ?? '').trim();
+  if (!label) return null;
+  return { label, onClick: typeof action.onClick === 'function' ? action.onClick : () => {} };
 }
 
 export function mountExplore(el, props = {}) {
@@ -24,7 +34,8 @@ export function mountExplore(el, props = {}) {
     filter: props.filter ?? 'all',
     onFilter: typeof props.onFilter === 'function' ? props.onFilter : () => {},
     seeAll: props.seeAll ?? null,
-    emptyText: props.emptyText ?? CAUGHT_UP_TEXT,
+    emptyText: props.emptyText ?? EMPTY_LESSON_TEXT,
+    emptyAction: normaliseEmptyAction(props.emptyAction),
   };
 
   const header = inkHeader({
@@ -101,7 +112,8 @@ export function mountExplore(el, props = {}) {
         max: state.header.max,
       });
     }
-    if (patch.lesson !== undefined || patch.progress !== undefined || patch.emptyText !== undefined) {
+    if (patch.lesson !== undefined || patch.progress !== undefined
+      || patch.emptyText !== undefined || patch.emptyAction !== undefined) {
       renderLesson();
     }
     if (patch.rows !== undefined || patch.filter !== undefined) {
@@ -141,9 +153,12 @@ export function mountExplore(el, props = {}) {
 
     if (!lesson) {
       lessonCard.classList.add('is-empty');
-      children.push(h('h2', { class: 'ink-lesson-number' }, state.emptyText || CAUGHT_UP_TEXT));
+      const copy = String(state.emptyText ?? '').trim();
+      children.push(h('h2', { class: 'ink-lesson-number' }, CAUGHT_UP_TITLE));
       children.push(h('span', { class: 'ink-underline' }));
+      if (copy) children.push(h('p', { class: 'ink-lesson-empty-text' }, copy));
       children.push(progressEl());
+      if (state.emptyAction) children.push(emptyActionButton(state.emptyAction));
       lessonCard.replaceChildren(...children);
       return;
     }
@@ -206,6 +221,15 @@ export function mountExplore(el, props = {}) {
     h('span', { class: 'ink-bigbtn-label' }, 'START LESSON'),
     doodle('arrow'),
     );
+  }
+
+  // Paper outlined action for the empty state; deliberately not .ink-bigbtn and not a second Start.
+  function emptyActionButton(action) {
+    return h('button', {
+      class: 'ink-empty-action',
+      type: 'button',
+      onclick: () => action.onClick?.(),
+    }, action.label);
   }
 
   function renderList() {
