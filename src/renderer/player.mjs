@@ -6,7 +6,6 @@ import { addKeyColor, dilateMask, keyMask, maskToRgba, setKeyTolerance } from '.
 import {
   audioLabel,
   createGeneration,
-  formatOffset,
   isTypingTarget,
   loopSeekTarget,
   nextOffset,
@@ -19,7 +18,10 @@ import {
 import { toSegments } from './lib/segments.mjs';
 import { attempt, fill, h, toast } from './lib/ui.mjs';
 import { createPopup } from './popup.mjs';
-import { withIcon } from './lib/doodleIcons.mjs';
+import { doodle, withIcon } from './lib/doodleIcons.mjs';
+import { inkHeader, setInkHeader } from './lib/inkHeader.mjs';
+import { currentLineIndex, formatOffset as formatChipOffset } from './lib/subtitleTimeline.mjs';
+import { mountTimeline } from './player/timeline.mjs';
 
 const api = window.api;
 
@@ -27,17 +29,107 @@ const SAVE_INTERVAL_MS = 5000;
 const KEY_MAX_WIDTH = 960;
 const KEY_MASK_RADIUS = 2;
 const WAND_PREVIEW = 'rgba(255, 0, 200, 0.75)';
+const HEADER_THROTTLE_MS = 250;
+const STRIP_HINT = 'Click a word to look it up. Space pauses, A and D change line.';
 const KEYS_HELP =
-  'Space play/pause · ←/→ previous/next line · R replay line · L loop line · [/] subtitle offset · M mine word or sentence · Shift+M mine sentence · Esc close';
+  'Space play/pause · ←/→ previous/next line · A/D previous/next line · R replay line · L loop line · [/] subtitle offset · M mine word or sentence · Shift+M mine sentence · F fullscreen · Esc close';
+const PUNCTUATION_ONLY = /^[\p{P}\p{S}\s]+$/u;
 
 const pad = (n) => String(n).padStart(2, '0');
 const basename = (path) => path.split(/[\\/]/).pop();
 
-function formatTime(seconds) {
-  const total = Math.floor(seconds);
+export function formatTime(seconds) {
+  const value = Number(seconds);
+  const total = Math.floor(Number.isFinite(value) ? Math.max(0, value) : 0);
   const hours = Math.floor(total / 3600);
   const clock = `${pad(Math.floor((total % 3600) / 60))}:${pad(total % 60)}`;
   return hours ? `${hours}:${clock}` : clock;
+}
+
+// Text on the black plate in the player header: 'EPISODE 4 OF 12  ·  12:34 / 23:40'.
+// Episode number/total only when the library knows them; the times only once the duration is known.
+export function plateLabel({ episode = null, total = null, time = null, duration = 0 } = {}) {
+  const parts = [];
+  const number = Number(episode);
+  if (episode != null && Number.isFinite(number) && number > 0) {
+    const count = Number(total);
+    parts.push(total != null && Number.isFinite(count) && count > 0 ? `EPISODE ${number} OF ${count}` : `EPISODE ${number}`);
+  }
+  const length = Number(duration);
+  if (Number.isFinite(length) && length > 0 && time != null && Number.isFinite(Number(time))) {
+    parts.push(`${formatTime(time)} / ${formatTime(length)}`);
+  }
+  return parts.join('  ·  ');
+}
+
+// Graph paper plate above the video: 'Kono Subarashii S3  ·  E04'.
+export function episodePlateLabel({ show = '', episode = null } = {}) {
+  const number = Number(episode);
+  const tag = episode != null && Number.isInteger(number) && number > 0 ? `E${pad(number)}` : '';
+  const title = String(show ?? '').trim();
+  return [title, tag].filter(Boolean).join('  ·  ');
+}
+
+export function scrubFraction(time, duration) {
+  const now = Number(time);
+  const length = Number(duration);
+  if (!Number.isFinite(now) || !Number.isFinite(length) || length <= 0) return 0;
+  return Math.max(0, Math.min(1, now / length));
+}
+
+export function scrubTime(fraction, duration) {
+  const part = Number(fraction);
+  const length = Number(duration);
+  if (!Number.isFinite(part) || !Number.isFinite(length) || length <= 0) return 0;
+  return Math.max(0, Math.min(1, part)) * length;
+}
+
+// The tokens worth a chip in the translation strip: real words, never punctuation or whitespace.
+export function chipTokens(tokens) {
+  return (tokens ?? [])
+    .map((token, index) => ({ token, index }))
+    .filter(({ token }) => {
+      const surface = token?.surface;
+      return typeof surface === 'string' && surface.trim() !== '' && !PUNCTUATION_ONLY.test(surface);
+    });
+}
+
+// Which chip is black: only the word the popup has open, and only on the line it belongs to.
+export function selectedChipIndex(tokens, selection, lineIndex = null) {
+  const count = Array.isArray(tokens) ? tokens.length : 0;
+  if (!count || !selection) return -1;
+  if (lineIndex != null && selection.index !== lineIndex) return -1;
+  const index = Number(selection.tokenIndex);
+  return Number.isInteger(index) && index >= 0 && index < count ? index : -1;
+}
+
+// The translation strip shows the line's translation when the data has one, else the Japanese line.
+export function lineStripText(cue) {
+  if (!cue) return '';
+  const translation = [cue.translation, cue.english, cue.en].find((value) => typeof value === 'string' && value.trim());
+  return String(translation ?? cue.text ?? '').trim();
+}
+
+export function languageTag(lang, kind = 'subs') {
+  const code = String(lang ?? '').toLowerCase().split(/[-_]/)[0];
+  if (!code) return '';
+  const audio = { ja: 'JP', en: 'EN', ko: 'KR', zh: 'ZH' };
+  const subs = { ja: 'JA', en: 'EN', ko: 'KO', zh: 'ZH' };
+  return (kind === 'audio' ? audio : subs)[code] ?? code.toUpperCase().slice(0, 3);
+}
+
+// 'SUBS JA', 'SUBS OFF', 'AUDIO JP' — the small paper chips in the control bar.
+export function trackChipLabel(kind, { choice = null, streams = [], linkedLang = null } = {}) {
+  const tag = kind === 'audio' ? 'AUDIO' : 'SUBS';
+  if (kind !== 'audio' && choice === 'off') return `${tag} OFF`;
+  let lang = kind !== 'audio' && choice === 'external' ? linkedLang : null;
+  const index = Number(choice);
+  const picked = choice != null && choice !== '' && choice !== 'off' && choice !== 'external';
+  if (picked && Number.isFinite(index)) {
+    lang = streams.find((stream) => stream.index === index)?.lang ?? lang;
+  }
+  const code = languageTag(lang, kind);
+  return code ? `${tag} ${code}` : tag;
 }
 
 function fileUrl(path) {
@@ -62,8 +154,6 @@ function classifyCached(text, tokens) {
 
 export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlayEpisode }) {
   let cues = [];
-  let rows = [];
-  let badges = [];
   let streams = [];
   let linkedPath = episode.subtitlePath ?? null;
   let activeIndex = -1;
@@ -97,7 +187,21 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
   let dragStart = null;
   let frameRequest = null;
 
-  const video = h('video', { controls: true, preload: 'metadata' });
+  let showTitle = '';
+  let episodeNumber = episode.episode ?? null;
+  let episodeTotal = null;
+  let lineIndex = -1;
+  let lineTokens = [];
+  let lineChips = [];
+  let selectedToken = null;
+  let menuOpen = false;
+  let headerTimer = null;
+  let lastHeaderPaint = 0;
+  let scrubbing = false;
+
+  const header = inkHeader({ title: 'Player', compact: true, label: '', value: 0, max: 0 });
+  const video = h('video', { preload: 'metadata', playsinline: true, class: 'player-video' });
+  video.controls = false;
   const overlay = h('div', { class: 'subtitle-overlay' });
   const coverCanvas = h('canvas', { class: 'cover-canvas', hidden: true });
   const keyCanvas = document.createElement('canvas');
@@ -118,23 +222,31 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
     prepareText,
     h('button', { class: 'ghost small', onclick: cancelPrepare }, 'Cancel'),
   );
-  const nextButton = h('button', { class: 'primary small next-episode', hidden: true, onclick: playNext }, 'Next episode →');
+  const nextButton = h(
+    'button',
+    { class: 'primary small next-episode', hidden: true, onclick: playNext },
+    withIcon('next', 'Next episode'),
+  );
   const noSubs = h(
     'div',
     { class: 'nosubs', hidden: true },
     h('span', {}, 'No subtitles linked for this episode.'),
     h('button', { class: 'primary small', onclick: linkSubtitle }, 'Link subtitle'),
   );
-  const cueList = h('ol', { class: 'cue-list' });
   const ankiChip = h('span', { class: 'chip' }, 'Anki…');
-  const subsButton = h('button', { class: 'ghost small', onclick: toggleSubs }, 'Subtitles on');
-  const coverButton = h('button', { class: 'ghost small toggle', onclick: toggleCoverMenu }, 'Cover subs');
-  const boxButton = h('button', { class: 'ghost small toggle', onclick: toggleCoverEdit }, 'Box');
-  const clearCoverButton = h('button', { class: 'ghost small', hidden: true, onclick: clearCover }, 'Remove');
+  const subsButton = h('button', { class: 'player-menu-btn', 'aria-pressed': 'true', onclick: toggleSubs }, 'Subtitles on');
+  const coverButton = h('button', { class: 'player-menu-btn toggle', onclick: toggleCoverMenu }, 'Cover subs');
+  const boxButton = h('button', { class: 'player-menu-btn toggle', onclick: toggleCoverEdit }, 'Box');
+  const clearCoverButton = h('button', { class: 'player-menu-btn', hidden: true, onclick: clearCover }, 'Remove');
   const coverHint = h('p', { class: 'cover-hint' });
   const wandButton = h(
     'button',
-    { class: 'ghost small toggle', hidden: true, title: 'Click a subtitle letter (and its outline) to cover only those pixels', onclick: toggleWand },
+    {
+      class: 'player-menu-btn toggle',
+      hidden: true,
+      title: 'Click a subtitle letter (and its outline) to cover only those pixels',
+      onclick: toggleWand,
+    },
     'Wand',
   );
   const wandTolerance = h('input', {
@@ -148,7 +260,7 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
     oninput: onToleranceInput,
     onchange: onToleranceChange,
   });
-  const clearKeyButton = h('button', { class: 'ghost small', hidden: true, onclick: clearKey }, 'Reset colours');
+  const clearKeyButton = h('button', { class: 'player-menu-btn', hidden: true, onclick: clearKey }, 'Reset colours');
   const coverMenu = h(
     'div',
     { class: 'cover-menu', hidden: true },
@@ -156,14 +268,115 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
     h('div', { class: 'cover-menu-row' }, boxButton, wandButton, clearCoverButton),
     h('div', { class: 'cover-menu-row' }, wandTolerance, clearKeyButton),
   );
-  const offsetChip = h('button', { class: 'chip', hidden: true, onclick: () => setSubOffset(0) }, '');
+  const linkButton = h('button', { class: 'player-menu-btn', onclick: linkSubtitle }, withIcon('plus', 'Link subtitle'));
   const syncedChip = h('span', { class: 'chip', hidden: true }, 'Auto-synced');
-  const audioSelect = h('select', { class: 'track-select', hidden: true, onchange: (e) => changeAudio(Number(e.target.value)) });
-  const subSelect = h('select', { class: 'track-select', onchange: (e) => changeSubtitle(e.target.value) });
-  const highlightToggle = toggleControl('highlightUnknown', 'Highlight', 'ghost small toggle');
-  const furiganaToggle = toggleControl('showFurigana', 'Furigana', 'ghost small toggle');
-  const autoPauseToggle = toggleControl('autoPause', 'Auto-pause', 'ghost small toggle');
-  const loopChip = toggleControl('loopLine', 'Loop', 'chip');
+  const audioSelect = h('select', {
+    class: 'ctrl-chip-input',
+    'aria-label': 'Audio track',
+    onchange: (e) => changeAudio(Number(e.target.value)),
+  });
+  const audioChipLabel = h('span', { class: 'ctrl-chip-label' }, 'AUDIO');
+  const audioChip = h('span', { class: 'ctrl-chip ctrl-audio', hidden: true, title: 'Audio track' }, audioChipLabel, audioSelect);
+  const subSelect = h('select', {
+    class: 'ctrl-chip-input',
+    'aria-label': 'Subtitle track',
+    onchange: (e) => changeSubtitle(e.target.value),
+  });
+  const subChipLabel = h('span', { class: 'ctrl-chip-label' }, 'SUBS OFF');
+  const subChip = h('span', { class: 'ctrl-chip ctrl-subs', title: 'Subtitle track' }, subChipLabel, subSelect);
+  const highlightToggle = toggleControl('highlightUnknown', 'Highlight');
+  const furiganaToggle = toggleControl('showFurigana', 'Furigana');
+  const autoPauseToggle = toggleControl('autoPause', 'Auto-pause');
+  const loopChip = toggleControl('loopLine', 'Loop');
+  const offsetChip = h(
+    'button',
+    { class: 'ctrl-chip ctrl-offset', type: 'button', title: 'Reset subtitle offset to 0s', onclick: () => setSubOffset(0) },
+    formatChipOffset(0),
+  );
+  const playButton = h('button', {
+    class: 'ctrl-play',
+    type: 'button',
+    title: 'Play (Space)',
+    'aria-label': 'Play',
+    onclick: togglePlay,
+  });
+  const timeNow = h('span', { class: 'ctrl-time is-now' }, '00:00');
+  const timeTotal = h('span', { class: 'ctrl-time is-total' }, '00:00');
+  const scrubFill = h('i', { class: 'ink-track-fill' });
+  const scrubTrack = h('span', { class: 'ink-track' }, scrubFill);
+  const scrubber = h(
+    'div',
+    {
+      class: 'ctrl-scrub',
+      role: 'slider',
+      tabindex: '0',
+      'aria-label': 'Seek',
+      'aria-valuemin': '0',
+      'aria-valuemax': '0',
+      'aria-valuenow': '0',
+    },
+    scrubTrack,
+  );
+  const fullscreenButton = h(
+    'button',
+    {
+      class: 'ctrl-fullscreen',
+      type: 'button',
+      title: 'Fullscreen (F)',
+      'aria-label': 'Fullscreen',
+      onclick: toggleFullscreen,
+    },
+    doodle('fullscreen'),
+  );
+  const controls = h(
+    'div',
+    { class: 'player-controls' },
+    playButton,
+    timeNow,
+    scrubber,
+    timeTotal,
+    h('span', { class: 'ctrl-tracks' }, subChip, audioChip, offsetChip),
+    fullscreenButton,
+  );
+
+  const stripLine = h('p', { class: 'strip-line' });
+  const stripHint = h('p', { class: 'strip-hint', title: KEYS_HELP }, STRIP_HINT);
+  const stripChips = h('div', { class: 'strip-chips' });
+  const strip = h('div', { class: 'player-strip' }, h('div', { class: 'strip-text' }, stripLine, stripHint), stripChips);
+
+  const backButton = h('button', { class: 'stage-btn stage-back', type: 'button', title: 'Back to Library', onclick: onBack }, withIcon('back', 'Library'));
+  const titlePlate = h('span', { class: 'stage-plate' });
+  const subsMenuButton = h(
+    'button',
+    {
+      class: 'stage-btn stage-subs',
+      type: 'button',
+      'aria-haspopup': 'true',
+      'aria-expanded': 'false',
+      title: 'Subtitles and tools',
+      onclick: toggleMenu,
+    },
+    withIcon('menu', 'Subtitles'),
+  );
+  const menu = h(
+    'div',
+    { class: 'player-menu', hidden: true, role: 'group', 'aria-label': 'Subtitles and tools' },
+    h('span', { class: 'ink-tag ink-tag-caps' }, 'Subtitle tools'),
+    h('div', { class: 'player-menu-row' }, ankiChip, syncedChip),
+    h(
+      'div',
+      { class: 'player-menu-row' },
+      subsButton,
+      highlightToggle,
+      furiganaToggle,
+      autoPauseToggle,
+      loopChip,
+      coverButton,
+    ),
+    coverMenu,
+    h('div', { class: 'player-menu-row' }, linkButton),
+  );
+
   const popupSlot = h('div', { class: 'popup-slot', hidden: true });
   const popup = createPopup(popupSlot, {
     videoPath: episode.path,
@@ -172,6 +385,28 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
     onMined: refreshAnki,
     onKnownChanged: handleKnownChanged,
   });
+
+  const stage = h(
+    'div',
+    { class: 'player-stage' },
+    video,
+    coverLayer,
+    overlay,
+    h('div', { class: 'stage-top' }, backButton, titlePlate, h('span', { class: 'stage-spacer' }), subsMenuButton),
+    menu,
+    noSubs,
+    nextButton,
+    popupSlot,
+    prepareCard,
+    codecError,
+  );
+  const mainColumn = h('div', { class: 'player-main' }, stage, controls, strip);
+  const timelineEl = h('aside', { class: 'player-timeline' });
+  const timeline = mountTimeline(timelineEl, {
+    onSeek: (index) => seekCue(index),
+    onOffset: (delta) => setSubOffset(nextOffset(subOffset, delta)),
+  });
+  const root = h('section', { class: 'player ink-screen' }, header, h('div', { class: 'player-grid' }, mainColumn, timelineEl));
 
   const keyActions = {
     ' ': togglePlay,
@@ -184,14 +419,16 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
     '[': () => setSubOffset(nextOffset(subOffset, -0.1)),
     ']': () => setSubOffset(nextOffset(subOffset, 0.1)),
     m: () => mineWordOrSentence(settings.quickMine === true),
-    escape: () => popup.close(),
+    f: toggleFullscreen,
+    escape: closePopup,
   };
 
   function onKey(e) {
     if (isTypingTarget(e.target) || e.ctrlKey || e.metaKey || e.altKey) return;
     const name = e.key.toLowerCase();
-    if ((editing || wand || coverMenuOpen) && name === 'escape') {
+    if ((editing || wand || coverMenuOpen || menuOpen) && name === 'escape') {
       e.preventDefault();
+      setMenuOpen(false);
       coverMenuOpen = false;
       wand = false;
       setEditing(false);
@@ -203,75 +440,64 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
     action();
   }
 
-  container.append(
-    h(
-      'section',
-      { class: 'player' },
-      h(
-        'header',
-        { class: 'player-head' },
-        h('button', { class: 'ghost small', onclick: onBack }, withIcon('back', 'Library')),
-        h('h2', { class: 'player-title', title: episode.name }, episode.name),
-        h(
-          'div',
-          { class: 'player-tools' },
-          ankiChip,
-          highlightToggle,
-          furiganaToggle,
-          autoPauseToggle,
-          loopChip,
-          offsetChip,
-          syncedChip,
-          subsButton,
-          coverButton,
-        ),
-      ),
-      h(
-        'div',
-        { class: 'player-body' },
-        h(
-          'div',
-          { class: 'stage' },
-          h('div', { class: 'video-wrap' }, video, coverLayer, coverMenu, overlay, prepareCard, codecError),
-          h('div', { class: 'tracks' }, audioSelect, subSelect),
-          noSubs,
-          nextButton,
-          h('p', { class: 'keys', title: KEYS_HELP }, KEYS_HELP),
-        ),
-        h('aside', { class: 'sidebar' }, popupSlot, cueList),
-      ),
-    ),
-  );
+  container.append(root);
 
   const listeners = new AbortController();
   const { signal } = listeners;
   const frameApi = typeof video.requestVideoFrameCallback === 'function';
   const coverObserver = new ResizeObserver(drawCover);
   coverObserver.observe(coverLayer);
+  const popupObserver = new MutationObserver(() => {
+    if (!popupSlot.hidden || !selectedToken) return;
+    selectedToken = null;
+    renderStripChips();
+  });
+  popupObserver.observe(popupSlot, { attributes: true, attributeFilter: ['hidden'] });
+
   video.addEventListener('loadedmetadata', onMetadata, { signal });
   video.addEventListener('loadeddata', drawCover, { signal });
   video.addEventListener('timeupdate', onTimeUpdate, { signal });
   video.addEventListener('seeked', syncActive, { signal });
   video.addEventListener('seeked', drawCover, { signal });
+  video.addEventListener('seeked', () => { syncScrub(); scheduleHeader(); }, { signal });
   if (!frameApi) video.addEventListener('timeupdate', drawCover, { signal });
   video.addEventListener('play', onPlay, { signal });
   video.addEventListener('pause', onPause, { signal });
   video.addEventListener('ended', onEnded, { signal });
   video.addEventListener('error', onVideoError, { signal });
+  video.addEventListener('click', togglePlay, { signal });
   document.addEventListener('keydown', onKey, { signal });
+  document.addEventListener('pointerdown', onDocumentPointerDown, { signal });
+  document.addEventListener('fullscreenchange', syncFullscreenButton, { signal });
   coverLayer.addEventListener('pointerdown', onCoverDown, { signal });
   coverLayer.addEventListener('pointermove', onCoverMove, { signal });
   coverLayer.addEventListener('pointerup', onCoverUp, { signal });
   coverLayer.addEventListener('pointercancel', cancelDrag, { signal });
+  scrubber.addEventListener('pointerdown', onScrubDown, { signal });
+  scrubber.addEventListener('pointermove', onScrubMove, { signal });
+  scrubber.addEventListener('pointerup', onScrubUp, { signal });
+  scrubber.addEventListener('pointercancel', onScrubUp, { signal });
+  scrubber.addEventListener('keydown', onScrubKey, { signal });
   const offMediaProgress = api.media.onProgress(onPrepareProgress);
 
+  syncTitlePlate();
+  syncTrackChips();
+  syncScrub();
+  setPlayIcon();
+  paintHeader();
+  renderStripChips();
   attempt(init);
   refreshAnki();
+  loadEpisodeInfo();
 
   return () => {
     alive = false;
     listeners.abort();
     coverObserver.disconnect();
+    popupObserver.disconnect();
+    clearTimeout(headerTimer);
+    headerTimer = null;
+    timeline.destroy();
     stopFrames();
     offMediaProgress();
     stopSaving();
@@ -283,14 +509,197 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
     popup.close();
   };
 
-  function toggleControl(key, label, className) {
-    const control = h('button', { class: className, onclick: () => flip(key) }, label);
+  function durationOf() {
+    if (Number.isFinite(video.duration) && video.duration > 0) return video.duration;
+    return duration > 0 ? duration : 0;
+  }
+
+  function paintHeader() {
+    lastHeaderPaint = Date.now();
+    const total = durationOf();
+    const time = ready && Number.isFinite(video.currentTime) ? video.currentTime : 0;
+    setInkHeader(header, {
+      title: 'Player',
+      label: plateLabel({ episode: episodeNumber, total: episodeTotal, time, duration: total }),
+      value: time,
+      max: total,
+    });
+  }
+
+  function scheduleHeader() {
+    const wait = HEADER_THROTTLE_MS - (Date.now() - lastHeaderPaint);
+    if (wait <= 0) {
+      paintHeader();
+      return;
+    }
+    if (headerTimer !== null) return;
+    headerTimer = setTimeout(() => {
+      headerTimer = null;
+      paintHeader();
+    }, wait);
+  }
+
+  async function loadEpisodeInfo() {
+    try {
+      const shows = await api.library.getShows();
+      if (!alive) return;
+      const show = (shows ?? []).find((entry) => entry.episodes.some((item) => item.path === episode.path));
+      if (!show) return;
+      const position = show.episodes.findIndex((item) => item.path === episode.path);
+      showTitle = show.title ?? '';
+      episodeNumber = episode.episode ?? (position >= 0 ? position + 1 : null);
+      episodeTotal = show.episodes.length || null;
+      syncTitlePlate();
+      paintHeader();
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  function syncTitlePlate() {
+    const label = episodePlateLabel({ show: showTitle, episode: episodeNumber });
+    titlePlate.textContent = label || episode.name;
+    titlePlate.title = showTitle || episode.name;
+  }
+
+  function setPlayIcon() {
+    const paused = video.paused;
+    fill(playButton, doodle(paused ? 'play' : 'pause'));
+    playButton.setAttribute('aria-label', paused ? 'Play' : 'Pause');
+    playButton.title = paused ? 'Play (Space)' : 'Pause (Space)';
+  }
+
+  function syncScrub() {
+    const total = durationOf();
+    const time = Number.isFinite(video.currentTime) ? video.currentTime : 0;
+    scrubFill.style.width = `${scrubFraction(time, total) * 100}%`;
+    timeNow.textContent = formatTime(time);
+    timeTotal.textContent = formatTime(total);
+    scrubber.setAttribute('aria-valuemin', '0');
+    scrubber.setAttribute('aria-valuemax', String(Math.round(total)));
+    scrubber.setAttribute('aria-valuenow', String(Math.round(time)));
+    scrubber.setAttribute('aria-valuetext', `${formatTime(time)} / ${formatTime(total)}`);
+  }
+
+  function seekBy(delta) {
+    const total = durationOf();
+    if (total <= 0) return;
+    video.currentTime = Math.max(0, Math.min(total, video.currentTime + delta));
+    syncScrub();
+    syncActive();
+  }
+
+  function seekFromPointer(event) {
+    const box = scrubTrack.getBoundingClientRect();
+    const total = durationOf();
+    if (!box.width || total <= 0) return;
+    video.currentTime = scrubTime((event.clientX - box.left) / box.width, total);
+    syncScrub();
+  }
+
+  function onScrubDown(event) {
+    if (event.button !== 0) return;
+    scrubbing = true;
+    try {
+      scrubber.setPointerCapture?.(event.pointerId);
+    } catch {
+      // Synthetic pointers have no capture target.
+    }
+    seekFromPointer(event);
+    event.preventDefault();
+  }
+
+  function onScrubMove(event) {
+    if (scrubbing) seekFromPointer(event);
+  }
+
+  function onScrubUp(event) {
+    if (!scrubbing) return;
+    scrubbing = false;
+    try {
+      scrubber.releasePointerCapture?.(event.pointerId);
+    } catch {
+      // The pointer may already be released.
+    }
+  }
+
+  function onScrubKey(event) {
+    const total = durationOf();
+    const step = event.shiftKey ? 30 : 5;
+    let target = null;
+    if (event.key === 'ArrowLeft' || event.key === 'ArrowDown') target = video.currentTime - step;
+    else if (event.key === 'ArrowRight' || event.key === 'ArrowUp') target = video.currentTime + step;
+    else if (event.key === 'Home') target = 0;
+    else if (event.key === 'End') target = total;
+    if (target === null) return;
+    event.preventDefault();
+    event.stopPropagation();
+    video.currentTime = Math.max(0, Math.min(total, target));
+    syncScrub();
+    syncActive();
+  }
+
+  function toggleFullscreen() {
+    const target = mainColumn;
+    if (document.fullscreenElement) {
+      document.exitFullscreen?.().catch(() => {});
+      return;
+    }
+    target.requestFullscreen?.().catch(() => {});
+  }
+
+  function syncFullscreenButton() {
+    const on = document.fullscreenElement === mainColumn;
+    fullscreenButton.classList.toggle('is-on', on);
+    fullscreenButton.setAttribute('aria-pressed', String(on));
+    fullscreenButton.title = on ? 'Leave fullscreen (F)' : 'Fullscreen (F)';
+  }
+
+  function toggleMenu() {
+    setMenuOpen(!menuOpen);
+  }
+
+  function setMenuOpen(open) {
+    menuOpen = open;
+    menu.hidden = !open;
+    subsMenuButton.classList.toggle('is-on', open);
+    subsMenuButton.setAttribute('aria-expanded', String(open));
+    if (!open && (coverMenuOpen || editing || wand)) {
+      coverMenuOpen = false;
+      wand = false;
+      setEditing(false);
+    }
+  }
+
+  function onDocumentPointerDown(event) {
+    if (!menuOpen) return;
+    if (menu.contains(event.target) || subsMenuButton.contains(event.target)) return;
+    setMenuOpen(false);
+  }
+
+  function syncTrackChips() {
+    subChipLabel.textContent = trackChipLabel('subs', {
+      choice: subChoice,
+      streams,
+      linkedLang: linkedPath ? 'ja' : null,
+    });
+    audioChipLabel.textContent = trackChipLabel('audio', { choice: audioStreamIndex, streams });
+    subChip.title = subSelect.selectedOptions?.[0]?.textContent ?? 'Subtitle track';
+    audioChip.title = audioSelect.selectedOptions?.[0]?.textContent ?? 'Audio track';
+  }
+
+  function toggleControl(key, label) {
+    const control = h('button', { class: 'player-menu-btn toggle', 'aria-pressed': 'false', onclick: () => flip(key) }, label);
     toggleControls.push({ key, control });
     return control;
   }
 
   function syncToggles() {
-    for (const { key, control } of toggleControls) control.classList.toggle('on', settings[key] === true);
+    for (const { key, control } of toggleControls) {
+      const on = settings[key] === true;
+      control.classList.toggle('on', on);
+      control.setAttribute('aria-pressed', String(on));
+    }
   }
 
   function flip(key) {
@@ -303,10 +712,13 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
   function syncCoverUi() {
     coverMenu.hidden = !coverMenuOpen;
     coverButton.classList.toggle('on', coverMenuOpen || cover !== null);
+    coverButton.setAttribute('aria-pressed', String(coverMenuOpen));
     boxButton.classList.toggle('on', editing);
+    boxButton.setAttribute('aria-pressed', String(editing));
     clearCoverButton.hidden = !cover;
     wandButton.hidden = !cover;
     wandButton.classList.toggle('on', wand);
+    wandButton.setAttribute('aria-pressed', String(wand));
     wandTolerance.hidden = !(wand && key);
     if (key) wandTolerance.value = String(key.tolerance);
     clearKeyButton.hidden = !(wand && key);
@@ -537,6 +949,9 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
     buildAudioOptions();
     buildSubtitleOptions();
     refreshOffset();
+    syncTrackChips();
+    syncScrub();
+    paintHeader();
     startSource(resumeTarget(saved, duration));
     await loadSubs(subChoice);
   }
@@ -545,7 +960,7 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
     const audio = streams.filter((stream) => stream.type === 'audio');
     audioSelect.replaceChildren(...audio.map((stream) => h('option', { value: String(stream.index) }, audioLabel(stream))));
     audioSelect.value = String(audioStreamIndex);
-    audioSelect.hidden = audio.length < 2;
+    audioChip.hidden = audio.length < 2;
   }
 
   function buildSubtitleOptions() {
@@ -627,6 +1042,7 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
 
   function onMetadata() {
     ready = true;
+    if (!duration && Number.isFinite(video.duration)) duration = video.duration;
     if (seekOnLoad !== null) {
       video.currentTime = seekOnLoad;
       seekOnLoad = null;
@@ -635,18 +1051,22 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
       resumeAfterLoad = false;
       play();
     }
+    syncScrub();
+    paintHeader();
   }
 
   function changeAudio(index) {
     audioStreamIndex = index;
     persist({ audioStreamIndex: index });
     resumeAfterLoad = !video.paused;
+    syncTrackChips();
     startSource(video.currentTime);
   }
 
   function changeSubtitle(value) {
     subChoice = value === 'external' || value === 'off' ? value : Number(value);
     persist({ subtitle: subChoice });
+    syncTrackChips();
     attempt(() => loadSubs(subChoice));
   }
 
@@ -656,16 +1076,25 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
       cues = [];
       noSubs.hidden = true;
       syncedChip.hidden = true;
-      renderCues();
+      applyCues();
       return;
     }
-    fill(cueList, h('li', { class: 'cue-status' }, 'Loading subtitles… (first open of a re-timed file can take a few seconds)'));
+    stripLine.textContent = 'Loading subtitles… (first open of a re-timed file can take a few seconds)';
+    fill(stripChips);
     const loaded = await api.player.loadCues(episode.path, choice === 'external' ? {} : { embeddedIndex: choice });
     if (!alive || !subGen.isCurrent(token)) return;
     cues = loaded.cues;
     noSubs.hidden = loaded.source !== 'none';
     syncedChip.hidden = loaded.synced !== true;
-    renderCues();
+    applyCues();
+  }
+
+  function applyCues() {
+    closePopup();
+    timeline.setCues(cues);
+    timeline.setOffset(subOffset);
+    setActive(findCueIndex(cues, video.currentTime - subOffset), true);
+    syncTimeline();
   }
 
   function linkSubtitle() {
@@ -676,6 +1105,7 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
       linkedPath = stored;
       subChoice = 'external';
       buildSubtitleOptions();
+      syncTrackChips();
       persist({ subtitle: subChoice });
       await loadSubs(subChoice);
     });
@@ -704,17 +1134,23 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
     nextButton.hidden = true;
     startSaving();
     startFrames();
+    setPlayIcon();
+    scheduleHeader();
   }
 
   function onPause() {
     stopSaving();
     stopFrames();
     saveProgress();
+    setPlayIcon();
+    scheduleHeader();
   }
 
   function onEnded() {
     stopSaving();
     saveProgress();
+    setPlayIcon();
+    syncScrub();
     attempt(async () => {
       nextEpisode = await api.progress.next(episode.path);
       if (!alive) return;
@@ -743,6 +1179,8 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
     if (loopTo !== null) video.currentTime = loopTo;
     else if (shouldAutoPause({ autoPause: settings.autoPause, cue, time, subOffset })) video.pause();
     syncActive();
+    syncScrub();
+    scheduleHeader();
   }
 
   function step(dir) {
@@ -758,9 +1196,15 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
     play();
   }
 
+  function seekCue(index) {
+    if (!Number.isInteger(index) || index < 0 || index >= cues.length) return;
+    seekTo(index);
+  }
+
   function seekTo(index) {
     video.currentTime = videoTimeForCue(cues[index], subOffset);
     setActive(index);
+    syncTimeline();
   }
 
   function setSubOffset(next) {
@@ -771,28 +1215,31 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
   }
 
   function refreshOffset() {
-    offsetChip.textContent = formatOffset(subOffset);
-    offsetChip.hidden = subOffset === 0;
+    offsetChip.textContent = formatChipOffset(subOffset);
+    offsetChip.classList.toggle('is-set', subOffset !== 0);
+    timeline.setOffset(subOffset);
+  }
+
+  function syncTimeline() {
+    timeline.setCurrent(currentLineIndex(cues, video.currentTime - subOffset));
   }
 
   function syncActive() {
     const index = findCueIndex(cues, video.currentTime - subOffset);
     if (index !== activeIndex) setActive(index);
+    syncTimeline();
   }
 
-  function setActive(index) {
+  function setActive(index, force = false) {
+    if (index === activeIndex && !force) {
+      syncTimeline();
+      return;
+    }
     activeIndex = index;
-    rows.forEach((row, i) => row.classList.toggle('active', i === index));
-    if (index >= 0) rows[index].scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    selectedToken = null;
     if (popup.index() !== index) popup.close();
-    updateBadge(-1, null);
     renderOverlay();
-  }
-
-  function updateBadge(index, info) {
-    badges.forEach((badge, i) => {
-      badge.hidden = !(i === index && info?.isIPlusOne);
-    });
+    syncTimeline();
   }
 
   function renderSegments(text, tokens, statuses, index) {
@@ -822,6 +1269,8 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
     const seq = ++overlaySeq;
     const index = activeIndex;
     const cue = cues[index];
+    stripLine.textContent = lineStripText(cue);
+    setLineTokens(index, []);
     if (!cue) {
       fill(overlay);
       return;
@@ -832,8 +1281,34 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
       .then(({ tokens, result }) => {
         if (!alive || seq !== overlaySeq) return;
         fill(overlay, renderSegments(cue.text, tokens, result?.statuses ?? null, index));
-        updateBadge(index, result?.info ?? null);
+        setLineTokens(index, tokens);
       });
+  }
+
+  function setLineTokens(index, tokens) {
+    lineIndex = index;
+    lineTokens = tokens ?? [];
+    lineChips = chipTokens(lineTokens);
+    renderStripChips();
+  }
+
+  function renderStripChips() {
+    const selected = selectedChipIndex(lineTokens, selectedToken, lineIndex);
+    fill(
+      stripChips,
+      lineChips.map(({ token, index: tokenIndex }) =>
+        h(
+          'button',
+          {
+            class: `strip-chip${tokenIndex === selected ? ' is-selected' : ''}`,
+            type: 'button',
+            title: token.reading ? `${token.surface} · ${token.reading}` : token.surface,
+            onclick: () => openWord(lineIndex, lineTokens, tokenIndex),
+          },
+          token.surface,
+        ),
+      ),
+    );
   }
 
   function handleKnownChanged() {
@@ -843,14 +1318,17 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
 
   function openWord(index, tokens, tokenIndex) {
     lastWord = { index, tokens, tokenIndex };
+    selectedToken = { index, tokenIndex };
     video.pause();
     popup.open({ mode: 'word', cues: shiftCues(cues, subOffset), index, tokens, tokenIndex, token: tokens[tokenIndex] });
+    renderStripChips();
   }
 
-  function openSentence(index) {
-    video.pause();
-    seekTo(index);
-    popup.open({ mode: 'sentence', cues: shiftCues(cues, subOffset), index });
+  function closePopup() {
+    popup.close();
+    if (!selectedToken) return;
+    selectedToken = null;
+    renderStripChips();
   }
 
   function mineWordOrSentence(direct) {
@@ -866,6 +1344,10 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
             token: lastWord.tokens[lastWord.tokenIndex],
           }
         : { mode: 'sentence', cues: shiftCues(cues, subOffset), index: activeIndex };
+    if (target.mode === 'word') {
+      selectedToken = { index: target.index, tokenIndex: target.tokenIndex };
+      renderStripChips();
+    }
     attempt(() => popup.quickMine(target, { direct }));
   }
 
@@ -878,42 +1360,7 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
     subsOn = !subsOn;
     overlay.hidden = !subsOn;
     subsButton.textContent = subsOn ? 'Subtitles on' : 'Subtitles off';
-  }
-
-  function renderCues() {
-    popup.close();
-    badges = [];
-    rows = cues.map((cue, i) => {
-      const badge = h('span', { class: 'plus-one', hidden: true }, '+1');
-      badges.push(badge);
-      return h(
-        'li',
-        { class: 'cue', onclick: () => openSentence(i) },
-        h('span', { class: 'cue-time' }, formatTime(cue.start)),
-        h('span', { class: 'cue-text' }, cue.text),
-        cue.jlpt
-          ? h(
-            'span',
-            { class: ['N1', 'N2'].includes(cue.jlpt) ? 'jlpt-badge strong' : 'jlpt-badge', title: cue.words.join('、') },
-            cue.jlpt,
-          )
-          : null,
-        badge,
-        h(
-          'button',
-          {
-            class: 'ghost small cue-sentence',
-            onclick: (e) => {
-              e.stopPropagation();
-              openSentence(i);
-            },
-          },
-          'Sentence',
-        ),
-      );
-    });
-    fill(cueList, rows);
-    setActive(findCueIndex(cues, video.currentTime - subOffset));
+    subsButton.setAttribute('aria-pressed', String(subsOn));
   }
 
   async function refreshAnki() {
