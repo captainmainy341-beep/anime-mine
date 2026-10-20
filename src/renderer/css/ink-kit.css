@@ -1,0 +1,107 @@
+/* Manga Ink kit: shared pieces of the approved "Manga Ink - Learning Screens" frames (Figma elzBhXS8pJFAePLsUNDu6r).
+   Owned by the lead. Screens opt in with .ink-screen on their root; nothing here restyles other screens.
+   Red is only for progress, underlines, pips, the NEW! stamp and the heatmap "today" cell. Line hatch only, no dots. */
+
+.ink-screen {
+  --ink-red: #ff2e6e;
+  --ink-mute: #5c5a55;
+  --ink-track: #ebe7dc;
+  --ink-line: 3px;
+  --ink-line-thin: 1.5px;
+  --ink-hatch: repeating-linear-gradient(45deg, rgba(10, 10, 10, 0.5) 0 1.7px, transparent 1.7px 8.485px);
+  box-sizing: border-box;
+  min-height: 100%;
+  padding: 28px 32px 30px 24px;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font);
+}
+.ink-screen.ink-clean { --ink-line: 1.5px; }
+.ink-screen *, .ink-screen *::before, .ink-screen *::after { box-sizing: border-box; }
+
+/* Header panel: 110px (Explore, Anki), 84px compact (Player). Speed lines are the exported Figma vector. */
+.ink-hero {
+  --ink-hero-title: 44px;
+  position: relative; display: block; height: 110px; overflow: hidden;
+  border: 3px solid var(--ink); background: var(--ink) url('../img/speed-lines.svg') center / 100% 100% no-repeat;
+  color: var(--paper);
+}
+.ink-hero-compact { --ink-hero-title: 40px; height: 84px; }
+.ink-hero-titleplate {
+  position: absolute; left: 25px; top: 15px; height: 74px; max-width: 600px; padding: 0 24px 0 0;
+  display: flex; align-items: center; background: var(--ink);
+}
+.ink-hero-compact .ink-hero-titleplate { top: 7px; }
+.ink-hero-title {
+  margin: 0; font-family: var(--font-display); font-weight: 400; font-size: var(--ink-hero-title); line-height: 68px;
+  letter-spacing: 0; color: var(--paper); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.ink-hero-plate {
+  position: absolute; right: 21px; top: 25px; width: 460px; height: 54px; padding: 8px 16px 0;
+  background: var(--paper); color: var(--ink);
+}
+.ink-hero-compact .ink-hero-plate { top: 12px; }
+.ink-hero-label {
+  display: block; height: 17px; font-size: 12px; line-height: 17px; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.ink-hero-plate .ink-track { margin-top: 7px; }
+
+/* Progress track: paper-2 trough, 1.5px ink rule, red fill with its own rule. */
+.ink-track {
+  position: relative; display: block; width: 100%; height: 10px;
+  background: var(--ink-track, #ebe7dc); border: 1.5px solid var(--ink);
+}
+.ink-track-fill {
+  position: absolute; left: -1.5px; top: -1.5px; bottom: -1.5px; width: 0; max-width: calc(100% + 3px);
+  background: var(--ink-red, #ff2e6e); border: 1.5px solid var(--ink);
+  transition: width 240ms var(--ease);
+}
+
+/* Panels. .ink-panel = 3px main screens; inside .ink-clean it drops to 1.5px. */
+.ink-panel { position: relative; background: var(--paper); border: var(--ink-line) solid var(--ink); }
+.ink-hatch { background: var(--paper) var(--ink-hatch); }
+.ink-card { position: relative; background: var(--paper); border: var(--ink-line) solid var(--ink); }
+
+/* Black caption tag ("YOUR NEXT LESSON", "UP NEXT", "Decks", "Subtitles"). */
+.ink-tag {
+  display: inline-flex; align-items: center; height: 36px; padding: 0 16px; width: max-content;
+  background: var(--ink); color: var(--paper); border: 1.5px solid var(--ink);
+  font-size: 15px; font-weight: 700; line-height: 22px; letter-spacing: 0; white-space: nowrap;
+}
+.ink-tag-caps { text-transform: uppercase; letter-spacing: 0.08em; }
+
+/* NEW! stamp. */
+.ink-stamp {
+  display: inline-flex; align-items: center; justify-content: center; width: 112px; height: 46px;
+  background: var(--ink-red, #ff2e6e); color: var(--paper); border: 3px solid var(--ink);
+  font-family: var(--font-display); font-size: 24px; line-height: 35px; letter-spacing: 0;
+  transform: rotate(6deg); transform-origin: center;
+}
+
+/* Short red underline under a title or the selected word. */
+.ink-underline { display: block; width: 150px; height: 6px; background: var(--ink-red, #ff2e6e); }
+.ink-link { display: inline-block; padding-bottom: 0; border-bottom: 3px solid var(--ink-red, #ff2e6e); }
+
+/* Big black action ("START LESSON", "STUDY NOW"). */
+.ink-bigbtn {
+  display: flex; align-items: center; justify-content: space-between; width: 100%; height: 100px; padding: 0 36px 0 40px;
+  background: var(--ink); color: var(--paper); border: 3px solid var(--ink); border-radius: 0 !important;
+  font-family: var(--font-display); font-size: 32px; line-height: 46px; letter-spacing: 0; text-transform: uppercase; cursor: pointer;
+}
+.ink-bigbtn .doodle { --doodle-stroke: 2.4; width: 40px; height: 40px; margin: 0; }
+.ink-screen button.ink-bigbtn:hover:not(:disabled) { background: var(--ink); color: var(--paper); box-shadow: 3px 3px 0 var(--ink-red, #ff2e6e); }
+
+/* Toggle button for filters (All / New / Review): paper, 1.5px rule, black when pressed. */
+.ink-toggle {
+  height: 40px; padding: 0 24px; border: 1.5px solid var(--ink); border-radius: 0 !important;
+  background: var(--paper); color: var(--ink); font-size: 15px; font-weight: 700; line-height: 22px; cursor: pointer;
+}
+.ink-toggle[aria-pressed='true'] { background: var(--ink); color: var(--paper); }
+
+/* Icons drawn heavier where the frames use a 3.5-4px stroke. */
+.doodle svg { stroke-width: var(--doodle-stroke, 1.5); }
+
+@media (prefers-reduced-motion: reduce) {
+  .ink-track-fill { transition-duration: 1ms; }
+}
