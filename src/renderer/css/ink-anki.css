@@ -1,5 +1,5 @@
 /* Manga Ink: Anki Clean (slice S8). Paper, 1.5px rules, no hatch. Black only on the caption tags, the selected
-   filter states and the Study now / Sync actions; red stays on progress, underlines, the selected deck pip,
+   filter states and the Study now action; red stays on progress, underlines, the selected deck pip,
    the active tab rule and the heatmap's today cell. */
 
 .anki.ink-screen {
@@ -351,16 +351,6 @@
   transform: none;
   border-color: var(--ink);
   background: var(--paper-2);
-  box-shadow: none;
-}
-.anki .ink-anki-btn.is-sync {
-  border-width: 3px;
-  background: var(--ink);
-  color: var(--paper);
-}
-.anki .ink-anki-btn.is-sync:hover:not(:disabled) {
-  background: var(--ink);
-  color: var(--paper);
   box-shadow: none;
 }
 .anki .ink-anki-btn.is-primary {
