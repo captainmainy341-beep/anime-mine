@@ -960,11 +960,6 @@ export function mountAnki(container) {
     );
   }
 
-  function studyStatus(s) {
-    if (s.busy) return 'Saving review…';
-    return s.side === 'answer' ? '1–4 to rate the card' : 'Space or Enter shows the answer';
-  }
-
   function renderStudyCard(content) {
     const s = state.study;
     const deck = deckLabel(s.deck);
@@ -976,6 +971,8 @@ export function mountAnki(container) {
     const status = h('span', { class: 'ink-anki-study-status', role: 'status', 'aria-live': 'polite' });
     const grammarSlot = h('div', { class: 'study-grammar ink-anki-grammar', hidden: true });
     studyUI = { view, grammarBtn, styleBtn, remaining, reviewed, status, grammarSlot };
+    // One slim 36px row: deck + remaining counts on the left, the small outlined actions right-aligned.
+    // The keyboard hint lives in the S9 rating panel, so no second status line is passed to the card.
     fill(content, h('section', { class: 'ink-anki-study' },
       h('div', { class: 'ink-anki-study-bar' },
         h('div', { class: 'ink-anki-study-deck' },
@@ -1011,7 +1008,9 @@ export function mountAnki(container) {
       buttons: gradeButtons(card),
       busy: s.busy,
       hasAudio: Boolean(card.audio),
-      status: studyStatus(s),
+      // The 172px rating panel is the frame's; its hint already carries the keyboard help, so the
+      // card view gets no extra status line (the slim bar below owns the busy announcement).
+      status: '',
       tags: Array.isArray(card.tags) ? card.tags : [],
     });
     const left = Math.max(0, s.cards.length - s.index);

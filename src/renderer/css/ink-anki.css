@@ -636,8 +636,15 @@
   font-size: 13px;
 }
 
-/* Study: deck bar + the S9 card view (front, back, rating bar). */
+/* Study: one slim deck/action bar + the S9 card view (front, back, rating bar).
+   The bar is a single <=36px line; the cards take the rest of the viewport through
+   --ink-study-card-h (S9 sizes both cards with it), so at a 1440x1000 window the tab strip,
+   header, both cards and the whole 172px rating panel fit without scrolling, and taller
+   windows grow the cards back to the frame's 620px. 425px = measured chrome: 6 top pad +
+   27 strip + 2 + 110 header + 16 body gap + 35.5 bar + 16 view gap + 16 rating gap +
+   172 rating panel + 24 bottom pad. */
 .anki .ink-anki-study {
+  --ink-study-card-h: clamp(380px, calc(100vh - 425px), 620px);
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -646,35 +653,42 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 10px 16px;
-  padding-bottom: 10px;
+  gap: 6px 16px;
+  padding-bottom: 6px;
   border-bottom: 1.5px solid var(--ink);
 }
 .anki .ink-anki-study-deck {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 10px;
   min-width: 0;
 }
 .anki .ink-anki-study-path {
+  flex: 0 1 auto;
+  min-width: 0;
   overflow: hidden;
-  font-size: 17px;
+  font-size: 13px;
   font-weight: 700;
-  line-height: 24px;
+  line-height: 18px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 .anki .ink-anki-study-meta {
   display: flex;
+  flex: none;
+  align-items: baseline;
   color: var(--ink-mute);
   font-size: 12px;
   font-weight: 500;
-  line-height: 17px;
+  line-height: 16px;
 }
 .anki .ink-anki-reviewed::before { content: ' · '; }
 .anki .ink-anki-study-status {
   color: var(--ink-mute);
   font-size: 12px;
   font-weight: 500;
+  line-height: 16px;
 }
 .anki .ink-anki-study-actions {
   display: flex;
@@ -683,14 +697,15 @@
   margin-left: auto;
 }
 .anki .ink-anki-chip {
-  height: 32px;
-  padding: 0 12px;
+  height: 28px;
+  padding: 0 10px;
   border: 1.5px solid var(--ink);
   border-radius: 0;
   background: var(--paper);
   color: var(--ink);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
+  line-height: 1;
   white-space: nowrap;
 }
 .anki .ink-anki-chip:hover:not(:disabled) {

@@ -1,7 +1,10 @@
 // Run: node_modules/.bin/electron scripts/ink-s8-shot.cjs
 // Boots the real main/preload/renderer with isolated data, stubs only the Anki IPC the redesign needs
-// (S7's reviewsByDay / deck actions are owned by another slice), screenshots the two S8 frames and
-// prints the measured layout so it can be compared with docs/figma/manga-ink/*.json.
+// (S7's reviewsByDay / deck actions are owned by another slice), screenshots the S8 frames and prints
+// the measured layout so it can be compared with docs/figma/manga-ink/*.json.
+// Study fit: the routed Study tab is captured on both sides at 1440x1000 and 1440x900 (override with
+// ANIME_MINE_WINDOW_SIZES="1440,1000;1440,900"), and every capture asserts that the slim action bar is
+// <=36px and the whole rating panel sits above the fold (the lead's S8 fit defect).
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const os = require('node:os');
@@ -150,6 +153,47 @@ async function measureDetails() {
   });
 }
 
+// Study chrome + card fit. --ink-study-card-h is owned by S8 (set on .ink-anki-study) and S9 sizes both
+// cards with it, so the rating panel must end above the 24px page padding at every window size.
+const STUDY_CHROME_PX = 425;
+const PAGE_BOTTOM_PAD = 24;
+
+async function measureStudy() {
+  return evaluate(() => {
+    const round = (n) => Math.round(n * 10) / 10;
+    const box = (el) => {
+      if (!el) return null;
+      const r = el.getBoundingClientRect();
+      return { x: round(r.x), y: round(r.y), w: round(r.width), h: round(r.height), bottom: round(r.bottom) };
+    };
+    const study = document.querySelector('.ink-anki-study');
+    const root = document.querySelector('.anki.ink-screen');
+    const rate = document.querySelector('.ink-study-rate');
+    const cards = document.querySelector('.ink-study-cards');
+    return {
+      viewport: { w: innerWidth, h: innerHeight },
+      strip: box(document.querySelector('.ink-anki-strip')),
+      header: box(document.querySelector('.ink-hero')),
+      bar: box(document.querySelector('.ink-anki-study-bar')),
+      path: box(document.querySelector('.ink-anki-study-path')),
+      meta: box(document.querySelector('.ink-anki-study-meta')),
+      label: document.querySelector('.ink-hero-label')?.textContent,
+      title: document.querySelector('.ink-hero-title')?.textContent,
+      cardVar: study ? getComputedStyle(study).getPropertyValue('--ink-study-card-h').trim() : null,
+      cards: box(cards),
+      replay: box(document.querySelector('.ink-study-replay')),
+      rate: box(rate),
+      rateBottom: rate ? round(rate.getBoundingClientRect().bottom) : null,
+      rateBottomGap: rate && root ? round(root.getBoundingClientRect().bottom - rate.getBoundingClientRect().bottom) : null,
+      scroll: root ? { client: root.clientHeight, content: root.scrollHeight, top: root.scrollTop } : null,
+      chips: [...document.querySelectorAll('.ink-anki-chip')]
+        .filter((b) => !b.hidden)
+        .map((b) => ({ label: b.textContent, h: round(b.getBoundingClientRect().height), disabled: b.disabled })),
+      actions: [...document.querySelectorAll('.ink-anki-chip')].map((b) => ({ label: b.textContent, hidden: b.hidden, disabled: b.disabled })),
+    };
+  });
+}
+
 async function measureOverview() {
   const panels = await evaluate(() => {
     const rect = (el) => {
@@ -184,13 +228,32 @@ async function measureOverview() {
   }
   assert.ok(win, 'main created a window');
   if (win.webContents.isLoading()) await new Promise((resolve) => win.webContents.once('did-finish-load', resolve));
-  const [width, height] = (process.env.ANIME_MINE_WINDOW_SIZE || '1440,1000').split(',').map(Number);
+  const windowSizes = (process.env.ANIME_MINE_WINDOW_SIZE
+    ? [process.env.ANIME_MINE_WINDOW_SIZE]
+    : (process.env.ANIME_MINE_WINDOW_SIZES || '1440,1000;1440,900').split(';'))
+    .map((pair) => pair.split(',').map(Number))
+    .filter(([w, h]) => w > 0 && h > 0);
   win.webContents.setBackgroundThrottling(false);
   win.showInactive();
-  win.setContentSize(width, height);
-  await delay(350);
-  const viewport = await evaluate(() => ({ w: innerWidth, h: innerHeight }));
-  console.log('viewport', viewport);
+  let emulation = false;
+  // setContentSize is clamped by the screen work area on a laptop, so pin the real viewport with the
+  // debugger override (S9's script does the same) and only fall back to the window size.
+  async function applyViewport(w, h) {
+    win.setContentSize(w, h);
+    try {
+      if (!emulation) {
+        win.webContents.debugger.attach('1.3');
+        emulation = true;
+      }
+      await win.webContents.debugger.sendCommand('Emulation.setDeviceMetricsOverride', { width: w, height: h, deviceScaleFactor: 2, mobile: false });
+    } catch (err) {
+      console.log('device emulation unavailable', err.message);
+    }
+    await delay(350);
+    return evaluate(() => ({ w: innerWidth, h: innerHeight }));
+  }
+  const viewport = await applyViewport(...windowSizes[0]);
+  console.log('viewport', viewport, 'requested', windowSizes[0]);
   stubHandlers();
 
   await evaluate(new Function('window.addEventListener("error", (event) => { window.__inkErrors ??= []; window.__inkErrors.push(event.message); }); window.addEventListener("unhandledrejection", (event) => { window.__inkErrors ??= []; window.__inkErrors.push(String(event.reason)); });'));
@@ -245,23 +308,73 @@ async function measureOverview() {
   await evaluate(new Function('[...document.querySelectorAll(".ink-anki-tab")].find((b) => b.textContent === "Overview").click()'));
   await waitFor(() => !!document.querySelector('.ink-anki-decks'), 'overview restored');
 
-  // Study tab (card screen). S9 owns createStudyCardView; the stub still exercises the S8 wiring.
-  await evaluate(new Function('[...document.querySelectorAll(".ink-anki-tab")].find((b) => b.textContent === "Study").click()'));
-  await waitFor(() => !!document.querySelector('.study-start'), 'study tab');
-  const hasStart = await evaluate(() => !!document.querySelector('.study-start .primary'));
-  if (hasStart) await evaluate(new Function('document.querySelector(".study-start .primary").click()'));
-  await waitFor(() => !!document.querySelector('.ink-anki-study-view'), 'study card view');
-  const studyPath = await screenshot('anki-card-clean');
-  const header = await evaluate(() => document.querySelector('.ink-hero-label')?.textContent);
-  const title = await evaluate(() => document.querySelector('.ink-hero-title')?.textContent);
-  const studyState = await evaluate(() => ({
-    side: document.querySelector('.ink-anki-study-meta')?.textContent,
-    actions: [...document.querySelectorAll('.ink-anki-chip')].map((b) => ({ label: b.textContent, hidden: b.hidden, disabled: b.disabled })),
-  }));
-  console.log('study', JSON.stringify({ header, title, studyState }, null, 2));
-  assert.match(header ?? '', /Card 1 of 2 · Mining/i);
-  assert.equal(title, 'Review');
-  assert.equal(studyState.actions.find((b) => b.label === 'Grammar')?.hidden, true, 'grammar is hidden on the front');
+  // Study tab (card screen): the lead's fit check. S9 owns createStudyCardView; on a tree that still has
+  // the stub there are no card boxes, so the fit assertions only run when the real view is present.
+  const studyShots = [];
+  const studyFit = [];
+  const sizeTag = ([w, h]) => `${w}x${h}`;
+  for (const size of windowSizes) {
+    const [w, h] = size;
+    const vp = await applyViewport(w, h);
+    if (await evaluate(() => !!document.querySelector('.ink-anki-study-bar'))) {
+      await evaluate(new Function('[...document.querySelectorAll(".ink-anki-chip")].find((b) => b.textContent === "End session").click()'));
+      await waitFor(() => !!document.querySelector('.study-start'), 'study start after ending the session');
+    }
+    await evaluate(new Function('[...document.querySelectorAll(".ink-anki-tab")].find((b) => b.textContent === "Study").click()'));
+    await waitFor(() => !!document.querySelector('.study-start'), 'study tab');
+    const hasStart = await evaluate(() => !!document.querySelector('.study-start .primary'));
+    if (hasStart) await evaluate(new Function('document.querySelector(".study-start .primary").click()'));
+    await waitFor(() => !!document.querySelector('.ink-anki-study-view'), 'study card view');
+    await delay(250);
+
+    const questionPath = await screenshot(`anki-card-question-${sizeTag(size)}`);
+    const question = await measureStudy();
+    console.log(`study question ${sizeTag(size)}`, JSON.stringify(question, null, 2));
+    assert.ok(question.bar.h <= 36, `the action row is one slim row (<=36px), got ${question.bar.h}`);
+    assert.deepEqual(question.chips.map((c) => c.label), ['Original style', 'Deck options', 'End session'], 'front keeps style, options and end session');
+    assert.ok(question.chips.every((c) => c.h <= 28), 'the action chips stay small (<=28px)');
+    assert.match(question.label ?? '', /Card 1 of \d+ · Mining/i);
+    assert.equal(question.title, 'Review');
+    assert.equal(question.actions.find((b) => b.label === 'Grammar')?.hidden, true, 'grammar is hidden on the front');
+
+    const revealed = await evaluate(() => {
+      const reveal = document.querySelector('.ink-study-reveal');
+      if (reveal) {
+        reveal.click();
+        return 'button';
+      }
+      // The S9 stub has no reveal button; Space is the S8 keyboard path to the answer side.
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true }));
+      return 'key';
+    });
+    if (revealed) await delay(250);
+    const answerPath = await screenshot(`anki-card-answer-${sizeTag(size)}`);
+    const answer = await measureStudy();
+    console.log(`study answer ${sizeTag(size)}`, JSON.stringify(answer, null, 2));
+    assert.ok(answer.bar.h <= 36, `the action row stays one slim row (<=36px), got ${answer.bar.h}`);
+    assert.equal(answer.actions.find((b) => b.label === 'Grammar')?.hidden, false, 'grammar is offered on the answer');
+
+    if (question.cards && answer.rate) {
+      const expectedCards = Math.min(620, Math.max(380, Math.round(vp.h) - STUDY_CHROME_PX));
+      assert.ok(Math.abs(answer.cards.h - expectedCards) <= 1, `cards follow --ink-study-card-h: ${answer.cards.h}px vs ${expectedCards}px at ${sizeTag(size)}`);
+      assert.equal(answer.rate.h, 172, 'the rating panel keeps the frame height');
+      assert.ok(answer.rateBottom <= vp.h - PAGE_BOTTOM_PAD, `rating panel bottom ${answer.rateBottom} fits ${sizeTag(size)}`);
+      assert.ok(answer.scroll.content <= answer.scroll.client + 1, `the Study screen does not scroll at ${sizeTag(size)}`);
+      assert.ok(question.replay !== null, 'replay stays on the card');
+      studyFit.push({ window: sizeTag(size), viewport: vp, bar: answer.bar.h, cards: answer.cards.h, rateY: answer.rate.y, rateBottom: answer.rateBottom, scrolls: answer.scroll.content > answer.scroll.client });
+    } else {
+      console.log('study card view is the S9 stub; fit assertions skipped');
+    }
+    studyShots.push({ size: sizeTag(size), questionPath, answerPath });
+    if (sizeTag(size) === '1440x1000') {
+      fs.copyFileSync(questionPath, path.join(outDir, 'anki-card-question.png'));
+      fs.copyFileSync(answerPath, path.join(outDir, 'anki-card-clean.png'));
+    }
+  }
+  if (studyFit.length) console.log('study fit', JSON.stringify(studyFit, null, 2));
+  await applyViewport(...windowSizes[0]);
+  await evaluate(new Function('[...document.querySelectorAll(".ink-anki-chip")].find((b) => b.textContent === "End session").click()'));
+  await waitFor(() => !!document.querySelector('.study-start'), 'study ended');
   await evaluate(new Function('[...document.querySelectorAll(".ink-anki-tab")].find((b) => b.textContent === "Overview").click()'));
   await waitFor(() => !!document.querySelector('.ink-anki-decks'), 'back to overview');
   const interactions = await evaluate(() => {
@@ -272,7 +385,7 @@ async function measureOverview() {
   assert.equal(interactions.selectedDeckTitle, 'Genki I', 'clicking a row selects that deck');
 
   const pageErrors = await evaluate(() => window.__inkErrors ?? []);
-  console.log('screenshots', JSON.stringify({ overviewPath, browsePath, optionsPath, studyPath }));
+  console.log('screenshots', JSON.stringify({ overviewPath, browsePath, optionsPath, studyShots }, null, 2));
   if (pageErrors.length) throw new Error(`renderer errors: ${pageErrors.join('\n')}`);
   console.log('OK');
   app.quit();
