@@ -162,6 +162,7 @@ const measureScript = `(() => {
     tag: box('.ink-lesson-tags .ink-tag'),
     stamp: box('.ink-stamp'),
     number: box('.ink-lesson-number'),
+    numberText: document.querySelector('.ink-lesson-card.is-empty .ink-lesson-number')?.textContent ?? null,
     numberFont: style('.ink-lesson-number', ['fontFamily', 'fontWeight', 'fontSize', 'lineHeight']),
     emptyCopy: box('.ink-lesson-empty-text'),
     emptyCopyFont: style('.ink-lesson-empty-text', ['fontSize', 'fontWeight', 'lineHeight', 'color']),
@@ -194,13 +195,14 @@ const measureScript = `(() => {
   };
 })()`;
 
-function emptyProps(withAction) {
+function emptyProps(withAction, emptyTitle) {
   return {
     ...fixture,
     header: { label: '80 OF 80 LEARNED', value: 80, max: 80 },
     progress: { label: 'KANJI LEARNED', value: 80, max: 80 },
     lesson: null,
     rows: [],
+    ...(emptyTitle ? { emptyTitle } : {}),
     emptyText: withAction
       ? 'Every kanji in this level is done. Keep the reviews moving.'
       : 'Nothing new to learn in this level right now. Reviews keep the rest moving.',
@@ -266,7 +268,7 @@ function near(value, expected, tolerance = 1.5) {
   return Math.abs(Number(value) - expected) <= tolerance;
 }
 
-function checkLayout(name, boxes, { strip, expectedPanelH, expectedPanelTop, empty = false }) {
+function checkLayout(name, boxes, { strip, expectedPanelH, expectedPanelTop, empty = false, expectedTitle = null }) {
   const panel = boxes.lessonPanel;
   const panelBottom = panel.y + panel.h;
   const viewportBottom = boxes.viewport.h;
@@ -284,6 +286,8 @@ function checkLayout(name, boxes, { strip, expectedPanelH, expectedPanelTop, emp
   }
   if (empty) {
     check(`${name}: no Start button when the lesson is null`, boxes.startCount === 0, `startCount=${boxes.startCount}`);
+    check(`${name}: empty heading shows ${JSON.stringify(expectedTitle ?? 'All caught up')}`,
+      boxes.numberText === (expectedTitle ?? 'All caught up'), `got ${JSON.stringify(boxes.numberText)}`);
     check(`${name}: caught-up heading is 40px, not the 64px lesson size`, near(parseFloat(boxes.numberFont.fontSize), 40, 0.5), boxes.numberFont.fontSize);
     check(`${name}: empty copy is 17px muted`, boxes.emptyCopy && near(parseFloat(boxes.emptyCopyFont.fontSize), 17, 0.5)
       && boxes.emptyCopyFont.color === 'rgb(92, 90, 85)', `${boxes.emptyCopyFont?.fontSize} ${boxes.emptyCopyFont?.color}`);
@@ -344,11 +348,12 @@ async function run() {
       { name: 'shell-kanji-1440x900', width: 1440, height: 900, empty: false, action: false },
       { name: 'shell-empty-1440x900', width: 1440, height: 900, empty: true, action: false },
       { name: 'shell-empty-action-1440x900', width: 1440, height: 900, empty: true, action: true },
+      { name: 'shell-empty-title-1440x900', width: 1440, height: 900, empty: true, action: false, title: 'All kanji learned' },
     ];
     for (const scenario of shellScenarios) {
       win.setContentSize(scenario.width, scenario.height);
       await loadPage(win, shellMarkup, 'explore-shell.html');
-      const data = scenario.empty ? emptyProps(scenario.action) : fixture;
+      const data = scenario.empty ? emptyProps(scenario.action, scenario.title) : fixture;
       const boxes = await mountAndMeasure(win, data);
       if (!boxes) {
         check(`${scenario.name}: screen mounts`, false, 'not mounted');
@@ -361,7 +366,7 @@ async function run() {
         hero: boxes.hero,
         lessonPanel: boxes.lessonPanel,
         upnextPanel: boxes.upnextPanel,
-        number: boxes.number && { h: boxes.number.h, font: boxes.numberFont.fontSize },
+        number: boxes.number && { h: boxes.number.h, text: boxes.numberText, font: boxes.numberFont.fontSize },
         emptyCopy: boxes.emptyCopy && { y: boxes.emptyCopy.y, h: boxes.emptyCopy.h, font: boxes.emptyCopyFont.fontSize },
         emptyAction: boxes.emptyAction && { ...boxes.emptyAction, ...boxes.emptyActionStyle },
         start: boxes.start,
@@ -376,6 +381,7 @@ async function run() {
         expectedPanelH,
         expectedPanelTop: expectedTop,
         empty: scenario.empty,
+        expectedTitle: scenario.title ?? null,
       });
       if (scenario.empty && scenario.action) {
         check(`${scenario.name}: empty action is a paper outlined button`, boxes.emptyAction
