@@ -55,7 +55,7 @@ Ignore the superseded frames Anki v2 (6:19166) and Anki Card (6:19424).
 | S4 Grammar | Wire Grammar into Explore, See all = existing course | src/renderer/learn/grammar.mjs, src/renderer/learn/grammarModel.mjs, src/renderer/css/learn-grammar.css, test/learnGrammar.test.mjs, test/exploreGrammar.test.mjs |
 | S5 Player | Theater layout, control bar, translation strip, Subtitles menu | src/renderer/player.mjs, src/renderer/css/player.css, test/playerInk.test.mjs |
 | S6 Timeline | Subtitle timeline component + model | src/renderer/player/timeline.mjs, src/renderer/lib/subtitleTimeline.mjs, src/renderer/css/player-timeline.css, test/subtitleTimeline.test.mjs |
-| S7 Anki data | reviewsByDay + createDeck/importPackage/sync IPC | src/core/ankiBrowse.js, src/core/ankiSample.js, src/main/services.js, src/main/preload.js, test/ankiActivity.test.js |
+| S7 Anki data | reviewsByDay + createDeck/importPackage/sync IPC | src/core/ankiBrowse.js, src/core/ankiSample.js, src/main/services.js, src/main/preload.js, test/services.test.js, test/ankiActivity.test.js |
 | S8 Anki overview | Anki Clean screen, heatmap model, study screen wiring | src/renderer/anki.mjs, src/renderer/lib/ankiView.mjs, src/renderer/css/ink-anki.css, src/renderer/anki/browse.mjs, src/renderer/css/anki-browse.css, test/anki-view.test.mjs, test/ankiHeatmap.test.mjs |
 | S9 Anki card | Card front/back + rating bar component, card inner theme | src/renderer/anki/studyCard.mjs, src/renderer/lib/study.mjs, src/renderer/lib/studyTheme.mjs, src/renderer/lib/studyPresentation.mjs, src/renderer/css/ink-anki-card.css, test/study.test.mjs, test/ankiRating.test.mjs |
 
