@@ -1,1 +1,207 @@
-/* Manga Ink: owned by its slice (see docs/manga-ink-contracts.md). */
+/* Manga Ink: Subtitle timeline (player right column).
+   Measured from docs/figma/manga-ink/player-theater.json: panel 280x842 at x1128 y128 (node 6:19009),
+   3px ink border, cards 200x64 at x1192 (1.5px border, 72px pitch), rail centered at x1168,
+   pips 14px open circles, offset row 44+100+44 at the panel bottom. */
+
+.ink-timeline {
+  --ink-red: #ff2e6e;
+  box-sizing: border-box;
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  width: 280px;
+  min-height: 842px;
+  padding: 23px 13px 29px 25px;
+  border: 3px solid var(--ink, #0a0a0a);
+  background: var(--paper, #f5f2ea);
+  color: var(--ink, #0a0a0a);
+  font-family: var(--font, 'Zen Kaku Gothic New', sans-serif);
+}
+.ink-timeline *,
+.ink-timeline *::before,
+.ink-timeline *::after { box-sizing: border-box; }
+
+.ink-timeline > .ink-tag { flex: none; }
+
+/* Track = rail + list. The list is indented 36px so the rail (center 12px) sits 24px left of the cards. */
+.ink-timeline-track {
+  position: relative;
+  flex: none;
+  margin-top: 16px;
+}
+
+.ink-timeline-rail {
+  position: absolute;
+  top: 32px;
+  bottom: 32px;
+  left: 12px;
+  width: 3px;
+  transform: translateX(-50%);
+  background: var(--ink, #0a0a0a);
+}
+.ink-timeline-rail-fill {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 5px;
+  height: 0;
+  transform: translateX(-50%);
+  background: var(--ink-red);
+}
+
+.ink-timeline-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0 0 0 36px;
+  padding: 0;
+  list-style: none;
+}
+
+.ink-tl-line {
+  position: relative;
+  display: flex;
+  align-items: center;
+  list-style: none;
+}
+
+.ink-tl-pip {
+  position: absolute;
+  top: 50%;
+  left: -31px;
+  width: 14px;
+  height: 14px;
+  transform: translateY(-50%);
+  border: 3px solid var(--ink, #0a0a0a);
+  border-radius: 50%;
+  background: var(--paper, #f5f2ea);
+}
+.ink-tl-line.is-current .ink-tl-pip { background: var(--ink-red); }
+
+.ink-tl-card {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  width: 200px;
+  height: 64px;
+  margin: 0;
+  padding: 6.5px 14.5px;
+  border: 1.5px solid var(--ink, #0a0a0a);
+  border-radius: 0 !important;
+  background: var(--paper, #f5f2ea);
+  color: var(--ink, #0a0a0a);
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.ink-tl-time {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 16px;
+  letter-spacing: 1px;
+  color: var(--ink-mute, #5c5a55);
+  font-variant-numeric: tabular-nums;
+}
+.ink-tl-text {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 25px;
+  letter-spacing: 0;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: inherit;
+}
+.ink-tl-line.is-current .ink-tl-card {
+  border-color: var(--ink, #0a0a0a);
+  background: var(--ink, #0a0a0a);
+  color: var(--paper, #f5f2ea);
+}
+.ink-tl-line.is-current .ink-tl-time { color: var(--paper, #f5f2ea); }
+
+/* Offset block pinned to the panel bottom: Offset tag, then − / +0.0s / +. */
+.ink-timeline-offset {
+  display: grid;
+  flex: none;
+  grid-template-columns: 44px 100px 44px;
+  column-gap: 8px;
+  row-gap: 16px;
+  align-items: center;
+  justify-content: start;
+  margin-top: auto;
+}
+.ink-timeline-offset > .ink-tag { grid-column: 1 / -1; }
+
+.ink-tl-minus,
+.ink-tl-plus {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 48px;
+  margin: 0;
+  padding: 0;
+  border: 3px solid var(--ink, #0a0a0a);
+  border-radius: 0 !important;
+  background: var(--paper, #f5f2ea);
+  color: var(--ink, #0a0a0a);
+  font-family: inherit;
+  cursor: pointer;
+}
+.ink-tl-plus {
+  background: var(--ink, #0a0a0a);
+  color: var(--paper, #f5f2ea);
+}
+.ink-timeline button .doodle {
+  width: 30px;
+  height: 30px;
+  margin: 0;
+  --doodle-stroke: 1.9;
+}
+
+.ink-tl-value {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 48px;
+  border: 3px solid var(--ink, #0a0a0a);
+  background: var(--paper, #f5f2ea);
+  color: var(--ink, #0a0a0a);
+  font-family: inherit;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 26px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Keep the ink theme's global button hover/active ink-only here (red stays for progress and pips). */
+.ink-timeline button:hover:not(:disabled) {
+  transform: translate(-2px, -2px);
+  border-color: var(--ink, #0a0a0a);
+  background: var(--paper, #f5f2ea);
+  color: var(--ink, #0a0a0a);
+  box-shadow: 2px 2px 0 var(--ink, #0a0a0a);
+}
+.ink-timeline .is-current .ink-tl-card:hover:not(:disabled),
+.ink-timeline .ink-tl-plus:hover:not(:disabled) {
+  background: var(--ink, #0a0a0a);
+  color: var(--paper, #f5f2ea);
+}
+.ink-timeline button:active:not(:disabled) {
+  transform: none;
+  background: var(--paper, #f5f2ea);
+  color: var(--ink, #0a0a0a);
+  box-shadow: 0 0 0 var(--ink, #0a0a0a);
+}
+.ink-timeline .is-current .ink-tl-card:active:not(:disabled),
+.ink-timeline .ink-tl-plus:active:not(:disabled) {
+  background: var(--ink, #0a0a0a);
+  color: var(--paper, #f5f2ea);
+}
+.ink-timeline button:focus-visible { outline: 2px solid var(--ink, #0a0a0a); outline-offset: 3px; }
