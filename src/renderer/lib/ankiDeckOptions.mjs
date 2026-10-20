@@ -1,4 +1,5 @@
 import { h, fill } from './ui.mjs';
+import { withIcon } from './doodleIcons.mjs';
 import {
   FIELD_RULES,
   baselineValue,
@@ -262,7 +263,7 @@ export function mountDeckOptions(container, { api, deck, sample = false, onLoade
         status ? btn('Try again', load, 'primary') : null));
       return;
     }
-    const reload = btn('↻ Read Anki', () => { if (confirmDiscard()) load(); }, 'ghost small');
+    const reload = btn(withIcon('replay', 'Read Anki'), () => { if (confirmDiscard()) load(); }, 'ghost small');
     reload.disabled = busy;
     const head = h('div', { class: 'deck-options-head' },
       h('div', {}, h('h2', {}, 'Deck options'), h('p', { class: 'anki-sub', title: deck }, deck)),

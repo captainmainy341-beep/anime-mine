@@ -160,3 +160,59 @@ export function previousVolume(series, volId) {
   const at = volumes.findIndex((volume) => volume.id === volId);
   return at > 0 ? volumes[at - 1] : null;
 }
+
+const FONT_MIN = 8;
+const FONT_MAX = 64;
+const LINE_HEIGHT = 1.1;
+
+// Font px so OCR text roughly fills its box (minus the 1px border on each side). `lines` is the
+// column/row count; when omitted every line count is tried and the one allowing the largest font wins.
+// Vertical text runs along the box height, horizontal along the width.
+export function blockFontSize({ boxW, boxH, chars, vertical = false, lines }) {
+  const count = Math.max(1, Math.trunc(chars) || 1);
+  const along = Math.max(0, (vertical ? boxH : boxW) - 2);
+  const across = Math.max(0, (vertical ? boxW : boxH) - 2);
+  const fit = (n) => Math.min(across / (n * LINE_HEIGHT), along / Math.ceil(count / n));
+  let size = 0;
+  if (lines > 0) {
+    size = fit(lines);
+  } else {
+    for (let n = 1; n <= count; n += 1) size = Math.max(size, fit(n));
+  }
+  if (!Number.isFinite(size)) return FONT_MIN;
+  return Math.min(FONT_MAX, Math.max(FONT_MIN, Math.floor(size * 10) / 10));
+}
+
+// anchor/viewport are {left, top, right, bottom}; returns the bubble's top-left relative to the viewport.
+// Prefers the left of the anchor (vertical manga reads right to left), then right, below, above.
+export function placeBubble(anchor, size, viewport, gap = 8) {
+  const vw = viewport.right - viewport.left;
+  const vh = viewport.bottom - viewport.top;
+  const { width, height } = size;
+  const room = {
+    left: anchor.left - viewport.left - gap,
+    right: viewport.right - anchor.right - gap,
+    below: viewport.bottom - anchor.bottom - gap,
+    above: anchor.top - viewport.top - gap,
+  };
+  const need = { left: width, right: width, below: height, above: height };
+  const order = ['left', 'right', 'below', 'above'];
+  const side = order.find((s) => room[s] >= need[s]) ?? order.reduce((a, b) => (room[b] - need[b] > room[a] - need[a] ? b : a));
+  let left;
+  let top;
+  if (side === 'left') {
+    left = anchor.left - gap - width;
+    top = anchor.top;
+  } else if (side === 'right') {
+    left = anchor.right + gap;
+    top = anchor.top;
+  } else if (side === 'below') {
+    left = anchor.left;
+    top = anchor.bottom + gap;
+  } else {
+    left = anchor.left;
+    top = anchor.top - gap - height;
+  }
+  const clamp = (value, origin, span, extent) => origin + Math.max(0, Math.min(value - origin, span - extent));
+  return { left: clamp(left, viewport.left, vw, width) - viewport.left, top: clamp(top, viewport.top, vh, height) - viewport.top, side };
+}

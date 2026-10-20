@@ -1,4 +1,5 @@
 import { fill, h } from './ui.mjs';
+import { doodle } from './doodleIcons.mjs';
 
 export function chunkClasses(chunk, selected = false) {
   return ['chunk', `chunk-${chunk.kind}`, selected ? 'selected' : ''].filter(Boolean).join(' ');
@@ -108,7 +109,7 @@ function conjugationSection(conjugations) {
           'ol',
           { class: 'grammar-steps' },
           c.steps.flatMap((s, i) => [
-            i ? h('li', { class: 'grammar-arrow', 'aria-hidden': 'true' }, '→') : null,
+            i ? h('li', { class: 'grammar-arrow', 'aria-hidden': 'true' }, doodle('next')) : null,
             h('li', { class: 'grammar-step', title: s.explanation }, h('span', { class: 'grammar-step-form' }, s.form), h('span', { class: 'grammar-step-label' }, s.label)),
           ]),
         ),

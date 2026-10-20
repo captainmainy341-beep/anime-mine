@@ -371,6 +371,7 @@ test('settings:get returns defaults when no settings file exists', async () => {
     removeBurnedSubs: false,
     burnedSubsMode: 'blur',
     subtitleCover: null,
+    subtitleKey: null,
     manga: { aiOcr: false },
     jimaku: { enabled: true, apiKey: '' },
   });
@@ -443,7 +444,7 @@ test('anki:mine in word mode maps fields and sends media with cue times and padd
   assert.deepEqual(log.audioCalls, [
     { video: '/videos/Show S01E05.mkv', start: 10, end: 14, padStart: 0.15, padEnd: 0.25 },
   ]);
-  assert.deepEqual(log.screenshotCalls, [{ video: '/videos/Show S01E05.mkv', time: 12, censorSubs: true, cover: null }]);
+  assert.deepEqual(log.screenshotCalls, [{ video: '/videos/Show S01E05.mkv', time: 12, censorSubs: true, cover: null, key: null }]);
   assert.deepEqual(log.setup, [{ deck: 'Anime Mining::show', model: 'AnimeMine' }]);
   assert.equal(log.cards.length, 1);
   const card = log.cards[0];
@@ -555,6 +556,19 @@ test('settings:set stores a clamped subtitleCover and null for an invalid one', 
 
   await call('settings:set', { subtitleCover: { x: 'left', y: 0, w: 0.5, h: 0.5 } });
   assert.equal((await call('settings:get')).subtitleCover, null);
+});
+
+test('settings:set stores a normalised subtitleKey and null for an invalid one', async () => {
+  const { call } = await setup();
+
+  await call('settings:set', { subtitleKey: { colors: [[300, 0, 0], [300, 0, 0], [5, 6, 7]], tolerance: 1 } });
+  assert.deepEqual((await call('settings:get')).subtitleKey, { colors: [[255, 0, 0], [5, 6, 7]], tolerance: 4 });
+
+  await call('settings:set', { subtitleKey: { colors: [[1, 2, 3]], tolerance: 30 } });
+  assert.deepEqual((await call('settings:get')).subtitleKey, { colors: [[1, 2, 3]], tolerance: 30 });
+
+  await call('settings:set', { subtitleKey: { colors: 'red' } });
+  assert.equal((await call('settings:get')).subtitleKey, null);
 });
 
 test('settings:set downloadsDir restarts the downloads watcher', async () => {
@@ -1414,7 +1428,7 @@ test('anki:mine timing replaces the audio span, is validated, and keeps the scre
   assert.deepEqual(log.audioCalls, [
     { video: '/videos/Show.mkv', start: 11, end: 12.5, padStart: 0.15, padEnd: 0.25 },
   ]);
-  assert.deepEqual(log.screenshotCalls, [{ video: '/videos/Show.mkv', time: 12, censorSubs: true, cover: null }]);
+  assert.deepEqual(log.screenshotCalls, [{ video: '/videos/Show.mkv', time: 12, censorSubs: true, cover: null, key: null }]);
   await assert.rejects(call('anki:mine', { ...MINE_BASE, timing: { start: 6, end: 5 } }), /0 <= start < end/);
   await assert.rejects(call('anki:mine', { ...MINE_BASE, timing: { start: 0, end: 200 } }), /at most 120 seconds/);
   assert.equal(log.audioCalls.length, 1);

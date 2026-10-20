@@ -9,6 +9,7 @@ import { TRANSLATE_PREF, backlogRows, endSummary, guideFocus, introModel, kanjiC
 import { jaNodes, kanjify, renderKanjiCard, renderParticleGuide, renderPeekConfirm } from './storyGuide.mjs';
 import { mountHome } from './storyHome.mjs';
 import { mountLesson } from './lesson.mjs';
+import { doodle, withIcon } from '../lib/doodleIcons.mjs';
 
 const POSITIONS = ['left', 'center', 'right'];
 const PEEKED_NOTE = 'You looked this kanji up: answer now, and it will come back later.';
@@ -87,7 +88,7 @@ export function mountStory(el, ctx, arg = {}) {
     fill(root, h('p', { class: 'learn-sub' }, 'Loading…'));
     try {
       const guide = await api.particles();
-      if (!disposed) fill(root, button('← Back to Story', showMenu, 'story-btn'), renderParticleGuide(guide));
+      if (!disposed) fill(root, button(withIcon('back', 'Back to Story'), showMenu, 'story-btn'), renderParticleGuide(guide));
     } catch (err) {
       if (!disposed) fill(root, h('div', { class: 'learn-card learn-error', role: 'alert' }, h('p', {}, err.message), button('Back', showMenu)));
     }
@@ -290,7 +291,7 @@ function mountPlayer(host, ctx, { data, manifest, restore, exit }) {
     const body = h('p', { class: 'story-line', lang: 'ja' });
     const english = englishNode(frame.en, { hidden: true });
     const explain = frame.explain ? h('p', { class: 'story-explain', hidden: true }, frame.explain) : null;
-    textBox.replaceChildren(...[plate, body, english, explain, h('span', { class: 'story-next', 'aria-hidden': 'true' }, '▾')].filter(Boolean));
+    textBox.replaceChildren(...[plate, body, english, explain, h('span', { class: 'story-next', 'aria-hidden': 'true' }, doodle('down'))].filter(Boolean));
     const started = performance.now();
     let done = false;
     const tick = () => {

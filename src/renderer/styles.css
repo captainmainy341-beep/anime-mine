@@ -841,6 +841,17 @@ select:focus {
 /* Anki section */
 
 .anki {
+  --bg: #101416;
+  --panel: #181c1e;
+  --panel-2: #22282a;
+  --line: #30383a;
+  --line-strong: #424b4d;
+  --text: #eeeae2;
+  --muted: #adb7b9;
+  --accent: #edc789;
+  --accent-soft: #edc78916;
+  background: var(--bg);
+  color: var(--text);
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -1049,9 +1060,10 @@ select:focus {
   flex-direction: column;
   gap: 14px;
   width: 100%;
-  max-width: 1050px;
+  max-width: 1220px;
   min-height: 0;
   margin: 0 auto;
+  padding-top: 6px;
 }
 
 .study-head {
@@ -1066,19 +1078,29 @@ select:focus {
 .study-deck { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 16px; font-weight: 600; }
 .study-remaining { white-space: nowrap; }
 .study-head-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; margin-left: auto; gap: 4px; }
-.study-workspace { display: flex; flex: 1; align-items: center; min-height: 0; }
+.study-workspace { display: flex; flex: 1; align-items: stretch; min-height: 200px; }
 .study-card {
   width: 100%;
   height: 100%;
-  max-height: 480px;
-  min-height: 0;
+  min-height: 200px;
+  flex: 1;
   border: 1px solid var(--line);
   border-radius: 14px;
   background: var(--panel);
 }
 .study-card.is-original { max-height: none; }
 .study-controls { flex-shrink: 0; }
-.study-reveal { min-width: 230px; padding: 10px 20px; }
+.study-reveal { min-width: 230px; padding: 12px 24px; }
+.study-controls .panel-actions { justify-content: center; }
+.study-controls .study-grades { max-width: 740px; margin: 0 auto; }
+.study .grade { min-height: 58px; background: var(--panel); }
+.study .grade > span { display: flex; flex-direction: column; gap: 4px; }
+.study .grade-interval { margin-left: 0; }
+.study .grade kbd { background: transparent; border-color: var(--line-strong); }
+.study .grade-good { border-color: #8fae98; }
+.study-head-actions .ghost { color: var(--muted); }
+.anki .study-hints, .anki .grade-interval, .anki .grade kbd { color: var(--muted); }
+.anki .study button:focus-visible { outline-color: var(--accent); }
 .study-hints { display: flex; flex-shrink: 0; justify-content: space-between; gap: 12px; color: #a1aabc; font-size: 11px; }
 .study button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 @media (max-width: 700px) {
@@ -1087,6 +1109,10 @@ select:focus {
   .study-hints { font-size: 10px; }
 }
 @media (max-width: 480px) {
+  .anki { padding: 16px 14px; gap: 10px; }
+  .anki .anki-tab { padding: 8px; font-size: 12px; }
+  .study { gap: 10px; }
+  .study-workspace, .study-card { min-height: 120px; }
   .study-head-actions { width: 100%; justify-content: flex-start; }
   .study-deck-path { flex: 1; }
   .study-grades { gap: 6px; }

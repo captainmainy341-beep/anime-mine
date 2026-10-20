@@ -13,6 +13,7 @@ const { createGrammarHandlers } = require('./grammarHandlers');
 const { createWebBridge } = require('./webBridge');
 const { Corpus } = require('../core/corpus');
 const { normalizeCover } = require('../core/cover');
+const { normalizeKey } = require('../core/subKey');
 const { createJimaku, JimakuError } = require('../core/jimaku');
 const { parseMediaName } = require('../core/matcher');
 const { furigana, toAnkiFurigana, hasKanji } = require('../core/furigana');
@@ -45,6 +46,7 @@ function defaultSettings() {
     removeBurnedSubs: false,
     burnedSubsMode: 'blur',
     subtitleCover: null,
+    subtitleKey: null,
     manga: { aiOcr: false },
     jimaku: { enabled: true, apiKey: '' },
   };
@@ -678,7 +680,7 @@ function createServices({ dataDir, dialog, deps = {}, notify = () => {} }) {
       ...(audioStream === undefined ? {} : { audioStream }),
     });
     const pictureSource = await features.playbackSource(videoPath);
-    const picture = await media().screenshot({ video: pictureSource, time: (cue.start + cue.end) / 2, censorSubs: pictureSource === videoPath, cover: pictureSource === videoPath ? ((await getSettings()).subtitleCover ?? null) : null });
+    const picture = await media().screenshot({ video: pictureSource, time: (cue.start + cue.end) / 2, censorSubs: pictureSource === videoPath, cover: pictureSource === videoPath ? ((await getSettings()).subtitleCover ?? null) : null, key: pictureSource === videoPath ? ((await getSettings()).subtitleKey ?? null) : null });
     const deck = animeDeckName(ankiDeck, videoPath);
     const anki = new AnkiClient(ankiUrl);
     await anki.ensureSetup(deck, ankiModel);
@@ -773,7 +775,9 @@ function createServices({ dataDir, dialog, deps = {}, notify = () => {} }) {
 
   // Only explicit scope changes invalidate in-flight study and options requests.
   async function setSettings(input) {
-    const patch = input && Object.hasOwn(input, 'subtitleCover') ? { ...input, subtitleCover: normalizeCover(input.subtitleCover) } : input;
+    let patch = input;
+    if (input && Object.hasOwn(input, 'subtitleCover')) patch = { ...patch, subtitleCover: normalizeCover(input.subtitleCover) };
+    if (input && Object.hasOwn(input, 'subtitleKey')) patch = { ...patch, subtitleKey: normalizeKey(input.subtitleKey) };
     const { next } = await writeSettings(patch, { invalidateScope: true });
     return next;
   }

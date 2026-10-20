@@ -246,7 +246,7 @@ function createFeatureHandlers({ dataDir, getSettings, library, dictionary, toke
       ...(audioStream === undefined ? {} : { audioStream }),
     });
     const source = await playbackSource(videoPath);
-    const picture = await media.screenshot({ video: source, time: (cue.start + cue.end) / 2, censorSubs: source === videoPath, cover: source === videoPath ? ((await getSettings()).subtitleCover ?? null) : null });
+    const picture = await media.screenshot({ video: source, time: (cue.start + cue.end) / 2, censorSubs: source === videoPath, cover: source === videoPath ? ((await getSettings()).subtitleCover ?? null) : null, key: source === videoPath ? ((await getSettings()).subtitleKey ?? null) : null });
     return {
       audio: `data:audio/mpeg;base64,${audio.toString('base64')}`,
       picture: `data:image/jpeg;base64,${picture.toString('base64')}`,

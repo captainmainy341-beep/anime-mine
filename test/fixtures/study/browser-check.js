@@ -20,16 +20,18 @@ async (page) => {
     await frame.waitForSelector('.am-answer-grid');
     const colors = await frame.evaluate(() => ({
       background: getComputedStyle(document.body).backgroundColor,
-      imageHeight: document.querySelector('.am-answer-grid img').getBoundingClientRect().height,
+      imageHeight: document.querySelector('.am-scene img').getBoundingClientRect().height,
       overflow: document.documentElement.scrollWidth > innerWidth,
       translationVisible: document.querySelector('.ensentence div.hint').getBoundingClientRect().height > 0,
       scriptHandlers: [...document.querySelectorAll('*')].some(el => [...el.attributes].some(a => /^on/i.test(a.name))),
+      sentenceCount: document.querySelectorAll('.jpsentence').length,
+      targetLarger: parseFloat(getComputedStyle(document.querySelector('.am-target')).fontSize) > parseFloat(getComputedStyle(document.querySelector('.am-sentence')).fontSize),
     }));
     const dock = await page.locator('.study-controls').boundingBox();
-    if (colors.background !== 'rgb(22, 26, 34)' || colors.imageHeight > 191 || colors.overflow || !colors.translationVisible || colors.scriptHandlers || dock.y + dock.height > height) throw new Error(JSON.stringify({ width, height, colors, dock }));
+    if (colors.background !== 'rgb(24, 28, 30)' || colors.imageHeight > 216 || colors.overflow || !colors.translationVisible || colors.scriptHandlers || colors.sentenceCount !== 1 || !colors.targetLarger || dock.y + dock.height > height) throw new Error(JSON.stringify({ width, height, colors, dock }));
     await frame.locator('.am-enlarge').click();
     if (!await frame.getByLabel('Enlarge card image').isChecked()) throw new Error('Image toggle not checked');
-    const enlarged = await frame.locator('.am-answer-grid img').boundingBox();
+    const enlarged = await frame.locator('.am-scene img').boundingBox();
     if (enlarged.height <= colors.imageHeight) throw new Error('Image enlargement failed');
     await frame.locator('.am-enlarge').click();
     await page.getByRole('button', { name: 'Original style', exact: true }).click();

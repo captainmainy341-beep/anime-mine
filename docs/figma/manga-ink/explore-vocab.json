@@ -1,0 +1,1009 @@
+{
+ "t": "Fra",
+ "n": "Explore Vocab",
+ "x": 0,
+ "y": 0,
+ "w": 1440,
+ "h": 1000,
+ "fill": "#f5f2ea",
+ "k": [
+  {
+   "t": "Fra",
+   "n": "Nav strip",
+   "x": 0,
+   "y": 0,
+   "w": 200,
+   "h": 1000,
+   "fill": "#0a0a0a"
+  },
+  {
+   "t": "Tex",
+   "n": "アニメ",
+   "x": 28,
+   "y": 32,
+   "w": 84,
+   "h": 41,
+   "fill": "#f5f2ea",
+   "text": "アニメ",
+   "font": "Dela Gothic One Regular",
+   "size": 28
+  },
+  {
+   "t": "Tex",
+   "n": "マイン",
+   "x": 28,
+   "y": 72,
+   "w": 84,
+   "h": 41,
+   "fill": "#f5f2ea",
+   "text": "マイン",
+   "font": "Dela Gothic One Regular",
+   "size": 28
+  },
+  {
+   "t": "Fra",
+   "n": "Mark",
+   "x": 28,
+   "y": 118,
+   "w": 40,
+   "h": 3,
+   "fill": "#ff2e6e"
+  },
+  {
+   "t": "Tex",
+   "n": "LIBRARY",
+   "x": 28,
+   "y": 181,
+   "w": 62,
+   "h": 19,
+   "fill": "#f5f2ea",
+   "text": "LIBRARY",
+   "font": "Zen Kaku Gothic New Bold",
+   "size": 13,
+   "ls": "1.5px"
+  },
+  {
+   "t": "Tex",
+   "n": "棚",
+   "x": 132,
+   "y": 181,
+   "w": 13,
+   "h": 19,
+   "fill": "#f5f2ea",
+   "text": "棚",
+   "font": "Zen Kaku Gothic New Medium",
+   "size": 13
+  },
+  {
+   "t": "Fra",
+   "n": "Nav active",
+   "x": 0,
+   "y": 230,
+   "w": 200,
+   "h": 44,
+   "fill": "#f5f2ea"
+  },
+  {
+   "t": "Tex",
+   "n": "LEARN",
+   "x": 28,
+   "y": 239,
+   "w": 48,
+   "h": 19,
+   "fill": "#0a0a0a",
+   "text": "LEARN",
+   "font": "Zen Kaku Gothic New Bold",
+   "size": 13,
+   "ls": "1.5px"
+  },
+  {
+   "t": "Tex",
+   "n": "勉強",
+   "x": 132,
+   "y": 239,
+   "w": 26,
+   "h": 19,
+   "fill": "#0a0a0a",
+   "text": "勉強",
+   "font": "Zen Kaku Gothic New Medium",
+   "size": 13
+  },
+  {
+   "t": "Tex",
+   "n": "MANGA",
+   "x": 28,
+   "y": 297,
+   "w": 51,
+   "h": 19,
+   "fill": "#f5f2ea",
+   "text": "MANGA",
+   "font": "Zen Kaku Gothic New Bold",
+   "size": 13,
+   "ls": "1.5px"
+  },
+  {
+   "t": "Tex",
+   "n": "漫画",
+   "x": 132,
+   "y": 297,
+   "w": 26,
+   "h": 19,
+   "fill": "#f5f2ea",
+   "text": "漫画",
+   "font": "Zen Kaku Gothic New Medium",
+   "size": 13
+  },
+  {
+   "t": "Tex",
+   "n": "VOCAB",
+   "x": 28,
+   "y": 355,
+   "w": 49,
+   "h": 19,
+   "fill": "#f5f2ea",
+   "text": "VOCAB",
+   "font": "Zen Kaku Gothic New Bold",
+   "size": 13,
+   "ls": "1.5px"
+  },
+  {
+   "t": "Tex",
+   "n": "語彙",
+   "x": 132,
+   "y": 355,
+   "w": 26,
+   "h": 19,
+   "fill": "#f5f2ea",
+   "text": "語彙",
+   "font": "Zen Kaku Gothic New Medium",
+   "size": 13
+  },
+  {
+   "t": "Tex",
+   "n": "ANKI",
+   "x": 28,
+   "y": 413,
+   "w": 34,
+   "h": 19,
+   "fill": "#f5f2ea",
+   "text": "ANKI",
+   "font": "Zen Kaku Gothic New Bold",
+   "size": 13,
+   "ls": "1.5px"
+  },
+  {
+   "t": "Tex",
+   "n": "カード",
+   "x": 132,
+   "y": 413,
+   "w": 39,
+   "h": 19,
+   "fill": "#f5f2ea",
+   "text": "カード",
+   "font": "Zen Kaku Gothic New Medium",
+   "size": 13
+  },
+  {
+   "t": "Tex",
+   "n": "SETTINGS",
+   "x": 28,
+   "y": 471,
+   "w": 71,
+   "h": 19,
+   "fill": "#f5f2ea",
+   "text": "SETTINGS",
+   "font": "Zen Kaku Gothic New Bold",
+   "size": 13,
+   "ls": "1.5px"
+  },
+  {
+   "t": "Tex",
+   "n": "設定",
+   "x": 132,
+   "y": 471,
+   "w": 26,
+   "h": 19,
+   "fill": "#f5f2ea",
+   "text": "設定",
+   "font": "Zen Kaku Gothic New Medium",
+   "size": 13
+  },
+  {
+   "t": "Fra",
+   "n": "Panel Header",
+   "x": 224,
+   "y": 28,
+   "w": 1184,
+   "h": 110,
+   "fill": "#0a0a0a",
+   "stroke": "#0a0a0a",
+   "sw": 3,
+   "k": [
+    {
+     "t": "Fra",
+     "n": "Speed lines",
+     "x": 224,
+     "y": 28,
+     "w": 1184,
+     "h": 110,
+     "k": [
+      {
+       "t": "Vec",
+       "n": "Rays",
+       "x": 84,
+       "y": -817,
+       "w": 1800,
+       "h": 1800,
+       "fill": "#f5f2ea"
+      }
+     ]
+    },
+    {
+     "t": "Fra",
+     "n": "Title plate",
+     "x": 252,
+     "y": 46,
+     "w": 600,
+     "h": 74,
+     "fill": "#0a0a0a",
+     "k": [
+      {
+       "t": "Tex",
+       "n": "Title",
+       "x": 252,
+       "y": 46,
+       "w": 375,
+       "h": 68,
+       "fill": "#f5f2ea",
+       "text": "Explore Vocab",
+       "font": "Dela Gothic One Regular",
+       "size": 44,
+       "lh": "68px"
+      }
+     ]
+    },
+    {
+     "t": "Fra",
+     "n": "Progress plate",
+     "x": 924,
+     "y": 56,
+     "w": 460,
+     "h": 54,
+     "fill": "#f5f2ea",
+     "k": [
+      {
+       "t": "Tex",
+       "n": "LESSON 1 OF 5",
+       "x": 940,
+       "y": 64,
+       "w": 97,
+       "h": 17,
+       "fill": "#0a0a0a",
+       "text": "3 OF 24 DONE",
+       "font": "Zen Kaku Gothic New Bold",
+       "size": 12,
+       "ls": "2px"
+      },
+      {
+       "t": "Fra",
+       "n": "Track",
+       "x": 940,
+       "y": 88,
+       "w": 428,
+       "h": 10,
+       "fill": "#ebe7dc",
+       "stroke": "#0a0a0a",
+       "sw": 1.5
+      },
+      {
+       "t": "Fra",
+       "n": "Progress",
+       "x": 940,
+       "y": 88,
+       "w": 54,
+       "h": 10,
+       "fill": "#ff2e6e",
+       "stroke": "#0a0a0a",
+       "sw": 1.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "t": "Fra",
+   "n": "Panel Next lesson",
+   "x": 224,
+   "y": 162,
+   "w": 700,
+   "h": 808,
+   "fill": "#f5f2ea",
+   "stroke": "#0a0a0a",
+   "sw": 3,
+   "k": [
+    {
+     "t": "Fra",
+     "n": "Hatch tone",
+     "x": 227,
+     "y": 165,
+     "w": 694,
+     "h": 802,
+     "op": 0.5,
+     "k": [
+      {
+       "t": "Vec",
+       "n": "Hatch lines",
+       "x": -575,
+       "y": 165,
+       "w": 2292,
+       "h": 802,
+       "fill": "#0a0a0a"
+      }
+     ]
+    },
+    {
+     "t": "Fra",
+     "n": "Lesson card",
+     "x": 272,
+     "y": 210,
+     "w": 604,
+     "h": 712,
+     "fill": "#f5f2ea",
+     "stroke": "#0a0a0a",
+     "sw": 3,
+     "k": [
+      {
+       "t": "Fra",
+       "n": "Tag YOUR NEXT LESSON",
+       "x": 300,
+       "y": 238,
+       "w": 193,
+       "h": 36,
+       "fill": "#0a0a0a",
+       "stroke": "#0a0a0a",
+       "sw": 1.5,
+       "k": [
+        {
+         "t": "Tex",
+         "n": "YOUR NEXT LESSON",
+         "x": 316,
+         "y": 245,
+         "w": 161,
+         "h": 22,
+         "fill": "#f5f2ea",
+         "text": "YOUR NEXT LESSON",
+         "font": "Zen Kaku Gothic New Bold",
+         "size": 15,
+         "ls": "8%"
+        }
+       ]
+      },
+      {
+       "t": "Fra",
+       "n": "NEW stamp",
+       "x": 724,
+       "y": 236,
+       "w": 112,
+       "h": 46,
+       "fill": "#ff2e6e",
+       "stroke": "#0a0a0a",
+       "sw": 3,
+       "rot": -8,
+       "k": [
+        {
+         "t": "Tex",
+         "n": "NEW!",
+         "x": 741,
+         "y": 244,
+         "w": 76,
+         "h": 35,
+         "fill": "#f5f2ea",
+         "text": "NEW!",
+         "font": "Dela Gothic One Regular",
+         "size": 24
+        }
+       ]
+      },
+      {
+       "t": "Tex",
+       "n": "Lesson 3",
+       "x": 300,
+       "y": 302,
+       "w": 349,
+       "h": 93,
+       "fill": "#0a0a0a",
+       "text": "Lesson 3",
+       "font": "Dela Gothic One Regular",
+       "size": 64
+      },
+      {
+       "t": "Fra",
+       "n": "Underline",
+       "x": 302,
+       "y": 399,
+       "w": 150,
+       "h": 6,
+       "fill": "#ff2e6e"
+      },
+      {
+       "t": "Tex",
+       "n": "Food and eating · 8 word",
+       "x": 300,
+       "y": 424,
+       "w": 548,
+       "h": 29,
+       "fill": "#5c5a55",
+       "text": "Food and eating · 8 words · about 5 min",
+       "font": "Zen Kaku Gothic New Medium",
+       "size": 20
+      },
+      {
+       "t": "Fra",
+       "n": "Preview 食べる",
+       "x": 300,
+       "y": 506,
+       "w": 172,
+       "h": 88,
+       "fill": "#f5f2ea",
+       "stroke": "#0a0a0a",
+       "sw": 1.5,
+       "k": [
+        {
+         "t": "Tex",
+         "n": "食べる",
+         "x": 344,
+         "y": 530,
+         "w": 84,
+         "h": 41,
+         "fill": "#0a0a0a",
+         "text": "食べる",
+         "font": "Zen Kaku Gothic New Bold",
+         "size": 28
+        }
+       ]
+      },
+      {
+       "t": "Fra",
+       "n": "Preview 飲む",
+       "x": 488,
+       "y": 506,
+       "w": 172,
+       "h": 88,
+       "fill": "#f5f2ea",
+       "stroke": "#0a0a0a",
+       "sw": 1.5,
+       "k": [
+        {
+         "t": "Tex",
+         "n": "飲む",
+         "x": 546,
+         "y": 530,
+         "w": 56,
+         "h": 41,
+         "fill": "#0a0a0a",
+         "text": "飲む",
+         "font": "Zen Kaku Gothic New Bold",
+         "size": 28
+        }
+       ]
+      },
+      {
+       "t": "Fra",
+       "n": "Preview お水",
+       "x": 676,
+       "y": 506,
+       "w": 172,
+       "h": 88,
+       "fill": "#f5f2ea",
+       "stroke": "#0a0a0a",
+       "sw": 1.5,
+       "k": [
+        {
+         "t": "Tex",
+         "n": "お水",
+         "x": 734,
+         "y": 530,
+         "w": 56,
+         "h": 41,
+         "fill": "#0a0a0a",
+         "text": "お水",
+         "font": "Zen Kaku Gothic New Bold",
+         "size": 28
+        }
+       ]
+      },
+      {
+       "t": "Tex",
+       "n": "LESSONS DONE",
+       "x": 300,
+       "y": 662,
+       "w": 108,
+       "h": 19,
+       "fill": "#5c5a55",
+       "text": "LESSONS DONE",
+       "font": "Zen Kaku Gothic New Bold",
+       "size": 13,
+       "ls": "8%"
+      },
+      {
+       "t": "Tex",
+       "n": "3 / 24",
+       "x": 815,
+       "y": 662,
+       "w": 33,
+       "h": 19,
+       "fill": "#0a0a0a",
+       "text": "3 / 24",
+       "font": "Zen Kaku Gothic New Bold",
+       "size": 13
+      },
+      {
+       "t": "Fra",
+       "n": "Track",
+       "x": 300,
+       "y": 690,
+       "w": 548,
+       "h": 10,
+       "fill": "#ebe7dc",
+       "stroke": "#0a0a0a",
+       "sw": 1.5
+      },
+      {
+       "t": "Fra",
+       "n": "Progress",
+       "x": 300,
+       "y": 690,
+       "w": 69,
+       "h": 10,
+       "fill": "#ff2e6e",
+       "stroke": "#0a0a0a",
+       "sw": 1.5
+      },
+      {
+       "t": "Fra",
+       "n": "Start button",
+       "x": 300,
+       "y": 778,
+       "w": 548,
+       "h": 100,
+       "fill": "#0a0a0a",
+       "stroke": "#0a0a0a",
+       "sw": 3,
+       "k": [
+        {
+         "t": "Tex",
+         "n": "START LESSON",
+         "x": 340,
+         "y": 805,
+         "w": 323,
+         "h": 46,
+         "fill": "#f5f2ea",
+         "text": "START LESSON",
+         "font": "Dela Gothic One Regular",
+         "size": 32
+        },
+        {
+         "t": "Vec",
+         "n": "icon arrow",
+         "x": 774,
+         "y": 816,
+         "w": 34,
+         "h": 24,
+         "stroke": "#f5f2ea",
+         "sw": 4
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "t": "Fra",
+   "n": "Panel Up next",
+   "x": 940,
+   "y": 162,
+   "w": 468,
+   "h": 808,
+   "fill": "#f5f2ea",
+   "stroke": "#0a0a0a",
+   "sw": 3,
+   "k": [
+    {
+     "t": "Fra",
+     "n": "Hatch tone",
+     "x": 943,
+     "y": 165,
+     "w": 462,
+     "h": 802,
+     "op": 0.5,
+     "k": [
+      {
+       "t": "Vec",
+       "n": "Hatch lines",
+       "x": 141,
+       "y": 165,
+       "w": 2064,
+       "h": 802,
+       "fill": "#0a0a0a"
+      }
+     ]
+    },
+    {
+     "t": "Fra",
+     "n": "Up next card",
+     "x": 968,
+     "y": 190,
+     "w": 412,
+     "h": 752,
+     "fill": "#f5f2ea",
+     "stroke": "#0a0a0a",
+     "sw": 3,
+     "k": [
+      {
+       "t": "Fra",
+       "n": "Filter All",
+       "x": 992,
+       "y": 214,
+       "w": 72,
+       "h": 40,
+       "fill": "#0a0a0a",
+       "stroke": "#0a0a0a",
+       "sw": 1.5,
+       "k": [
+        {
+         "t": "Tex",
+         "n": "All",
+         "x": 1020,
+         "y": 223,
+         "w": 17,
+         "h": 22,
+         "fill": "#f5f2ea",
+         "text": "All",
+         "font": "Zen Kaku Gothic New Bold",
+         "size": 15
+        }
+       ]
+      },
+      {
+       "t": "Fra",
+       "n": "Filter New",
+       "x": 1076,
+       "y": 214,
+       "w": 80,
+       "h": 40,
+       "fill": "#f5f2ea",
+       "stroke": "#0a0a0a",
+       "sw": 1.5,
+       "k": [
+        {
+         "t": "Tex",
+         "n": "New",
+         "x": 1102,
+         "y": 223,
+         "w": 29,
+         "h": 22,
+         "fill": "#0a0a0a",
+         "text": "New",
+         "font": "Zen Kaku Gothic New Bold",
+         "size": 15
+        }
+       ]
+      },
+      {
+       "t": "Fra",
+       "n": "Filter Review",
+       "x": 1168,
+       "y": 214,
+       "w": 104,
+       "h": 40,
+       "fill": "#f5f2ea",
+       "stroke": "#0a0a0a",
+       "sw": 1.5,
+       "k": [
+        {
+         "t": "Tex",
+         "n": "Review",
+         "x": 1197,
+         "y": 223,
+         "w": 47,
+         "h": 22,
+         "fill": "#0a0a0a",
+         "text": "Review",
+         "font": "Zen Kaku Gothic New Bold",
+         "size": 15
+        }
+       ]
+      },
+      {
+       "t": "Fra",
+       "n": "Tag UP NEXT",
+       "x": 992,
+       "y": 286,
+       "w": 101,
+       "h": 36,
+       "fill": "#0a0a0a",
+       "stroke": "#0a0a0a",
+       "sw": 1.5,
+       "k": [
+        {
+         "t": "Tex",
+         "n": "UP NEXT",
+         "x": 1008,
+         "y": 293,
+         "w": 69,
+         "h": 22,
+         "fill": "#f5f2ea",
+         "text": "UP NEXT",
+         "font": "Zen Kaku Gothic New Bold",
+         "size": 15,
+         "ls": "8%"
+        }
+       ]
+      },
+      {
+       "t": "Fra",
+       "n": "Row Places and travel",
+       "x": 992,
+       "y": 346,
+       "w": 364,
+       "h": 140,
+       "fill": "#f5f2ea",
+       "stroke": "#0a0a0a",
+       "sw": 3,
+       "k": [
+        {
+         "t": "Fra",
+         "n": "Tile",
+         "x": 1012,
+         "y": 366,
+         "w": 100,
+         "h": 100,
+         "fill": "#f5f2ea",
+         "stroke": "#0a0a0a",
+         "sw": 1.5,
+         "k": [
+          {
+           "t": "Tex",
+           "n": "04",
+           "x": 1025,
+           "y": 387,
+           "w": 74,
+           "h": 58,
+           "fill": "#0a0a0a",
+           "text": "04",
+           "font": "Dela Gothic One Regular",
+           "size": 40
+          }
+         ]
+        },
+        {
+         "t": "Tex",
+         "n": "Places and travel",
+         "x": 1132,
+         "y": 382,
+         "w": 190,
+         "h": 32,
+         "fill": "#0a0a0a",
+         "text": "Places and travel",
+         "font": "Zen Kaku Gothic New Bold",
+         "size": 22
+        },
+        {
+         "t": "Tex",
+         "n": "7 words · 5 min",
+         "x": 1132,
+         "y": 424,
+         "w": 190,
+         "h": 22,
+         "fill": "#5c5a55",
+         "text": "7 words · 5 min",
+         "font": "Zen Kaku Gothic New Medium",
+         "size": 15
+        },
+        {
+         "t": "Vec",
+         "n": "icon chevron",
+         "x": 1322,
+         "y": 403,
+         "w": 13,
+         "h": 26,
+         "stroke": "#0a0a0a",
+         "sw": 4
+        }
+       ]
+      },
+      {
+       "t": "Fra",
+       "n": "Row Family, friends",
+       "x": 992,
+       "y": 506,
+       "w": 364,
+       "h": 140,
+       "fill": "#f5f2ea",
+       "stroke": "#0a0a0a",
+       "sw": 3,
+       "k": [
+        {
+         "t": "Fra",
+         "n": "Tile",
+         "x": 1012,
+         "y": 526,
+         "w": 100,
+         "h": 100,
+         "fill": "#f5f2ea",
+         "stroke": "#0a0a0a",
+         "sw": 1.5,
+         "k": [
+          {
+           "t": "Tex",
+           "n": "05",
+           "x": 1026,
+           "y": 547,
+           "w": 73,
+           "h": 58,
+           "fill": "#0a0a0a",
+           "text": "05",
+           "font": "Dela Gothic One Regular",
+           "size": 40
+          }
+         ]
+        },
+        {
+         "t": "Tex",
+         "n": "Family and friends",
+         "x": 1132,
+         "y": 542,
+         "w": 190,
+         "h": 32,
+         "fill": "#0a0a0a",
+         "text": "Family, friends",
+         "font": "Zen Kaku Gothic New Bold",
+         "size": 22
+        },
+        {
+         "t": "Tex",
+         "n": "8 words · 6 min",
+         "x": 1132,
+         "y": 584,
+         "w": 190,
+         "h": 22,
+         "fill": "#5c5a55",
+         "text": "8 words · 6 min",
+         "font": "Zen Kaku Gothic New Medium",
+         "size": 15
+        },
+        {
+         "t": "Vec",
+         "n": "icon chevron",
+         "x": 1322,
+         "y": 563,
+         "w": 13,
+         "h": 26,
+         "stroke": "#0a0a0a",
+         "sw": 4
+        }
+       ]
+      },
+      {
+       "t": "Fra",
+       "n": "Row Time and dates",
+       "x": 992,
+       "y": 666,
+       "w": 364,
+       "h": 140,
+       "fill": "#f5f2ea",
+       "stroke": "#0a0a0a",
+       "sw": 3,
+       "k": [
+        {
+         "t": "Fra",
+         "n": "Tile",
+         "x": 1012,
+         "y": 686,
+         "w": 100,
+         "h": 100,
+         "fill": "#f5f2ea",
+         "stroke": "#0a0a0a",
+         "sw": 1.5,
+         "k": [
+          {
+           "t": "Tex",
+           "n": "06",
+           "x": 1027,
+           "y": 707,
+           "w": 71,
+           "h": 58,
+           "fill": "#0a0a0a",
+           "text": "06",
+           "font": "Dela Gothic One Regular",
+           "size": 40
+          }
+         ]
+        },
+        {
+         "t": "Tex",
+         "n": "Time and dates",
+         "x": 1132,
+         "y": 702,
+         "w": 190,
+         "h": 32,
+         "fill": "#0a0a0a",
+         "text": "Time and dates",
+         "font": "Zen Kaku Gothic New Bold",
+         "size": 22
+        },
+        {
+         "t": "Tex",
+         "n": "6 words · 4 min",
+         "x": 1132,
+         "y": 744,
+         "w": 190,
+         "h": 22,
+         "fill": "#5c5a55",
+         "text": "6 words · 4 min",
+         "font": "Zen Kaku Gothic New Medium",
+         "size": 15
+        },
+        {
+         "t": "Vec",
+         "n": "icon chevron",
+         "x": 1322,
+         "y": 723,
+         "w": 13,
+         "h": 26,
+         "stroke": "#0a0a0a",
+         "sw": 4
+        }
+       ]
+      },
+      {
+       "t": "Fra",
+       "n": "See all",
+       "x": 992,
+       "y": 840,
+       "w": 364,
+       "h": 72,
+       "fill": "#f5f2ea",
+       "stroke": "#0a0a0a",
+       "sw": 3,
+       "k": [
+        {
+         "t": "Tex",
+         "n": "See all 24 lessons",
+         "x": 1016,
+         "y": 862,
+         "w": 154,
+         "h": 29,
+         "fill": "#0a0a0a",
+         "text": "See all 24 lessons",
+         "font": "Zen Kaku Gothic New Bold",
+         "size": 20
+        },
+        {
+         "t": "Fra",
+         "n": "Underline",
+         "x": 1016,
+         "y": 891,
+         "w": 154,
+         "h": 3,
+         "fill": "#ff2e6e"
+        },
+        {
+         "t": "Vec",
+         "n": "icon arrow",
+         "x": 1304,
+         "y": 866,
+         "w": 28,
+         "h": 20,
+         "stroke": "#0a0a0a",
+         "sw": 3.5
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
