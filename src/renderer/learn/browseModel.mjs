@@ -299,8 +299,10 @@ export function vocabLessonTotals(levels, batch = DEFAULT_BATCH) {
   for (const row of vocabLevelRows(levels)) {
     const words = Number(row.vocab.total ?? 0);
     const started = Math.min(Number(row.vocab.started ?? 0), words);
+    const passed = Math.min(Number(row.vocab.passed ?? 0), words);
     total += Math.ceil(words / size);
-    done += Math.floor(started / size);
+    // A finished level is done even when its last batch is smaller than the lesson size.
+    done += passed >= words ? Math.ceil(words / size) : Math.floor(started / size);
   }
   return { total, done };
 }

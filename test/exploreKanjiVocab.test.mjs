@@ -165,6 +165,23 @@ test('vocab lessons count batches per level from real progress', () => {
   });
 });
 
+test('a finished level counts its last small batch so lesson numbers keep moving', () => {
+  const small = (level, total, started, passed) => ({
+    level,
+    vocab: { total, started, passed },
+    kanji: { total: 0, started: 0, passed: 0 },
+    radicals: { total: 0, started: 0, passed: 0 },
+    current: level === 2,
+    locked: false,
+  });
+  const course = [small(1, 1, 1, 1), small(2, 1, 0, 0)];
+  assert.deepEqual(vocabLessonTotals(course, 5), { total: 2, done: 1 });
+  const rows = [{ id: 'v:2:1', kind: 'vocab', label: 'next', sub: '', level: 2, stage: 0, locked: false }];
+  const lesson = vocabLesson({ levels: course, rows, batch: 5 });
+  assert.equal(lesson.number, 2);
+  assert.equal(lesson.title, 'Lesson 2');
+});
+
 test('vocab lesson is the first teachable batch, including unfinished earlier levels', () => {
   const rows = courseRows();
   const lesson = vocabLesson({ levels, rows, batch: 5 });
