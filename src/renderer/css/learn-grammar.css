@@ -275,3 +275,74 @@
     animation: none !important;
   }
 }
+
+/* Manga Ink Grammar: back link from the existing course view (See all) to Explore. */
+.course-heading-main {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  min-width: 0;
+}
+
+.learn-g-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 14px;
+  border: 1.5px solid var(--ink, #0a0a0a);
+  border-radius: 0;
+  background: var(--paper, #f5f2ea);
+  color: var(--ink, #0a0a0a);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 18px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.learn-g-back:hover {
+  background: var(--ink, #0a0a0a);
+  color: var(--paper, #f5f2ea);
+}
+
+.learn-g-back .doodle {
+  --doodle-stroke: 2.4;
+  width: 18px;
+  height: 18px;
+}
+
+/* Explore fallbacks while data loads (the Explore screen itself is ink-explore.css). */
+.ink-explore-loading {
+  margin: 0;
+  padding: 28px 0;
+  color: var(--ink-mute, #5c5a55);
+  font-size: 14px;
+}
+
+.ink-explore-error {
+  display: grid;
+  gap: 12px;
+  justify-items: start;
+  padding: 28px;
+}
+
+.ink-explore-error h2 {
+  margin: 0;
+  font-family: var(--font-display, sans-serif);
+  font-size: 28px;
+  font-weight: 400;
+}
+
+.ink-explore-error p {
+  margin: 0;
+  color: var(--ink-mute, #5c5a55);
+}
+
+@media (max-width: 900px) {
+  .course-heading-main {
+    flex-wrap: wrap;
+  }
+}
