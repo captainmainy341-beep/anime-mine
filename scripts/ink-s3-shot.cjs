@@ -121,55 +121,57 @@ async function screenshot(name) {
   await tab('Kanji');
   await waitFor(() => document.querySelector('.ink-explore')?.innerText.includes('Explore Kanji'), 'Kanji Explore again');
 
-  // "See all": the full browse (level grid, type chips, mined words) with a back link to Explore. The Explore
-  // view itself belongs to slice S2, so drive mountLevels directly until its See all button lands.
-  await evaluate(() => {
-    const host = document.createElement('div');
-    host.id = 'ink-s3-all';
-    document.querySelector('#view').append(host);
-    return import('./learn/browse.mjs').then(({ mountLevels }) => {
-      window.__inkS3Nav = [];
-      const ctx = {
-        api: window.api,
-        go(view, arg) {
-          window.__inkS3Nav.push([view, arg ?? null]);
-        },
-        back() {},
-        canBack: () => false,
-        toast() {},
-      };
-      window.__inkS3All = mountLevels(host, ctx, { type: 'vocab', all: true });
-    });
-  });
-  await waitFor(() => !!document.querySelector('#ink-s3-all .learn-level'), 'full browse level grid');
+  // "See all": click the real See all button on Explore Vocab. The Learn router (ctx.go('vocab', { all: true }))
+  // mounts the full browse (type chips, level grid, search, mined words, back link). Nothing is mounted directly.
+  await tab('Vocab');
+  await waitFor(() => document.querySelector('.ink-explore')?.innerText.includes('Explore Vocab'), 'Explore Vocab before See all');
+  await waitFor(() => !!document.querySelector('button.ink-seeall'), 'Vocab Explore See all button');
+  await evaluate(() => document.querySelector('button.ink-seeall').click());
+  await waitFor(() => !!document.querySelector('.learn-browse-all'), 'See all route');
+  await waitFor(() => !!document.querySelector('.learn-browse-all .learn-level'), 'See all level grid');
   await waitFor(
     () =>
-      [...document.querySelectorAll('#ink-s3-all .learn-browse-type')].some(
+      [...document.querySelectorAll('.learn-browse-all .learn-browse-type')].some(
         (b) => b.textContent === 'Vocabulary' && b.getAttribute('aria-pressed') === 'true',
       ),
     'Vocabulary chip selected',
   );
-  assert.equal(await evaluate(() => !!document.querySelector('#ink-s3-all .learn-browse-explore')), true, 'back link to Explore');
-  assert.equal(await evaluate(() => !!document.querySelector('#ink-s3-all .learn-browse-type')), true, 'type chips');
-  const browseShot = await screenshot('browse-all-vocab');
+  assert.equal(await evaluate(() => !!document.querySelector('.learn-browse-all .learn-browse-explore')), true, 'back link to Explore');
   assert.equal(
-    await evaluate(() => [...document.querySelectorAll('#ink-s3-all .learn-browse-type')].find((b) => b.getAttribute('aria-pressed') === 'true')?.textContent),
-    'Vocabulary',
-    'the See all browse opens on the Vocabulary chip',
+    await evaluate(() => document.querySelectorAll('.learn-browse-all .learn-browse-type').length),
+    4,
+    'type chips',
   );
-  await evaluate(() => document.querySelector('#ink-s3-all .learn-browse-explore').click());
-  assert.deepEqual(
-    await evaluate(() => window.__inkS3Nav),
-    [['vocab', null]],
-    'the back link targets the Vocab Explore screen when there is no history to pop',
+  assert.equal(
+    await evaluate(() => document.querySelector('.learn-tab[aria-selected="true"]')?.textContent),
+    'Vocab',
+    'the Vocab tab stays selected on See all',
   );
-  await evaluate(() => {
-    window.__inkS3All?.();
-    document.querySelector('#ink-s3-all')?.remove();
-  });
+  assert.equal(await evaluate(() => !!document.querySelector('.ink-explore')), false, 'the router replaced Explore');
+  const browseShot = await screenshot('seeall-vocab');
+  await evaluate(() => document.querySelector('.learn-browse-all .learn-browse-explore').click());
+  await waitFor(
+    () => document.querySelector('.ink-explore')?.innerText.includes('Explore Vocab'),
+    'back link returns to Explore Vocab',
+  );
 
-  // The Explore view itself is still the S2 stub, so exercise the S3 data shape end to end against the live
-  // learn IPC: level overview, browse rows and cards in, the frozen Explore model out.
+  // Kanji See all goes through ctx.go('levels', { type: 'kanji', all: true }): the same browse on the Kanji chip.
+  await tab('Kanji');
+  await waitFor(() => document.querySelector('.ink-explore')?.innerText.includes('Explore Kanji'), 'Kanji Explore before See all');
+  await waitFor(() => !!document.querySelector('button.ink-seeall'), 'Kanji Explore See all button');
+  await evaluate(() => document.querySelector('button.ink-seeall').click());
+  await waitFor(() => !!document.querySelector('.learn-browse-all .learn-level'), 'Kanji See all level grid');
+  await waitFor(
+    () =>
+      [...document.querySelectorAll('.learn-browse-all .learn-browse-type')].some(
+        (b) => b.textContent === 'Kanji' && b.getAttribute('aria-pressed') === 'true',
+      ),
+    'Kanji chip selected',
+  );
+  const kanjiBrowseShot = await screenshot('seeall-kanji');
+
+  // Exercise the S3 data shape end to end against the live learn IPC: level overview, browse rows and cards in,
+  // the frozen Explore model out (the mountExplore screen itself is S2's).
   const models = await evaluate(async () => {
     const { kanjiExplore, vocabExplore, exploreLevel } = await import('./learn/browseModel.mjs');
     const levels = await window.api.learn.levels();
@@ -257,7 +259,8 @@ async function screenshot(name) {
   assert.deepEqual(await evaluate(() => window.smokeErrors || []), []);
   console.log(`PASS Explore Kanji screenshot: ${kanjiShot}`);
   console.log(`PASS Explore Vocab screenshot: ${vocabShot}`);
-  console.log(`PASS See all browse screenshot: ${browseShot}`);
+  console.log(`PASS See all Vocab screenshot: ${browseShot}`);
+  console.log(`PASS See all Kanji screenshot: ${kanjiBrowseShot}`);
   console.log('PASS no renderer errors');
   app.exit(0);
 })().catch((err) => {

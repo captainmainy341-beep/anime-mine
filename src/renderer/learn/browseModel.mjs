@@ -15,6 +15,7 @@ export const DEFAULT_BATCH = 5;
 export const PASS_STAGE = 5;
 export const UP_NEXT_ROWS = 3;
 export const LOCKED_KANJI_TEXT = 'Locked · unlocks after radicals';
+export const NOTHING_TO_START_TITLE = 'Nothing to start yet';
 
 export function tileModel(item) {
   const classes = ['learn-tile', item.groupKey ? `learn-tile-${item.groupKey}` : 'learn-tile-new'];
@@ -85,6 +86,25 @@ function isPassed(row) {
 // 1..4 is already in review and belongs to the review queue, not to a new lesson.
 function isTeachable(row) {
   return !row?.locked && Number(row?.stage ?? 0) === 0;
+}
+
+// Everything the Explore model was built from is "in scope": the current kanji level's rows, or the unfinished
+// vocab levels' rows. A locked row has never been started, so it counts as pending too.
+export function hasPendingItems(rows) {
+  return (rows ?? []).some((row) => row?.locked || Number(row?.stage ?? 0) === 0);
+}
+
+// Explore's empty-state heading is the view's default ("All caught up") only when everything in scope is started
+// or learned. A level that still holds locked or unstarted items has nothing to start *yet*, so say that instead.
+export function emptyTitleFor(rows) {
+  return hasPendingItems(rows) ? NOTHING_TO_START_TITLE : undefined;
+}
+
+// emptyTitle is only meaningful when there is no lesson; leave it unset (view default) otherwise and when caught up.
+function emptyTitlePatch(lesson, rows) {
+  if (lesson) return {};
+  const title = emptyTitleFor(rows);
+  return title ? { emptyTitle: title } : {};
 }
 
 export function numberTile(n) {
@@ -283,6 +303,7 @@ export function kanjiExplore({ levels = [], rows = [], cards = {}, batch = DEFAU
     rows: pool.map((item) => kanjiRowModel(item, cards?.[item.id])),
     seeAll: { total: totals.total, noun: 'kanji' },
     ...kanjiEmpty(rows),
+    ...emptyTitlePatch(lesson, rows),
     level: currentLevelRow(levels)?.level ?? null,
     totals,
   };
@@ -403,15 +424,17 @@ export function vocabExplore({ levels = [], rows = [], batch = DEFAULT_BATCH } =
   const totals = vocabTotals(levels);
   const counts = vocabLessonTotals(levels, batch);
   const queue = vocabLessonQueue(levels, rows, batch);
+  const lesson = vocabLessonFrom(queue.find((entry) => entry.teachable.length > 0) ?? null, levels);
   return {
     type: 'vocab',
     title: 'Explore Vocab',
     header: { label: `${counts.done} OF ${counts.total} DONE`, value: counts.done, max: counts.total },
     progress: { label: 'LESSONS DONE', value: counts.done, max: counts.total },
-    lesson: vocabLessonFrom(queue.find((entry) => entry.teachable.length > 0) ?? null, levels),
+    lesson,
     rows: vocabLessonRows({ levels, rows, batch }),
     seeAll: { total: counts.total, noun: 'lessons' },
     emptyText: 'Pass the kanji in this level to unlock its words.',
+    ...emptyTitlePatch(lesson, rows),
     level: currentVocabLevel(levels)?.level ?? null,
     totals,
   };

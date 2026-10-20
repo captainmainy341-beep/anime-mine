@@ -21,6 +21,39 @@ import {
 
 const SEARCH_DELAY_MS = 200;
 
+// The frozen mountExplore props for a Kanji / Vocab Explore model, with the row / lesson / See all callbacks bound.
+// Exported so the pass-through is testable without a DOM: emptyTitle is the view's empty-state heading (the view
+// defaults to "All caught up"), so Kanji and Vocab only pass it when the level still has items that cannot start.
+export function exploreProps(model, handlers = {}) {
+  const {
+    filter = 'all',
+    onFilter = () => {},
+    onStart = () => {},
+    onOpenRow = () => {},
+    onSeeAll = () => {},
+    onAction = () => {},
+  } = handlers ?? {};
+  const lesson = model.lesson ? { ...model.lesson, start: () => onStart(model.lesson.ids) } : null;
+  const rows = (model.rows ?? []).map((row) => ({ ...row, open: () => onOpenRow(row) }));
+  const props = {
+    title: model.title,
+    header: model.header,
+    lesson,
+    progress: model.progress,
+    rows,
+    filter,
+    onFilter,
+    seeAll: { ...model.seeAll, onOpen: onSeeAll },
+    emptyText: model.emptyText,
+    emptyAction: model.emptyAction
+      ? { label: model.emptyAction.label, onClick: () => onAction(model.emptyAction.route) }
+      : null,
+  };
+  // Caught up: leave emptyTitle unset so the view keeps its default heading.
+  if (model.emptyTitle) props.emptyTitle = model.emptyTitle;
+  return props;
+}
+
 // Kanji and Vocab tabs: the Explore screen by default, the full browse (type chips, level grid, tiles, search,
 // mined words) for "See all" / arg.all === true. Both share the same frozen mountLevels entry point.
 export function mountLevels(el, ctx, arg = {}) {
@@ -138,30 +171,14 @@ function mountExploreLevels(el, ctx, arg) {
   }
 
   function props() {
-    const lesson = model.lesson
-      ? {
-          ...model.lesson,
-          start: () => startLesson(model.lesson.ids),
-        }
-      : null;
-    const rows = (model.rows ?? []).map((row) => ({ ...row, open: () => openRow(row) }));
-    return {
-      title: model.title,
-      header: model.header,
-      lesson,
-      progress: model.progress,
-      rows,
+    return exploreProps(model, {
       filter,
       onFilter: setFilter,
-      seeAll: { ...model.seeAll, onOpen: openSeeAll },
-      emptyText: model.emptyText,
-      emptyAction: model.emptyAction
-        ? {
-            label: model.emptyAction.label,
-            onClick: () => ctx.go(model.emptyAction.route.view, model.emptyAction.route.arg),
-          }
-        : null,
-    };
+      onStart: startLesson,
+      onOpenRow: openRow,
+      onSeeAll: openSeeAll,
+      onAction: (route) => ctx.go(route.view, route.arg),
+    });
   }
 
   function setFilter(next) {
