@@ -25,8 +25,9 @@ export function cardDocument(card, side, { theme = 'original' } = {}) {
   const css = String(card.css ?? '').replace(/<\/style/gi, '<\\/style');
   const body = side === 'answer' ? card.answer : card.question;
   const appTheme = theme === 'app';
+  const sideAttr = appTheme ? ` data-side="${side === 'answer' ? 'answer' : 'question'}"` : '';
   // Retain the native class and a script-free sandbox in either presentation.
-  return `<!doctype html><html><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="${CSP}"><style>${BASE_STYLE}</style><style>${css}</style>${appTheme ? `<style>${STUDY_THEME}</style>` : ''}</head><body class="card${appTheme ? ' am-card' : ''}">${body ?? ''}</body></html>`;
+  return `<!doctype html><html><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="${CSP}"><style>${BASE_STYLE}</style><style>${css}</style>${appTheme ? `<style>${STUDY_THEME}</style>` : ''}</head><body class="card${appTheme ? ' am-card' : ''}"${sideAttr}>${body ?? ''}</body></html>`;
 }
 
 export function deckLabel(deck) {

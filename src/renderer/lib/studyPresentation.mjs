@@ -2,6 +2,10 @@ import { cardDocument } from './study.mjs';
 
 // Presentation only. Parse the CURRENT side, never mine the answer for front
 // content. The original template and the stored note are never changed.
+//
+// App theme layout follows the "Anki Card Clean" frame: the scene image reads as a black screenshot,
+// the front is the sentence with the mined word underlined in red, and the back leads with the big
+// headword, its reading, the meaning and the tags before the source sentence and translation.
 export function studyDocument(card, side, theme = 'app') {
   if (theme !== 'app') return cardDocument(card, side);
   const markup = String(side === 'answer' ? card.answer ?? '' : card.question ?? '');
@@ -25,6 +29,7 @@ export function studyDocument(card, side, theme = 'app') {
     const sentence = prompt.querySelector('.jpsentence') ?? prompt;
     sentence.classList.add('am-sentence');
     sentence.querySelectorAll('b, strong, mark').forEach(el => el.classList.add('am-target'));
+    const hasTarget = Boolean(sentence.querySelector('.am-target'));
     // JP1K repeats FrontSide on its back. Remove only identical sentence blocks,
     // retaining any different context, media, tags and unknown custom content.
     const sentenceText = el => {
@@ -40,41 +45,45 @@ export function studyDocument(card, side, theme = 'app') {
     const media = wrap?.querySelector(':scope > details.images-details:has(img)')
       ?? native?.querySelector(':scope > .pic:has(img)');
     const scene = media ? sceneRegion(doc, media) : null;
-    if (scene) prompt.after(scene);
+    const tags = tagChips(doc, root);
 
     if (side === 'answer') {
+      const answer = doc.createElement('section');
+      answer.className = 'am-answer-grid';
+      answer.setAttribute('aria-label', 'Revealed answer');
       const headword = wrap?.querySelector(':scope > .headword_section');
-      const nativeAnswer = native ? [...doc.body.querySelectorAll(':scope > .card-wrap')].slice(1) : [];
-      const translation = prompt.querySelector('.ensentence');
-      if (headword || nativeAnswer.length || translation) {
-        const grid = doc.createElement('section');
-        grid.className = 'am-answer-grid';
-        grid.setAttribute('aria-label', 'Revealed answer');
-        (scene ?? prompt).after(grid);
-        if (headword) grid.append(headword);
-        for (const answer of nativeAnswer) {
-          // Keep a full furigana reading available without repeating the
-          // sentence in the default layout. Different examples stay untouched.
-          answer.querySelectorAll(':scope > .sentence').forEach(el => {
-            if (sentenceText(el) !== sentenceText(sentence)) return;
-            if (el.querySelector('ruby')) {
-              const reading = doc.createElement('details');
-              reading.className = 'am-sentence-reading';
-              const summary = doc.createElement('summary');
-              summary.textContent = 'Sentence reading';
-              el.before(reading);
-              reading.append(summary, el);
-            } else el.remove();
-          });
-          grid.append(answer);
-        }
-        if (translation) {
-          translation.querySelectorAll('a.hint').forEach(el => el.remove());
-          translation.querySelectorAll('div.hint').forEach(el => el.style.removeProperty('display'));
-          grid.append(translation);
-        }
-        native?.parentElement.querySelector(':scope > hr#answer')?.remove();
+      if (headword) {
+        wordRule(doc, headword);
+        answer.append(headword);
       }
+      const nativeAnswer = native ? [...doc.body.querySelectorAll(':scope > .card-wrap')].slice(1) : [];
+      for (const block of nativeAnswer) {
+        // Keep a full furigana reading available without repeating the
+        // sentence in the default layout. Different examples stay untouched.
+        block.querySelectorAll(':scope > .sentence').forEach(el => {
+          if (sentenceText(el) !== sentenceText(sentence)) return;
+          if (el.querySelector('ruby')) {
+            const reading = doc.createElement('details');
+            reading.className = 'am-sentence-reading';
+            const summary = doc.createElement('summary');
+            summary.textContent = 'Sentence reading';
+            el.before(reading);
+            reading.append(summary, el);
+          } else el.remove();
+        });
+        answer.append(block);
+      }
+      if (tags) answer.append(tags);
+      if (answer.hasChildNodes()) {
+        prompt.before(answer);
+        answer.after(divider(doc));
+      }
+      const translation = prompt.querySelector('.ensentence');
+      if (translation) {
+        translation.querySelectorAll('a.hint').forEach(el => el.remove());
+        translation.querySelectorAll('div.hint').forEach(el => { el.style.removeProperty('display'); });
+      }
+      native?.parentElement?.querySelector(':scope > hr#answer')?.remove();
       const footer = wrap?.querySelector(':scope > footer');
       if (footer) {
         const links = doc.createElement('details');
@@ -84,11 +93,68 @@ export function studyDocument(card, side, theme = 'app') {
         footer.before(links);
         links.append(summary, footer);
       }
+      for (const source of root.querySelectorAll('.source, .notes')) source.classList.add('am-source');
+      // The scene is optional help on the back (the frame keeps the answer clean): keep it one click away.
+      if (scene) {
+        const details = scene.querySelector('details');
+        if (details) details.open = false;
+        root.append(scene);
+      }
+    } else {
+      if (scene) prompt.before(scene);
+      let anchor = prompt;
+      if (hasTarget) {
+        const hint = doc.createElement('p');
+        hint.className = 'am-front-hint';
+        hint.textContent = 'What does the underlined word mean?';
+        anchor.after(hint);
+        anchor = hint;
+      }
+      if (tags) {
+        const rule = divider(doc);
+        anchor.after(rule);
+        rule.after(tags);
+      }
     }
   }
   // DOMParser relocates template styles to <head>. Preserve non-duplicate styles.
   const styles = [...doc.head.querySelectorAll('style')].map(el => el.outerHTML).join('');
   return cardDocument({ ...card, [side]: styles + doc.body.innerHTML }, side, { theme: 'app' });
+}
+
+// Red rule under the big headword, as in the frame. Purely presentational.
+function wordRule(doc, section) {
+  const word = section.querySelector('.target_word');
+  if (!word || section.querySelector('.am-word-rule')) return;
+  const rule = doc.createElement('div');
+  rule.className = 'am-word-rule';
+  word.after(rule);
+}
+
+function divider(doc) {
+  const rule = doc.createElement('div');
+  rule.className = 'am-divider';
+  return rule;
+}
+
+// Anki tags become the frame's small rounded chips. The original tag strip is replaced, not kept.
+function tagChips(doc, root) {
+  const source = root?.querySelector('header .tags') ?? doc.body.querySelector('.tags');
+  if (!source) return null;
+  const words = String(source.textContent ?? '').split(/\s+/).filter(Boolean);
+  const header = source.closest('header');
+  source.remove();
+  if (header && !header.textContent.trim() && !header.querySelector('img, audio, video')) header.remove();
+  if (!words.length) return null;
+  const block = doc.createElement('div');
+  block.className = 'am-tags';
+  for (const word of words) {
+    const chip = doc.createElement('span');
+    chip.className = 'am-tag';
+    chip.textContent = word.replace(/_/g, ' ');
+    block.append(chip);
+  }
+  return block;
 }
 
 function sceneRegion(doc, media) {

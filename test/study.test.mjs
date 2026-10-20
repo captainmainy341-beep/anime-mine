@@ -48,20 +48,26 @@ test('cardDocument has a readable light fallback and leaves layout to the deck C
   assert.doesNotMatch(base, /display:\s*flex/);
 });
 
-test('app-themed cards use the app palette without changing the card content or CSP', () => {
+test('app-themed cards use the paper palette without changing the card content or CSP', () => {
   const doc = cardDocument(card, 'answer', { theme: 'app' });
   assert.match(doc, /class="card am-card"/);
-  assert.match(doc, /--am-panel:\s*#181c1e/);
-  assert.match(doc, /--am-accent:\s*#edc789/);
+  assert.match(doc, /--am-paper:\s*#f5f2ea/);
+  assert.match(doc, /--am-red:\s*#ff2e6e/);
   assert.ok(doc.includes('<i>cat</i>'));
   assert.match(doc, /default-src 'none'; img-src data:; media-src data:; style-src 'unsafe-inline'/);
   assert.doesNotMatch(doc, /allow-scripts/);
 });
 
+test('cardDocument marks the app theme card side so the theme can lay out front and back', () => {
+  assert.match(cardDocument(card, 'question', { theme: 'app' }), /<body class="card am-card" data-side="question">/);
+  assert.match(cardDocument(card, 'answer', { theme: 'app' }), /<body class="card am-card" data-side="answer">/);
+  assert.doesNotMatch(cardDocument(card, 'answer'), /data-side/);
+});
+
 test('app theme bounds images without removing the native card-style option', () => {
   const doc = cardDocument(card, 'answer', { theme: 'app' });
-  assert.match(doc, /max-height:\s*215px/);
-  assert.match(doc, /object-fit:\s*contain/);
+  assert.match(doc, /--am-shot:\s*290px/);
+  assert.match(doc, /object-fit:\s*cover/);
   assert.doesNotMatch(cardDocument(card, 'answer'), /am-card/);
 });
 
