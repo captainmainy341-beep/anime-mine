@@ -1,0 +1,43 @@
+{
+  "title": "Explore Kanji",
+  "header": { "label": "12 OF 80 LEARNED", "value": 12, "max": 80 },
+  "lesson": {
+    "id": "kanji-lesson-6",
+    "number": 6,
+    "title": "Family and school",
+    "meta": "Family and school · 5 kanji · about 6 min",
+    "preview": ["学", "校", "先", "生", "友"],
+    "previewKind": "kanji",
+    "isNew": true,
+    "done": false
+  },
+  "progress": { "label": "KANJI LEARNED", "value": 12, "max": 80 },
+  "rows": [
+    {
+      "id": "k:家",
+      "tile": "家",
+      "tileKind": "kanji",
+      "title": "House, home",
+      "sub": "カ, いえ · 10 strokes",
+      "status": "new"
+    },
+    {
+      "id": "k:友",
+      "tile": "友",
+      "tileKind": "kanji",
+      "title": "Friend",
+      "sub": "ユウ, とも · 4 strokes",
+      "status": "review"
+    },
+    {
+      "id": "k:年",
+      "tile": "年",
+      "tileKind": "kanji",
+      "title": "Year",
+      "sub": "ネン, とし · 6 strokes",
+      "status": "new"
+    }
+  ],
+  "filter": "all",
+  "seeAll": { "total": 74, "noun": "kanji" }
+}
