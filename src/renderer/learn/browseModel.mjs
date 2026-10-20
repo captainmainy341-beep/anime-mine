@@ -311,25 +311,50 @@ export function kanjiExplore({ levels = [], rows = [], cards = {}, batch = DEFAU
 
 // ---------------------------------------------------------------- Explore Vocab
 
-// One lesson = one batch of words. A level contributes ceil(words / batch) lessons; batches already started count
-// as done, so the numbers and the header both come from real progress.
+// A batch counts as done only once every word in it has passed Guru; until then it stays in the queue (as review
+// when it has started words). A finished level also counts its small last batch. This is the single definition
+// used by both the DONE header and the lesson numbering.
+function passedBatches(words, passed, size) {
+  const total = Math.max(0, Math.trunc(Number(words)) || 0);
+  const learned = Math.min(Math.max(0, Math.trunc(Number(passed)) || 0), total);
+  if (learned >= total) return Math.ceil(total / size);
+  return Math.floor(learned / size);
+}
+
 export function vocabLessonTotals(levels, batch = DEFAULT_BATCH) {
   const size = batchSize(batch);
   let total = 0;
   let done = 0;
   for (const row of vocabLevelRows(levels)) {
     const words = Number(row.vocab.total ?? 0);
-    const started = Math.min(Number(row.vocab.started ?? 0), words);
     const passed = Math.min(Number(row.vocab.passed ?? 0), words);
     total += Math.ceil(words / size);
-    // A finished level is done even when its last batch is smaller than the lesson size.
-    done += passed >= words ? Math.ceil(words / size) : Math.floor(started / size);
+    done += passedBatches(words, passed, size);
   }
   return { total, done };
 }
 
 function vocabLevelMeta(levels, levelNumber) {
   return (levels ?? []).find((row) => Number(row?.level) === Number(levelNumber)) ?? null;
+}
+
+// The levels Explore Vocab loads rows for: every unfinished level up to the first locked level after the current
+// one. Later levels stay unloaded, so Up next can never show a batch the learner cannot study yet.
+export function vocabLevelsToLoad(levels) {
+  const current = Number(currentVocabLevel(levels)?.level ?? 0);
+  const out = [];
+  for (const row of vocabLevelRows(levels)) {
+    const level = Number(row.level);
+    const total = Number(row.vocab?.total ?? 0);
+    const passed = Number(row.vocab?.passed ?? 0);
+    if (row.locked) {
+      if (level >= current) break;
+      continue;
+    }
+    if (total <= 0 || passed >= total) continue;
+    out.push(row);
+  }
+  return out;
 }
 
 // One ordered batch queue for the whole Vocab course. Rows arrive in level order then item order (browse returns
@@ -392,32 +417,35 @@ export function vocabLesson({ levels = [], rows = [], batch = DEFAULT_BATCH } = 
   return vocabLessonFrom(queue.find((entry) => entry.teachable.length > 0) ?? null, levels);
 }
 
-// Up next is the next three batches of the same queue, so a level's remaining batches come before later levels.
+// Up next is every remaining batch of the same queue after the next lesson, so a level's remaining batches come
+// before later levels. The Explore view filters this complete pool first and only then takes its three rows.
 // When nothing is teachable yet, it starts at the top of the queue instead of showing unrelated later levels.
 // There are no topic names in the study pack, so a lesson is named after its level.
-export function vocabLessonRows({ levels = [], rows = [], batch = DEFAULT_BATCH, limit = UP_NEXT_ROWS } = {}) {
-  const max = Math.max(0, Math.trunc(Number(limit)) || 0);
+export function vocabLessonRow(entry, levels) {
+  const meta = vocabLevelMeta(levels, entry.level);
+  const count = entry.remaining.length;
+  return {
+    id: `vocab:lesson:${entry.level}:${entry.number}`,
+    tile: numberTile(entry.number),
+    tileKind: 'number',
+    title: meta ? levelName(meta) : `Level ${entry.level}`,
+    sub: `${wordsLabel(count)} · ${minutesFor('vocab', count)} min`,
+    // A batch is in progress when any of its words has been started; otherwise it is still new.
+    status: entry.remaining.some((row) => Number(row?.stage ?? 0) >= 1) ? 'review' : 'new',
+    level: entry.level,
+    batch: entry.batch,
+    number: entry.number,
+    ids: entry.teachable.map((row) => row.id),
+  };
+}
+
+export function vocabLessonRows({ levels = [], rows = [], batch = DEFAULT_BATCH, limit = Infinity } = {}) {
+  const max = limit === Infinity ? Infinity : Math.max(0, Math.trunc(Number(limit)) || 0);
   if (!max) return [];
   const queue = vocabLessonQueue(levels, rows, batch);
   const next = queue.findIndex((entry) => entry.teachable.length > 0);
   const start = next >= 0 ? next + 1 : 0;
-  return queue.slice(start, start + max).map((entry) => {
-    const meta = vocabLevelMeta(levels, entry.level);
-    const count = entry.remaining.length;
-    return {
-      id: `vocab:lesson:${entry.level}:${entry.number}`,
-      tile: numberTile(entry.number),
-      tileKind: 'number',
-      title: meta ? levelName(meta) : `Level ${entry.level}`,
-      sub: `${wordsLabel(count)} · ${minutesFor('vocab', count)} min`,
-      // A batch is in progress when any of its words has been started; otherwise it is still new.
-      status: entry.remaining.some((row) => Number(row?.stage ?? 0) >= 1) ? 'review' : 'new',
-      level: entry.level,
-      batch: entry.batch,
-      number: entry.number,
-      ids: entry.teachable.map((row) => row.id),
-    };
-  });
+  return queue.slice(start, start + max).map((entry) => vocabLessonRow(entry, levels));
 }
 
 export function vocabExplore({ levels = [], rows = [], batch = DEFAULT_BATCH } = {}) {

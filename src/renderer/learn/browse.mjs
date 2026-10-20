@@ -4,7 +4,6 @@ import { mountExplore } from './exploreView.mjs';
 import {
   DEFAULT_TYPE,
   TYPE_FILTERS,
-  UP_NEXT_ROWS,
   addWordPayload,
   batchSize,
   exploreLevel,
@@ -16,7 +15,7 @@ import {
   seeAllRoute,
   tileModel,
   vocabExplore,
-  vocabLevelRows,
+  vocabLevelsToLoad,
 } from './browseModel.mjs';
 
 const SEARCH_DELAY_MS = 200;
@@ -56,10 +55,20 @@ export function exploreProps(model, handlers = {}) {
 
 // Kanji and Vocab tabs: the Explore screen by default, the full browse (type chips, level grid, tiles, search,
 // mined words) for "See all" / arg.all === true. Both share the same frozen mountLevels entry point.
+// The full browse keeps its requested TYPE_FILTERS key (Radicals, Kanji, Vocabulary, Mined words); only the
+// Explore screen narrows to its two flavours. Exported so the routing is testable without a DOM.
+export function levelsMode(arg = {}) {
+  if (arg?.all === true) {
+    const type = TYPE_FILTERS.some(([key]) => key === arg.type) ? arg.type : DEFAULT_TYPE;
+    return { all: true, type };
+  }
+  return { all: false, type: exploreType(arg?.type) };
+}
+
 export function mountLevels(el, ctx, arg = {}) {
-  const type = exploreType(arg.type);
-  if (arg.all === true) return mountBrowseAll(el, ctx, { ...arg, type });
-  return mountExploreLevels(el, ctx, { ...arg, type });
+  const mode = levelsMode(arg);
+  if (mode.all) return mountBrowseAll(el, ctx, { ...arg, type: mode.type });
+  return mountExploreLevels(el, ctx, { ...arg, type: mode.type });
 }
 
 function loadCards(api, ids) {
@@ -73,15 +82,6 @@ function loadCards(api, ids) {
       }
     }),
   ).then(() => cards);
-}
-
-function hasUnlockedLevelsAfter(levels, levelNumber) {
-  return vocabLevelRows(levels).some(
-    (row) =>
-      row.level > levelNumber &&
-      !row.locked &&
-      Number(row.vocab?.passed ?? 0) < Number(row.vocab?.total ?? 0),
-  );
 }
 
 function mountExploreLevels(el, ctx, arg) {
@@ -141,20 +141,15 @@ function mountExploreLevels(el, ctx, arg) {
   }
 
   // The vocab lesson queue spans levels: an earlier level can still have new words when the current level has moved
-  // on, and Up next needs the batches that follow. Load the unfinished levels in course order and stop as soon as
-  // the next lesson plus its three following batches are known.
+  // on, and Up next needs every following batch so its All / New / Review filters see the whole pool. Load every
+  // unfinished, unlocked level in course order (stopping at the first locked level after the current one), one
+  // request at a time, and bail out as soon as a newer load has superseded this one.
   async function loadVocabRows(levels, stale) {
     const rows = [];
-    for (const level of vocabLevelRows(levels)) {
-      const total = Number(level?.vocab?.total ?? 0);
-      const passed = Number(level?.vocab?.passed ?? 0);
-      if (total <= 0 || passed >= total) continue;
+    for (const level of vocabLevelsToLoad(levels)) {
       const levelRows = (await api.browse({ type: 'vocab', level: level.level })) ?? [];
       if (stale()) return null;
       rows.push(...levelRows);
-      const preview = vocabExplore({ levels, rows, batch });
-      if (preview.rows.length < UP_NEXT_ROWS) continue;
-      if (preview.lesson || !hasUnlockedLevelsAfter(levels, level.level)) break;
     }
     return rows;
   }
