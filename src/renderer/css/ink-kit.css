@@ -2,6 +2,8 @@
    Owned by the lead. Screens opt in with .ink-screen on their root; nothing here restyles other screens.
    Red is only for progress, underlines, pips, the NEW! stamp and the heatmap "today" cell. Line hatch only, no dots. */
 
+@font-face { font-family: 'Zen Kaku Gothic New'; font-weight: 900; src: url('../fonts/ZenKakuGothicNew-Black.ttf') format('truetype'); font-display: swap; }
+
 .ink-screen {
   --ink-red: #ff2e6e;
   --ink-mute: #5c5a55;
@@ -28,7 +30,7 @@
 }
 .ink-hero-compact { --ink-hero-title: 40px; height: 84px; }
 .ink-hero-titleplate {
-  position: absolute; left: 25px; top: 15px; height: 74px; max-width: 600px; padding: 0 24px 0 0;
+  position: absolute; left: 28px; top: 15px; height: 74px; max-width: 600px; padding: 0 24px 0 0;
   display: flex; align-items: center; background: var(--ink);
 }
 .ink-hero-compact .ink-hero-titleplate { top: 7px; }
@@ -89,6 +91,7 @@
   background: var(--ink); color: var(--paper); border: 3px solid var(--ink); border-radius: 0 !important;
   font-family: var(--font-display); font-size: 32px; line-height: 46px; letter-spacing: 0; text-transform: uppercase; cursor: pointer;
 }
+.ink-screen .ink-bigbtn { font-family: var(--font-display); font-weight: 400; }
 .ink-bigbtn .doodle { --doodle-stroke: 2.4; width: 40px; height: 40px; margin: 0; }
 .ink-screen button.ink-bigbtn:hover:not(:disabled) { background: var(--ink); color: var(--paper); box-shadow: 3px 3px 0 var(--ink-red, #ff2e6e); }
 
