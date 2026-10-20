@@ -39,7 +39,10 @@ function go(name, arg) {
   unmountView = routes[name](view, arg);
   const navName = name === 'player' ? 'library' : name;
   for (const button of navButtons) {
-    button.classList.toggle('active', button.dataset.route === navName);
+    const active = button.dataset.route === navName;
+    button.classList.toggle('active', active);
+    if (active) button.setAttribute('aria-current', 'page');
+    else button.removeAttribute('aria-current');
   }
 }
 
