@@ -342,6 +342,50 @@ test('lesson null renders a short caught-up heading, copy and no Start button', 
   assert.equal(one(blank, 'ink-lesson-number').textContent, 'All caught up');
 });
 
+test('emptyTitle overrides the caught-up heading and defaults when absent or blank', () => {
+  // Absent, null and whitespace-only all fall back to the default heading.
+  const defaults = mount(fixtureProps({ lesson: null })).root;
+  assert.equal(one(defaults, 'ink-lesson-number').textContent, 'All caught up');
+  assert.equal(one(mount(fixtureProps({ lesson: null, emptyTitle: null })).root, 'ink-lesson-number').textContent, 'All caught up');
+  assert.equal(one(mount(fixtureProps({ lesson: null, emptyTitle: '   ' })).root, 'ink-lesson-number').textContent, 'All caught up');
+
+  const custom = mount(fixtureProps({ lesson: null, emptyTitle: 'All kanji learned' })).root;
+  assert.equal(one(custom, 'ink-lesson-number').textContent, 'All kanji learned');
+  // The title is only the heading: the caller's empty copy, underline and progress stay put.
+  assert.equal(one(custom, 'ink-lesson-empty-text').textContent, 'Every lesson in this set is done.');
+  one(custom, 'ink-underline');
+  one(custom, 'ink-lesson-progress');
+  assert.equal(byClass(custom, 'ink-explore-start').length, 0);
+
+  // A lesson still wins the heading while one is queued.
+  const withLesson = mount(fixtureProps({ emptyTitle: 'All kanji learned' })).root;
+  assert.equal(one(withLesson, 'ink-lesson-number').textContent, 'Lesson 6');
+  assert.equal(byClass(withLesson, 'ink-lesson-empty-text').length, 0);
+});
+
+test('update() honours emptyTitle, resets it when blank and restores the lesson heading', () => {
+  const { root, view } = mount();
+  view.update({ lesson: null });
+  assert.equal(one(root, 'ink-lesson-number').textContent, 'All caught up');
+
+  view.update({ emptyTitle: 'All vocab done' });
+  assert.equal(one(root, 'ink-lesson-number').textContent, 'All vocab done');
+
+  view.update({ emptyTitle: '  ' });
+  assert.equal(one(root, 'ink-lesson-number').textContent, 'All caught up');
+
+  view.update({ emptyTitle: 'No grammar due yet', emptyText: 'New points land every Monday.' });
+  assert.equal(one(root, 'ink-lesson-number').textContent, 'No grammar due yet');
+  assert.equal(one(root, 'ink-lesson-empty-text').textContent, 'New points land every Monday.');
+
+  // The custom empty heading is only used while the lesson is null.
+  view.update({ lesson: { ...kanjiFixture.lesson, start() {} } });
+  assert.equal(one(root, 'ink-lesson-number').textContent, 'Lesson 6');
+  assert.equal(byClass(root, 'ink-lesson-empty-text').length, 0);
+  view.update({ lesson: null });
+  assert.equal(one(root, 'ink-lesson-number').textContent, 'No grammar due yet');
+});
+
 test('emptyAction renders a paper outlined button, not the black Start button', () => {
   let clicks = 0;
   const emptyAction = { label: 'Review what you know', onClick: () => { clicks += 1; } };

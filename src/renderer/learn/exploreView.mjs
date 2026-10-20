@@ -7,7 +7,8 @@ import { inkHeader, inkPercent, setInkHeader } from '../lib/inkHeader.mjs';
 import { EXPLORE_FILTERS, UP_NEXT_LIMIT, seeAllLabel, upNext } from './exploreModel.mjs';
 
 // Empty state: a short heading in the lesson-number face, the caller's emptyText as normal copy,
-// and an optional paper action. "All caught up" must not be set in the 64px lesson size.
+// and an optional paper action. The heading defaults to "All caught up" and callers may override it
+// with emptyTitle; it must not be set in the 64px lesson size.
 const CAUGHT_UP_TITLE = 'All caught up';
 const EMPTY_LESSON_TEXT = 'Every lesson in this set is done.';
 const EMPTY_ROWS_TEXT = 'Nothing here yet.';
@@ -15,6 +16,10 @@ const EMPTY_ROWS_TEXT = 'Nothing here yet.';
 function progressNumber(value) {
   const n = Number(value);
   return Number.isFinite(n) ? n : 0;
+}
+
+function normaliseEmptyTitle(value) {
+  return String(value ?? '').trim() || CAUGHT_UP_TITLE;
 }
 
 function normaliseEmptyAction(action) {
@@ -35,6 +40,7 @@ export function mountExplore(el, props = {}) {
     onFilter: typeof props.onFilter === 'function' ? props.onFilter : () => {},
     seeAll: props.seeAll ?? null,
     emptyText: props.emptyText ?? EMPTY_LESSON_TEXT,
+    emptyTitle: normaliseEmptyTitle(props.emptyTitle),
     emptyAction: normaliseEmptyAction(props.emptyAction),
   };
 
@@ -102,6 +108,7 @@ export function mountExplore(el, props = {}) {
     if (patch.progress !== undefined) next.progress = { ...previous.progress, ...(patch.progress ?? {}) };
     if (patch.seeAll !== undefined) next.seeAll = patch.seeAll ? { ...(previous.seeAll ?? {}), ...patch.seeAll } : null;
     if (patch.rows !== undefined && !Array.isArray(patch.rows)) next.rows = [];
+    if (patch.emptyTitle !== undefined) next.emptyTitle = normaliseEmptyTitle(patch.emptyTitle);
     state = next;
 
     if (patch.title !== undefined || patch.header !== undefined) {
@@ -112,7 +119,7 @@ export function mountExplore(el, props = {}) {
         max: state.header.max,
       });
     }
-    if (patch.lesson !== undefined || patch.progress !== undefined
+    if (patch.lesson !== undefined || patch.progress !== undefined || patch.emptyTitle !== undefined
       || patch.emptyText !== undefined || patch.emptyAction !== undefined) {
       renderLesson();
     }
@@ -154,7 +161,7 @@ export function mountExplore(el, props = {}) {
     if (!lesson) {
       lessonCard.classList.add('is-empty');
       const copy = String(state.emptyText ?? '').trim();
-      children.push(h('h2', { class: 'ink-lesson-number' }, CAUGHT_UP_TITLE));
+      children.push(h('h2', { class: 'ink-lesson-number' }, state.emptyTitle));
       children.push(h('span', { class: 'ink-underline' }));
       if (copy) children.push(h('p', { class: 'ink-lesson-empty-text' }, copy));
       children.push(progressEl());
