@@ -36,6 +36,38 @@ async function tab(name) {
   await win.webContents.executeJavaScript(`(() => {const b = [...document.querySelectorAll('.learn-tabs > button')].find(b => b.textContent === ${JSON.stringify(name)}); if (!b) throw new Error('Missing tab'); b.click();})()`);
 
 }
+// Explore screens put the full course behind See all. Grammar and the Kanji level grid are only reachable there
+// now. The Explore view loads its data over IPC, so wait for the button before clicking; when a slice still mounts
+// its full view directly (no Explore screen), leave the current view alone.
+async function seeAll() {
+  let directSeen = 0;
+  for (let i = 0; i < 80; i++) {
+    const state = await evaluate(() => {
+      const button = document.querySelector('.ink-seeall');
+      if (button && button.getClientRects().length) {
+        button.click();
+        return 'clicked';
+      }
+      // S3 renders a loading host first; S2 swaps in the Explore screen when its data arrives.
+      if (document.querySelector('.learn-explore-host, .ink-explore')) return 'loading';
+      if (document.querySelector('.learn-g, .learn-level, .learn-browse')) return 'direct';
+      return 'waiting';
+    });
+    if (state === 'clicked') {
+      await delay(150);
+      return true;
+    }
+    // A slice that still mounts its full course/browse view directly has no Explore screen to click through.
+    if (state === 'direct') {
+      directSeen += 1;
+      if (directSeen >= 3) return false;
+    } else {
+      directSeen = 0;
+    }
+    await delay(50);
+  }
+  return false;
+}
 async function screenshot(name) {
   if (!process.env.ANIME_MINE_SCREENSHOTS) return;
   fs.mkdirSync(process.env.ANIME_MINE_SCREENSHOTS, { recursive: true });
@@ -64,6 +96,7 @@ async function screenshot(name) {
   console.log('PASS Learn home and real IPC');
   await screenshot('home');
   await tab('Grammar');
+  await seeAll();
   await waitFor(() => !!document.querySelector('.learn-g-row'), 'grammar browser');
   console.log('PASS grammar browser');
   await screenshot('grammar');
@@ -121,12 +154,14 @@ async function screenshot(name) {
   assert.ok((await evaluate(() => document.querySelector('#view').innerText)).includes('1 item started'), 'lesson summary reports a numeric count');
   console.log('PASS grammar lesson, cloze quiz and persistence');
   await tab('Grammar');
+  await seeAll();
   await waitFor(() => !!document.querySelector('.learn-g-row'), 'grammar after lesson');
   await evaluate(() => document.querySelector('.learn-g-row').click());
   await waitFor(() => !!document.querySelector('.learn-g-status'), 'started grammar detail');
   assert.ok((await evaluate(() => document.querySelector('.learn-g-status').innerText)).includes('Beginner (stage 1)'));
   console.log('PASS started grammar status');
   await tab('Kanji');
+  await seeAll();
   await waitFor(() => !!document.querySelector('.learn-level'), 'kanji levels');
   await evaluate(() => document.querySelector('.learn-level').click());
   await waitFor(() => !!document.querySelector('.learn-tile'), 'kanji tiles');
@@ -144,6 +179,7 @@ async function screenshot(name) {
   for (let i = 0; i < 100 && !Object.values(JSON.parse(fs.readFileSync(path.join(dataDir, 'learn.json'), 'utf8')).userData).some(d => d.synonyms?.includes('trial synonym')); i++) await delay(50);
   assert.ok(Object.values(JSON.parse(fs.readFileSync(path.join(dataDir, 'learn.json'), 'utf8')).userData).some(d => d.synonyms?.includes('trial synonym')));
   await tab('Kanji');
+  await seeAll();
   await evaluate(() => [...document.querySelectorAll('.learn-browse-type')].find(b => b.textContent === 'Mined words').click());
   await waitFor(() => !!document.querySelector('.learn-mined-form'), 'mined word form');
   await evaluate(() => {
@@ -174,6 +210,7 @@ async function screenshot(name) {
   assert.equal(JSON.parse(fs.readFileSync(path.join(dataDir, 'learn.json'), 'utf8')).items['c:猫'].incorrect, 0, 'override must remove the mistake');
   console.log('PASS due review, override and single SRS transition');
   await tab('Kanji');
+  await seeAll();
   await waitFor(() => !!document.querySelector('.learn-level'), 'levels before started item');
   await evaluate(() => [...document.querySelectorAll('.learn-browse-type')].find(b => b.textContent === 'Mined words').click());
   await waitFor(() => !!document.querySelector('.learn-mined-word'), 'mined list');
