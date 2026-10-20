@@ -104,7 +104,7 @@ body.am-card[data-side="answer"] .am-tags { margin: 10px 0 0; }
 .am-card .vocab { display: block !important; margin: 0 !important; padding: 0 !important; gap: 0 !important; }
 .am-card .target_word { display: block !important; margin: 0 !important; color: var(--am-ink) !important; font: 900 76px/110px var(--am-font) !important; letter-spacing: 0 !important; }
 .am-card .target_word::before, .am-card .target_word::after { content: none !important; }
-.am-card .am-word-rule { display: block; width: 120px; height: 6px; margin: -6px 0 0; background: var(--am-red); }
+.am-card .am-word-rule { display: block; width: 120px; max-width: 100%; height: 6px; margin: -6px 0 0; background: var(--am-red); }
 .am-card .reading { display: block !important; margin: 10px 0 0 !important; color: var(--am-muted) !important; font: 500 22px/32px var(--am-font) !important; }
 .am-card .definitions, .am-card .meaning { margin: 24px 0 0 !important; color: var(--am-ink) !important; font: 700 28px/41px var(--am-font) !important; }
 .am-card .definition { border: 0 !important; background: transparent !important; margin: 0 !important; padding: 0 !important; }
