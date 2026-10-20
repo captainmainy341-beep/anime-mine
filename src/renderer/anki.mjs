@@ -1,12 +1,14 @@
 import { attempt, fill, h, toast } from './lib/ui.mjs';
-import { withIcon } from './lib/doodleIcons.mjs';
+import { doodle, withIcon } from './lib/doodleIcons.mjs';
+import { inkHeader, inkPercent, setInkHeader } from './lib/inkHeader.mjs';
 import { mountDeckOptions } from './lib/ankiDeckOptions.mjs';
 import { currentPreset } from './lib/ankiOptionsModel.mjs';
 import { grammarPanel } from './lib/grammarPanel.mjs';
-import { forecastBars, formatRetention, formatStreak, modeSummary } from './lib/ankiView.mjs';
+import { activityStats, forecastBars, formatRetention, formatStreak, heatmapModel, modeSummary } from './lib/ankiView.mjs';
 import { mountBrowse } from './anki/browse.mjs';
 import { createCardDocumentCache, deckLabel, easeForKey, gradeButtons, plainSentence, sessionSummary } from './lib/study.mjs';
 import { studyDocument } from './lib/studyPresentation.mjs';
+import { createStudyCardView } from './anki/studyCard.mjs';
 
 const api = window.api;
 
@@ -23,6 +25,8 @@ const TABS = [
   ['options', 'Deck options'],
 ];
 const GRAMMAR_PREF = 'animeMine.anki.studyGrammar';
+// Heatmap pitch: a 17px cell and its 4px gap from the frame. Month labels line up on the same grid.
+const HEAT_PITCH = 21;
 
 const button = (label, onclick, cls) => h('button', { type: 'button', class: cls, onclick }, label);
 
@@ -37,6 +41,15 @@ const panel = (title, text, ...actions) =>
 
 const emptyBox = (title, text) => h('div', { class: 'empty' }, h('h2', {}, title), h('p', { class: 'anki-sub' }, text));
 
+const countOf = (value) => {
+  const n = Number(value);
+  return Number.isFinite(n) && n > 0 ? n : 0;
+};
+const deckDue = (deck) => countOf(deck?.new) + countOf(deck?.learn) + countOf(deck?.due);
+const deckTotal = (deck) => countOf(deck?.total) || deckDue(deck);
+const cardsLabel = (n) => `${n} ${n === 1 ? 'card' : 'cards'}`;
+const isMissing = (fn) => typeof fn !== 'function';
+
 export function mountAnki(container) {
   let disposed = false;
   let loadSeq = 0;
@@ -45,6 +58,7 @@ export function mountAnki(container) {
   let setViewChain = Promise.resolve();
   let optionsDispose = null;
   let optionRows = new Map();
+  let deckMenu = null;
   const state = {
     view: null,
     summary: 'loading',
@@ -53,6 +67,7 @@ export function mountAnki(container) {
     optionsDeck: null,
     deckPlans: new Map(),
     initial: null,
+    deckForm: false,
     study: { deck: null, cards: [], index: 0, side: 'question', phase: 'pick', busy: false, reviewed: 0, again: 0, reloaded: false, seq: 0 },
   };
   let studyAudio = null;
@@ -64,28 +79,36 @@ export function mountAnki(container) {
   const observer =
     'IntersectionObserver' in window ? new IntersectionObserver(onVisible, { rootMargin: '200px' }) : null;
 
-  const modeSwitch = h('div', { class: 'seg', role: 'group', 'aria-label': 'Data mode' });
-  const body = h('div', { class: 'anki-body' });
-  const root = h(
-    'section',
-    { class: 'page anki' },
-    h(
-      'div',
-      { class: 'anki-head' },
-      h('div', {}, h('h1', {}, 'Anki'), h('div', { class: 'sub' }, 'Your decks and mined cards, read from Anki on demand')),
-      modeSwitch,
-    ),
-    body,
+  const modeSwitch = h('div', { class: 'seg ink-anki-mode', role: 'group', 'aria-label': 'Data mode' });
+  const tabStrip = h('div', { class: 'ink-anki-tabs', role: 'tablist', 'aria-label': 'Anki sections' });
+  const sampleChip = h('span', { class: 'ink-anki-sample' }, 'Sample data');
+  const chooseDecks = button('Choose decks', () => { if (leaveAllowed()) renderPicker({ back: true }); }, 'ink-anki-strip-btn');
+  const strip = h(
+    'div',
+    { class: 'ink-anki-strip' },
+    tabStrip,
+    h('div', { class: 'ink-anki-strip-actions' }, sampleChip, chooseDecks, modeSwitch),
   );
+  const header = inkHeader({ title: 'Anki' });
+  header.style.setProperty('--ink-hero-title', '50px');
+  const body = h('div', { class: 'anki-body ink-anki-body' });
+  const root = h('section', { class: 'page anki ink-screen ink-clean' }, strip, header, body);
   container.append(root);
   document.addEventListener('keydown', onKeydown);
+  document.addEventListener('click', onDocumentClick);
+  window.addEventListener('resize', closeDeckMenu);
   load();
 
   return () => {
     disposed = true;
+    closeDeckMenu();
     disposeTabs();
     stopStudyAudio();
+    studyUI?.view?.destroy?.();
+    studyUI = null;
     document.removeEventListener('keydown', onKeydown);
+    document.removeEventListener('click', onDocumentClick);
+    window.removeEventListener('resize', closeDeckMenu);
     observer?.disconnect();
   };
 
@@ -114,6 +137,7 @@ export function mountAnki(container) {
     state.overview = null;
     disposeTabs();
     state.optionsDeck = null;
+    state.deckForm = false;
     state.deckPlans.clear();
     optionRows.clear();
     mediaCache.clear();
@@ -153,6 +177,8 @@ export function mountAnki(container) {
   }
 
   function renderBody() {
+    renderStrip();
+    syncHeader();
     switch (state.summary) {
       case 'hidden':
         fill(body, hiddenPanel());
@@ -189,6 +215,8 @@ export function mountAnki(container) {
   async function renderPicker({ back = false } = {}) {
     const pickerSeq = loadSeq;
     disposeTabs();
+    studyUI?.view?.destroy?.();
+    studyUI = null;
     stopStudyAudio();
     state.study.seq++;
     Object.assign(state.study, { phase: 'pick', cards: [], index: 0, side: 'question', busy: false });
@@ -257,42 +285,88 @@ export function mountAnki(container) {
 
   // Tabs
 
+  // The frame has no tab strip: a slim row above the header keeps every Anki tab (and the data mode) reachable
+  // without taking space away from the overview panels.
+  function renderStrip() {
+    const section = state.summary === 'sample' || state.summary === 'ready';
+    fill(
+      tabStrip,
+      section
+        ? TABS.map(([id, label]) =>
+            h(
+              'button',
+              {
+                type: 'button',
+                role: 'tab',
+                class: 'anki-tab ink-anki-tab',
+                'aria-selected': String(id === state.tab),
+                onclick: () => switchTab(id),
+              },
+              label,
+            ),
+          )
+        : null,
+    );
+    sampleChip.hidden = state.summary !== 'sample';
+    chooseDecks.hidden = state.summary !== 'ready';
+    modeSwitch.hidden = state.summary === 'loading';
+  }
+
+  function selectedDeck(decks) {
+    return decks.find((deck) => deck.name === state.optionsDeck) ?? decks[0] ?? null;
+  }
+
+  function syncHeader() {
+    const s = state.study;
+    if (state.tab === 'study' && state.summary === 'ready') {
+      const deck = deckLabel(s.deck ?? state.view?.visibleDecks?.[0] ?? '').name;
+      if (s.phase === 'card' && s.cards.length) {
+        const number = Math.min(s.index + 1, s.cards.length);
+        setInkHeader(header, { title: 'Review', label: `Card ${number} of ${s.cards.length} · ${deck}`, value: number, max: s.cards.length });
+      } else {
+        setInkHeader(header, { title: 'Review', label: deck ? `Study · ${deck}` : 'Study', value: 0, max: 0 });
+      }
+      return;
+    }
+    if ((state.summary === 'sample' || state.summary === 'ready') && state.overview?.decks?.length) {
+      const deck = selectedDeck(state.overview.decks);
+      const due = deckDue(deck);
+      const total = deckTotal(deck);
+      setInkHeader(header, { title: 'Anki', label: `${due} due today of ${total} cards`, value: due, max: total });
+      return;
+    }
+    const labels = {
+      hidden: 'Anki is hidden',
+      connect: 'Anki is not connected',
+      pick: 'Choose the decks to read',
+      failed: 'Couldn’t read Anki',
+    };
+    setInkHeader(header, { title: 'Anki', label: labels[state.summary] ?? 'Reading Anki', value: 0, max: 0 });
+  }
+
   function renderSection() {
     disposeTabs();
     optionRows = new Map();
+    studyUI?.view?.destroy?.();
     studyUI = null;
+    renderStrip();
+    syncHeader();
     if (!state.overview) {
       fill(body, h('p', { class: 'anki-sub anki-loading' }, 'Loading…'));
       return;
     }
-    const tabs = h(
-      'div',
-      { class: 'anki-tabs', role: 'tablist' },
-      TABS.map(([id, label]) =>
-        h(
-          'button',
-          {
-            type: 'button',
-            role: 'tab',
-            class: id === state.tab ? 'anki-tab active' : 'anki-tab',
-            'aria-selected': String(id === state.tab),
-            onclick: () => switchTab(id),
-          },
-          label,
-        ),
-      ),
-      state.summary === 'ready'
-        ? button('Choose decks', () => { if (leaveAllowed()) renderPicker({ back: true }); }, 'ghost small anki-choose')
-        : null,
-    );
-    const content = h('div', { class: state.tab === 'browse' ? 'anki-tab-body is-browse' : state.tab === 'options' ? 'anki-tab-body is-options' : 'anki-tab-body' });
-    fill(body, state.summary === 'sample' ? sampleBanner() : null, tabs, content);
+    const content = h('div', {
+      class: state.tab === 'browse' ? 'anki-tab-body is-browse ink-anki-tab-body' : state.tab === 'options' ? 'anki-tab-body is-options ink-anki-tab-body' : 'anki-tab-body ink-anki-tab-body',
+    });
+    fill(body, content);
 
     if (state.tab === 'mined') fill(content, renderMined());
     else if (state.tab === 'browse') browseDispose = mountBrowse(content, browseCtx());
     else if (state.tab === 'study') renderStudy(content);
     else if (state.tab === 'options') fill(content, renderOptionsTab());
     else fill(content, renderOverview());
+    renderStrip();
+    syncHeader();
   }
 
   function switchTab(id) {
@@ -303,6 +377,8 @@ export function mountAnki(container) {
   function goTab(id) {
     if (id !== 'study') stopStudyAudio();
     state.tab = id;
+    state.deckForm = false;
+    closeDeckMenu();
     renderSection();
   }
 
@@ -317,8 +393,59 @@ export function mountAnki(container) {
     browseDispose = null;
   }
 
-  function sampleBanner() {
-    return h('div', { class: 'anki-banner' }, h('strong', {}, 'Sample data. '), 'Your real decks are hidden.');
+  // Deck actions menu (kebab). Rendered on document.body so the table can scroll without clipping it.
+  function openDeckActions(buttonEl, deck) {
+    if (deckMenu?.button === buttonEl) {
+      closeDeckMenu();
+      return;
+    }
+    closeDeckMenu();
+    const item = (icon, label, action) =>
+      h('button', {
+        type: 'button',
+        role: 'menuitem',
+        class: 'ink-deck-menu-item',
+        onclick: (event) => {
+          event.stopPropagation();
+          closeDeckMenu();
+          action();
+        },
+      }, doodle(icon), h('span', {}, label));
+    const menu = h(
+      'div',
+      { class: 'ink-deck-menu', role: 'menu', 'aria-label': `${deck.name} actions` },
+      item('play', 'Study', () => studyDeck(deck.name)),
+      item('bulb', 'Options', () => chooseOptionsDeck(deck.name)),
+      item('book', 'Browse', () => openDeck(deck.name)),
+    );
+    document.body.append(menu);
+    const rect = buttonEl.getBoundingClientRect();
+    const width = 176;
+    menu.style.left = `${Math.round(Math.max(8, Math.min(rect.left + rect.width - width, window.innerWidth - width - 8)))}px`;
+    menu.style.top = `${Math.round(Math.min(rect.bottom + 6, window.innerHeight - menu.offsetHeight - 8))}px`;
+    buttonEl.setAttribute('aria-expanded', 'true');
+    deckMenu = { menu, button: buttonEl };
+  }
+
+  function closeDeckMenu() {
+    if (!deckMenu) return;
+    deckMenu.menu.remove();
+    deckMenu.button.setAttribute('aria-expanded', 'false');
+    deckMenu = null;
+  }
+
+  function onDocumentClick(event) {
+    if (deckMenu && !deckMenu.menu.contains(event.target)) closeDeckMenu();
+  }
+
+  function studyDeck(name) {
+    if (!leaveAllowed()) return;
+    state.tab = 'study';
+    state.deckForm = false;
+    closeDeckMenu();
+    stopStudyAudio();
+    if (state.summary === 'ready') startStudy(name);
+    else renderSection();
   }
 
   function openDeck(name) {
@@ -346,16 +473,252 @@ export function mountAnki(container) {
   function renderOverview() {
     const o = state.overview;
     const decks = o.decks ?? [];
+    if (!decks.length) return emptyBox('No decks to show', 'None of the decks you chose are in Anki right now.');
     syncOptionsDeck(decks);
-    const table = deckCard(decks);
-    return h('div', { class: 'anki-overview' },
-      h('div', { class: 'anki-collection-summary' },
-        h('span', {}, `Retention 30d: ${formatRetention(o.retention30)}`),
-        h('span', {}, `Streak: ${formatStreak(o.streak)}`),
-        h('span', {}, `${o.minedThisWeek ?? 0} mined this week`)),
-      table, mountOptionsEditor(),
-      h('details', { class: 'anki-forecast-details' }, h('summary', {}, 'Review forecast and mining activity'),
-        h('div', { class: 'overview-grid' }, forecastCard(o.forecast), minedWeekCard(o))));
+    const deck = selectedDeck(decks);
+    const reviews = Array.isArray(o.reviewsByDay) ? o.reviewsByDay : [];
+    const model = heatmapModel(reviews);
+    const stats = activityStats(reviews);
+    return h('div', { class: 'ink-anki-overview' },
+      h('div', { class: 'ink-anki-top' }, decksPanel(decks, deck), deckGlance(deck, o)),
+      heatPanel(model, stats, reviews.length > 0),
+      h('details', { class: 'ink-anki-more ink-panel' },
+        h('summary', {}, h('span', {}, 'Collection summary, forecast and deck options'), doodle('down')),
+        h('div', { class: 'ink-anki-more-body' },
+          h('div', { class: 'anki-collection-summary' },
+            h('span', {}, `Retention 30d: ${formatRetention(o.retention30)}`),
+            h('span', {}, `Streak: ${formatStreak(o.streak)}`),
+            h('span', {}, `${o.minedThisWeek ?? 0} mined this week`)),
+          h('div', { class: 'overview-grid' }, forecastCard(o.forecast), minedWeekCard(o)),
+          mountOptionsEditor())));
+  }
+
+  function decksPanel(decks, selected) {
+    return h('section', { class: 'ink-panel ink-anki-decks' },
+      h('span', { class: 'ink-tag' }, 'Decks'),
+      h('div', { class: 'ink-deck-table', role: 'table', 'aria-label': 'Decks' },
+        h('div', { class: 'ink-deck-head', role: 'row' },
+          h('span', { class: 'ink-deck-head-cell is-deck', role: 'columnheader' }, 'Deck'),
+          h('span', { class: 'ink-deck-head-cell', role: 'columnheader' }, 'New'),
+          h('span', { class: 'ink-deck-head-cell', role: 'columnheader' }, 'Learn'),
+          h('span', { class: 'ink-deck-head-cell', role: 'columnheader' }, 'Due'),
+          h('span', { class: 'ink-deck-head-cell', role: 'columnheader' })),
+        h('div', { class: 'ink-deck-body', role: 'rowgroup' }, decks.map((deck) => deckRow(deck, deck.name === selected?.name)))),
+      state.deckForm ? createDeckForm() : deckActions());
+  }
+
+  function deckRow(deck, isSelected) {
+    const { name: shortName } = deckLabel(deck.name);
+    const pick = h('button', {
+      type: 'button',
+      class: 'ink-deck-pick',
+      title: deck.name,
+      onclick: () => selectDeck(deck.name),
+      'aria-pressed': String(isSelected),
+    },
+    h('span', { class: 'ink-deck-name' }, shortName),
+    h('span', { class: 'ink-deck-sub' }, cardsLabel(deckTotal(deck))));
+    const more = h('button', {
+      type: 'button',
+      class: 'ink-deck-more',
+      'aria-label': `Actions for ${shortName}`,
+      'aria-haspopup': 'menu',
+      'aria-expanded': 'false',
+      onclick: (event) => {
+        event.stopPropagation();
+        openDeckActions(more, deck);
+      },
+    }, doodle('more'));
+    const count = (value) => {
+      const n = countOf(value);
+      return h('span', { class: n ? 'ink-deck-count' : 'ink-deck-count is-zero', role: 'cell' }, String(n));
+    };
+    return h('div', { class: isSelected ? 'ink-deck-row is-selected' : 'ink-deck-row', role: 'row' },
+      h('span', { class: 'ink-deck-pip', 'aria-hidden': 'true' }),
+      pick, count(deck.new), count(deck.learn), count(deck.due), more);
+  }
+
+  function selectDeck(name) {
+    if (name === state.optionsDeck) return;
+    if (!leaveAllowed()) return;
+    closeDeckMenu();
+    state.optionsDeck = name;
+    renderSection();
+  }
+
+  function deckActions() {
+    return h('div', { class: 'ink-anki-actions' },
+      actionButton('plus', 'Create deck', openCreateDeck),
+      actionButton('download', 'Import', importPackage),
+      actionButton('sync', 'Sync', syncNow, 'is-sync'));
+  }
+
+  function actionButton(icon, label, onclick, extra = '') {
+    return h('button', { type: 'button', class: `ink-anki-btn ${extra}`.trim(), onclick },
+      doodle(icon), h('span', {}, label));
+  }
+
+  function openCreateDeck() {
+    state.deckForm = true;
+    renderSection();
+  }
+
+  function closeCreateDeck() {
+    state.deckForm = false;
+    renderSection();
+  }
+
+  function createDeckForm() {
+    const input = h('input', {
+      type: 'text',
+      class: 'ink-anki-deck-input',
+      placeholder: 'New deck name',
+      'aria-label': 'New deck name',
+      maxlength: '120',
+    });
+    requestAnimationFrame(() => input.focus());
+    return h('form', {
+      class: 'ink-anki-actions is-form',
+      onsubmit: (event) => {
+        event.preventDefault();
+        submitDeck(input.value);
+      },
+    },
+    input,
+    h('button', { type: 'submit', class: 'ink-anki-btn is-primary' }, 'Create'),
+    h('button', { type: 'button', class: 'ink-anki-btn', onclick: closeCreateDeck }, 'Cancel'));
+  }
+
+  function missingAction(action) {
+    toast(`${action} needs the updated Anki service. Restart the app and try again.`, 'error');
+  }
+
+  function submitDeck(value) {
+    const name = String(value ?? '').trim();
+    if (!name) {
+      toast('Enter a deck name first.', 'error');
+      return;
+    }
+    if (isMissing(api.anki?.createDeck)) {
+      missingAction('Creating a deck');
+      return;
+    }
+    return attempt(async () => {
+      const result = await api.anki.createDeck({ name });
+      state.deckForm = false;
+      toast(`Created ${result?.name ?? name}`);
+      await load();
+    });
+  }
+
+  function importPackage() {
+    if (isMissing(api.anki?.importPackage)) {
+      missingAction('Importing a package');
+      return;
+    }
+    return attempt(async () => {
+      const result = await api.anki.importPackage();
+      if (!result?.imported) return;
+      const file = String(result.path ?? '').split(/[\\/]/).pop();
+      toast(file ? `Imported ${file}` : 'Package imported');
+      await load();
+    });
+  }
+
+  function syncNow() {
+    if (isMissing(api.anki?.sync)) {
+      missingAction('Syncing with Anki');
+      return;
+    }
+    return attempt(async () => {
+      await api.anki.sync();
+      toast('Synced with Anki');
+      await load();
+    });
+  }
+
+  function deckGlance(deck, o) {
+    const { name } = deckLabel(deck.name);
+    const due = deckDue(deck);
+    const studied = countOf(o.today?.studied);
+    return h('section', { class: 'ink-panel ink-anki-glance' },
+      h('h2', { class: 'ink-anki-glance-title' }, name),
+      h('span', { class: 'ink-underline ink-anki-glance-underline', 'aria-hidden': 'true' }),
+      h('p', { class: 'ink-anki-glance-sub' }, `${cardsLabel(deckTotal(deck))} · ${due} due today`),
+      h('div', { class: 'ink-anki-stats' },
+        statBox('New', deck.new), statBox('Learning', deck.learn), statBox('To review', deck.due)),
+      h('div', { class: 'ink-anki-done' },
+        h('span', { class: 'ink-anki-done-label' }, 'Done today'),
+        h('span', { class: 'ink-anki-done-value' }, `${studied} / ${due}`)),
+      h('span', { class: 'ink-track ink-anki-done-track' },
+        h('i', { class: 'ink-track-fill', style: `width:${inkPercent(studied, due)}%` })),
+      h('button', { type: 'button', class: 'ink-bigbtn ink-anki-studynow', onclick: () => studyDeck(deck.name) },
+        h('span', {}, 'Study now'), doodle('arrow')));
+  }
+
+  function statBox(label, value) {
+    return h('div', { class: 'ink-anki-stat' },
+      h('b', {}, String(countOf(value))),
+      h('span', {}, label));
+  }
+
+  function heatPanel(model, stats, hasReviews) {
+    const months = h('div', { class: 'ink-heat-months', 'aria-hidden': 'true' },
+      model.months.map((month) => h('span', { class: 'ink-heat-month', style: `left:${month.column * HEAT_PITCH}px` }, month.label)));
+    const grid = h('div', { class: 'ink-heat-grid', role: 'grid', 'aria-label': 'Review activity, last 12 months' },
+      model.weeks.flatMap((week, column) => week.map((cell, row) => heatCell(cell, column, row))));
+    const scroller = h('div', { class: 'ink-heat-scroll' }, h('div', { class: 'ink-heat-canvas' }, months, grid));
+    requestAnimationFrame(() => {
+      if (scroller.isConnected) scroller.scrollLeft = scroller.scrollWidth;
+    });
+    const dayLabels = h('div', { class: 'ink-heat-days', 'aria-hidden': 'true' },
+      ['M', 'W', 'F'].map((label) => h('span', {}, label)));
+    const legend = h('div', { class: 'ink-heat-legend' },
+      h('span', { class: 'ink-heat-less' }, 'Less'),
+      [0, 1, 2, 3].map((level) => h('span', { class: `ink-heat-swatch is-level-${level}` })),
+      h('span', { class: 'ink-heat-more' }, 'More'));
+    return h('section', { class: 'ink-panel ink-anki-heat' },
+      h('div', { class: 'ink-anki-heat-head' },
+        h('span', { class: 'ink-tag' }, 'Review activity'),
+        h('span', { class: 'ink-anki-heat-range' }, 'Last 12 months')),
+      h('div', { class: 'ink-heat-body' },
+        h('div', { class: 'ink-heat-map' },
+          h('div', { class: 'ink-heat-main' }, dayLabels, scroller),
+          legend),
+        heatSummary(stats, hasReviews)));
+  }
+
+  function heatCell(cell, column, row) {
+    const classes = ['ink-heat-cell', `is-level-${cell.level}`];
+    if (cell.future) classes.push('is-future');
+    if (cell.isToday) classes.push('is-today');
+    const label = `${cell.date}: ${cell.count} ${cell.count === 1 ? 'review' : 'reviews'}`;
+    return h('span', {
+      class: classes.join(' '),
+      role: 'gridcell',
+      title: label,
+      'aria-label': label,
+      'data-date': cell.date,
+      'data-count': String(cell.count),
+      style: `grid-column:${column + 1};grid-row:${row + 1}`,
+    });
+  }
+
+  function heatSummary(stats, hasReviews) {
+    const days = stats.streak === 1 ? 'day' : 'days';
+    const note = stats.streak > 0
+      ? `You have reviewed on ${stats.streak} ${days} in a row. Keep it going today.`
+      : hasReviews
+        ? 'You have no streak running. One review today starts a new one.'
+        : 'No reviews yet. Study a deck to start your streak.';
+    const stat = (label, value) => h('div', { class: 'ink-heat-stat' },
+      h('span', { class: 'ink-heat-stat-label' }, label),
+      h('b', { class: 'ink-heat-stat-value' }, value));
+    return h('div', { class: 'ink-heat-stats' },
+      stat('Streak', `${stats.streak} ${days}`),
+      stat('Days learned', `${stats.daysLearnedPct}%`),
+      stat('Daily average', `${stats.dailyAverage} ${stats.dailyAverage === 1 ? 'card' : 'cards'}`),
+      h('p', { class: 'ink-heat-note' }, note));
   }
 
   function renderOptionsTab() {
@@ -445,15 +808,6 @@ export function mountAnki(container) {
     if (row.preset) row.preset.textContent = currentPreset(plan)?.name ?? '';
   }
 
-  function stat(label, value, tone) {
-    return h(
-      'div',
-      { class: 'anki-card stat' },
-      h('div', { class: 'anki-lab' }, label),
-      h('div', { class: tone ? `stat-num ${tone}` : 'stat-num' }, String(value)),
-    );
-  }
-
   function forecastCard(forecast) {
     const bars = forecastBars(forecast);
     const total = bars.reduce((n, b) => n + b.count, 0);
@@ -491,48 +845,6 @@ export function mountAnki(container) {
       h('div', { class: 'big-num' }, String(o.minedThisWeek ?? 0), h('small', {}, ' cards')),
       h('div', { class: 'anki-sub' }, recent || 'Cards you mine from the player appear here.'),
       h('div', { class: 'card-foot' }, button(withIcon('right', 'See all mined').reverse(), () => switchTab('mined'), 'ghost small')),
-    );
-  }
-
-  function deckCard(decks) {
-    if (!decks.length) {
-      return emptyBox('No decks to show', 'None of the decks you chose are in Anki right now.');
-    }
-    return h(
-      'section',
-      { class: 'anki-card deck-card' },
-      h('div', { class: 'deck-table-head' }, h('h2', {}, 'Decks'),
-        button('Study selected deck', () => { state.study.deck = state.optionsDeck; switchTab('study'); }, 'primary')),
-      h('div', { class: 'anki-sub deck-table-help' }, 'Native remaining counts load when you select a deck. Other rows show raw card counts, not a daily allowance.'),
-      h(
-        'table',
-        { class: 'anki-table' },
-        h(
-          'thead',
-          {},
-          h('tr', {}, h('th', {}, 'Deck'), h('th', { class: 'num-col' }, 'New'), h('th', { class: 'num-col' }, 'Learn'), h('th', { class: 'num-col' }, 'Reviews'), h('th', {}, 'Daily limits'), h('th', {}, '')),
-        ),
-        h(
-          'tbody',
-          {},
-          decks.map((d) => {
-            const row = {
-              new: h('td', { class: 'num-col n-new' }, String(d.new ?? 0)),
-              learn: h('td', { class: 'num-col n-learn' }, String(d.learn ?? 0)),
-              due: h('td', { class: 'num-col n-due' }, String(d.due ?? 0)),
-              limits: h('td', { class: 'deck-limit-summary' }, 'Select to read Anki'),
-              counts: h('small', { class: 'deck-count-source' }, 'Raw counts'),
-            };
-            optionRows.set(d.name, row);
-            const cached = state.deckPlans.get(d.name);
-            if (cached) updateOptionRow(d.name, cached);
-            return h('tr', { class: d.name === state.optionsDeck ? 'selected' : '' },
-              h('td', {}, button(d.name, () => chooseOptionsDeck(d.name), 'ghost deck-name-button'), row.counts),
-              row.new, row.learn, row.due, row.limits,
-              h('td', { class: 'act' }, button('Options', () => chooseOptionsDeck(d.name), 'small'), button('Browse', () => openDeck(d.name), 'ghost small')));
-          }),
-        ),
-      ),
     );
   }
 
@@ -648,82 +960,82 @@ export function mountAnki(container) {
     );
   }
 
+  function studyStatus(s) {
+    if (s.busy) return 'Saving review…';
+    return s.side === 'answer' ? '1–4 to rate the card' : 'Space or Enter shows the answer';
+  }
+
   function renderStudyCard(content) {
     const s = state.study;
     const deck = deckLabel(s.deck);
-    studyUI = {
-      frame: h('iframe', { class: 'study-card', sandbox: '', title: 'Study card', tabindex: '-1' }),
-      remaining: h('span', { class: 'anki-sub study-remaining' }),
-      replay: button(withIcon('play', 'Replay'), () => {
-        const audio = state.study.cards[state.study.index]?.audio;
-        if (audio) playStudyAudio(audio);
-      }, 'ghost small'),
-      flip: button('Hide answer', hideAnswer, 'ghost small'),
-      grammar: button('Grammar', toggleStudyGrammar, 'ghost small'),
-      grammarSlot: h('div', { class: 'study-grammar', hidden: true }),
-      style: button('Original style', toggleStudyStyle, 'ghost small'),
-      controls: h('div', { class: 'study-controls' }),
-      status: h('span', { role: 'status', 'aria-live': 'polite' }),
-      reviewed: h('span'),
-    };
-    fill(content, h('section', { class: 'study' },
-      h('div', { class: 'study-head' },
-        h('div', { class: 'study-deck-path', title: s.deck },
-          deck.parent ? h('div', { class: 'study-parent' }, deck.parent) : null,
-          h('div', { class: 'study-deck' }, deck.name)),
-        studyUI.remaining,
-        h('div', { class: 'study-head-actions' }, studyUI.replay, studyUI.flip, studyUI.grammar, studyUI.style,
-          button('Deck options', () => { const deck = s.deck; endStudy(); chooseOptionsDeck(deck); }, 'ghost small'),
-          button('End session', endStudy, 'ghost small'))),
-      h('div', { class: 'study-workspace' }, studyUI.frame),
-      studyUI.grammarSlot,
-      studyUI.controls,
-      h('div', { class: 'study-hints' }, studyUI.status, studyUI.reviewed)));
+    const view = createStudyCardView({ onReveal: showAnswer, onGrade: grade, onReplay: replayCurrentAudio });
+    const grammarBtn = h('button', { type: 'button', class: 'ink-anki-chip', onclick: toggleStudyGrammar }, 'Grammar');
+    const styleBtn = h('button', { type: 'button', class: 'ink-anki-chip', onclick: toggleStudyStyle }, 'Original style');
+    const remaining = h('span', { class: 'ink-anki-remaining' });
+    const reviewed = h('span', { class: 'ink-anki-reviewed' });
+    const status = h('span', { class: 'ink-anki-study-status', role: 'status', 'aria-live': 'polite' });
+    const grammarSlot = h('div', { class: 'study-grammar ink-anki-grammar', hidden: true });
+    studyUI = { view, grammarBtn, styleBtn, remaining, reviewed, status, grammarSlot };
+    fill(content, h('section', { class: 'ink-anki-study' },
+      h('div', { class: 'ink-anki-study-bar' },
+        h('div', { class: 'ink-anki-study-deck' },
+          h('span', { class: 'ink-anki-study-path', title: s.deck ?? '' },
+            deck.parent ? `${deck.parent} / ${deck.name}` : deck.name),
+          h('span', { class: 'ink-anki-study-meta' }, remaining, reviewed)),
+        status,
+        h('div', { class: 'ink-anki-study-actions' },
+          grammarBtn, styleBtn,
+          h('button', { type: 'button', class: 'ink-anki-chip', onclick: openDeckOptionsFromStudy }, 'Deck options'),
+          h('button', { type: 'button', class: 'ink-anki-chip', onclick: endStudy }, 'End session'))),
+      h('div', { class: 'ink-anki-study-view' }, view.el),
+      grammarSlot));
     updateStudyCard();
   }
 
+  function openDeckOptionsFromStudy() {
+    const deck = state.study.deck;
+    endStudy();
+    chooseOptionsDeck(deck);
+  }
+
   function updateStudyCard() {
-    if (!studyUI?.frame.isConnected || state.study.phase !== 'card') return;
     const s = state.study;
+    if (!studyUI?.view || s.phase !== 'card') return;
     const card = s.cards[s.index];
+    if (!card) return;
     const theme = s.style ?? 'app';
-    const doc = studyDoc(card, s.side, theme);
-    if (studyUI.document !== doc) {
-      studyUI.document = doc;
-      studyUI.frame.srcdoc = doc;
-    }
-    studyUI.frame.classList.toggle('is-original', theme === 'original');
-    studyUI.remaining.textContent = s.remaining ? `${s.remaining.new} new · ${s.remaining.reviews} reviews · ${s.remaining.learning} learning` : `${s.cards.length - s.index} left`;
-    studyUI.replay.hidden = !card.audio;
-    studyUI.flip.hidden = s.side !== 'answer';
-    studyUI.grammar.hidden = s.side !== 'answer' || !plainSentence(card.sentence);
-    studyUI.style.textContent = theme === 'app' ? 'Original style' : 'App style';
+    studyUI.view.update({
+      frontDoc: studyDoc(card, 'question', theme),
+      backDoc: studyDoc(card, 'answer', theme),
+      side: s.side,
+      buttons: gradeButtons(card),
+      busy: s.busy,
+      hasAudio: Boolean(card.audio),
+      status: studyStatus(s),
+      tags: Array.isArray(card.tags) ? card.tags : [],
+    });
+    const left = Math.max(0, s.cards.length - s.index);
+    studyUI.remaining.textContent = s.remaining
+      ? `${s.remaining.new} new · ${s.remaining.reviews} reviews · ${s.remaining.learning} learning`
+      : `${left} ${left === 1 ? 'card' : 'cards'} left`;
     studyUI.reviewed.textContent = `${s.reviewed} reviewed this session`;
-    const controls = s.side === 'answer'
-      ? h('div', { class: 'study-grades' }, gradeButtons(card).map(g => h('button',
-          { type: 'button', class: `grade grade-${g.label.toLowerCase()}`, 'aria-label': `${g.label} (${g.ease}), ${g.interval}`, onclick: () => grade(g.ease) },
-          h('span', {}, h('span', { class: 'grade-label' }, g.label), h('small', { class: 'grade-interval' }, g.interval)),
-          h('kbd', {}, String(g.ease)))))
-      : h('div', { class: 'panel-actions' }, button('Show answer', showAnswer, 'primary study-reveal'));
-    fill(studyUI.controls, controls);
+    studyUI.styleBtn.textContent = theme === 'app' ? 'Original style' : 'App style';
+    studyUI.grammarBtn.hidden = s.side !== 'answer' || !plainSentence(card.sentence);
+    studyUI.grammarBtn.disabled = s.busy;
+    studyUI.styleBtn.disabled = s.busy;
+    studyUI.status.textContent = s.busy ? 'Saving review…' : '';
     syncStudyGrammar(card);
-    updateStudyBusy();
+    syncHeader();
   }
 
   function updateStudyBusy() {
-    if (!studyUI?.frame.isConnected) return;
-    const s = state.study;
-    studyUI.controls.setAttribute('aria-busy', String(s.busy));
-    studyUI.controls.querySelectorAll('button').forEach(b => b.disabled = s.busy);
-    studyUI.flip.disabled = s.busy;
-    studyUI.style.disabled = s.busy;
-    studyUI.status.textContent = s.busy ? 'Saving review…' : s.side === 'answer' ? '1–4 to rate' : 'Space or Enter to show answer';
+    updateStudyCard();
   }
 
   function syncStudyGrammar(card) {
     const slot = studyUI.grammarSlot;
     const text = plainSentence(card.sentence);
-    studyUI.grammar.setAttribute('aria-pressed', String(studyGrammarOpen));
+    studyUI.grammarBtn.setAttribute('aria-pressed', String(studyGrammarOpen && state.study.side === 'answer'));
     const show = state.study.side === 'answer' && text && studyGrammarOpen;
     if (!show) {
       slot.hidden = true;
@@ -739,16 +1051,12 @@ export function mountAnki(container) {
   }
 
   function toggleStudyGrammar() {
-    if (!studyUI?.grammar || studyUI.grammar.hidden) return;
+    const s = state.study;
+    if (!studyUI || s.phase !== 'card' || s.busy) return;
+    const card = s.cards[s.index];
+    if (!card || s.side !== 'answer' || !plainSentence(card.sentence)) return;
     studyGrammarOpen = !studyGrammarOpen;
     localStorage.setItem(GRAMMAR_PREF, studyGrammarOpen ? 'open' : 'closed');
-    syncStudyGrammar(state.study.cards[state.study.index]);
-  }
-
-  function hideAnswer() {
-    const s = state.study;
-    if (s.phase !== 'card' || s.busy) return;
-    s.side = 'question';
     updateStudyCard();
   }
 
@@ -848,6 +1156,11 @@ export function mountAnki(container) {
     if (state.tab === 'study' && s.side === 'question' && card?.audio) playStudyAudio(card.audio);
   }
 
+  function replayCurrentAudio() {
+    const card = state.study.cards[state.study.index];
+    if (card?.audio) playStudyAudio(card.audio);
+  }
+
   function stopStudyAudio() {
     studyAudio?.pause();
     studyAudio = null;
@@ -893,6 +1206,10 @@ export function mountAnki(container) {
   // Browse
 
   function onKeydown(e) {
+    if (e.key === 'Escape' && deckMenu) {
+      closeDeckMenu();
+      return;
+    }
     if (state.tab === 'study') return onStudyKey(e);
   }
 

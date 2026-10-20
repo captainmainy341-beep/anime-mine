@@ -768,3 +768,49 @@ textarea:focus-visible,
     animation: none;
   }
 }
+
+/* Anki Clean pass (S8): paper selections, black primary action, 1.5px rules, no red tints. */
+.anki .bw-side,
+.anki .bw-detail,
+.anki .bw-head,
+.anki .bw-toolbar,
+.anki .bw-hint,
+.anki .bw-footer,
+.anki .bw-table th,
+.anki .bw-table td {
+  border-width: 1.5px;
+}
+.anki .bw-side { border-right-width: 1.5px; }
+.anki .bw-detail { border-left-width: 1.5px; }
+.anki .bw-head { border-bottom-width: 1.5px; }
+.anki .bw-toolbar { border-bottom-width: 1.5px; }
+.anki .bw-hint { border-bottom-width: 1.5px; }
+.anki .bw-footer { border-top-width: 1.5px; }
+.anki .bw-banner {
+  border: 1.5px solid var(--ink);
+  border-radius: 0;
+  background: var(--paper-2);
+}
+.anki .bw-btn {
+  border: 1.5px solid var(--ink);
+  border-radius: 0;
+  background: var(--paper);
+  color: var(--ink);
+}
+.anki .bw-btn:hover:not(:disabled) { transform: none; background: var(--paper-2); box-shadow: none; }
+.anki .bw-btn.primary {
+  border: 3px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+}
+.anki .bw-btn.primary:hover:not(:disabled) { background: var(--ink); color: var(--paper); }
+.anki .bw-row.is-suspended { background: var(--paper-2); }
+.anki .bw-mark { background: var(--ink); border-radius: 0; }
+.anki .bw-chip { border-radius: 2px; background: var(--paper-2); }
+.anki .bw-search,
+.anki .bw-cheat-btn {
+  border: 1.5px solid var(--ink);
+  border-radius: 0;
+  background: var(--paper);
+}
+.anki .bw-table td:first-child { border-left-width: 4px; }
