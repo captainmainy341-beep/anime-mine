@@ -34,7 +34,7 @@
   display: flex; align-items: center; background: var(--ink);
 }
 .ink-hero-compact .ink-hero-titleplate { top: 7px; }
-.ink-hero-title {
+.ink-hero-title, .ink-screen .ink-hero-title, .ink-screen h1.ink-hero-title {
   margin: 0; font-family: var(--font-display); font-weight: 400; font-size: var(--ink-hero-title); line-height: 68px;
   letter-spacing: 0; color: var(--paper); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
