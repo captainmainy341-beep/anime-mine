@@ -332,9 +332,36 @@ test('the stylesheet keeps the frame geometry and the single black Good button',
   const css = readFileSync(new URL('../src/renderer/css/ink-anki-card.css', import.meta.url), 'utf8');
   assert.match(css, /\.ink-study-cards\s*\{[^}]*grid-template-columns:\s*minmax\(0, 580fr\) minmax\(0, 588fr\)/);
   assert.match(css, /\.ink-study-cards\s*\{[^}]*gap:\s*16px/);
-  assert.match(css, /\.ink-study-cards\s*\{[^}]*height:\s*620px/);
+  assert.match(css, /\.ink-study-cards\s*\{[^}]*height:\s*var\(--ink-study-card-h,\s*620px\)/);
   assert.match(css, /\.ink-rating\s*\{[^}]*grid-template-columns:\s*repeat\(4/);
   assert.match(css, /\.ink-study-rate\s*\{[^}]*min-height:\s*172px/);
   assert.match(css, /\.ink-rate\s*\{[^}]*height:\s*74px/);
   assert.match(css, /\.ink-rate-good\s*\{[^}]*border:\s*3px solid var\(--ink\)/);
+});
+
+// The cards follow the viewport (S8 sets --ink-study-card-h, 380..620) so the rating panel stays
+// above the fold. Inside, the iframes yield to the remaining height and scroll their own content.
+test('the cards take their height from --ink-study-card-h and survive 380px', () => {
+  const css = readFileSync(new URL('../src/renderer/css/ink-anki-card.css', import.meta.url), 'utf8');
+  const card = css.match(/\.ink-study-front,\s*\.ink-study-back\s*\{([^}]*)\}/)?.[1] ?? '';
+  assert.match(card, /height:\s*var\(--ink-study-card-h,\s*620px\)/);
+  assert.match(card, /display:\s*flex/);
+  assert.match(card, /min-height:\s*0/);
+  assert.match(card, /overflow:\s*hidden/);
+  const frame = css.match(/\.ink-study-frame\s*\{([^}]*)\}/)?.[1] ?? '';
+  assert.match(frame, /flex:\s*1(?![\d.])/);
+  assert.match(frame, /min-height:\s*0/);
+  const iframe = css.match(/\.ink-study-frame\s*>\s*iframe\.study-card\s*\{([^}]*)\}/)?.[1] ?? '';
+  assert.match(iframe, /width:\s*100%/);
+  assert.match(iframe, /height:\s*100%/);
+  // The replay button keeps the screenshot corner, or the visible corner when the shot is taller.
+  const replay = css.match(/\.ink-study-replay\s*\{([^}]*)\}/)?.[1] ?? '';
+  assert.match(replay, /top:\s*min\(calc\(var\(--ink-study-shot\)\s*-\s*68px\),\s*calc\(100%\s*-\s*68px\)\)/);
+  // The placeholder gaps follow the card height so the copy, icon and button still fit.
+  const placeholder = css.match(/\.ink-study-placeholder\s*\{([^}]*)\}/)?.[1] ?? '';
+  assert.match(placeholder, /gap:\s*clamp\([^)]*var\(--ink-study-card-h,\s*620px\)/);
+  // Stacked narrow layout keeps its own fixed frame height and does not follow the variable.
+  const narrow = css.slice(css.indexOf('@media (max-width: 1180px)'));
+  assert.match(narrow, /\.ink-study-front,\s*\.ink-study-back\s*\{\s*height:\s*auto/);
+  assert.match(narrow, /\.ink-study-frame\s*\{\s*flex:\s*none;\s*height:\s*460px/);
 });

@@ -4,27 +4,32 @@
 
 .ink-study { --ink-study-shot: 290px; display: block; min-width: 0; }
 
-/* Front 580 + 16 + back 588 = 1184; both 620 tall. */
+/* Front 580 + 16 + back 588 = 1184. Height comes from S8 (--ink-study-card-h, 380..620), so the
+   172px rating panel stays above the fold on a 1440x1000 window; 620 is the unscaled frame. */
 .ink-study-cards {
   display: grid; grid-template-columns: minmax(0, 580fr) minmax(0, 588fr);
-  gap: 16px; height: 620px; min-height: 0;
+  gap: 16px; height: var(--ink-study-card-h, 620px); min-height: 0;
 }
 .ink-study-front, .ink-study-back {
   display: flex; flex-direction: column; min-height: 0; min-width: 0; overflow: hidden;
+  height: var(--ink-study-card-h, 620px);
 }
-/* The 1.5px rules sit inside the 620px box, so the padding carries the frame's remaining 1.5px. */
+/* The 1.5px rules sit inside the card box, so the padding carries the frame's remaining 1.5px. */
 .ink-study-front { padding: 22.5px 26.5px 28.5px; }
 .ink-study-back { padding: 26.5px; }
 .ink-study-front > .ink-tag { flex: none; }
 .ink-study-back > .ink-tag { flex: none; margin: 22px 0 0 24px; }
-.ink-study-frame { position: relative; flex: 1 1 auto; min-height: 0; min-width: 0; margin-top: 16px; }
+/* The frame takes whatever the card has left; when the card is shorter than its content the
+   iframe scrolls inside instead of the card growing past the rating panel. */
+.ink-study-frame { position: relative; flex: 1; min-height: 0; min-width: 0; margin-top: 16px; }
 .ink-study-back .ink-study-frame { margin-top: 12px; }
-.ink-study-frame > iframe.study-card { display: block; width: 100%; height: 100%; border: 0; background: var(--paper, #f5f2ea); }
+.ink-study-frame > iframe.study-card { display: block; width: 100%; height: 100%; min-height: 0; border: 0; background: var(--paper, #f5f2ea); }
 .ink-study [hidden] { display: none !important; }
 
-/* Sound icon over the screenshot's bottom-right corner (frame 704,460 inside the 524x290 shot). */
+/* Sound icon over the screenshot's bottom-right corner (frame 704,460 inside the 524x290 shot).
+   On a short card the shot is taller than the frame, so the button drops to the visible corner. */
 .ink-study-replay {
-  position: absolute; top: calc(var(--ink-study-shot) - 68px); right: 16px; z-index: 2;
+  position: absolute; top: min(calc(var(--ink-study-shot) - 68px), calc(100% - 68px)); right: 16px; z-index: 2;
   display: inline-flex; align-items: center; justify-content: center; width: 56px; height: 52px;
   padding: 0; background: var(--paper, #f5f2ea); color: var(--ink); border: 1.5px solid var(--ink);
   border-radius: 0; cursor: pointer;
@@ -32,10 +37,12 @@
 .ink-study-replay .doodle { --doodle-stroke: 1.6; width: 21px; height: 17px; margin: 0; }
 .ink-study-replay:not(:disabled):hover { box-shadow: 3px 3px 0 var(--ink); }
 
-/* Calm placeholder before the answer is asked for. */
+/* Calm placeholder before the answer is asked for. The gaps follow the card height, so at 380px
+   the icon, copy and Show answer still sit centred and compact instead of being clipped. */
 .ink-study-placeholder {
   position: absolute; inset: 0; z-index: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 20px; padding: 0 48px; background: var(--paper, #f5f2ea); text-align: center;
+  gap: clamp(12px, calc(var(--ink-study-card-h, 620px) * 0.033), 20px); padding: 0 48px;
+  background: var(--paper, #f5f2ea); text-align: center;
 }
 .ink-study-placeholder .doodle { width: 40px; height: 40px; margin: 0; color: var(--ink-mute, #5c5a55); }
 .ink-study-placeholder-line { margin: 0; max-width: 340px; font-size: 17px; line-height: 26px; color: var(--ink-mute, #5c5a55); }
@@ -101,6 +108,7 @@
   .ink-study-cards { grid-template-columns: minmax(0, 1fr); height: auto; }
   .ink-study-frame { flex: none; height: 460px; }
   .ink-study-front, .ink-study-back { height: auto; }
+  .ink-study-placeholder { gap: 20px; }
   .ink-rating { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 720px) {
