@@ -1,9 +1,170 @@
 import { attempt, fill, h, toast } from '../lib/ui.mjs';
-import { DEFAULT_TYPE, TYPE_FILTERS, addWordPayload, levelProgress, tileModel } from './browseModel.mjs';
+import { doodle } from '../lib/doodleIcons.mjs';
+import { mountExplore } from './exploreView.mjs';
+import {
+  DEFAULT_TYPE,
+  TYPE_FILTERS,
+  addWordPayload,
+  batchSize,
+  exploreLevel,
+  exploreType,
+  kanjiExplore,
+  kanjiLesson,
+  kanjiRowCandidates,
+  levelProgress,
+  seeAllRoute,
+  tileModel,
+  vocabExplore,
+  vocabLessonBatch,
+} from './browseModel.mjs';
 
 const SEARCH_DELAY_MS = 200;
 
+// Kanji and Vocab tabs: the Explore screen by default, the full browse (type chips, level grid, tiles, search,
+// mined words) for "See all" / arg.all === true. Both share the same frozen mountLevels entry point.
 export function mountLevels(el, ctx, arg = {}) {
+  const type = exploreType(arg.type);
+  if (arg.all === true) return mountBrowseAll(el, ctx, { ...arg, type });
+  return mountExploreLevels(el, ctx, { ...arg, type });
+}
+
+function loadCards(api, ids) {
+  const cards = {};
+  return Promise.all(
+    (ids ?? []).map(async (id) => {
+      try {
+        cards[id] = await api.card(id);
+      } catch {
+        cards[id] = null;
+      }
+    }),
+  ).then(() => cards);
+}
+
+function mountExploreLevels(el, ctx, arg) {
+  const api = ctx.api.learn;
+  const type = exploreType(arg.type);
+  const host = h('div', { class: 'learn-explore-host' }, h('p', { class: 'learn-browse-loading' }, 'Loading…'));
+  el.append(host);
+
+  let disposed = false;
+  let seq = 0;
+  let view = null;
+  let model = null;
+  let filter = 'all';
+  let batch = batchSize(arg.batch);
+
+  load();
+
+  return () => {
+    disposed = true;
+    seq += 1;
+    view?.destroy?.();
+    view = null;
+    host.remove();
+  };
+
+  async function load() {
+    const current = ++seq;
+    try {
+      const [levels, settings] = await Promise.all([
+        api.levels(),
+        Promise.resolve()
+          .then(() => api.settingsGet?.())
+          .catch(() => null),
+      ]);
+      if (disposed || current !== seq) return;
+      batch = batchSize(arg.batch ?? settings?.lessonBatch);
+      const level = exploreLevel(levels ?? [], type);
+      const rows = level ? await api.browse({ type, level: level.level }) : [];
+      if (disposed || current !== seq) return;
+      if (type === 'kanji') {
+        const lesson = kanjiLesson({ levels, rows, batch });
+        const cards = await loadCards(api, kanjiRowCandidates(rows, lesson?.ids ?? []));
+        if (disposed || current !== seq) return;
+        model = kanjiExplore({ levels, rows, cards, batch });
+      } else {
+        model = vocabExplore({ levels, rows, batch });
+      }
+      render();
+    } catch (err) {
+      if (disposed || current !== seq) return;
+      view?.destroy?.();
+      view = null;
+      fill(host, h('p', { class: 'learn-browse-error', role: 'alert' }, err.message));
+    }
+  }
+
+  function render() {
+    view?.destroy?.();
+    view = null;
+    fill(host);
+    try {
+      view = mountExplore(host, props());
+    } catch (err) {
+      fill(host, h('p', { class: 'learn-browse-error', role: 'alert' }, err.message));
+    }
+  }
+
+  function props() {
+    const lesson = model.lesson
+      ? {
+          ...model.lesson,
+          start: () => startLesson(model.lesson.ids),
+        }
+      : null;
+    const rows = (model.rows ?? []).map((row) => ({ ...row, open: () => openRow(row) }));
+    return {
+      title: model.title,
+      header: model.header,
+      lesson,
+      progress: model.progress,
+      rows,
+      filter,
+      onFilter: setFilter,
+      seeAll: { ...model.seeAll, onOpen: openSeeAll },
+      emptyText: model.emptyText,
+    };
+  }
+
+  function setFilter(next) {
+    if (next === filter) return;
+    filter = next;
+    const patch = props();
+    view?.update?.(patch);
+  }
+
+  function startLesson(ids) {
+    if (!ids?.length) {
+      toast('Nothing new to learn right now.', 'info');
+      return;
+    }
+    ctx.go('session', { mode: 'lesson', scope: type, ids });
+  }
+
+  function openRow(row) {
+    if (type === 'kanji') {
+      ctx.go('item', row.id);
+      return;
+    }
+    attempt(async () => {
+      const levelRows = await api.browse({ type: 'vocab', level: row.level });
+      const items = vocabLessonBatch(levelRows, row.batch, batch);
+      if (!items.length) {
+        toast('Pass the kanji in that level to unlock its words.', 'info');
+        return;
+      }
+      startLesson(items.map((item) => item.id));
+    });
+  }
+
+  function openSeeAll() {
+    const target = seeAllRoute(type);
+    ctx.go(target.view, target.arg);
+  }
+}
+
+function mountBrowseAll(el, ctx, arg) {
   const api = ctx.api.learn;
   const state = {
     type: arg.type ?? DEFAULT_TYPE,
@@ -30,9 +191,29 @@ export function mountLevels(el, ctx, arg = {}) {
     },
   });
   const content = h('div', { class: 'learn-browse-content' });
+  const back = h(
+    'button',
+    {
+      type: 'button',
+      class: 'learn-browse-explore',
+      onclick: () => {
+        if (ctx.canBack?.()) ctx.back();
+        else if (state.type === 'vocab') ctx.go('vocab');
+        else ctx.go('levels', { type: state.type });
+      },
+    },
+    doodle('back'),
+    h('span', {}, 'Back to Explore'),
+  );
 
   el.append(
-    h('section', { class: 'learn-browse' }, h('div', { class: 'learn-browse-top' }, chips, search), content),
+    h(
+      'section',
+      { class: 'learn-browse learn-browse-all' },
+      back,
+      h('div', { class: 'learn-browse-top' }, chips, search),
+      content,
+    ),
   );
   renderChips();
   refresh();
