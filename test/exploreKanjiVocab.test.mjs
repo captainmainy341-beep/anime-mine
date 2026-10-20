@@ -2,7 +2,10 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import {
+  NOTHING_TO_START_TITLE,
   batchSize,
+  emptyTitleFor,
+  hasPendingItems,
   kanjiExplore,
   kanjiLesson,
   kanjiRowCandidates,
@@ -19,6 +22,7 @@ import {
   vocabLessonRows,
   vocabLessonTotals,
 } from '../src/renderer/learn/browseModel.mjs';
+import { exploreProps } from '../src/renderer/learn/browse.mjs';
 import { LEARN_TABS, tabArgs, viewTab } from '../src/renderer/learn.mjs';
 
 const fixture = JSON.parse(readFileSync(new URL('./fixtures/ink-s3-explore.json', import.meta.url), 'utf8'));
@@ -136,10 +140,22 @@ test('kanji explore asks for radicals when the level is still locked', () => {
   const model = kanjiExplore({ levels, rows: lockedRows, batch: 5 });
   assert.equal(model.lesson, null);
   assert.match(model.emptyText, /radicals/i);
+  assert.equal(model.emptyTitle, NOTHING_TO_START_TITLE);
   assert.deepEqual(model.emptyAction, {
     label: 'Learn radicals',
     route: { view: 'levels', arg: { type: 'radical', all: true } },
   });
+});
+
+test('kanji explore says nothing can start yet when the level still has unstarted kanji', () => {
+  // One locked kanji left after everything else was started: no lesson, but the level is not caught up either.
+  const rows = kanjiRows.map((row) => ({ ...row, stage: row.id === 'k:今' ? 0 : 5, locked: row.id === 'k:今' }));
+  const model = kanjiExplore({ levels, rows, batch: 5 });
+  assert.equal(model.lesson, null);
+  assert.equal(hasPendingItems(rows), true);
+  assert.equal(emptyTitleFor(rows), NOTHING_TO_START_TITLE);
+  assert.equal(model.emptyTitle, NOTHING_TO_START_TITLE);
+  assert.match(model.emptyText, /radicals/i);
 });
 
 test('kanji explore keeps the caught-up copy when the level has no locked kanji left', () => {
@@ -148,6 +164,23 @@ test('kanji explore keeps the caught-up copy when the level has no locked kanji 
   assert.equal(model.lesson, null);
   assert.match(model.emptyText, /Nothing new/i);
   assert.equal(model.emptyAction, null);
+  assert.equal('emptyTitle' in model, false, 'caught up leaves the view default heading');
+  assert.equal(emptyTitleFor(learned), undefined);
+});
+
+test('kanji explore keeps the caught-up copy when every kanji is in review, not just learned', () => {
+  const reviewing = kanjiRows.map((row) => ({ ...row, stage: 2, locked: false }));
+  const model = kanjiExplore({ levels, rows: reviewing, batch: 5 });
+  assert.equal(model.lesson, null);
+  assert.match(model.emptyText, /Nothing new/i);
+  assert.equal(hasPendingItems(reviewing), false, 'a started kanji is not waiting to start');
+  assert.equal('emptyTitle' in model, false, 'caught up leaves the view default heading');
+});
+
+test('a queued kanji lesson never carries an empty title', () => {
+  const model = kanjiExplore({ levels, rows: kanjiRows, cards, batch: 5 });
+  assert.ok(model.lesson);
+  assert.equal('emptyTitle' in model, false);
 });
 
 test('kanji row sub lists readings, and strokes when the card carries them', () => {
@@ -267,6 +300,31 @@ test('vocab explore keeps Up next on the current level when nothing is teachable
     'the remaining batches of the current level, not one batch of each later level',
   );
   assert.match(model.emptyText, /kanji/i);
+  assert.equal(model.emptyTitle, NOTHING_TO_START_TITLE);
+});
+
+test('vocab explore says nothing can start yet while words are still locked', () => {
+  const rows = courseRows().map((row) => ({ ...row, stage: row.locked ? 0 : 1 }));
+  const model = vocabExplore({ levels, rows, batch: 5 });
+  assert.equal(model.lesson, null, 'every unlocked word is already in review');
+  assert.equal(hasPendingItems(rows), true);
+  assert.equal(model.emptyTitle, NOTHING_TO_START_TITLE);
+  assert.match(model.emptyText, /kanji/i, 'the vocab copy stays');
+});
+
+test('vocab explore leaves emptyTitle unset once every word in scope is started', () => {
+  const rows = courseRows().map((row) => ({ ...row, stage: Math.max(1, row.stage), locked: false }));
+  const model = vocabExplore({ levels, rows, batch: 5 });
+  assert.equal(model.lesson, null);
+  assert.equal(hasPendingItems(rows), false);
+  assert.equal('emptyTitle' in model, false, 'caught up leaves the view default heading');
+  assert.match(model.emptyText, /kanji/i, 'the vocab copy stays');
+});
+
+test('a queued vocab lesson never carries an empty title', () => {
+  const model = vocabExplore({ levels, rows: courseRows(), batch: 5 });
+  assert.ok(model.lesson);
+  assert.equal('emptyTitle' in model, false);
 });
 
 test('vocab explore fills the DONE header, progress and See all lessons', () => {
@@ -278,6 +336,61 @@ test('vocab explore fills the DONE header, progress and See all lessons', () => 
   assert.equal(model.lesson.number, 8);
   assert.deepEqual(model.lesson.ids, ['v:2:9', 'v:2:10']);
   assert.equal(model.rows.length, 3);
+});
+
+test('Explore props pass emptyTitle through on the first render and on filter updates', () => {
+  const locked = kanjiExplore({ levels, rows: kanjiRows.map((row) => ({ ...row, stage: 0, locked: true })), batch: 5 });
+  for (const filter of ['all', 'new', 'review']) {
+    // The initial mount uses filter 'all'; filter clicks go through update() with the same prop builder.
+    const props = exploreProps(locked, { filter });
+    assert.equal(props.filter, filter);
+    assert.equal(props.emptyTitle, NOTHING_TO_START_TITLE);
+  }
+
+  const vocabLocked = vocabExplore({
+    levels,
+    rows: courseRows().map((row) => ({ ...row, stage: row.locked ? 0 : 1 })),
+    batch: 5,
+  });
+  assert.equal(exploreProps(vocabLocked).emptyTitle, NOTHING_TO_START_TITLE);
+
+  const caughtUp = kanjiExplore({ levels, rows: kanjiRows.map((row) => ({ ...row, stage: 5, locked: false })), batch: 5 });
+  assert.equal('emptyTitle' in exploreProps(caughtUp), false, 'the view keeps its All caught up default');
+});
+
+test('Explore props bind the view callbacks and keep the frozen model shape', () => {
+  const model = kanjiExplore({ levels, rows: kanjiRows, cards, batch: 5 });
+  const events = [];
+  const props = exploreProps(model, {
+    filter: 'new',
+    onFilter: (next) => events.push(['filter', next]),
+    onStart: (ids) => events.push(['start', ids]),
+    onOpenRow: (row) => events.push(['row', row.id]),
+    onSeeAll: () => events.push(['seeAll']),
+    onAction: (route) => events.push(['action', route]),
+  });
+  assert.equal(props.title, 'Explore Kanji');
+  assert.equal(props.seeAll.total, 120);
+  assert.equal(props.seeAll.noun, 'kanji');
+  assert.equal(props.seeAll.onOpen instanceof Function, true);
+  assert.equal('emptyTitle' in props, false);
+  assert.equal(props.lesson.start instanceof Function, true);
+  assert.equal(props.rows[0].open instanceof Function, true);
+  props.onFilter('all');
+  props.lesson.start();
+  props.rows[0].open();
+  props.seeAll.onOpen();
+  assert.deepEqual(events, [
+    ['filter', 'all'],
+    ['start', model.lesson.ids],
+    ['row', model.rows[0].id],
+    ['seeAll'],
+  ]);
+
+  const lockedModel = kanjiExplore({ levels, rows: kanjiRows.map((row) => ({ ...row, stage: 0, locked: true })), batch: 5 });
+  const actionProps = exploreProps(lockedModel, { onAction: (route) => events.push(['action', route]) });
+  actionProps.emptyAction.onClick();
+  assert.deepEqual(events.at(-1), ['action', { view: 'levels', arg: { type: 'radical', all: true } }]);
 });
 
 test('See all routes to the levels browser for kanji and to Vocab for vocab', () => {
