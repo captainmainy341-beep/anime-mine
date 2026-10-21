@@ -67,6 +67,16 @@ export function genkiRows(list) {
   return rows.map((r) => ({ ...r, upNext: r === next }));
 }
 
+// The path follows two books: Genki I is lessons 1-12 and Genki II is 13-23.
+export const GENKI_BOOKS = [
+  { key: 'genki-1', name: 'Genki I', from: 1, to: 12 },
+  { key: 'genki-2', name: 'Genki II', from: 13, to: 23 },
+];
+
+export function genkiBooks(rows) {
+  return GENKI_BOOKS.map((book) => ({ ...book, rows: rows.filter((r) => r.lesson >= book.from && r.lesson <= book.to) })).filter((book) => book.rows.length);
+}
+
 // Rows for "Continue watching": anything with a save, newest-first is not tracked, so keep story order.
 export function continueRow(all) {
   return all.filter((s) => s.saved);

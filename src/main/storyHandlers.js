@@ -157,6 +157,20 @@ function createStoryHandlers({ dataDir, learn, getSettings, deps = {} }) {
         overview: progress.overview(),
       };
     },
+    // Light summary of the Genki path for the Learn home and grammar pages: lessons in order, plus which lesson teaches which grammar point.
+    'story:genki': async () => {
+      const lessons = [...lessonById.values()].sort((a, b) => a.lesson - b.lesson);
+      const rows = lessons.map((lesson) => {
+        const primer = primerOf(lesson.id);
+        const story = progress.state.chapters[lesson.id] ?? null;
+        return { id: lesson.id, lesson: lesson.lesson, title: lesson.title, tagline: lesson.tagline, minutes: lesson.minutes, words: lesson.vocab.length, patterns: lesson.points.length, learned: Boolean(primer?.done), hasStory: chapters.some((c) => c.id === lesson.id), storyDone: (story?.plays ?? 0) > 0 };
+      });
+      const points = {};
+      for (const lesson of lessons) {
+        for (const point of lesson.points) (points[point.id] ??= []).push({ id: lesson.id, lesson: lesson.lesson, title: lesson.title });
+      }
+      return { lessons: rows, points };
+    },
     'story:open': async (id) => {
       const scene = requireScene(id);
       return { scene: particles.annotateScene(scene), items: await itemStatuses(scene), save: progress.hasSave(scene.id), best: progress.state.chapters[scene.id] ?? null };

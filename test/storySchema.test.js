@@ -163,9 +163,9 @@ test('an AI reply cannot smuggle its own background image', () => {
   assert.equal(out.bgImage, undefined);
 });
 
-test('the Genki path ships lessons 1-12 in order, each drilling particles', () => {
+test('the Genki path ships Genki I and II (lessons 1-23) in order, each drilling particles', () => {
   const genki = loadChapters().chapters.filter((c) => c.track === 'genki');
-  assert.deepEqual(genki.map((c) => c.lesson), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+  assert.deepEqual(genki.map((c) => c.lesson), Array.from({ length: 23 }, (_, i) => i + 1));
   for (const chapter of genki) {
     assert.match(chapter.id, /^genki-l\d\d$/);
     assert.ok(chapter.covers, `${chapter.id} lists what it covers`);

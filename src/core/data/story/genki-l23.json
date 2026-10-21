@@ -1,0 +1,320 @@
+{
+  "schema": 1,
+  "id": "genki-l23",
+  "order": 123,
+  "track": "genki",
+  "lesson": 23,
+  "title": "いちねんの おわりに",
+  "summary": "A year after you arrived, the cherry trees are in bloom again. Look back with 〜させられる (made to), 〜ようになる (came to be able), and 〜ように (so that).",
+  "covers": "〜させられる · 〜ようになる · 〜ように（so that）",
+  "jlpt": "N4",
+  "source": "authored",
+  "bg": "sakura-road",
+  "characters": {
+    "hana": {
+      "name": "ハナ",
+      "color": "#7cc6b4"
+    },
+    "leo": {
+      "name": "レオ",
+      "color": "#f0a35e"
+    },
+    "mori": {
+      "name": "森先生",
+      "color": "#8e7cc3"
+    },
+    "tomi": {
+      "name": "とみさん",
+      "color": "#c97b5a"
+    }
+  },
+  "glossary": {
+    "g:n4-saserareru": {
+      "label": "〜させられる",
+      "meaning": "be made to do",
+      "note": "Causative + passive: someone made you do it, usually against your will. 毎日そうじをさせられた. Short form for u-verbs: 待たされる, 読まされる."
+    },
+    "g:n4-you-ni-naru": {
+      "label": "〜ようになる",
+      "meaning": "come to / reach the point of",
+      "note": "Dictionary or potential form + ようになる: a gradual change. 日本語が話せるようになりました."
+    },
+    "g:n4-you-ni-purpose": {
+      "label": "〜ように（purpose）",
+      "meaning": "so that / in order that",
+      "note": "Dictionary or potential form + ように: the purpose or hope, usually of something you do not fully control. また会えるように、手紙を書きます."
+    },
+    "g:n5-ni": {
+      "label": "〜に",
+      "meaning": "by (the person who makes you act)",
+      "note": "In causative-passive sentences the person who forced you takes に."
+    },
+    "k:紙": {
+      "label": "紙",
+      "meaning": "paper",
+      "reading": "かみ"
+    },
+    "k:練": {
+      "label": "練",
+      "meaning": "practise",
+      "reading": "ね(る) / れん"
+    }
+  },
+  "beats": [
+    {
+      "type": "show",
+      "char": "hana",
+      "expr": "smile",
+      "pos": "left"
+    },
+    {
+      "type": "show",
+      "char": "leo",
+      "expr": "smile",
+      "pos": "right"
+    },
+    {
+      "type": "show",
+      "char": "mori",
+      "expr": "smile",
+      "pos": "center"
+    },
+    {
+      "type": "say",
+      "who": "mori",
+      "text": "ノアさん、あの 春から ちょうど 一年ですね。",
+      "en": "Noa, it's been exactly one year since that spring."
+    },
+    {
+      "type": "reading",
+      "item": "k:練",
+      "display": "練習",
+      "answers": [
+        "れんしゅう"
+      ],
+      "prompt": "Read it: what you did every day this year.",
+      "target": "練"
+    },
+    {
+      "type": "say",
+      "who": "leo",
+      "text": "ぼくは あの 夏、毎日 そうじを させられたなあ…。",
+      "en": "That summer, I was made to clean every day..."
+    },
+    {
+      "type": "intro",
+      "item": "g:n4-saserareru"
+    },
+    {
+      "type": "choice",
+      "item": "g:n4-saserareru",
+      "who": "leo",
+      "prompt": "Say: \"I was made to clean every day.\"",
+      "options": [
+        {
+          "text": "ぼくは 毎日 そうじを させられました。",
+          "correct": true
+        },
+        {
+          "text": "ぼくは 毎日 そうじを させました。",
+          "awkward": {
+            "who": "hana",
+            "text": "それだと ぼくが だれかに そうじを させた ことに なるよ。",
+            "en": "That means you made someone else clean."
+          }
+        },
+        {
+          "text": "ぼくは 毎日 そうじを されました。",
+          "awkward": {
+            "who": "mori",
+            "text": "「されました」では 受身ですね。「させられました」。",
+            "en": "\"Saremashita\" is plain passive. It should be \"saseraremashita\"."
+          }
+        }
+      ]
+    },
+    {
+      "type": "particle",
+      "item": "g:n4-saserareru",
+      "who": "hana",
+      "text": "ぼくは 先生＿ 毎日 そうじを させられました。",
+      "options": [
+        "に",
+        "を",
+        "が",
+        "の"
+      ],
+      "answers": [
+        "に"
+      ],
+      "en": "I was made by the teacher to clean every day.",
+      "role": "p:ni/agent",
+      "prompt": "Who made him clean?"
+    },
+    {
+      "type": "choice",
+      "item": "g:n4-saserareru",
+      "who": "hana",
+      "prompt": "Say: \"I was made to wait for an hour.\"",
+      "options": [
+        {
+          "text": "一時間も 待たされました。",
+          "correct": true
+        },
+        {
+          "text": "一時間も 待たせられました。",
+          "awkward": {
+            "who": "hana",
+            "text": "「待たされました」と 短く 言うよ。",
+            "en": "The short form is \"matasaremashita\"."
+          }
+        },
+        {
+          "text": "一時間も 待たれました。",
+          "awkward": {
+            "who": "mori",
+            "text": "「待たれる」は 別の いみに なります。",
+            "en": "\"Matareru\" has another meaning."
+          }
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "tomi",
+      "text": "ノアさん、日本語が 上手に なったわね。",
+      "en": "Noa, your Japanese has become so good."
+    },
+    {
+      "type": "intro",
+      "item": "g:n4-you-ni-naru"
+    },
+    {
+      "type": "choice",
+      "item": "g:n4-you-ni-naru",
+      "who": "tomi",
+      "prompt": "Say: \"I have come to be able to speak Japanese.\"",
+      "options": [
+        {
+          "text": "日本語が 話せるように なりました。",
+          "correct": true
+        },
+        {
+          "text": "日本語が 話せるように しました。",
+          "awkward": {
+            "who": "tomi",
+            "text": "「する」は 努力。ここは 自然に なった 「なる」ですよ。",
+            "en": "\"Suru\" is effort; here, change: \"naru\"."
+          }
+        },
+        {
+          "text": "日本語が 話すように なりました。",
+          "awkward": {
+            "who": "hana",
+            "text": "「話せる」と 言うと 「できる」の いみだよ。",
+            "en": "\"Hanaseru\" gives the \"can\" meaning."
+          }
+        }
+      ]
+    },
+    {
+      "type": "reading",
+      "item": "k:紙",
+      "display": "手紙",
+      "answers": [
+        "てがみ"
+      ],
+      "prompt": "Read it: what you write to friends far away.",
+      "target": "紙"
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "ノア、国に 帰っても、手紙を 書いてね。",
+      "en": "Noa, even when you go back home, write me letters."
+    },
+    {
+      "type": "intro",
+      "item": "g:n4-you-ni-purpose"
+    },
+    {
+      "type": "choice",
+      "item": "g:n4-you-ni-purpose",
+      "who": null,
+      "prompt": "Say: \"I will write letters so that we can meet again.\"",
+      "options": [
+        {
+          "text": "また 会えるように、手紙を 書きます。",
+          "correct": true
+        },
+        {
+          "text": "また 会うように、手紙を 書きます。",
+          "awkward": {
+            "who": "mori",
+            "text": "「会える」と 可能形に すると 自然ですよ。",
+            "en": "The potential form \"aeru\" is more natural."
+          }
+        },
+        {
+          "text": "また 会えるのように、手紙を 書きます。",
+          "awkward": {
+            "who": "hana",
+            "text": "「のように」じゃなくて 「ように」だよ。",
+            "en": "Not \"no you ni\" but \"you ni\"."
+          }
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "mori",
+      "text": "では、みなさん。これからも みんなで 日本語を 勉強しましょう。",
+      "en": "Then, everyone. Let's keep studying Japanese together."
+    },
+    {
+      "type": "say",
+      "who": null,
+      "text": "風に のって、さくらの 花びらが ふって きた。",
+      "en": "Cherry petals fell on the breeze."
+    },
+    {
+      "type": "say",
+      "who": "leo",
+      "text": "ノア、これからも よろしく！",
+      "en": "Noa, let's keep it up!",
+      "expr": "smile"
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "また 来年も 会えるように、ここで やくそくしよう。",
+      "en": "Let's promise here that we'll meet again next year.",
+      "expr": "smile"
+    },
+    {
+      "type": "affection",
+      "char": "hana",
+      "delta": 3
+    },
+    {
+      "type": "affection",
+      "char": "leo",
+      "delta": 2
+    },
+    {
+      "type": "affection",
+      "char": "mori",
+      "delta": 2
+    },
+    {
+      "type": "affection",
+      "char": "tomi",
+      "delta": 2
+    },
+    {
+      "type": "cg",
+      "id": "genki-sakura-year",
+      "title": "One year in Minato"
+    }
+  ]
+}

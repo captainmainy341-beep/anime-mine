@@ -1,6 +1,6 @@
 import { fill, h } from '../lib/ui.mjs';
 import { backgroundFor, backgroundSvg, characterSvg } from './vn/defaultSkin.mjs';
-import { continueRow, currentSeason, featured, genkiRows, heroCopy, isDone, nudges, seasonRows, sheetActions, statusLabel, storyProgress, tileProgress, titleParts } from './storyHomeModel.mjs';
+import { continueRow, currentSeason, featured, genkiBooks, genkiRows, heroCopy, isDone, nudges, seasonRows, sheetActions, statusLabel, storyProgress, tileProgress, titleParts } from './storyHomeModel.mjs';
 import { doodle, withIcon } from '../lib/doodleIcons.mjs';
 
 const ROTATE_MS = 9000;
@@ -56,16 +56,16 @@ export function mountHome(root, list, actions) {
   const resume = continueRow(all);
   if (resume.length) rows.push(buildRow({ key: 'continue', title: 'Continue where you left off', sub: 'Saved scenes', scenes: resume, accent: 'var(--accent)' }));
   const genki = genkiRows(list.genki);
-  if (genki.length) {
-    const lessonsDone = genki.filter((g) => g.primer?.done && isDone(g)).length;
+  for (const book of genkiBooks(genki)) {
+    const lessonsDone = book.rows.filter((g) => g.primer?.done && isDone(g)).length;
     rows.push(buildRow({
-      key: 'genki',
-      title: 'Genki path · learn it, then live it',
-      sub: 'Each lesson starts with a short, playful primer on that lesson\'s words and grammar, then a story scene that uses them. Follows the textbook order; original story, not affiliated with Genki or The Japan Times.',
+      key: book.key,
+      title: `${book.name} path · learn it, then live it`,
+      sub: `Lessons ${book.from} to ${book.to}. Each lesson starts with a short, playful primer on that lesson's words and grammar, then a story scene that uses them. Follows the textbook order; original story, not affiliated with Genki or The Japan Times.`,
       accent: '#7cc6b4',
-      scenes: genki,
-      progress: { done: lessonsDone, total: genki.length },
-      focusId: genki.find((g) => g.upNext)?.id,
+      scenes: book.rows,
+      progress: { done: lessonsDone, total: book.rows.length },
+      focusId: book.rows.find((g) => g.upNext)?.id,
       genki: true,
     }));
   }

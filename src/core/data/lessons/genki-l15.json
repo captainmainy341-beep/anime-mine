@@ -1,0 +1,388 @@
+{
+  "schema": 1,
+  "id": "genki-l15",
+  "lesson": 15,
+  "title": "Ready for the Trip",
+  "tagline": "Make suggestions, state what you are going to try, and talk about what has been prepared.",
+  "hook": "Tomorrow is the class trip and everyone is checking bags, tickets and windows. You'll need to suggest things to friends, say what you are about to try, and describe things that were prepared ahead of time.",
+  "goals": [
+    "Suggest and decide with the volitional 〜よう",
+    "Say you are thinking of doing something with 〜ようと思う",
+    "Prepare with 〜ておく and describe prepared things with 〜てある"
+  ],
+  "minutes": 12,
+  "vocab": [
+    [
+      "遠足",
+      "えんそく",
+      "school trip",
+      "🚌"
+    ],
+    [
+      "準備",
+      "じゅんび",
+      "preparation",
+      "🎒"
+    ],
+    [
+      "切符",
+      "きっぷ",
+      "ticket",
+      "🎫"
+    ],
+    [
+      "弁当",
+      "べんとう",
+      "lunch box",
+      "🍱"
+    ],
+    [
+      "おかし",
+      "おかし",
+      "snacks",
+      "🍪"
+    ],
+    [
+      "窓",
+      "まど",
+      "window",
+      "🪟"
+    ],
+    [
+      "開ける",
+      "あける",
+      "to open",
+      "🔓"
+    ],
+    [
+      "閉める",
+      "しめる",
+      "to close",
+      "🔒"
+    ],
+    [
+      "書く",
+      "かく",
+      "to write",
+      "✍️"
+    ],
+    [
+      "貼る",
+      "はる",
+      "to stick, post",
+      "📌"
+    ],
+    [
+      "予約",
+      "よやく",
+      "reservation",
+      "📅"
+    ],
+    [
+      "地図",
+      "ちず",
+      "map",
+      "🗺️"
+    ],
+    [
+      "集まる",
+      "あつまる",
+      "to gather",
+      "👥"
+    ],
+    [
+      "出発",
+      "しゅっぱつ",
+      "departure",
+      "🚉"
+    ],
+    [
+      "晴れ",
+      "はれ",
+      "sunny weather",
+      "☀️"
+    ],
+    [
+      "気をつける",
+      "きをつける",
+      "to be careful",
+      "⚠️"
+    ],
+    [
+      "忘れ物",
+      "わすれもの",
+      "something left behind",
+      "🧢"
+    ],
+    [
+      "時間",
+      "じかん",
+      "time",
+      "⏰"
+    ],
+    [
+      "早く",
+      "はやく",
+      "early, quickly",
+      "🏃"
+    ],
+    [
+      "みんなで",
+      "みんなで",
+      "all together",
+      "🙌"
+    ]
+  ],
+  "points": [
+    {
+      "id": "g:n4-volitional",
+      "title": "〜よう（let us / I will）",
+      "formula": "ru: stem + よう / u: お-row + う",
+      "gist": "Make a casual suggestion or a decision.",
+      "explain": [
+        "Ru-verbs drop る and add よう: 食べる → 食べよう. U-verbs change the last sound to the お-row and add う: 行く → 行こう, 飲む → 飲もう, 話す → 話そう. する → しよう, 来る → 来よう.",
+        "It means \"let us ...\" when addressed to friends, or \"I will ...\" as a decision. The polite equivalent is 〜ましょう."
+      ],
+      "examples": [
+        {
+          "ja": "いっしょに|昼ごはんを|食べよう。",
+          "gloss": "together|lunch (object)|let us eat",
+          "en": "Let's eat lunch together."
+        },
+        {
+          "ja": "あした|駅で|会おう。",
+          "gloss": "tomorrow|at the station|let us meet",
+          "en": "Let's meet at the station tomorrow."
+        },
+        {
+          "ja": "そろそろ|帰ろう。",
+          "gloss": "soon|let us go home",
+          "en": "Let's head home soon."
+        }
+      ],
+      "tip": "食べる → 食べよう, 行く → 行こう. Say it out loud and you can feel the \"o\" sound.",
+      "watch": "Only use 〜よう with friends. To a teacher or stranger use 〜ましょう."
+    },
+    {
+      "id": "g:genki-youto-omou",
+      "title": "〜ようと思う",
+      "formula": "volitional + と思う",
+      "gist": "Say what you are thinking of doing.",
+      "explain": [
+        "Volitional + と思う shows an intention you are forming right now: 早く起きようと思います. It is softer and less fixed than つもり.",
+        "In the continuous form 〜ようと思っています, you have had the idea for some time and may be acting on it."
+      ],
+      "examples": [
+        {
+          "ja": "あした|早く|起きようと|思います。",
+          "gloss": "tomorrow|early|I am thinking of getting up|I think",
+          "en": "I'm thinking of getting up early tomorrow."
+        },
+        {
+          "ja": "来年は|日本に|行こうと|思っています。",
+          "gloss": "next year (topic)|to Japan|thinking of going|I have been thinking",
+          "en": "I'm thinking of going to Japan next year."
+        }
+      ],
+      "tip": "Use 〜ようと思っています for an idea you have been holding.",
+      "watch": "Do not use it for what another person intends in the plain form. About others, use 〜ようと思っているようです or ask them."
+    },
+    {
+      "id": "g:n4-te-oku",
+      "title": "〜ておく",
+      "formula": "verb て-form + おく",
+      "gist": "Do something ahead for later.",
+      "explain": [
+        "〜ておく means doing something now so that it will be ready later: 切符を 買って おきます (I will buy the ticket ahead).",
+        "It can also mean leaving things as they are: そのままに しておいて ください. In casual speech it shortens to 〜とく."
+      ],
+      "examples": [
+        {
+          "ja": "旅行の|前に|ホテルを|予約しておきます。",
+          "gloss": "trip (of)|before|hotel (object)|I will reserve ahead",
+          "en": "Before the trip I will book the hotel."
+        },
+        {
+          "ja": "おべんとうは|もう|作っておきました。",
+          "gloss": "lunch box (topic)|already|made ahead",
+          "en": "I've already prepared the lunch box."
+        }
+      ],
+      "tip": "Think \"get it ready now so that later is easy\".",
+      "watch": "〜ておく is something you do on purpose. For plain accidents use 〜てしまう instead."
+    },
+    {
+      "id": "g:n4-te-aru",
+      "title": "〜てある",
+      "formula": "transitive verb て-form + ある",
+      "gist": "The prepared state that remains.",
+      "explain": [
+        "Transitive verb て-form + ある describes a state that someone caused on purpose and that is still there: まどが 開けて あります (someone opened the window, and it is open).",
+        "The thing normally takes が, because it is the subject of ある: 名前が 書いて あります."
+      ],
+      "examples": [
+        {
+          "ja": "まどが|開けて|あります。",
+          "gloss": "window (subject)|opened (on purpose)|is",
+          "en": "The window has been opened."
+        },
+        {
+          "ja": "ここに|名前が|書いて|あります。",
+          "gloss": "here|name (subject)|written|is",
+          "en": "Your name is written here."
+        }
+      ],
+      "tip": "Look for a person behind the scene: someone opened it for a reason.",
+      "watch": "〜ている describes what is happening or the state with intransitive verbs; 〜てある pairs with a transitive verb and a person who did it."
+    }
+  ],
+  "drills": [
+    {
+      "type": "gap",
+      "point": 0,
+      "ja": "いっしょに 帰ろ＿！",
+      "options": [
+        "う",
+        "よう",
+        "ます",
+        "た"
+      ],
+      "answer": "う",
+      "en": "Let's go home together!",
+      "why": "U-verb: お-row + う."
+    },
+    {
+      "type": "pick",
+      "q": "Which is the volitional of 食べる?",
+      "options": [
+        "食べよう",
+        "食べろう",
+        "食べるよう",
+        "食べうよう"
+      ],
+      "answer": 0,
+      "why": "Ru-verb: drop る, add よう.",
+      "point": 0
+    },
+    {
+      "type": "pick",
+      "q": "Which means \"Let us go\"?",
+      "options": [
+        "行こう",
+        "行きよう",
+        "行くよう",
+        "行かよう"
+      ],
+      "answer": 0,
+      "why": "行く → 行こう.",
+      "point": 0
+    },
+    {
+      "type": "order",
+      "point": 0,
+      "en": "Let's meet at the station tomorrow.",
+      "chunks": [
+        "あした",
+        "駅で",
+        "会おう"
+      ]
+    },
+    {
+      "type": "gap",
+      "point": 1,
+      "ja": "あした 早く 起きよう＿ 思います。",
+      "options": [
+        "と",
+        "を",
+        "が",
+        "に"
+      ],
+      "answer": "と",
+      "en": "I'm thinking of getting up early tomorrow.",
+      "why": "ようと思います."
+    },
+    {
+      "type": "pick",
+      "q": "Which means \"I am thinking of studying\"?",
+      "options": [
+        "勉強しようと 思います。",
+        "勉強するようと 思います。",
+        "勉強しようが 思います。",
+        "勉強しようで 思います。"
+      ],
+      "answer": 0,
+      "why": "する → しよう.",
+      "point": 1
+    },
+    {
+      "type": "gap",
+      "point": 2,
+      "ja": "旅行の まえに ホテルを 予約して ＿ます。",
+      "options": [
+        "おき",
+        "あり",
+        "いき",
+        "くれ"
+      ],
+      "answer": "おき",
+      "en": "Before the trip I will book the hotel.",
+      "why": "て-form + おく."
+    },
+    {
+      "type": "pick",
+      "q": "You already made the lunch box ahead.",
+      "options": [
+        "お弁当は もう 作って おきました。",
+        "お弁当は もう 作って いきました。",
+        "お弁当は もう 作って きました。",
+        "お弁当は もう 作って みました。"
+      ],
+      "answer": 0,
+      "why": "ておく expresses preparing in advance.",
+      "point": 2
+    },
+    {
+      "type": "gap",
+      "point": 3,
+      "ja": "まど＿ 開けて あります。",
+      "options": [
+        "が",
+        "を",
+        "に",
+        "で"
+      ],
+      "answer": "が",
+      "en": "The window has been opened.",
+      "why": "The state of the thing takes が."
+    },
+    {
+      "type": "pick",
+      "q": "Which means \"A name is written here\"?",
+      "options": [
+        "名前が 書いて あります。",
+        "名前を 書いて あります。",
+        "名前が 書いて います。",
+        "名前に 書いて あります。"
+      ],
+      "answer": 0,
+      "why": "書く is transitive: 書いて ある, with が.",
+      "point": 3
+    },
+    {
+      "type": "type",
+      "prompt": "Type the reading of 遠足 (school trip) in hiragana.",
+      "show": "遠足",
+      "answers": [
+        "えんそく"
+      ]
+    },
+    {
+      "type": "type",
+      "prompt": "Type the reading of 準備 (preparation) in hiragana.",
+      "show": "準備",
+      "answers": [
+        "じゅんび"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,327 @@
+{
+  "schema": 1,
+  "id": "genki-l17",
+  "order": 117,
+  "track": "genki",
+  "lesson": 17,
+  "title": "のこる？ かえる？",
+  "summary": "Noa must decide what to do after the term. Give advice with 〜ば and 〜なら, and say what you decided or what has been decided.",
+  "covers": "〜ば（if） · 〜なら（if so / speaking of） · 〜ことにする · 〜ことになる",
+  "jlpt": "N4",
+  "source": "authored",
+  "bg": "cafe",
+  "characters": {
+    "hana": {
+      "name": "ハナ",
+      "color": "#7cc6b4"
+    },
+    "tomi": {
+      "name": "とみさん",
+      "color": "#c97b5a"
+    },
+    "leo": {
+      "name": "レオ",
+      "color": "#f0a35e"
+    }
+  },
+  "glossary": {
+    "g:n4-ba-conditional": {
+      "label": "〜ば",
+      "meaning": "if / provided that",
+      "note": "Verbs: change the final u to e and add ば (行く → 行けば, 食べる → 食べれば). い-adjectives: い → ければ. Often used for advice or the one condition that is enough."
+    },
+    "g:n4-nara-conditional": {
+      "label": "〜なら",
+      "meaning": "if that's the case / speaking of",
+      "note": "Picks up what the other person said and responds to it: 日本に行くなら、京都がいいですよ. Also introduces a topic: ギターなら、ハナさんです."
+    },
+    "g:n4-koto-ni-suru": {
+      "label": "〜ことにする",
+      "meaning": "decide to ...",
+      "note": "Dictionary form + ことにする shows your own decision: 毎日運動することにしました. Negative: 〜ないことにする."
+    },
+    "g:n4-koto-ni-naru": {
+      "label": "〜ことになる",
+      "meaning": "it has been decided / it turns out that ...",
+      "note": "Used when the decision was made by others or by circumstance: 来月引っ越すことになりました."
+    },
+    "g:n5-ni": {
+      "label": "〜に",
+      "meaning": "at / to / in (time, destination, result)",
+      "note": "に marks time, destinations, and the result of ことにする / ことになる."
+    },
+    "k:決": {
+      "label": "決",
+      "meaning": "decide",
+      "reading": "き(める)"
+    },
+    "k:残": {
+      "label": "残",
+      "meaning": "remain",
+      "reading": "のこ(る)"
+    }
+  },
+  "beats": [
+    {
+      "type": "show",
+      "char": "hana",
+      "expr": "neutral",
+      "pos": "left"
+    },
+    {
+      "type": "show",
+      "char": "tomi",
+      "expr": "neutral",
+      "pos": "right"
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "ノア、学期が おわったら どうするの？ 国へ 帰る？ のこる？",
+      "en": "Noa, what will you do when the term ends? Go home? Stay?"
+    },
+    {
+      "type": "reading",
+      "item": "k:残",
+      "display": "残る",
+      "answers": [
+        "のこる"
+      ],
+      "prompt": "Read it: what Hana hopes you will do.",
+      "target": "残"
+    },
+    {
+      "type": "intro",
+      "item": "g:n4-ba-conditional"
+    },
+    {
+      "type": "choice",
+      "item": "g:n4-ba-conditional",
+      "who": "tomi",
+      "prompt": "Tomi-san advises: \"If you practise every day, you will get good.\"",
+      "options": [
+        {
+          "text": "まいにち 練習すれば、上手に なりますよ。",
+          "correct": true
+        },
+        {
+          "text": "まいにち 練習するば、上手に なりますよ。",
+          "awkward": {
+            "who": "tomi",
+            "text": "「すれば」ですよ。「する」は 「すれば」。",
+            "en": "It is \"sureba\" for \"suru\"."
+          }
+        },
+        {
+          "text": "まいにち 練習すると、上手に なりますよ。",
+          "awkward": {
+            "who": "hana",
+            "text": "「と」でも 言えるけど、アドバイスには 「ば」が 合うよ。",
+            "en": "\"To\" works, but \"ba\" suits advice."
+          }
+        }
+      ]
+    },
+    {
+      "type": "choice",
+      "item": "g:n4-ba-conditional",
+      "who": "hana",
+      "prompt": "Say: \"If it is cheap, I will buy it.\"",
+      "options": [
+        {
+          "text": "安ければ、買います。",
+          "correct": true
+        },
+        {
+          "text": "安いば、買います。",
+          "awkward": {
+            "who": "hana",
+            "text": "「安ければ」だよ。い→ければ。",
+            "en": "It is \"yasukereba\": i becomes kereba."
+          }
+        },
+        {
+          "text": "安くば、買います。",
+          "awkward": {
+            "who": "tomi",
+            "text": "「安ければ」と 言いますよ。",
+            "en": "You say \"yasukereba\"."
+          }
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "leo",
+      "text": "日本の まちなら、京都が おすすめだよ。",
+      "en": "If it's a Japanese town, I recommend Kyoto."
+    },
+    {
+      "type": "intro",
+      "item": "g:n4-nara-conditional"
+    },
+    {
+      "type": "choice",
+      "item": "g:n4-nara-conditional",
+      "who": "leo",
+      "prompt": "Respond to Hana: \"If you are going to Kyoto, bring a warm coat.\"",
+      "options": [
+        {
+          "text": "京都へ 行くなら、あたたかい コートを もって いって ください。",
+          "correct": true
+        },
+        {
+          "text": "京都へ 行ったなら、あたたかい コートを もって いって ください。",
+          "awkward": {
+            "who": "leo",
+            "text": "これから 行く 話だから 「行くなら」だよ。",
+            "en": "You haven't gone yet, so it is \"iku nara\"."
+          }
+        },
+        {
+          "text": "京都へ 行くたら、あたたかい コートを もって いって ください。",
+          "awkward": {
+            "who": "hana",
+            "text": "「行くなら」か「行ったら」だよ。",
+            "en": "It is \"iku nara\" or \"ittara\"."
+          }
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "tomi",
+      "text": "ノアさん、決めた？",
+      "en": "Noa, have you decided?"
+    },
+    {
+      "type": "reading",
+      "item": "k:決",
+      "display": "決める",
+      "answers": [
+        "きめる"
+      ],
+      "prompt": "Read it: what Noa has to do.",
+      "target": "決"
+    },
+    {
+      "type": "intro",
+      "item": "g:n4-koto-ni-suru"
+    },
+    {
+      "type": "choice",
+      "item": "g:n4-koto-ni-suru",
+      "who": null,
+      "prompt": "Say that you decided to stay in Japan one more year.",
+      "options": [
+        {
+          "text": "もう 一年 日本に のこる ことに しました。",
+          "correct": true
+        },
+        {
+          "text": "もう 一年 日本に のこる ことを しました。",
+          "awkward": {
+            "who": "hana",
+            "text": "「ことに する」だよ。「を」じゃなくて「に」。",
+            "en": "It is \"koto ni suru\", not \"koto o\"."
+          }
+        },
+        {
+          "text": "もう 一年 日本に のこる ことに なりました。",
+          "awkward": {
+            "who": "leo",
+            "text": "それは 他の 人が 決めた ときだよ。自分で 決めたなら 「しました」。",
+            "en": "That is for when others decided. If you decided, \"shimashita\"."
+          }
+        }
+      ]
+    },
+    {
+      "type": "particle",
+      "item": "g:n5-ni",
+      "who": "tomi",
+      "text": "まいにち 日本語を 勉強する こと＿ しました。",
+      "options": [
+        "に",
+        "を",
+        "が",
+        "は"
+      ],
+      "answers": [
+        "に"
+      ],
+      "en": "I decided to study Japanese every day."
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "よかった！ じゃあ、学校の 先生には 言った？",
+      "en": "Great! Then did you tell your teachers?"
+    },
+    {
+      "type": "intro",
+      "item": "g:n4-koto-ni-naru"
+    },
+    {
+      "type": "choice",
+      "item": "g:n4-koto-ni-naru",
+      "who": "tomi",
+      "prompt": "Say: \"It was decided that I will join the next class trip too.\"",
+      "options": [
+        {
+          "text": "つぎの えんそくにも 行く ことに なりました。",
+          "correct": true
+        },
+        {
+          "text": "つぎの えんそくにも 行く ことに しました。",
+          "awkward": {
+            "who": "tomi",
+            "text": "決めたのは 学校ですよね？ それなら 「なりました」。",
+            "en": "The school decided, right? Then \"narimashita\"."
+          }
+        },
+        {
+          "text": "つぎの えんそくにも 行く ことが なりました。",
+          "awkward": {
+            "who": "leo",
+            "text": "「ことに なる」だよ。",
+            "en": "It is \"koto ni naru\"."
+          }
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "leo",
+      "text": "ノアが のこるなら、うれしいな。",
+      "en": "If you stay, I'll be glad."
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "わたしも！ ノアが のこれば、まいにち あえるね。",
+      "en": "Me too! If you stay, we can meet every day.",
+      "expr": "smile"
+    },
+    {
+      "type": "affection",
+      "char": "hana",
+      "delta": 2
+    },
+    {
+      "type": "affection",
+      "char": "leo",
+      "delta": 1
+    },
+    {
+      "type": "affection",
+      "char": "tomi",
+      "delta": 1
+    },
+    {
+      "type": "cg",
+      "id": "genki-staying",
+      "title": "One more year"
+    }
+  ]
+}

@@ -1,0 +1,360 @@
+{
+  "schema": 1,
+  "id": "genki-l13",
+  "order": 113,
+  "track": "genki",
+  "lesson": 13,
+  "title": "はじめての アルバイト",
+  "summary": "Your first shift at Café Aozora. Say what you can and cannot do, list reasons with し, and read how things look.",
+  "covers": "〜られる / 〜える (can do) · が with can-do verbs · 〜し、〜し · 〜そうです (looks like)",
+  "jlpt": "N4",
+  "source": "authored",
+  "bg": "cafe",
+  "characters": {
+    "hana": {
+      "name": "ハナ",
+      "color": "#7cc6b4"
+    },
+    "tomi": {
+      "name": "とみさん",
+      "color": "#c97b5a"
+    },
+    "leo": {
+      "name": "レオ",
+      "color": "#f0a35e"
+    }
+  },
+  "glossary": {
+    "g:n4-potential": {
+      "label": "〜られる / 〜える",
+      "meaning": "can do / be able to",
+      "note": "Ru-verbs add られる (食べる → 食べられる). U-verbs change the last sound to the え-row and add る (飲む → 飲める). する becomes できる, 来る becomes 来られる. The thing you can do usually takes が."
+    },
+    "g:genki-shi": {
+      "label": "〜し、〜し",
+      "meaning": "... and besides, ...",
+      "note": "し joins reasons after plain-form clauses: 安いし、おいしいし、好きです. It hints that there are more reasons than the ones you list."
+    },
+    "g:n4-sou-da-appearance": {
+      "label": "〜そうです",
+      "meaning": "looks like / seems about to",
+      "note": "Attach to the stem of a verb or an adjective to say how something looks: おいしそう, 降りそう. いい becomes よさそう, ない becomes なさそう."
+    },
+    "g:n5-ga-subject": {
+      "label": "〜が",
+      "meaning": "subject marker; object of can-do verbs",
+      "note": "が marks the subject and, with verbs of ability or feeling, the thing that can be done: 日本語が話せる."
+    },
+    "k:店": {
+      "label": "店",
+      "meaning": "shop, store",
+      "reading": "みせ"
+    },
+    "k:作": {
+      "label": "作",
+      "meaning": "make",
+      "reading": "つく(る)"
+    }
+  },
+  "beats": [
+    {
+      "type": "bg",
+      "bg": "cafe"
+    },
+    {
+      "type": "show",
+      "char": "tomi",
+      "expr": "smile",
+      "pos": "left"
+    },
+    {
+      "type": "show",
+      "char": "hana",
+      "expr": "neutral",
+      "pos": "right"
+    },
+    {
+      "type": "say",
+      "who": "tomi",
+      "text": "ノアさん、今日から アルバイトですね。よろしくね。",
+      "en": "Noa, you start your part-time job today. Take care of us."
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "きんちょうしてる？ だいじょうぶ、わたしが そばに いるから。",
+      "en": "Nervous? It's fine, I'll be right here."
+    },
+    {
+      "type": "intro",
+      "item": "g:n4-potential"
+    },
+    {
+      "type": "choice",
+      "item": "g:n4-potential",
+      "who": "tomi",
+      "prompt": "Tomi-san asks if you can carry five plates. Say yes: \"I can carry them.\"",
+      "options": [
+        {
+          "text": "五まい、運べます。",
+          "correct": true
+        },
+        {
+          "text": "五まい、運びられます。",
+          "awkward": {
+            "who": "tomi",
+            "text": "「運びられます」…？ 「運べます」ですよ。",
+            "en": "\"Hakobi-raremasu\"? It is \"hakobemasu\"."
+          }
+        },
+        {
+          "text": "五まい、運ぶます。",
+          "awkward": {
+            "who": "hana",
+            "text": "あれ？ 「運ぶます」じゃなくて…",
+            "en": "Hm? Not \"hakobu-masu\" but..."
+          }
+        }
+      ]
+    },
+    {
+      "type": "intro",
+      "item": "g:n5-ga-subject"
+    },
+    {
+      "type": "particle",
+      "item": "g:n5-ga-subject",
+      "who": "tomi",
+      "text": "ノアさんは コーヒー＿ いれられますか。",
+      "options": [
+        "が",
+        "に",
+        "へ",
+        "の"
+      ],
+      "answers": [
+        "が"
+      ],
+      "en": "Can you make coffee, Noa?",
+      "role": "p:ga/subject",
+      "prompt": "Fill in the particle for what you can do."
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "わたしは コーヒーが いれられるよ。ノアさんは？",
+      "en": "I can make coffee. How about you, Noa?"
+    },
+    {
+      "type": "choice",
+      "item": "g:n4-potential",
+      "who": "hana",
+      "prompt": "Say you cannot speak fast Japanese yet.",
+      "options": [
+        {
+          "text": "まだ 早く 話せません。",
+          "correct": true
+        },
+        {
+          "text": "まだ 早く 話しられません。",
+          "awkward": {
+            "who": "hana",
+            "text": "「話す」は 「話せる」だよ。",
+            "en": "\"Hanasu\" becomes \"hanaseru\"."
+          }
+        },
+        {
+          "text": "まだ 早く 話すできません。",
+          "awkward": {
+            "who": "tomi",
+            "text": "ふふ、「話せません」と 言いましょう。",
+            "en": "Hehe, say \"hanasemasen\"."
+          }
+        }
+      ]
+    },
+    {
+      "type": "show",
+      "char": "leo",
+      "expr": "smile",
+      "pos": "center"
+    },
+    {
+      "type": "say",
+      "who": "leo",
+      "text": "こんにちは！ あ、ノア、もう エプロン してる！",
+      "en": "Hi! Oh, Noa, you already have an apron on!",
+      "expr": "smile"
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "レオ、ケーキを 見て。おいしそうでしょう？",
+      "en": "Leo, look at the cake. Doesn't it look good?"
+    },
+    {
+      "type": "intro",
+      "item": "g:n4-sou-da-appearance"
+    },
+    {
+      "type": "choice",
+      "item": "g:n4-sou-da-appearance",
+      "who": "leo",
+      "prompt": "Say the cake looks delicious.",
+      "options": [
+        {
+          "text": "おいしそうですね。",
+          "correct": true
+        },
+        {
+          "text": "おいしいそうですね。",
+          "awkward": {
+            "who": "leo",
+            "text": "「おいしいそう」じゃなくて 「おいしそう」！",
+            "en": "Not \"oishii-sou\" but \"oishi-sou\"!"
+          }
+        },
+        {
+          "text": "おいしくそうですね。",
+          "awkward": {
+            "who": "hana",
+            "text": "うーん、「い」を とって 「そう」だよ。",
+            "en": "Hmm, drop the \"i\" and add \"sou\"."
+          }
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "tomi",
+      "text": "お客さんが たくさん 来ましたよ。",
+      "en": "Lots of customers have arrived."
+    },
+    {
+      "type": "reading",
+      "item": "k:店",
+      "display": "店",
+      "answers": [
+        "みせ"
+      ],
+      "prompt": "Read the shop sign.",
+      "target": "店"
+    },
+    {
+      "type": "intro",
+      "item": "g:genki-shi"
+    },
+    {
+      "type": "choice",
+      "item": "g:genki-shi",
+      "who": "leo",
+      "prompt": "Tell Leo why you like this shop: cheap, tasty, and kind people.",
+      "options": [
+        {
+          "text": "安いし、おいしいし、人も やさしいし、好きです。",
+          "correct": true
+        },
+        {
+          "text": "安いし、おいしくて、好きです。",
+          "awkward": {
+            "who": "leo",
+            "text": "それは 「て」だね。「し」で 理由を ならべよう！",
+            "en": "That's \"te\". Line up reasons with \"shi\"!"
+          }
+        },
+        {
+          "text": "安いから、おいしいから、好きだ。",
+          "awkward": {
+            "who": "hana",
+            "text": "「から」でも いいけど、「し」は 「それに」の 気もちだよ。",
+            "en": "\"Kara\" works too, but \"shi\" means \"and besides\"."
+          }
+        }
+      ]
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "ノアさん、いそがしいし、むずかしいし、たいへんでしょう？",
+      "en": "Busy, hard, tough... isn't it, Noa?"
+    },
+    {
+      "type": "particle",
+      "item": "g:n5-ga-subject",
+      "who": "hana",
+      "text": "ノアさんは えいご＿ とくいですね。",
+      "options": [
+        "が",
+        "を",
+        "で",
+        "と"
+      ],
+      "answers": [
+        "が"
+      ],
+      "en": "You're good at English, Noa.",
+      "role": "p:ga/subject"
+    },
+    {
+      "type": "reading",
+      "item": "k:作",
+      "display": "作る",
+      "answers": [
+        "つくる"
+      ],
+      "prompt": "Read it: what Tomi-san is making.",
+      "target": "作"
+    },
+    {
+      "type": "say",
+      "who": "tomi",
+      "text": "ノアさん、パンケーキが 作れますか。",
+      "en": "Noa, can you make pancakes?"
+    },
+    {
+      "type": "meaning",
+      "item": "g:n4-potential",
+      "prompt": "What does Tomi-san ask?",
+      "options": [
+        "Can you make pancakes?",
+        "Did you eat pancakes?",
+        "Do you like pancakes?"
+      ],
+      "correct": 0,
+      "display": "作れますか"
+    },
+    {
+      "type": "say",
+      "who": "hana",
+      "text": "作れるし、運べるし、ノアさんは すごいね！",
+      "en": "You can make them and carry them. You're amazing, Noa!",
+      "expr": "smile"
+    },
+    {
+      "type": "affection",
+      "char": "hana",
+      "delta": 2
+    },
+    {
+      "type": "affection",
+      "char": "tomi",
+      "delta": 1
+    },
+    {
+      "type": "affection",
+      "char": "leo",
+      "delta": 1
+    },
+    {
+      "type": "cg",
+      "id": "genki-first-shift",
+      "title": "First shift"
+    },
+    {
+      "type": "say",
+      "who": "tomi",
+      "text": "あしたも おねがいしますね。",
+      "en": "See you tomorrow too, please."
+    }
+  ]
+}
