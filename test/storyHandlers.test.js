@@ -338,7 +338,7 @@ test('story:list puts the Genki path in its own section, in lesson order; story:
   const { handlers } = story();
   const list = await handlers['story:list']();
   assert.ok(list.chapters.every((c) => c.track === 'main'));
-  assert.deepEqual(list.genki.map((c) => c.lesson), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+  assert.deepEqual(list.genki.map((c) => c.lesson), Array.from({ length: 23 }, (_, i) => i + 1));
   assert.ok(list.genki.every((c) => c.covers && c.completed === false));
   const open = await handlers['story:open']('genki-l03');
   const particle = open.scene.beats.find((b) => b.type === 'particle');
@@ -442,4 +442,15 @@ test('Genki lessons expose a "learn first" primer that records its own progress'
   await bad('story:lessonDone', { id: 'genki-l01', accuracy: 2 }, /accuracy/);
   await bad('story:lessonDone', { id: 'n5-ch1', accuracy: 1 }, /no lesson primer/);
   await bad('story:lessonDone', null, /object/);
+});
+
+test('story:genki summarises the Genki path and maps grammar points to the lessons that teach them', async () => {
+  const { handlers } = story();
+  const path = await handlers['story:genki']();
+  assert.ok(path.lessons.length >= 12);
+  assert.deepEqual(path.lessons.slice(0, 2).map((l) => l.lesson), [1, 2]);
+  assert.deepEqual([path.lessons[0].learned, path.lessons[0].storyDone], [false, false]);
+  assert.ok(path.points['g:genki-masu'].some((e) => e.lesson === 3), 'ます is taught in lesson 3');
+  await handlers['story:lessonDone']({ id: path.lessons[0].id, accuracy: 0.9 });
+  assert.equal((await handlers['story:genki']()).lessons[0].learned, true);
 });

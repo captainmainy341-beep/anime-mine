@@ -1,0 +1,403 @@
+{
+  "schema": 1,
+  "id": "genki-l18",
+  "lesson": 18,
+  "title": "Oops!",
+  "tagline": "Tell what happened by itself, what you ended up doing, and where you are in the middle of an action.",
+  "hook": "A cup slips off a tray at Café Aozora. Suddenly you need verbs that change with who caused it, a way to say you ended up doing something, and a way to say what you are in the middle of.",
+  "goals": [
+    "Use intransitive and transitive pairs (が / を)",
+    "Say what you ended up doing with 〜てしまう",
+    "Use 〜てくる and 〜ところだ"
+  ],
+  "minutes": 12,
+  "vocab": [
+    [
+      "割る",
+      "わる",
+      "to break",
+      "💥"
+    ],
+    [
+      "割れる",
+      "われる",
+      "to break (by itself)",
+      "🥛"
+    ],
+    [
+      "落とす",
+      "おとす",
+      "to drop",
+      "⬇️"
+    ],
+    [
+      "落ちる",
+      "おちる",
+      "to fall",
+      "🍂"
+    ],
+    [
+      "開く",
+      "あく",
+      "to open (by itself)",
+      "🚪"
+    ],
+    [
+      "開ける",
+      "あける",
+      "to open (something)",
+      "🔓"
+    ],
+    [
+      "閉まる",
+      "しまる",
+      "to close (by itself)",
+      "🔒"
+    ],
+    [
+      "閉める",
+      "しめる",
+      "to close (something)",
+      "🚪"
+    ],
+    [
+      "点く",
+      "つく",
+      "to turn on (by itself)",
+      "💡"
+    ],
+    [
+      "点ける",
+      "つける",
+      "to turn on (something)",
+      "🔦"
+    ],
+    [
+      "消える",
+      "きえる",
+      "to go out",
+      "🕯️"
+    ],
+    [
+      "消す",
+      "けす",
+      "to turn off",
+      "🔇"
+    ],
+    [
+      "壊れる",
+      "こわれる",
+      "to be broken",
+      "🔧"
+    ],
+    [
+      "壊す",
+      "こわす",
+      "to break (something)",
+      "🪓"
+    ],
+    [
+      "掃除",
+      "そうじ",
+      "cleaning",
+      "🧹"
+    ],
+    [
+      "ほうき",
+      "ほうき",
+      "broom",
+      "🧹"
+    ],
+    [
+      "けが",
+      "けが",
+      "injury",
+      "🩹"
+    ],
+    [
+      "牛乳",
+      "ぎゅうにゅう",
+      "milk",
+      "🥛"
+    ],
+    [
+      "おぼん",
+      "おぼん",
+      "tray",
+      "🍽️"
+    ],
+    [
+      "全部",
+      "ぜんぶ",
+      "all",
+      "💯"
+    ]
+  ],
+  "points": [
+    {
+      "id": "g:genki-jidoushi",
+      "title": "自動詞 / 他動詞（が vs を）",
+      "formula": "thing が 〜る (happens) / person が thing を 〜る (does)",
+      "gist": "Pairs of verbs: it happened, or someone did it.",
+      "explain": [
+        "Many verbs come in pairs. The intransitive verb says something happened to a thing by itself: ドアが あきます, コップが われました. The transitive verb says a person did it: ドアを あけます, コップを わりました.",
+        "The thing takes が with the first and を with the second. 〜ている with the intransitive verb shows the state (ドアが あいている), and 〜てある pairs with the transitive verb (ドアが あけてある)."
+      ],
+      "examples": [
+        {
+          "ja": "ドアが|あきました。",
+          "gloss": "door (subject)|opened by itself",
+          "en": "The door opened."
+        },
+        {
+          "ja": "わたしが|ドアを|あけました。",
+          "gloss": "I (subject)|door (object)|opened it",
+          "en": "I opened the door."
+        },
+        {
+          "ja": "コップが|われました。",
+          "gloss": "cup (subject)|broke",
+          "en": "The cup broke."
+        }
+      ],
+      "tip": "Learn them as pairs: あく / あける, しまる / しめる, つく / つける, きえる / けす.",
+      "watch": "Do not say 「コップを われた」. If the cup is the thing that happened to, use が."
+    },
+    {
+      "id": "g:n4-te-shimau",
+      "title": "〜てしまう",
+      "formula": "verb て-form + しまう",
+      "gist": "Complete it, or end up doing it.",
+      "explain": [
+        "〜てしまう has two meanings. It can mean something is done completely: 宿題を 全部 やって しまいました. Or it can show regret about an unfortunate result: さいふを わすれて しまいました.",
+        "In casual speech 〜てしまう becomes 〜ちゃう (and 〜でしまう becomes 〜じゃう): 食べちゃった, 飲んじゃった."
+      ],
+      "examples": [
+        {
+          "ja": "宿題を|全部|やって|しまいました。",
+          "gloss": "homework (object)|all|doing|ended up",
+          "en": "I finished all the homework."
+        },
+        {
+          "ja": "さいふを|わすれて|しまいました。",
+          "gloss": "wallet (object)|forgetting|ended up",
+          "en": "I ended up forgetting my wallet."
+        },
+        {
+          "ja": "ケーキを|食べちゃった。",
+          "gloss": "cake (object)|ate (casual)",
+          "en": "Oops, I ate the cake."
+        }
+      ],
+      "tip": "Read the mood: a regretful 〜てしまう makes the sentence sound apologetic.",
+      "watch": "〜てしまう is not used with verbs you cannot be sorry about, such as habits."
+    },
+    {
+      "id": "g:n4-te-kuru",
+      "title": "〜てくる / 〜ていく",
+      "formula": "verb て-form + くる / いく",
+      "gist": "Go and come back, or change toward now.",
+      "explain": [
+        "With action verbs, 〜てくる means \"do it and come back\": 買って きます (I will buy it and come back). 〜ていく means \"do it and then go on\": 食べて いきます (I will eat and then leave).",
+        "With change verbs, 〜てくる shows a gradual change that reaches now: 雨が 降って きました, 日本語が わかって きました. 〜ていく points forward in time: だんだん 寒く なって いきます."
+      ],
+      "examples": [
+        {
+          "ja": "コンビニで|ジュースを|買って|きます。",
+          "gloss": "convenience store (at)|juice (object)|buying|will come back",
+          "en": "I'll buy juice at the store and come back."
+        },
+        {
+          "ja": "雨が|降って|きました。",
+          "gloss": "rain (subject)|falling|has come",
+          "en": "It has started to rain."
+        },
+        {
+          "ja": "食べて|いきます。",
+          "gloss": "eating|will go",
+          "en": "I'll eat before I go."
+        }
+      ],
+      "tip": "きます = toward here/now, いきます = away/onward.",
+      "watch": "Use くる only when you come back to where you started or the change reaches now."
+    },
+    {
+      "id": "g:n4-tokoro-da",
+      "title": "〜ところだ",
+      "formula": "verb + ところだ",
+      "gist": "About to, in the middle of, just did.",
+      "explain": [
+        "Dictionary form + ところ: about to do. ている + ところ: in the middle of doing. た-form + ところ: has just done.",
+        "It describes the moment more precisely than 〜ている. 今 食べる ところです (I am about to eat), 今 食べている ところです (I am eating now), 今 食べた ところです (I just ate)."
+      ],
+      "examples": [
+        {
+          "ja": "今|出かける|ところです。",
+          "gloss": "now|go out|about to",
+          "en": "I'm about to leave."
+        },
+        {
+          "ja": "今|ごはんを|食べている|ところです。",
+          "gloss": "now|meal (object)|am eating|in the middle",
+          "en": "I'm in the middle of eating."
+        },
+        {
+          "ja": "今|帰った|ところです。",
+          "gloss": "now|came home|just",
+          "en": "I just got home."
+        }
+      ],
+      "tip": "Three forms, three moments: する, している, した.",
+      "watch": "Do not mix this up with 〜たばかり, which is more about \"recently\" than the exact moment."
+    }
+  ],
+  "drills": [
+    {
+      "type": "gap",
+      "point": 0,
+      "ja": "コップ＿ われました。",
+      "options": [
+        "が",
+        "を",
+        "に",
+        "は"
+      ],
+      "answer": "が",
+      "en": "The cup broke.",
+      "why": "Intransitive: が."
+    },
+    {
+      "type": "pick",
+      "q": "You open the door yourself. Which verb phrase?",
+      "options": [
+        "ドアを あけます。",
+        "ドアが あけます。",
+        "ドアを あきます。",
+        "ドアに あけます。"
+      ],
+      "answer": 0,
+      "why": "Transitive あける takes を.",
+      "point": 0
+    },
+    {
+      "type": "pick",
+      "q": "The door is closed (a state). Which is correct?",
+      "options": [
+        "ドアが しまっています。",
+        "ドアを しまっています。",
+        "ドアが しめています。",
+        "ドアで しまっています。"
+      ],
+      "answer": 0,
+      "why": "しまる: intransitive, state with ている.",
+      "point": 0
+    },
+    {
+      "type": "gap",
+      "point": 1,
+      "ja": "コップを わって ＿ました。",
+      "options": [
+        "しまい",
+        "いき",
+        "くれ",
+        "あげ"
+      ],
+      "answer": "しまい",
+      "en": "I broke the cup.",
+      "why": "て-form + しまいました."
+    },
+    {
+      "type": "pick",
+      "q": "Which is \"I ate all the cake\"?",
+      "options": [
+        "ケーキを 全部 食べて しまいました。",
+        "ケーキを 全部 食べて いきました。",
+        "ケーキを 全部 食べて きました。",
+        "ケーキを 全部 食べて あげました。"
+      ],
+      "answer": 0,
+      "why": "Completion: 〜てしまう.",
+      "point": 1
+    },
+    {
+      "type": "order",
+      "point": 1,
+      "en": "I ended up forgetting my wallet.",
+      "chunks": [
+        "さいふを",
+        "わすれて",
+        "しまいました"
+      ]
+    },
+    {
+      "type": "gap",
+      "point": 2,
+      "ja": "コンビニで 牛乳を 買って ＿ます。",
+      "options": [
+        "き",
+        "い",
+        "しま",
+        "おき"
+      ],
+      "answer": "き",
+      "en": "I'll buy milk at the store and come back.",
+      "why": "Go and come back: 買ってきます."
+    },
+    {
+      "type": "pick",
+      "q": "It has started to rain.",
+      "options": [
+        "雨が 降って きました。",
+        "雨が 降って いきました。",
+        "雨が 降って しまいました。",
+        "雨が 降って おきました。"
+      ],
+      "answer": 0,
+      "why": "Change reaching now: 〜てきた.",
+      "point": 2
+    },
+    {
+      "type": "gap",
+      "point": 3,
+      "ja": "今 ごはんを 食べて いる ＿です。",
+      "options": [
+        "ところ",
+        "こと",
+        "ほう",
+        "つもり"
+      ],
+      "answer": "ところ",
+      "en": "I'm in the middle of eating.",
+      "why": "〜ている ところ."
+    },
+    {
+      "type": "pick",
+      "q": "Which says \"I just got home\"?",
+      "options": [
+        "今 帰った ところです。",
+        "今 帰る ところです。",
+        "今 帰っている ところです。",
+        "今 帰ったの ところです。"
+      ],
+      "answer": 0,
+      "why": "た + ところ.",
+      "point": 3
+    },
+    {
+      "type": "type",
+      "prompt": "Type the reading of 掃除 (cleaning) in hiragana.",
+      "show": "掃除",
+      "answers": [
+        "そうじ"
+      ]
+    },
+    {
+      "type": "type",
+      "prompt": "Type the reading of 牛乳 (milk) in hiragana.",
+      "show": "牛乳",
+      "answers": [
+        "ぎゅうにゅう"
+      ]
+    }
+  ]
+}

@@ -70,3 +70,11 @@ test('the detail sheet offers the lesson first for unlearned genki scenes, and t
   assert.deepEqual(sheetActions(learned), { lesson: 'Review the lesson', lessonPrimary: false, play: 'Play', playPrimary: true, restart: null });
   assert.deepEqual(sheetActions({ ...main[0], saved: true }), { lesson: null, lessonPrimary: false, play: 'Continue', playPrimary: true, restart: 'Start over' });
 });
+
+test('the Genki path is split into Genki I (1-12) and Genki II (13-23) rows', async () => {
+  const { genkiBooks } = await import('../src/renderer/learn/storyHomeModel.mjs');
+  const books = genkiBooks(genkiRows(genki));
+  assert.deepEqual(books.map((b) => [b.name, b.rows[0].lesson, b.rows.at(-1).lesson]), [['Genki I', 1, 12], ['Genki II', 13, 23]]);
+  assert.deepEqual(genkiBooks(genkiRows(genki.slice(0, 12))).map((b) => b.name), ['Genki I']);
+  assert.deepEqual(genkiBooks([]), []);
+});

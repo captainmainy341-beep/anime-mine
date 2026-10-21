@@ -64,7 +64,7 @@ test('malformed lessons are rejected with a reason', () => {
 test('every shipped lesson is valid and has a matching Genki story scene', () => {
   const { lessons, problems } = loadLessons();
   assert.deepEqual(problems, []);
-  assert.deepEqual(lessons.map((l) => l.lesson), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+  assert.deepEqual(lessons.map((l) => l.lesson), Array.from({ length: 23 }, (_, i) => i + 1));
   const scenes = new Map(loadChapters().chapters.map((c) => [c.id, c]));
   for (const lesson of lessons) {
     const scene = scenes.get(lesson.id);

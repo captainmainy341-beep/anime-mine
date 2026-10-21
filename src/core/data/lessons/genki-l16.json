@@ -1,0 +1,370 @@
+{
+  "schema": 1,
+  "id": "genki-l16",
+  "lesson": 16,
+  "title": "If It Rains",
+  "tagline": "Say what happens if, when and even if something else does.",
+  "hook": "The class trip meets a storm, and the whole group is arguing about plans. You need three tools: 〜たら for flexible 'if/when', 〜と for natural results, and 〜ても for 'even if'.",
+  "goals": [
+    "Make plans with 〜たら",
+    "Describe automatic results with 〜と",
+    "Say \"even if\" with 〜ても"
+  ],
+  "minutes": 12,
+  "vocab": [
+    [
+      "傘",
+      "かさ",
+      "umbrella",
+      "☂️"
+    ],
+    [
+      "降る",
+      "ふる",
+      "to fall (rain)",
+      "🌧️"
+    ],
+    [
+      "止む",
+      "やむ",
+      "to stop (rain)",
+      "🌤️"
+    ],
+    [
+      "着く",
+      "つく",
+      "to arrive",
+      "📍"
+    ],
+    [
+      "曲がる",
+      "まがる",
+      "to turn",
+      "↪️"
+    ],
+    [
+      "押す",
+      "おす",
+      "to push, press",
+      "🔘"
+    ],
+    [
+      "春",
+      "はる",
+      "spring",
+      "🌸"
+    ],
+    [
+      "桜",
+      "さくら",
+      "cherry blossom",
+      "🌸"
+    ],
+    [
+      "台風",
+      "たいふう",
+      "typhoon",
+      "🌀"
+    ],
+    [
+      "天気予報",
+      "てんきよほう",
+      "weather forecast",
+      "📺"
+    ],
+    [
+      "濡れる",
+      "ぬれる",
+      "to get wet",
+      "💧"
+    ],
+    [
+      "中止",
+      "ちゅうし",
+      "cancellation",
+      "🚫"
+    ],
+    [
+      "道",
+      "みち",
+      "road, way",
+      "🛣️"
+    ],
+    [
+      "信号",
+      "しんごう",
+      "traffic light",
+      "🚦"
+    ],
+    [
+      "右",
+      "みぎ",
+      "right",
+      "➡️"
+    ],
+    [
+      "左",
+      "ひだり",
+      "left",
+      "⬅️"
+    ],
+    [
+      "まっすぐ",
+      "まっすぐ",
+      "straight",
+      "⬆️"
+    ],
+    [
+      "バス停",
+      "ばすてい",
+      "bus stop",
+      "🚏"
+    ],
+    [
+      "水族館",
+      "すいぞくかん",
+      "aquarium",
+      "🐠"
+    ],
+    [
+      "虹",
+      "にじ",
+      "rainbow",
+      "🌈"
+    ]
+  ],
+  "points": [
+    {
+      "id": "g:n4-tara-conditional",
+      "title": "〜たら",
+      "formula": "plain past + ら",
+      "gist": "The all-round \"if / when\".",
+      "explain": [
+        "Take the plain past form and add ら: 行ったら, 食べたら, 安かったら, 雨だったら. It covers \"if\" and \"once ... has happened\".",
+        "The result can be your own decision, a request or a suggestion: 着いたら、電話して ください (When you arrive, call me)."
+      ],
+      "examples": [
+        {
+          "ja": "雨が|降ったら、|うちに|いましょう。",
+          "gloss": "rain (subject)|if it falls|at home|let us stay",
+          "en": "If it rains, let's stay home."
+        },
+        {
+          "ja": "駅に|着いたら、|電話して|ください。",
+          "gloss": "station (at)|when you arrive|call|please",
+          "en": "When you get to the station, please call me."
+        },
+        {
+          "ja": "安かったら、|買います。",
+          "gloss": "if it is cheap|I will buy",
+          "en": "If it's cheap, I'll buy it."
+        }
+      ],
+      "tip": "Plain past + ら: take it as \"if it has happened\".",
+      "watch": "It does not mean \"past\". 行ったら is still about something that has not happened yet."
+    },
+    {
+      "id": "g:n4-to-conditional",
+      "title": "〜と（natural result）",
+      "formula": "plain non-past + と",
+      "gist": "A result that always follows.",
+      "explain": [
+        "〜と links two events that follow naturally: spring comes and flowers bloom, you press a button and a door opens. It is common for rules, directions and habits.",
+        "Because it is automatic, the second clause cannot be a request, an order or a personal decision. Use 〜たら for those."
+      ],
+      "examples": [
+        {
+          "ja": "春に|なると、|桜が|さきます。",
+          "gloss": "spring (to)|when it becomes|cherry trees (subject)|bloom",
+          "en": "When spring comes, the cherry trees bloom."
+        },
+        {
+          "ja": "この|ボタンを|おすと、|ドアが|あきます。",
+          "gloss": "this|button (object)|if you press|door (subject)|opens",
+          "en": "When you press this button, the door opens."
+        },
+        {
+          "ja": "右に|曲がると、|えきが|あります。",
+          "gloss": "to the right|if you turn|station (subject)|is",
+          "en": "If you turn right, there is a station."
+        }
+      ],
+      "tip": "Good for directions: まっすぐ 行くと、左に あります.",
+      "watch": "You cannot say 「着くと、電話してください」. Switch to 〜たら."
+    },
+    {
+      "id": "g:n4-te-mo-even-if",
+      "title": "〜ても（even if）",
+      "formula": "て-form + も",
+      "gist": "Say \"even if / no matter if\".",
+      "explain": [
+        "Use the て-form plus も: 雨が 降っても、行きます. い-adjectives use くても (高くても), nouns and な-adjectives use でも (日曜日でも, 好きでなくても).",
+        "With いくら or どんなに it becomes \"no matter how\": いくら 食べても、ふとりません."
+      ],
+      "examples": [
+        {
+          "ja": "雨が|降っても、|行きます。",
+          "gloss": "rain (subject)|even if it falls|I will go",
+          "en": "Even if it rains, I'll go."
+        },
+        {
+          "ja": "高くても、|買います。",
+          "gloss": "even if it is expensive|I will buy",
+          "en": "Even if it's expensive, I'll buy it."
+        },
+        {
+          "ja": "日曜日でも、|はたらきます。",
+          "gloss": "even on Sunday|I will work",
+          "en": "I'll work even on Sundays."
+        }
+      ],
+      "tip": "いくら + verb ても = no matter how much.",
+      "watch": "To say \"even though\" with a surprise use のに instead: 雨が降っているのに、行きます."
+    }
+  ],
+  "drills": [
+    {
+      "type": "gap",
+      "point": 0,
+      "ja": "駅に 着い＿、電話して ください。",
+      "options": [
+        "たら",
+        "たり",
+        "ても",
+        "ので"
+      ],
+      "answer": "たら",
+      "en": "When you arrive at the station, please call.",
+      "why": "Plain past + ら."
+    },
+    {
+      "type": "pick",
+      "q": "Which means \"If it is cheap, I will buy it\"?",
+      "options": [
+        "安かったら、買います。",
+        "安いたら、買います。",
+        "安くたら、買います。",
+        "安かたら、買います。"
+      ],
+      "answer": 0,
+      "why": "い-adj past: 安かった + ら.",
+      "point": 0
+    },
+    {
+      "type": "order",
+      "point": 0,
+      "en": "If it rains, I will stay home.",
+      "chunks": [
+        "雨が",
+        "降ったら、",
+        "うちに",
+        "います"
+      ]
+    },
+    {
+      "type": "gap",
+      "point": 1,
+      "ja": "春に なる＿、桜が さきます。",
+      "options": [
+        "と",
+        "たら",
+        "て",
+        "に"
+      ],
+      "answer": "と",
+      "en": "When spring comes, the cherry trees bloom.",
+      "why": "Natural result: と."
+    },
+    {
+      "type": "pick",
+      "q": "Which sentence is natural with と?",
+      "options": [
+        "この ボタンを おすと、ドアが あきます。",
+        "この ボタンを おすと、ドアを あけて ください。",
+        "この ボタンを おすと、あけましょう。",
+        "この ボタンを おすと、あけたいです。"
+      ],
+      "answer": 0,
+      "why": "と is only for automatic results.",
+      "point": 1
+    },
+    {
+      "type": "pick",
+      "q": "You give directions: \"If you turn right, there is a station.\"",
+      "options": [
+        "右に 曲がると、駅が あります。",
+        "右に 曲がるたら、駅が あります。",
+        "右に 曲がったと、駅が あります。",
+        "右に 曲がるて、駅が あります。"
+      ],
+      "answer": 0,
+      "why": "Dictionary form + と.",
+      "point": 1
+    },
+    {
+      "type": "gap",
+      "point": 2,
+      "ja": "雨が 降っ＿、行きます。",
+      "options": [
+        "ても",
+        "たら",
+        "ると",
+        "ので"
+      ],
+      "answer": "ても",
+      "en": "Even if it rains, I'll go.",
+      "why": "て-form + も."
+    },
+    {
+      "type": "pick",
+      "q": "Which means \"Even if it is expensive, I will buy it\"?",
+      "options": [
+        "高くても、買います。",
+        "高いても、買います。",
+        "高でも、買います。",
+        "高かてを、買います。"
+      ],
+      "answer": 0,
+      "why": "い-adj: くても.",
+      "point": 2
+    },
+    {
+      "type": "order",
+      "point": 2,
+      "en": "No matter how much I eat, I do not get fat.",
+      "chunks": [
+        "いくら",
+        "食べても、",
+        "ふとりません"
+      ]
+    },
+    {
+      "type": "pick",
+      "q": "Which one means \"umbrella\"?",
+      "options": [
+        "傘",
+        "雨",
+        "虹",
+        "桜"
+      ],
+      "answer": 0,
+      "why": "傘 (かさ)."
+    },
+    {
+      "type": "type",
+      "prompt": "Type the reading of 傘 (umbrella) in hiragana.",
+      "show": "傘",
+      "answers": [
+        "かさ"
+      ]
+    },
+    {
+      "type": "type",
+      "prompt": "Type the reading of 台風 (typhoon) in hiragana.",
+      "show": "台風",
+      "answers": [
+        "たいふう"
+      ]
+    }
+  ]
+}
