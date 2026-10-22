@@ -43,6 +43,21 @@ test('Sync uses filled ink primary styling', () => {
   assert.match(anki, /\.ink-anki-btn\.is-primary\s*\{[^}]*background: var\(--ink\);[^}]*color: var\(--paper\);/);
 });
 
+test('compact deck panels fit five complete rows and keep extra decks internally scrollable', () => {
+  const compact = anki.split('@media (max-width: 1300px) {')[1].split('@media (max-width: 720px)')[0];
+  const height = (selector) => Number(compact.match(new RegExp(`${selector} \\{ height: (\\d+)px;`))[1]);
+  const panelHeight = height('\\.anki \\.ink-anki-decks');
+  assert.equal(panelHeight, height('\\.anki \\.ink-anki-glance'), 'paired panels stay aligned');
+  const rowHeight = height('\\.anki \\.ink-deck-row');
+  // Border-box budget: panel borders (3), padding (32), caption (36), table gap (16),
+  // table borders (3), header (36), actions gap (12), buttons (40).
+  const bodyHeight = panelHeight - (3 + 32 + 36 + 16 + 3 + 36 + 12 + 40);
+  assert.ok(bodyHeight >= 5 * rowHeight, `${bodyHeight}px body must fit five ${rowHeight}px rows`);
+  assert.match(anki, /\.anki \.ink-deck-body\s*\{[^}]*min-height: 0;[^}]*overflow-y: auto;/);
+  assert.match(anki, /\.anki \.ink-anki-actions\s*\{[^}]*flex: none;/, 'actions cannot shrink when decks overflow');
+  assert.match(anki, /\.anki \.ink-anki-decks\s*\{[^}]*height: 500px;/, 'desktop height is unchanged');
+});
+
 test('compact tier is shared, bounded and does not wrap the Anki strip', () => {
   for (const css of [kit, anki, source('src/renderer/css/ink-theme.css')]) assert.ok(css.includes('@media (max-width: 1300px)'));
   assert.match(kit, /\.ink-screen \{ padding: 18px 20px 22px 18px; \}/);

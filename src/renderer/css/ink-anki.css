@@ -761,7 +761,9 @@
   .anki .ink-anki-strip-btn, .anki .seg button { padding: 0 5px; font-size: 10px; letter-spacing: 0; }
   .anki .ink-anki-top { grid-template-columns: minmax(0, 640fr) minmax(0, 528fr); gap: 12px; }
   .anki .ink-anki-body { margin-top: 12px; }
-  .anki .ink-anki-decks { height: 400px; min-width: 0; padding: 16px 14px; }
+  /* 420px leaves 242px for five 48px rows after borders, padding, tag,
+     table header and actions. Extra decks scroll in the existing bounded body. */
+  .anki .ink-anki-decks { height: 420px; min-width: 0; padding: 16px 14px; }
   .anki .ink-deck-head, .anki .ink-deck-row {
     grid-template-columns: minmax(0, 1fr) 34px 34px 34px 26px; padding-left: 10px;
   }
@@ -774,7 +776,7 @@
   .anki .ink-anki-actions { gap: 6px; margin-top: 12px; }
   .anki .ink-anki-btn { height: 40px; max-height: 48px; gap: 5px; padding: 0 6px; font-size: clamp(10px, 1.1vw, 14px); }
   .anki .ink-anki-btn .doodle { width: 13px; height: 13px; }
-  .anki .ink-anki-glance { height: 400px; min-width: 0; padding: 16px 18px; }
+  .anki .ink-anki-glance { height: 420px; min-width: 0; padding: 16px 18px; }
   .anki .ink-anki-glance-title { margin-top: 10px; font-size: clamp(25px, 2.7vw, 35px); line-height: 46px; }
   .anki .ink-anki-glance-sub { font-size: 13px; line-height: 20px; }
   .anki .ink-anki-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 16px; }
