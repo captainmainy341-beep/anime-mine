@@ -19,7 +19,12 @@
   align-items: center;
   justify-content: space-between;
   gap: 16px;
+  height: 25px;
   min-height: 25px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
   margin-bottom: 2px;
   border-bottom: 1.5px solid var(--ink);
 }
@@ -355,10 +360,11 @@
 }
 .anki .ink-anki-btn.is-primary {
   border-width: 3px;
-  background: var(--paper);
-  color: var(--ink);
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--paper);
 }
-.anki .ink-anki-btn.is-primary:hover:not(:disabled) { background: var(--paper-2); color: var(--ink); }
+.anki .ink-anki-btn.is-primary:hover:not(:disabled) { background: var(--ink); color: var(--paper); }
 .anki .ink-anki-actions.is-form { gap: 10px; }
 .anki .ink-anki-deck-input {
   flex: 1 1 auto;
@@ -745,18 +751,51 @@
   .anki .ink-anki-heat { height: auto; min-height: 292px; }
 }
 
-@media (max-width: 1150px) {
-  .anki .ink-anki-top { grid-template-columns: minmax(0, 1fr); }
-  .anki .ink-anki-decks { height: auto; min-height: 440px; }
-  .anki .ink-anki-glance { height: auto; }
-  .anki .ink-anki-glance-title { font-size: 40px; line-height: 56px; }
-  .anki .ink-deck-head,
-  .anki .ink-deck-row { grid-template-columns: minmax(0, 1fr) 58px 62px 62px 44px; padding-left: 16px; }
+/* Shared compact tier (ink-kit.css): preserve the two-panel proportions, not a tall stacked dashboard. */
+@media (max-width: 1300px) {
+  .anki.ink-screen { padding: 6px 20px 22px 18px; }
+  .anki .ink-anki-strip { gap: 10px; }
+  .anki .ink-anki-tabs { flex: none; gap: 12px; }
+  .anki .ink-anki-tab { font-size: 10px; letter-spacing: 0.5px; }
+  .anki .ink-anki-strip-actions { gap: 6px; }
+  .anki .ink-anki-strip-btn, .anki .seg button { padding: 0 5px; font-size: 10px; letter-spacing: 0; }
+  .anki .ink-anki-top { grid-template-columns: minmax(0, 640fr) minmax(0, 528fr); gap: 12px; }
+  .anki .ink-anki-body { margin-top: 12px; }
+  .anki .ink-anki-decks { height: 400px; min-width: 0; padding: 16px 14px; }
+  .anki .ink-deck-head, .anki .ink-deck-row {
+    grid-template-columns: minmax(0, 1fr) 34px 34px 34px 26px; padding-left: 10px;
+  }
+  .anki .ink-deck-head-cell { font-size: 9px; letter-spacing: 0; }
+  .anki .ink-deck-row { height: 48px; }
+  .anki .ink-deck-name { font-size: clamp(13px, 1.3vw, 17px); line-height: 22px; }
+  .anki .ink-deck-sub { font-size: 10px; line-height: 14px; white-space: nowrap; }
+  .anki .ink-deck-count { font-size: 16px; line-height: 24px; }
+  .anki .ink-deck-more { width: 24px; height: 28px; }
+  .anki .ink-anki-actions { gap: 6px; margin-top: 12px; }
+  .anki .ink-anki-btn { height: 40px; max-height: 48px; gap: 5px; padding: 0 6px; font-size: clamp(10px, 1.1vw, 14px); }
+  .anki .ink-anki-btn .doodle { width: 13px; height: 13px; }
+  .anki .ink-anki-glance { height: 400px; min-width: 0; padding: 16px 18px; }
+  .anki .ink-anki-glance-title { margin-top: 10px; font-size: clamp(25px, 2.7vw, 35px); line-height: 46px; }
+  .anki .ink-anki-glance-sub { font-size: 13px; line-height: 20px; }
+  .anki .ink-anki-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 16px; }
+  .anki .ink-anki-stat { min-width: 0; overflow: hidden; height: 86px; padding: 4px; }
+  .anki .ink-anki-stat b { max-width: 100%; overflow: hidden; font-size: clamp(20px, 2.3vw, 30px); line-height: 40px; white-space: nowrap; }
+  .anki .ink-anki-stat span { font-size: 9px; letter-spacing: 0; }
+  .anki .ink-anki-done { margin-top: 14px; gap: 6px; }
+  .anki .ink-anki-done-label, .anki .ink-anki-done-value { font-size: 10px; }
+  .anki .ink-anki-glance .ink-bigbtn.ink-anki-studynow {
+    height: 48px; max-height: 48px; margin-top: 18px; padding: 0 14px;
+    font-size: clamp(17px, 1.9vw, 25px); line-height: 32px; white-space: nowrap;
+  }
+  .anki .ink-anki-studynow .doodle { width: 24px; height: 24px; }
+  .anki .ink-anki-heat { padding: 16px 18px; }
 }
 
 @media (max-width: 720px) {
   .anki.ink-screen { padding: 6px 16px 22px 12px; }
-  .anki .ink-anki-strip { flex-wrap: wrap; gap: 8px; padding-bottom: 4px; }
+  .anki .ink-anki-strip { flex-wrap: nowrap; gap: 8px; }
+  .anki .ink-anki-top { grid-template-columns: minmax(0, 1fr); }
+  .anki .ink-anki-decks, .anki .ink-anki-glance { height: auto; min-height: 360px; }
   .anki .ink-anki-tabs { gap: 14px; overflow-x: auto; }
   .anki .ink-anki-strip-actions { gap: 8px; }
   .anki .ink-anki-actions { flex-wrap: wrap; }

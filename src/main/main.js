@@ -1,6 +1,6 @@
 const path = require('path');
 const { fileURLToPath } = require('url');
-const { app, BrowserWindow, dialog, ipcMain } = require('electron');
+const { app, BrowserWindow, Menu, dialog, ipcMain } = require('electron');
 const { createServices } = require('./services');
 const { createStoryHandlers } = require('./storyHandlers');
 
@@ -30,6 +30,18 @@ function createWindow() {
       preload: path.join(__dirname, 'preload.js'),
     },
   });
+  // file:// zoom is persisted by Chromium; reset it on every navigation/reload.
+  const resetZoom = () => {
+    win.webContents.setZoomFactor(1);
+    win.webContents.setVisualZoomLevelLimits(1, 1);
+  };
+  win.webContents.on('dom-ready', resetZoom);
+  win.webContents.on('did-finish-load', resetZoom);
+  win.webContents.on('before-input-event', (event, input) => {
+    if ((input.meta || input.control) && ['+', '=', '-', '_', '0', 'Add', 'Subtract'].includes(input.key)) {
+      event.preventDefault();
+    }
+  });
   win.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
   win.webContents.on('will-navigate', (event, url) => {
     if (!isAppUrl(url)) event.preventDefault();
@@ -48,6 +60,17 @@ function registerHandlers(handlers) {
 
 app.whenReady()
   .then(async () => {
+    // Keep native editing/window/devtools shortcuts, but no page-zoom menu roles.
+    Menu.setApplicationMenu(Menu.buildFromTemplate([
+      ...(process.platform === 'darwin' ? [{ role: 'appMenu' }] : []),
+      { role: 'fileMenu' },
+      { role: 'editMenu' },
+      { label: 'View', submenu: [
+        { role: 'reload' }, { role: 'forceReload' }, { role: 'toggleDevTools' },
+        { type: 'separator' }, { role: 'togglefullscreen' },
+      ] },
+      { role: 'windowMenu' },
+    ]));
     services = createServices({ dataDir: app.getPath('userData'), dialog, notify: send });
     registerHandlers(services.handlers);
     const story = createStoryHandlers({

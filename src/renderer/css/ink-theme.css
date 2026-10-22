@@ -114,6 +114,18 @@ body { flex-direction: row; }
 .learn .learn-tab[aria-selected='true']::after { background: var(--ink-red); }
 .learn .learn-tab:focus-visible { outline: 2px solid var(--ink); outline-offset: -3px; }
 
+/* Same compact threshold as ink-kit.css; retain the 200px Figma nav above it. */
+@media (max-width: 1300px) {
+  .topbar { width: 160px; padding: 24px 0 28px; }
+  .brand { padding: 0 20px; font-size: 23px; line-height: 34px; }
+  #nav { gap: 8px; margin-top: 34px; }
+  #nav button { height: 38px; padding: 8px 20px 0; font-size: 12px; line-height: 18px; }
+  .nav-en { width: 86px; letter-spacing: 1px; }
+  .page.learn { padding: 18px 20px 22px 18px; }
+  .page.learn:has(.ink-explore) { padding: 0; }
+  .page.learn:has(.ink-explore) .learn-shell-nav { margin-top: 18px; padding: 0 20px 0 18px; }
+}
+
 @media (max-width: 760px) {
   .page.learn { padding: 18px 20px 24px; }
   .page.learn:has(.ink-explore) { padding: 0; }
