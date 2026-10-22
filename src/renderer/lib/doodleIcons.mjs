@@ -3,6 +3,7 @@ import { h } from './ui.mjs';
 // Hand-drawn line icons. Slightly off-true curves on purpose, so nothing reads as a stock glyph or an emoji.
 // Static authored SVG only; this module never takes study content.
 const paths = {
+  search: '<path d="M15.8 15.8L21 21.2M17.4 10.2C17.6 14.4 14.2 17.6 10.2 17.4C6.2 17.2 3.2 14.2 3.4 10.2C3.6 6.2 6.4 3.2 10.4 3.4C14.4 3.6 17.2 6.4 17.4 10.2Z"/>',
   play: '<path d="M7.6 4.8C10.2 6.4 15.6 10 18.6 12.1C15.5 14.2 10.2 17.6 7.4 19.3C7.2 14.6 7.7 9.4 7.6 4.8Z"/>',
   check: '<path d="M4.6 12.6C6.4 14.1 7.8 15.6 9.2 17.4C12.4 12.6 15.8 8.6 19.6 5.6"/>',
   close: '<path d="M5.5 5.2C9 8.8 14.6 14.8 18.6 18.9M18.4 5.4C14.8 9 9.4 14.4 5.3 18.6"/>',

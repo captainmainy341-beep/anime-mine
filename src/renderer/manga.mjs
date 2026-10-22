@@ -3,6 +3,10 @@ import { createLimiter } from './lib/libraryView.mjs';
 import { progressLabel } from './lib/mangaReader.mjs';
 import { attempt, fill, h, toast } from './lib/ui.mjs';
 
+import { inkHeader } from './lib/inkHeader.mjs';
+import { doodle } from './lib/doodleIcons.mjs';
+import { LIBRARY_FILTERS, LIBRARY_SORTS, libraryRows, filterLibrary, libraryStats, volumeLabel, volumeProgress } from './manga/libraryModel.mjs';
+
 const api = window.api;
 const coverLoad = createLimiter(3);
 const PRIVACY =
@@ -13,6 +17,10 @@ export function mountManga(container) {
   let seriesList = [];
   let selected = null;
   let reader = null;
+  let progress = {};
+  let search = '';
+  let filter = 'All';
+  let sort = 'Recently read';
   const indexRows = new Map();
   const pendingCovers = new Map();
   const covers = 'IntersectionObserver' in window ? new IntersectionObserver(onCoverVisible, { rootMargin: '200px' }) : null;
@@ -27,24 +35,29 @@ export function mountManga(container) {
     h('label', { class: 'manga-option' }, aiBox, h('span', {}, 'AI OCR fallback (sends page images to your configured AI provider)')),
     h('p', { class: 'muted' }, PRIVACY),
   );
+  const hero = inkHeader({ title: 'Manga' });
+  hero.querySelector('.ink-hero-titleplate').append(h('span', { class: 'manga-ja', lang: 'ja' }, '漫画'));
+  hero.append(h('div', { class: 'manga-head-actions' },
+    h('button', { class: 'manga-ocr-button', onclick: () => { options.hidden = !options.hidden; } }, 'OCR options'),
+    h('button', { onclick: addFolder }, 'Add folder', doodle('plus'))));
+  const toolbar = h('div', { class: 'manga-toolbar' },
+    h('label', { class: 'manga-search' }, doodle('search'), h('input', { type: 'search', placeholder: 'Search manga', 'aria-label': 'Search manga', oninput: event => { search = event.target.value; renderBody(); } })),
+    h('div', { class: 'manga-filters', 'aria-label': 'Filter shelf' }, LIBRARY_FILTERS.map(name => h('button', { class: 'ink-toggle', 'aria-pressed': name === filter ? 'true' : 'false', onclick: event => {
+      filter = name;
+      for (const button of event.currentTarget.parentNode.children) button.setAttribute('aria-pressed', String(button === event.currentTarget));
+      renderBody();
+    } }, name))),
+    h('button', { class: 'manga-sort', onclick: event => { sort = LIBRARY_SORTS[(LIBRARY_SORTS.indexOf(sort) + 1) % LIBRARY_SORTS.length]; event.currentTarget.textContent = `Sort: ${sort}`; renderBody(); } }, `Sort: ${sort}`));
   const root = h(
     'section',
-    { class: 'page manga-view' },
-    h(
-      'div',
-      { class: 'page-head' },
-      h('h1', {}, 'Manga'),
-      h(
-        'div',
-        { class: 'manga-head-actions' },
-        h('button', { class: 'ghost', onclick: () => { options.hidden = !options.hidden; } }, 'OCR options'),
-        h('button', { class: 'primary', onclick: addFolder }, 'Add folder'),
-      ),
-    ),
+    { class: 'page manga-view ink-screen' },
+    hero,
     options,
     continueRow,
+    toolbar,
     body,
-    h('details', { class: 'folders-box manga-folders' }, h('summary', {}, 'Folders'), folderList),
+    h('details', { class: 'ink-panel manga-folders' }, h('summary', {}, h('span', { class: 'ink-tag' }, 'Folders')), folderList,
+      h('button', { class: 'small', onclick: loadAll }, doodle('sync'), ' Rescan folders')),
   );
   container.append(root);
 
@@ -60,12 +73,15 @@ export function mountManga(container) {
         api.manga.continueReading(),
       ]);
       if (!alive) return;
+      const entries = await Promise.all(list.flatMap(series => series.volumes.map(async volume => [volume.id, await api.manga.getProgress(volume.id)])));
+      if (!alive) return;
+      progress = Object.fromEntries(entries);
       seriesList = list;
       selected = seriesList.find((series) => series.id === selected?.id) ?? null;
       aiBox.checked = settings.manga?.aiOcr === true;
       renderFolders(folders);
-      renderContinue(continued);
       renderBody();
+      renderContinue(continued);
     });
   }
 
@@ -80,17 +96,21 @@ export function mountManga(container) {
     continueRow.hidden = !found;
     if (!found) return fill(continueRow);
     const { series, volume } = found;
-    fill(
-      continueRow,
-      h('h2', {}, 'Continue reading'),
-      h(
-        'button',
-        { class: 'manga-continue-card', onclick: () => openVolumeReader(series, volume, continued.page) },
-        h('span', { class: 'manga-continue-title' }, series.title),
-        h('span', { class: 'muted' }, volume.title),
-        h('span', { class: 'manga-progress-label' }, progressLabel([continued.page], volume.pageCount)),
-      ),
-    );
+    const stats = libraryStats(libraryRows(seriesList, progress));
+    fill(continueRow,
+      coverFrame(series, volume, 0, false, true),
+      h('div', { class: 'manga-continue-card ink-card' },
+        h('span', { class: 'ink-tag' }, 'Continue reading'),
+        h('h2', {}, series.title),
+        h('p', { class: 'manga-meta' }, `${volume.title} · page ${continued.page + 1} of ${volume.pageCount}`),
+        h('div', { class: 'manga-resume-row' }, track(volumeProgress(volume, progress[volume.id]).percent),
+          h('button', { class: 'manga-resume', onclick: () => openVolumeReader(series, volume, continued.page) }, 'Resume', doodle('play')))),
+      h('div', { class: 'manga-stats ink-card' }, Object.entries(stats).map(([label, value]) =>
+        h('div', {}, h('strong', { class: label === 'new' ? 'manga-new-count' : '' }, value), h('span', {}, label)))));
+  }
+
+  function track(percent) {
+    return h('span', { class: 'ink-track', role: 'progressbar', 'aria-label': 'Reading progress', 'aria-valuemin': '0', 'aria-valuemax': '100', 'aria-valuenow': Math.round(percent) }, h('i', { class: 'ink-track-fill', style: `width:${percent}%` }));
   }
 
   function renderFolders(folders) {
@@ -112,25 +132,40 @@ export function mountManga(container) {
     covers?.disconnect();
     pendingCovers.clear();
     indexRows.clear();
+    toolbar.hidden = !!selected || !seriesList.length;
     if (!seriesList.length) return fill(body, emptyState());
     if (selected) return fill(body, seriesView(selected));
-    fill(body, h('div', { class: 'manga-grid' }, seriesList.map(coverCard)));
+    const rows = filterLibrary(libraryRows(seriesList, progress), { search, filter, sort });
+    const sections = [[rows.filter(row => row.started), 'On your shelf'], [rows.filter(row => !row.started), 'New in your folders']];
+    fill(body, sections.filter(([items]) => items.length).map(([items, title]) => h('section', { class: 'manga-shelf' },
+      h('h2', { class: 'ink-tag' }, title), h('div', { class: 'manga-grid' }, items.map(coverCard)))));
+    if (!rows.length) fill(body, h('p', { class: 'manga-no-results', role: 'status' }, 'No titles match your filters.'));
   }
 
-  function coverCard(series) {
-    const img = h('img', { class: 'manga-cover-img', alt: '' });
-    const count = series.volumes.length;
+  function coverCard(row, index) {
+    const { series, volume } = row;
     const card = h(
       'button',
       { class: 'manga-cover', onclick: () => { selected = series; renderBody(); } },
-      h('div', { class: 'manga-cover-frame' }, img),
+      coverFrame(series, volume, index, row.isNew),
       h('span', { class: 'manga-cover-title' }, series.title),
-      h('span', { class: 'muted' }, `${count} ${count === 1 ? 'volume' : 'volumes'}`),
+      h('span', { class: 'manga-meta' }, `${volumeLabel(series, volume)} · ${row.finished ? 'Finished' : row.started ? progressLabel([progress[volume.id]?.page ?? 0], volume.pageCount) : 'Unread'}`),
+      track(row.percent),
     );
-    const first = series.volumes[0];
-    if (first) {
-      const load = () => loadCover(img, series, first);
-      if (covers) {
+    return card;
+  }
+
+  function coverFrame(series, volume, index, isNew = false, eager = false) {
+    const img = h('img', { class: 'manga-cover-img', alt: '', hidden: true });
+    const card = h('div', { class: `manga-cover-frame manga-pattern-${index % 4}` },
+      h('span', { class: 'manga-cover-pattern' }),
+      h('span', { class: 'manga-cover-letter' }, series.title.match(/[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}]+/u)?.[0]?.slice(0, 4) || series.title.split(/\s+/)[0]),
+      h('span', { class: 'manga-cover-caption' }, series.title), img,
+      h('span', { class: 'manga-vol-tag' }, volumeLabel(series, volume).toUpperCase()),
+      isNew && h('span', { class: 'ink-stamp' }, 'NEW!'));
+    if (volume) {
+      const load = () => loadCover(img, series, volume);
+      if (covers && !eager) {
         pendingCovers.set(card, load);
         covers.observe(card);
       } else {
@@ -153,7 +188,8 @@ export function mountManga(container) {
   function loadCover(img, series, volume) {
     return coverLoad(() => api.manga.page({ seriesId: series.id, volId: volume.id, index: 0 }))
       .then(({ dataUrl }) => {
-        if (alive) img.src = dataUrl;
+        if (alive && dataUrl) { img.src = dataUrl; img.hidden = false; }
+        img.onerror = () => { img.hidden = true; };
       })
       .catch(() => {});
   }
