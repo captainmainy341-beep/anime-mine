@@ -278,7 +278,8 @@
 .manga-view .manga-cover-caption { padding: 0 4px 5px; text-align: center; font-size: 8px; text-transform: uppercase; letter-spacing: 1px; white-space: nowrap; overflow: hidden; }
 .manga-view .manga-cover-img { position: absolute; inset: 0; background: var(--paper); }
 .manga-view .manga-cover-img[hidden] { display: none; }
-.manga-view .manga-vol-tag { position: absolute; top: 7px; right: 6px; padding: 2px 7px; background: var(--paper); border: 1px solid var(--ink); font: 500 10px var(--font); letter-spacing: 1px; }
+.manga-view .has-cover > :is(.manga-cover-pattern, .manga-cover-letter, .manga-cover-caption) { visibility: hidden; }
+.manga-view .manga-vol-tag { position: absolute; top: 7px; right: 6px; padding: 2px 7px; background: var(--paper); border: 1px solid var(--ink); font: 500 10px var(--font); letter-spacing: 1px; z-index: 1; }
 .manga-view .manga-cover-frame .ink-stamp { position: absolute; top: 7px; left: 8px; width: auto; height: auto; border-width: 1.5px; padding: 3px 7px; font: 900 12px var(--font); transform: rotate(-9deg); z-index: 1; }
 .manga-view .manga-cover-title { font: 700 13px/1.4 var(--font); }
 .manga-view .manga-cover > .ink-track { height: 7px; margin-top: 3px; }
@@ -289,6 +290,12 @@
 .manga-view .manga-series h2 { font-family: var(--font); }
 .manga-view .manga-volume, .manga-view .manga-empty { border: 3px solid var(--ink); border-radius: 0; background: var(--paper); }
 @media (max-width: 1300px) {
+  .manga-view > .ink-hero { height: 84px; min-height: 84px; --ink-hero-title: 36px; }
+  .manga-view .ink-hero-titleplate { top: 7px; height: 64px; }
+  .manga-view .manga-ja { font-size: 24px; }
+  .manga-view .manga-head-actions { top: 20px; }
+  .manga-view .manga-head-actions button { height: 38px; font-size: 12px; }
+  .manga-view .manga-head-actions .manga-ocr-button { height: 28px; font-size: 11px; }
   .manga-view .manga-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 24px; }
   .manga-view .manga-cover::after { right: -24px; }
   .manga-view .manga-cover:nth-child(6n)::after { right: -24px; }

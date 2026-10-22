@@ -188,8 +188,17 @@ export function mountManga(container) {
   function loadCover(img, series, volume) {
     return coverLoad(() => api.manga.page({ seriesId: series.id, volId: volume.id, index: 0 }))
       .then(({ dataUrl }) => {
-        if (alive && dataUrl) { img.src = dataUrl; img.hidden = false; }
-        img.onerror = () => { img.hidden = true; };
+        if (!alive || !dataUrl) return;
+        img.onload = () => {
+          if (!alive) return;
+          img.hidden = false;
+          img.parentElement?.classList.add('has-cover');
+        };
+        img.onerror = () => {
+          img.hidden = true;
+          img.parentElement?.classList.remove('has-cover');
+        };
+        img.src = dataUrl;
       })
       .catch(() => {});
   }

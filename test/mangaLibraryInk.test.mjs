@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
 import { libraryRows, filterLibrary, libraryStats, volumeProgress, volumeLabel, LIBRARY_SORTS } from '../src/renderer/manga/libraryModel.mjs';
 const series = [
   { id: 'a', title: 'Zebra', volumes: [{ id: 'a1', pageCount: 10 }, { id: 'a2', pageCount: 20 }] },
@@ -8,6 +9,19 @@ const series = [
 ];
 const progress = { a1: { page: 3, updatedAt: 10 }, c1: { page: 4, updatedAt: 20 } };
 const rows = libraryRows(series, progress);
+test('real covers fill their ink frame without fallback title overlays', async () => {
+  const css = await readFile(new URL('../src/renderer/css/manga.css', import.meta.url), 'utf8');
+  assert.match(css, /\.manga-cover-img\s*\{[^}]*width: 100%;[^}]*height: 100%;[^}]*object-fit: cover;/);
+  assert.match(css, /\.manga-view \.manga-cover-img\s*\{[^}]*position: absolute; inset: 0;/);
+  assert.match(css, /\.has-cover > :is\(\.manga-cover-pattern, \.manga-cover-letter, \.manga-cover-caption\) \{ visibility: hidden;/);
+  assert.match(css, /\.manga-vol-tag\s*\{[^}]*z-index: 1;/);
+  assert.match(css, /\.manga-cover-frame \.ink-stamp\s*\{[^}]*z-index: 1;/);
+});
+test('compact manga hero overrides desktop height only at the shared breakpoint', async () => {
+  const css = await readFile(new URL('../src/renderer/css/manga.css', import.meta.url), 'utf8');
+  assert.match(css, /\.manga-view > \.ink-hero \{ height: 104px; min-height: 104px;/);
+  assert.match(css, /@media \(max-width: 1300px\) \{\s*\.manga-view > \.ink-hero \{ height: 84px; min-height: 84px;/);
+});
 test('new means no persisted reading timestamp, not default page zero', () => {
   assert.equal(rows[1].isNew, true);
   assert.equal(rows[0].isNew, false);
