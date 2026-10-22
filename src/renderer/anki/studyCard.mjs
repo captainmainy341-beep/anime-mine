@@ -46,7 +46,8 @@ export function createStudyCardView({ onReveal, onGrade, onReplay } = {}) {
 
   const front = h('div', { class: 'ink-study-front ink-card' },
     h('span', { class: 'ink-tag' }, 'Front · question'),
-    h('div', { class: 'ink-study-frame' }, frontFrame, replay),
+    h('div', { class: 'ink-study-frame' }, frontFrame),
+    h('div', { class: 'ink-study-audio' }, replay),
     tags);
 
   const reveal = h('button', { type: 'button', class: 'ink-study-reveal', onclick: () => onReveal?.() }, 'Show answer');

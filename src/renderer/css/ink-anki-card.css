@@ -23,13 +23,14 @@
    iframe scrolls inside instead of the card growing past the rating panel. */
 .ink-study-frame { position: relative; flex: 1; min-height: 0; min-width: 0; margin-top: 16px; }
 .ink-study-back .ink-study-frame { margin-top: 12px; }
-.ink-study-frame > iframe.study-card { display: block; width: 100%; height: 100%; min-height: 0; border: 0; background: var(--paper, #f5f2ea); }
+.ink-study-frame > iframe.study-card { display: block; width: 100%; height: 100%; min-height: 0; border: 0; border-radius: 0; background: var(--paper, #f5f2ea); }
 .ink-study [hidden] { display: none !important; }
 
-/* Sound icon over the screenshot's bottom-right corner (frame 704,460 inside the 524x290 shot).
-   On a short card the shot is taller than the frame, so the button drops to the visible corner. */
+/* Audio lives in a stable footer: iframe images may vary in number/height and scroll. */
+.ink-study-audio { display: flex; flex: none; justify-content: flex-end; margin-top: 10px; }
+.ink-study-audio:has([hidden]) { display: none; }
 .ink-study-replay {
-  position: absolute; top: min(calc(var(--ink-study-shot) - 68px), calc(100% - 68px)); right: 16px; z-index: 2;
+  position: static;
   display: inline-flex; align-items: center; justify-content: center; width: 56px; height: 52px;
   padding: 0; background: var(--paper, #f5f2ea); color: var(--ink); border: 1.5px solid var(--ink);
   border-radius: 0; cursor: pointer;
@@ -104,7 +105,25 @@
   outline: 2px solid var(--ink); outline-offset: 3px;
 }
 
-@media (max-width: 1180px) {
+@media (max-width: 1300px) {
+  .ink-study-front, .ink-study-back { padding: 16px; }
+  .ink-study-back > .ink-tag { margin: 0; }
+  .ink-study-frame, .ink-study-back .ink-study-frame { margin-top: 12px; }
+  .ink-study-replay { width: 42px; height: 38px; }
+  .ink-study-placeholder { padding: 0 16px; }
+  .ink-study-placeholder-line { font-size: 15px; line-height: 22px; }
+  .ink-study-reveal { font-size: 17px; height: 44px; padding: 0 16px; }
+  .ink-study-rate { min-height: 138px; padding: 16px; }
+  .ink-study-rate-head { gap: 12px; }
+  .ink-study-hint { font-size: 12px; }
+  .ink-rating { gap: 10px; margin-top: 14px; }
+  .ink-rate { height: 60px; padding: 0 10px; }
+  .ink-rate-label { font-size: 18px; margin-left: 8px; }
+  .ink-rate-interval { font-size: 13px; margin-left: 6px; }
+  .ink-rate-key { width: 23px; height: 23px; font-size: 12px; }
+}
+/* Stack only on truly narrow windows; 1030px retains the front/back comparison. */
+@media (max-width: 800px) {
   .ink-study-cards { grid-template-columns: minmax(0, 1fr); height: auto; }
   .ink-study-frame { flex: none; height: 460px; }
   .ink-study-front, .ink-study-back { height: auto; }

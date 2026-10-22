@@ -18,10 +18,19 @@ export function studyDocument(card, side, theme = 'app') {
     if (el.textContent.trim() === String(card.css ?? '').trim()) el.remove();
   });
 
-  const wrap = doc.body.querySelector(':scope > .wrap');
+  // AJT versions nest the prompt and ship two modes plus a FrontSide copy.
+  // Resolve the active, current-side sentence rather than relying on a direct child.
+  doc.querySelectorAll('.jpsentence:has(> .overlay)').forEach(el => {
+    const overlay = el.querySelector(':scope > .overlay');
+    el.replaceChildren(...overlay.childNodes);
+  });
+  const wrap = doc.body.querySelector('.wrap');
   const native = doc.body.querySelector(':scope > .card-wrap');
-  const prompt = wrap?.querySelector(':scope > .sent-center:has(.jpsentence)')
-    ?? native?.querySelector(':scope > .sentence');
+  const candidates = [...(wrap?.querySelectorAll('.sent-center:has(.jpsentence)') ?? [])]
+    .filter(el => !el.closest('.fside'));
+  const prompt = candidates.find(el => el.getAttribute('visible') === 'true')
+    ?? candidates.find(el => el.getAttribute('visible') !== 'false')
+    ?? candidates[0] ?? native?.querySelector(':scope > .sentence');
   if (prompt) {
     const root = wrap ?? native;
     root.classList.add('am-spotlight');
@@ -35,14 +44,21 @@ export function studyDocument(card, side, theme = 'app') {
     const sentenceText = el => {
       const copy = el.cloneNode(true);
       copy.querySelectorAll('rt, rp').forEach(node => node.remove());
-      return copy.textContent.replace(/\s+/g, ' ').trim();
+      return copy.textContent.replace(/\s+/g, '');
     };
-    wrap?.querySelectorAll(':scope > .fside .sent-center').forEach(el => {
-      const jp = el.querySelector('.jpsentence');
-      if (jp && sentenceText(jp) === sentenceText(sentence) && !el.querySelector('img, audio, video, .ensentence')) el.remove();
+    wrap?.querySelectorAll('.jpsentence').forEach(jp => {
+      if (jp === sentence || sentenceText(jp) !== sentenceText(sentence)) return;
+      // Remove only the duplicate sentence, not its translation or media siblings.
+      const block = jp.closest('.sent-center');
+      jp.remove();
+      block?.querySelectorAll('.toggle_furigana_button').forEach(el => el.remove());
+      if (block && !block.textContent.trim() && !block.querySelector('img, audio, video')) block.remove();
     });
+    // FrontSide is template chrome, not a second answer scene/tag strip.
+    wrap?.querySelectorAll('.fside header, .fside .images-details').forEach(el => el.remove());
 
-    const media = wrap?.querySelector(':scope > details.images-details:has(img)')
+    const media = [...(wrap?.querySelectorAll('details.images-details:has(img)') ?? [])]
+      .find(el => !el.closest('.fside'))
       ?? native?.querySelector(':scope > .pic:has(img)');
     const scene = media ? sceneRegion(doc, media) : null;
     const tags = tagChips(doc, root);
@@ -51,8 +67,19 @@ export function studyDocument(card, side, theme = 'app') {
       const answer = doc.createElement('section');
       answer.className = 'am-answer-grid';
       answer.setAttribute('aria-label', 'Revealed answer');
-      const headword = wrap?.querySelector(':scope > .headword_section');
+      const headword = wrap?.querySelector('.headword_section');
       if (headword) {
+        const pitch = headword.querySelector('#pitchpattern');
+        if (pitch) {
+          pitch.classList.add('am-pitch');
+          pitch.querySelectorAll('[style]').forEach(el => {
+            const shadow = el.style.boxShadow;
+            el.removeAttribute('style');
+            if (shadow) el.style.boxShadow = shadow.replace(/red|#[0-9a-f]{3,8}|rgb\([^)]*\)/gi, '#0a0a0a');
+          });
+          headword.prepend(pitch);
+        }
+        headword.querySelectorAll('#pitchnum, #vocab-audio, #sent-audio').forEach(el => el.remove());
         wordRule(doc, headword);
         answer.append(headword);
       }
@@ -139,12 +166,18 @@ function divider(doc) {
 
 // Anki tags become the frame's small rounded chips. The original tag strip is replaced, not kept.
 function tagChips(doc, root) {
-  const source = root?.querySelector('header .tags') ?? doc.body.querySelector('.tags');
-  if (!source) return null;
-  const words = String(source.textContent ?? '').split(/\s+/).filter(Boolean);
-  const header = source.closest('header');
-  source.remove();
-  if (header && !header.textContent.trim() && !header.querySelector('img, audio, video')) header.remove();
+  const sources = [...(root?.querySelectorAll('header .tags') ?? [])];
+  if (!sources.length) {
+    const source = root?.querySelector(':scope > .tags');
+    if (source) sources.push(source);
+  }
+  const words = [...new Set(sources.flatMap(el => el.textContent.split(/\s+/)))]
+    .filter(word => word && word.toLowerCase() !== 'jp1k');
+  for (const source of sources) {
+    const header = source.closest('header');
+    source.remove();
+    if (header && !header.textContent.trim() && !header.querySelector('img, audio, video')) header.remove();
+  }
   if (!words.length) return null;
   const block = doc.createElement('div');
   block.className = 'am-tags';
@@ -180,7 +213,7 @@ function sceneRegion(doc, media) {
   images.classList.add('am-scene-images');
   if (!media.matches('.pic')) {
     media.open = true;
-    // Keep the existing disclosure and its label, but make the image prominent.
+    media.classList.remove('images-on-front');
     images.before(toggle, control, imageLabel);
     imageLabel.append(images);
     scene.append(media);

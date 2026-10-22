@@ -37,13 +37,15 @@ body.am-card[data-side="answer"] { padding: 0 24px !important; }
 
 /* ---------- Screenshot (scene media): black plate with a 1.5px ink rule ---------- */
 .am-card .am-scene { position: relative; display: block; width: 100%; margin: 0 !important; padding: 0 !important; }
-.am-card .am-scene details, .am-card .images-details, .am-card .am-scene > .images-details { display: block; margin: 0 !important; padding: 0 !important; }
+.am-card .am-scene details, .am-card .images-details, .am-card .am-scene > .images-details { display: block; margin: 0 !important; padding: 0 !important; border: 0 !important; background: none !important; border-radius: 0 !important; }
 .am-card .am-scene details[open] > summary, .am-card .am-scene details[open] .images-details > summary { display: none !important; }
 .am-card .am-scene details:not([open]) { margin-top: 24px !important; }
 .am-card .am-scene details:not([open]) .am-enlarge { display: none; }
 .am-card .am-scene summary { list-style: none; }
 .am-card .am-scene summary::-webkit-details-marker { display: none; }
 .am-card .am-scene-images { display: block !important; margin: 0 !important; padding: 0 !important; gap: 0 !important; }
+.am-card .am-scene-images:has(img:nth-of-type(2)) { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.am-card .am-scene-images:has(img:nth-of-type(2)) img { object-fit: contain !important; }
 .am-card .am-scene img {
   display: block; width: 100% !important; height: var(--am-shot) !important; max-width: 100% !important; max-height: none !important;
   object-fit: cover !important; object-position: center !important; background: var(--am-ink); border: var(--am-rule) solid var(--am-ink); border-radius: 0 !important;
@@ -73,6 +75,8 @@ body.am-card[data-side="answer"] .am-sentence {
   display: block !important; margin: 0 !important; padding: 0 !important;
   font: 700 26px/38px var(--am-font) !important; letter-spacing: 0 !important; color: var(--am-ink) !important; text-align: left !important;
 }
+.am-card .jpsentence b, .am-card .jpsentence strong, .am-card .jpsentence mark { color: var(--am-ink) !important; background: none !important; }
+.am-card .am-sentence .am-target * { color: inherit !important; background: none !important; }
 .am-card .am-sentence .am-target { color: inherit !important; background: none !important; font: inherit !important; border: 0 !important; padding: 0 !important; }
 body.am-card[data-side="question"] .am-sentence .am-target {
   text-decoration: underline; text-decoration-color: var(--am-red); text-decoration-thickness: 6px;
@@ -127,7 +131,9 @@ body.am-card[data-side="answer"] .am-prompt { margin: 18px 0 0 !important; paddi
   color: var(--am-muted) !important; font: 500 15px/22px var(--am-font) !important; text-align: left !important; background: none !important;
 }
 .am-card .notes { margin: 10px 0 0; color: var(--am-muted) !important; font: 500 15px/22px var(--am-font) !important; }
-.am-card .am-card-links { margin: 24px 0 0 !important; }
+.am-card .am-card-links { margin: 24px 0 0 !important; padding: 0 !important; border: 0 !important; background: none !important; border-radius: 0 !important; }
+.am-card .am-card-links > summary { list-style: none; }
+.am-card .am-card-links > summary::-webkit-details-marker { display: none; }
 .am-card .am-card-links summary, .am-card details > summary { color: var(--am-muted); font: 500 13px/1.6 var(--am-font); cursor: pointer; }
 .am-card footer { color: var(--am-muted); font: 500 13px/1.6 var(--am-font); gap: 8px; }
 .am-card a { color: var(--am-muted); }
@@ -139,14 +145,30 @@ body.am-card[data-side="answer"] .am-prompt { margin: 18px 0 0 !important; paddi
 .am-card .am-image-toggle:checked ~ .am-scene-image img { height: auto !important; }
 .am-card .toggle_furigana_button { display: none; }
 
-/* The study iframe is ~524px wide at the 1440 frame, so this is only for genuinely narrow cards. */
-@media (max-width: 380px) {
-  body.am-card[data-side="question"] .am-sentence { font-size: 32px !important; line-height: 46px !important; margin-top: 20px !important; }
+/* Known AJT chrome only: do not suppress generic headers/details on other templates. */
+.am-card .wrap #pitchnum, .am-card .wrap #vocab-audio, .am-card .wrap #sent-audio,
+.am-card .wrap .toggle_furigana_button, .am-card .wrap .fside header { display: none !important; }
+.am-card .am-pitch { float: right; width: 176px !important; min-height: 64px; margin: 0 0 10px 16px !important; padding: 12px; border: var(--am-rule) solid var(--am-ink); color: var(--am-ink) !important; font: 500 22px/32px var(--am-font) !important; }
+.am-card .am-pitch .pitch_number { display: none !important; }
+.am-card .am-pitch::after { content: none !important; }
+.am-card .am-sentence > .background, .am-card .am-sentence > .overlay { position: static !important; visibility: visible !important; }
+
+/* 1440's iframe is 524px; <=1300 windows produce <=480px cards. */
+@media (max-width: 480px) {
+  body.am-card[data-side="answer"] { padding: 0 !important; }
+  body.am-card[data-side="question"] .am-sentence { font-size: 30px !important; line-height: 44px !important; margin-top: 18px !important; }
   body.am-card[data-side="answer"] .am-sentence { font-size: 22px !important; line-height: 32px !important; }
-  .am-card .target_word { font-size: 54px !important; line-height: 78px !important; }
+  .am-card .target_word { font-size: 52px !important; line-height: 75px !important; }
+  .am-card .reading { font-size: 18px !important; line-height: 27px !important; margin-top: 6px !important; }
+  .am-card .am-front-hint { font-size: 14px !important; line-height: 21px !important; }
+  .am-card .ensentence, .am-card .translation { font-size: 17px !important; line-height: 25px !important; }
+  .am-card .am-tags { gap: 8px; margin-top: 12px; }
+  .am-card .am-pitch { width: 112px !important; min-height: 52px; padding: 8px; margin-left: 8px !important; font-size: 18px !important; line-height: 26px !important; }
   .am-card .am-word-rule { margin-top: -4px; }
   .am-card .definitions, .am-card .meaning { font-size: 22px !important; line-height: 33px !important; margin-top: 16px !important; }
-  .am-card .am-scene img { height: 180px !important; }
+  .am-card .am-scene img { height: auto !important; max-height: 230px !important; object-fit: contain !important; margin: 0 auto; }
+  .am-card .am-scene-images { background: var(--am-ink); }
+  body.am-card[data-side="answer"] .am-divider { margin-top: 18px !important; }
   body.am-card[data-side="question"] .am-divider { margin-top: 28px !important; }
   .am-card .pitch { float: none; width: auto; margin: 12px 0 0 !important; }
 }
