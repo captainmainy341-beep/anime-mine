@@ -30,19 +30,16 @@ body.am-card[data-side="answer"] { padding: 0 24px !important; }
   margin: 0 !important; padding: 0 !important; border: 0 !important; background: transparent !important; color: inherit !important;
 }
 .am-card .wrap .wrap { display: block !important; width: auto !important; padding: 0 !important; border: 0 !important; }
-.am-card .sent-center, .am-card .am-prompt { display: block !important; align-items: stretch !important; justify-content: flex-start !important; flex-flow: column nowrap !important; }
+.am-card .am-prompt { display: block !important; align-items: stretch !important; justify-content: flex-start !important; flex-flow: column nowrap !important; }
 .am-card header { margin: 0 !important; padding: 0 !important; gap: 0 !important; }
 .am-card header:empty { display: none !important; }
 .am-card .tags { display: inline; color: var(--am-muted) !important; background: none !important; font: 500 13px/1.5 var(--am-font) !important; padding: 0 !important; border-radius: 0 !important; }
 
 /* ---------- Screenshot (scene media): black plate with a 1.5px ink rule ---------- */
 .am-card .am-scene { position: relative; display: block; width: 100%; margin: 0 !important; padding: 0 !important; }
-.am-card .am-scene details, .am-card .images-details, .am-card .am-scene > .images-details { display: block; margin: 0 !important; padding: 0 !important; border: 0 !important; background: none !important; border-radius: 0 !important; }
-.am-card .am-scene details[open] > summary, .am-card .am-scene details[open] .images-details > summary { display: none !important; }
-.am-card .am-scene details:not([open]) { margin-top: 24px !important; }
-.am-card .am-scene details:not([open]) .am-enlarge { display: none; }
-.am-card .am-scene summary { list-style: none; }
-.am-card .am-scene summary::-webkit-details-marker { display: none; }
+.am-card .am-scene.am-front-scene[hidden] { display: none !important; }
+.am-card .am-extra-images { margin: 16px 0 0; padding: 0; border: 0; }
+body.am-card[data-side="answer"] .am-scene { margin-top: 24px !important; }
 .am-card .am-scene-images { display: block !important; margin: 0 !important; padding: 0 !important; gap: 0 !important; }
 .am-card .am-scene-images:has(img:nth-of-type(2)) { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .am-card .am-scene-images:has(img:nth-of-type(2)) img { object-fit: contain !important; }
@@ -124,17 +121,15 @@ body.am-card[data-side="answer"] .am-prompt { margin: 18px 0 0 !important; paddi
   margin: 4px 0 0 !important; padding: 0 !important; border: 0 !important;
   color: var(--am-muted) !important; font: 500 20px/29px var(--am-font) !important; text-align: left !important; background: none !important;
 }
-.am-card .ensentence a.hint, .am-card .translation a.hint { display: none !important; }
-.am-card .ensentence div.hint, .am-card .translation div.hint { display: block !important; }
+.am-card .am-ajt .ensentence a.hint, .am-card .am-ajt .translation a.hint { display: none !important; }
+.am-card .am-ajt .ensentence div.hint, .am-card .am-ajt .translation div.hint { display: block !important; }
 .am-card .am-source {
   margin: 37px 0 0 !important; padding: 14px 0 0 !important; border: 0 !important; border-top: 2px solid var(--am-track) !important;
   color: var(--am-muted) !important; font: 500 15px/22px var(--am-font) !important; text-align: left !important; background: none !important;
 }
 .am-card .notes { margin: 10px 0 0; color: var(--am-muted) !important; font: 500 15px/22px var(--am-font) !important; }
-.am-card .am-card-links { margin: 24px 0 0 !important; padding: 0 !important; border: 0 !important; background: none !important; border-radius: 0 !important; }
-.am-card .am-card-links > summary { list-style: none; }
-.am-card .am-card-links > summary::-webkit-details-marker { display: none; }
-.am-card .am-card-links summary, .am-card details > summary { color: var(--am-muted); font: 500 13px/1.6 var(--am-font); cursor: pointer; }
+.am-card .am-card-links { display: flex; flex-wrap: wrap; gap: 4px 12px; margin: 16px 0 0 !important; padding: 0 !important; border: 0 !important; background: none !important; color: var(--am-muted); font: 500 13px/1.6 var(--am-font); }
+.am-card .am-card-links a { font: inherit; }
 .am-card footer { color: var(--am-muted); font: 500 13px/1.6 var(--am-font); gap: 8px; }
 .am-card a { color: var(--am-muted); }
 .am-card a:hover { color: var(--am-ink); }
@@ -143,11 +138,9 @@ body.am-card[data-side="answer"] .am-prompt { margin: 18px 0 0 !important; paddi
 .am-card .cloze { color: inherit; text-decoration: underline; text-decoration-color: var(--am-red); text-decoration-thickness: 3px; text-decoration-skip-ink: none; }
 .am-card img { max-width: 100%; height: auto; border-radius: 0 !important; filter: none !important; }
 .am-card .am-image-toggle:checked ~ .am-scene-image img { height: auto !important; }
-.am-card .toggle_furigana_button { display: none; }
-
-/* Known AJT chrome only: do not suppress generic headers/details on other templates. */
-.am-card .wrap #pitchnum, .am-card .wrap #vocab-audio, .am-card .wrap #sent-audio,
-.am-card .wrap .toggle_furigana_button, .am-card .wrap .fside header { display: none !important; }
+/* Known AJT chrome only: matching is required even for familiar identifiers. */
+.am-card .am-ajt #pitchnum, .am-card .am-ajt #vocab-audio, .am-card .am-ajt #sent-audio,
+.am-card .am-ajt .toggle_furigana_button, .am-card .am-ajt .fside header { display: none !important; }
 .am-card .am-pitch { float: right; width: 176px !important; min-height: 64px; margin: 0 0 10px 16px !important; padding: 12px; border: var(--am-rule) solid var(--am-ink); color: var(--am-ink) !important; font: 500 22px/32px var(--am-font) !important; }
 .am-card .am-pitch .pitch_number { display: none !important; }
 .am-card .am-pitch::after { content: none !important; }

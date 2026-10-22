@@ -34,6 +34,7 @@ export function studyDocument(card, side, theme = 'app') {
   if (prompt) {
     const root = wrap ?? native;
     root.classList.add('am-spotlight');
+    if (wrap) root.classList.add('am-ajt');
     prompt.classList.add('am-prompt');
     const sentence = prompt.querySelector('.jpsentence') ?? prompt;
     sentence.classList.add('am-sentence');
@@ -54,13 +55,39 @@ export function studyDocument(card, side, theme = 'app') {
       block?.querySelectorAll('.toggle_furigana_button').forEach(el => el.remove());
       if (block && !block.textContent.trim() && !block.querySelector('img, audio, video')) block.remove();
     });
-    // FrontSide is template chrome, not a second answer scene/tag strip.
-    wrap?.querySelectorAll('.fside header, .fside .images-details').forEach(el => el.remove());
+    // FrontSide headers are template chrome. Media is removed only when its
+    // exact source is already retained on this side; unique images and text stay.
+    wrap?.querySelectorAll('.fside header').forEach(el => el.remove());
+    const frontSources = new Set([...(wrap?.querySelectorAll('.fside .images-details img') ?? [])]
+      .map(img => img.getAttribute('src')).filter(Boolean));
+    const retainedSources = new Set([...(wrap?.querySelectorAll('details.images-details img') ?? [])]
+      .filter(img => !img.closest('.fside'))
+      .map(img => img.getAttribute('src')).filter(Boolean));
+    wrap?.querySelectorAll('.fside .images-details').forEach(details => {
+      details.querySelectorAll('img').forEach(img => {
+        if (retainedSources.has(img.getAttribute('src'))) img.remove();
+      });
+      details.querySelectorAll('.images').forEach(images => {
+        if (!images.textContent.trim() && !images.children.length) images.remove();
+      });
+      const content = details.cloneNode(true);
+      content.querySelectorAll('summary').forEach(el => el.remove());
+      if (!content.textContent.trim() && !content.querySelector('*')) details.remove();
+    });
 
     const media = [...(wrap?.querySelectorAll('details.images-details:has(img)') ?? [])]
       .find(el => !el.closest('.fside'))
       ?? native?.querySelector(':scope > .pic:has(img)');
     const scene = media ? sceneRegion(doc, media) : null;
+    // Any additional unique images remain in context, without native Image chrome.
+    wrap?.querySelectorAll('details.images-details').forEach(details => {
+      if (scene?.contains(details)) return;
+      details.querySelector(':scope > summary')?.remove();
+      const figure = doc.createElement('figure');
+      figure.className = 'am-extra-images';
+      figure.append(...details.childNodes);
+      details.replaceWith(figure);
+    });
     const tags = tagChips(doc, root);
 
     if (side === 'answer') {
@@ -112,21 +139,34 @@ export function studyDocument(card, side, theme = 'app') {
       }
       native?.parentElement?.querySelector(':scope > hr#answer')?.remove();
       const footer = wrap?.querySelector(':scope > footer');
+      let links;
       if (footer) {
-        const links = doc.createElement('details');
-        links.className = 'am-card-links';
-        const summary = doc.createElement('summary');
-        summary.textContent = 'Card links';
-        footer.before(links);
-        links.append(summary, footer);
+        // Only this matched template's footer separator is chrome.
+        if (footer.previousElementSibling?.matches('hr')) footer.previousElementSibling.remove();
+        const meaningful = [...footer.querySelectorAll('a[href]')].filter(link => {
+          const href = link.getAttribute('href').trim();
+          return href && !/^(#|javascript:)/i.test(href) && (link.textContent.trim() || link.getAttribute('aria-label'));
+        });
+        if (meaningful.length) {
+          links = doc.createElement('nav');
+          links.className = 'am-card-links';
+          links.setAttribute('aria-label', 'Card resources');
+          links.append(...meaningful);
+        }
+        footer.remove();
       }
       for (const source of root.querySelectorAll('.source, .notes')) source.classList.add('am-source');
-      // The scene is optional help on the back (the frame keeps the answer clean): keep it one click away.
       if (scene) {
-        const details = scene.querySelector('details');
-        if (details) details.open = false;
+        // The answer's FrontSide proves this scene is already visible in the
+        // front pane. Keep its media identity, without showing a second copy.
+        const images = [...scene.querySelectorAll('img')];
+        if (images.length && images.every(img => frontSources.has(img.getAttribute('src')))) {
+          scene.hidden = true;
+          scene.classList.add('am-front-scene');
+        }
         root.append(scene);
       }
+      if (links) root.append(links);
     } else {
       if (scene) prompt.before(scene);
       let anchor = prompt;
@@ -211,15 +251,14 @@ function sceneRegion(doc, media) {
   imageLabel.htmlFor = id;
   imageLabel.className = 'am-scene-image';
   images.classList.add('am-scene-images');
+  media.before(scene);
+  scene.append(toggle, control, imageLabel);
+  imageLabel.append(images);
   if (!media.matches('.pic')) {
-    media.open = true;
-    media.classList.remove('images-on-front');
-    images.before(toggle, control, imageLabel);
-    imageLabel.append(images);
-    scene.append(media);
-  } else {
-    scene.append(toggle, control, imageLabel);
-    imageLabel.append(images);
+    // Replace disclosure chrome with a figure, retaining non-image siblings too.
+    media.querySelector(':scope > summary')?.remove();
+    scene.append(...media.childNodes);
   }
+  if (!media.matches('.pic')) media.remove();
   return scene;
 }

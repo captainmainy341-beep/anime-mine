@@ -1,5 +1,6 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Isolated study reviewer regression fixture</title><link rel="icon" href="data:,"><link rel="stylesheet" href="../../../src/renderer/styles.css"></head><body><header class="topbar"><div class="brand">anime<span>-mine</span></div><nav><button>Library</button><button>Learn</button><button>Anki</button><button>Settings</button></nav></header><main id="view"></main><div id="toasts" class="toasts" aria-live="polite"></div><script type="module">
-const card = await fetch('./jp1k-card.json').then(r=>r.json());
+const fixture = new URLSearchParams(location.search).get('fixture') === 'live' ? 'jp1k-live-card.json' : 'jp1k-card.json';
+const card = await fetch('./' + fixture).then(r=>r.json());
 const deck='JAP LEARN::AJT JP1K';
 const calls=[];let resolveGrade,rejectGrade;
 window.studyMocks={calls,resolveGrade:()=>resolveGrade(),rejectGrade:()=>rejectGrade(new Error('Offline test')),queueCalls:0};

@@ -77,9 +77,9 @@ async (page) => {
     });
     if (bar.count !== 4 || bar.eases !== '1,2,3,4' || !bar.goodBlack || bar.goodBorder !== '3px' || bar.heights.some(h => h < 44) || !bar.enabled || !bar.inPage || bar.pageOverflow) throw new Error(JSON.stringify({ width, height, bar }));
 
-    // The back keeps the scene one click away. Narrower frames clamp the shot to their width, so
+    // The back uses a clean figure, never a native Image disclosure. Narrower frames clamp the shot, so
     // the "grows on enlarge" check only applies where the 300px test image still fits (<820px frames do not).
-    await back.locator('.am-scene summary').click();
+    if (await back.locator('.am-scene summary').count()) throw new Error('Native image disclosure survived');
     const shot = await back.locator('.am-scene img').boundingBox();
     const imageHeight = shot?.height ?? 0;
     if (imageHeight < 180 || imageHeight > 300) throw new Error(`Scene image left the frame size: ${imageHeight} at ${width}`);
