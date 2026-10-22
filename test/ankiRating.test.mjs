@@ -354,14 +354,15 @@ test('the cards take their height from --ink-study-card-h and survive 380px', ()
   const iframe = css.match(/\.ink-study-frame\s*>\s*iframe\.study-card\s*\{([^}]*)\}/)?.[1] ?? '';
   assert.match(iframe, /width:\s*100%/);
   assert.match(iframe, /height:\s*100%/);
-  // The replay button keeps the screenshot corner, or the visible corner when the shot is taller.
+  // The replay button sits in the card footer, so it never straddles the screenshot edge.
   const replay = css.match(/\.ink-study-replay\s*\{([^}]*)\}/)?.[1] ?? '';
-  assert.match(replay, /top:\s*min\(calc\(var\(--ink-study-shot\)\s*-\s*68px\),\s*calc\(100%\s*-\s*68px\)\)/);
+  assert.match(replay, /position:\s*static/);
+  assert.doesNotMatch(replay, /top:/);
   // The placeholder gaps follow the card height so the copy, icon and button still fit.
   const placeholder = css.match(/\.ink-study-placeholder\s*\{([^}]*)\}/)?.[1] ?? '';
   assert.match(placeholder, /gap:\s*clamp\([^)]*var\(--ink-study-card-h,\s*620px\)/);
   // Stacked narrow layout keeps its own fixed frame height and does not follow the variable.
-  const narrow = css.slice(css.indexOf('@media (max-width: 1180px)'));
+  const narrow = css.slice(css.indexOf('@media (max-width: 800px)'));
   assert.match(narrow, /\.ink-study-front,\s*\.ink-study-back\s*\{\s*height:\s*auto/);
   assert.match(narrow, /\.ink-study-frame\s*\{\s*flex:\s*none;\s*height:\s*460px/);
 });
