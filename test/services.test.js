@@ -376,6 +376,8 @@ test('settings:get returns defaults when no settings file exists', async () => {
     burnedSubsMode: 'blur',
     subtitleCover: null,
     subtitleKey: null,
+    subtitleBox: true,
+    subtitleTheme: 'classic',
     manga: { aiOcr: false },
     jimaku: { enabled: true, apiKey: '' },
   });
@@ -560,6 +562,24 @@ test('settings:set stores a clamped subtitleCover and null for an invalid one', 
 
   await call('settings:set', { subtitleCover: { x: 'left', y: 0, w: 0.5, h: 0.5 } });
   assert.equal((await call('settings:get')).subtitleCover, null);
+});
+
+test('settings:set persists subtitle appearance and normalizes invalid values', async () => {
+  const { dir, call } = await setup();
+
+  await call('settings:set', { audioPadStart: 0.4 });
+  await call('settings:set', { subtitleBox: false, subtitleTheme: 'minimal' });
+  const saved = await call('settings:get');
+  assert.equal(saved.subtitleBox, false);
+  assert.equal(saved.subtitleTheme, 'minimal');
+  assert.equal(saved.audioPadStart, 0.4);
+  assert.deepEqual(JSON.parse(await fs.readFile(path.join(dir, 'settings.json'), 'utf8')), saved);
+  assert.deepEqual(await setup({ dataDir: dir }).then(({ call: reload }) => reload('settings:get')), saved);
+
+  await call('settings:set', { subtitleBox: 'false', subtitleTheme: 'unknown' });
+  const normalized = await call('settings:get');
+  assert.equal(normalized.subtitleBox, true);
+  assert.equal(normalized.subtitleTheme, 'classic');
 });
 
 test('settings:set stores a normalised subtitleKey and null for an invalid one', async () => {

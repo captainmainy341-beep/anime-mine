@@ -16,6 +16,7 @@ const {
   selectedChipIndex,
   trackChipLabel,
 } = await import('../src/renderer/player.mjs');
+const { subtitleAppearance } = await import('../src/renderer/lib/subtitleAppearance.mjs');
 
 const TOKENS = [
   { surface: '本当に' },
@@ -24,6 +25,18 @@ const TOKENS = [
   { surface: 'の' },
   { surface: '？' },
 ];
+
+test('subtitleAppearance maps saved settings to safe theme and box classes', () => {
+  assert.deepEqual(subtitleAppearance(), { themeClass: 'subtitle-theme-classic', hideBox: false });
+  assert.deepEqual(subtitleAppearance({ subtitleTheme: 'compact', subtitleBox: false }), {
+    themeClass: 'subtitle-theme-compact',
+    hideBox: true,
+  });
+  assert.deepEqual(subtitleAppearance({ subtitleTheme: 'invalid', subtitleBox: true }), {
+    themeClass: 'subtitle-theme-classic',
+    hideBox: false,
+  });
+});
 
 test('formatTime renders mm:ss and h:mm:ss like the frames', () => {
   assert.equal(formatTime(0), '00:00');
