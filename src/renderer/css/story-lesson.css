@@ -1,5 +1,5 @@
 /* "Learn first" lesson that precedes a Genki story scene. Scoped to .lesson. */
-.lesson { --tone-0:#f38bb0; --tone-1:#8fb8ff; --tone-2:#7fd6a4; --tone-3:#f5c26b; display:grid; grid-template-rows:auto 1fr auto; width:min(940px,100%); height:calc(100vh - 150px); min-height:520px; margin:0 auto; background:var(--panel); border:1px solid var(--line); border-radius:16px; overflow:hidden; position:relative; }
+.lesson { --tone-0:#a94960; --tone-1:#426c9e; --tone-2:#39734f; --tone-3:#916526; display:grid; grid-template-rows:auto 1fr auto; width:min(940px,100%); height:calc(100vh - 150px); min-height:520px; margin:0 auto; color:var(--text); color-scheme:light; background:var(--paper, var(--panel)); border:1px solid var(--line); border-radius:16px; overflow:hidden; position:relative; }
 .lesson-top { display:flex; align-items:center; gap:12px; padding:12px 16px; border-bottom:1px solid var(--line); }
 .lesson-close { width:34px; height:34px; padding:0; border-radius:50%; color:var(--muted); background:transparent; }
 .lesson-bar { position:relative; flex:1; height:12px; border-radius:8px; background:var(--panel-2); border:1px solid var(--line); margin-bottom:14px; }
@@ -48,22 +48,30 @@
 .lesson-facts span { padding:5px 12px; border-radius:16px; background:var(--accent-soft); color:var(--accent); font-size:13px; }
 .lesson-note { color:var(--muted); font-size:12px; margin:0; }
 
-/* word cards */
-.lesson-cards-wrap { max-width:760px; margin:0 auto; }
-.lesson-cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:14px; margin-top:10px; }
-.lesson-card { position:relative; height:210px; perspective:700px; cursor:pointer; outline:none; animation:lesson-in 420ms calc(var(--i) * 70ms) cubic-bezier(.2,.8,.2,1) both; }
-.lesson-card:focus-visible .face { outline:2px solid var(--accent); }
-.lesson-card .face { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; border-radius:14px; border:1px solid var(--line-strong); background:linear-gradient(160deg,#171b27,#10131c); backface-visibility:hidden; transition:transform 480ms cubic-bezier(.3,1.3,.5,1), border-color 160ms; }
-.lesson-card:hover .face { border-color:var(--accent); }
-.lesson-card .back { transform:rotateY(180deg); background:linear-gradient(160deg,#241a2b,#1a1420); border-color:var(--accent); text-align:center; padding:8px; }
-.lesson-card.flipped .front { transform:rotateY(-180deg); }
-.lesson-card.flipped .back { transform:rotateY(0); }
-.lesson-card .emoji { font-size:34px; filter:saturate(1.2); }
-.lesson-card .ja { font-size:26px; font-weight:600; line-height:1.2; text-align:center; padding:0 6px; }
-.lesson-card .kana { font-size:12px; color:var(--accent-2); }
-.lesson-card .en { font-size:16px; font-weight:600; color:var(--text); }
-.lesson-card .ja-small { font-size:12px; color:var(--muted); }
-.lesson-speak { position:absolute; right:6px; top:6px; z-index:2; width:28px; height:28px; padding:0; border-radius:50%; background:rgba(255,255,255,.06); border:0; font-size:13px; }
+/* workbook-style vocabulary page */
+.lesson-vocab-sheet { position:relative; max-width:760px; margin:0 auto; padding-left:clamp(0px,2vw,18px); }
+.lesson-vocab-sheet::before { content:''; position:absolute; top:0; bottom:0; left:0; width:2px; background:var(--accent); }
+.lesson-vocab-head { display:flex; align-items:flex-end; justify-content:space-between; gap:16px; padding-bottom:12px; border-bottom:2px solid var(--line-strong); }
+.lesson-vocab-head h2 { margin:3px 0 0; font-size:clamp(23px,3vw,30px); line-height:1.2; }
+.lesson-vocab-page { display:grid; place-items:center; width:42px; height:42px; border:1px solid var(--accent); color:var(--accent); font-size:16px; font-weight:700; font-variant-numeric:tabular-nums; }
+.lesson-vocab-sheet > .lesson-sub { margin:10px 0 12px; font-size:14px; line-height:1.5; }
+.lesson-vocab-labels, .lesson-word-entry { display:grid; grid-template-columns:40px minmax(120px,1fr) minmax(160px,.9fr) 54px; gap:14px; align-items:center; }
+.lesson-vocab-labels { padding:0 0 7px; color:var(--muted); font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
+.lesson-vocab-labels span:last-child { text-align:center; }
+.lesson-word-list { margin:0; padding:0; border-top:1px solid var(--line); list-style:none; }
+.lesson-word-entry { min-height:54px; padding:6px 0; border-bottom:1px solid var(--line); }
+.lesson-word-number { color:var(--muted); font-size:12px; font-variant-numeric:tabular-nums; }
+.lesson-word-copy { min-width:0; display:flex; flex-direction:column; align-items:flex-start; gap:1px; }
+.lesson-word-main { max-width:100%; color:var(--text); font-size:22px; font-weight:600; line-height:1.3; overflow-wrap:anywhere; }
+.lesson-word-reading { color:var(--muted); font-size:12px; line-height:1.35; }
+.lesson-word-study { min-width:0; display:flex; flex-wrap:wrap; align-items:center; gap:7px 10px; }
+.lesson-word-reveal { flex:none; padding:5px 9px; border:1px solid var(--line-strong); background:transparent; color:var(--accent); font-size:12px; font-weight:650; cursor:pointer; }
+.lesson-word-reveal:hover:not(:disabled) { border-color:var(--accent); background:var(--accent-soft); color:var(--text); }
+.lesson-word-reveal:focus-visible, .lesson-word-speak:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+.lesson-word-meaning { color:var(--text); font-size:14px; font-weight:600; line-height:1.4; }
+.lesson-word-speak { display:grid; place-items:center; width:38px; height:38px; padding:0; border:1px solid var(--line-strong); background:transparent; color:var(--text); }
+.lesson-word-speak:hover:not(:disabled) { border-color:var(--accent); color:var(--accent); }
+.lesson-word-speak .doodle { width:17px; height:17px; }
 
 /* match-up */
 .lesson-match { max-width:720px; margin:0 auto; }
@@ -89,7 +97,7 @@
 .lesson-gist { margin:0; font-size:17px; color:var(--text); font-style:italic; }
 .lesson-explain { display:grid; gap:8px; }
 .lesson-explain p { margin:0; color:var(--text); opacity:.9; line-height:1.65; }
-.lesson-theater { padding:14px 16px 12px; border-radius:16px; border:1px solid var(--line-strong); background:radial-gradient(circle at 20% 0%,#1d2238,#121520); }
+.lesson-theater { padding:14px 16px 12px; border-radius:16px; border:1px solid var(--line-strong); background:var(--paper-2, var(--panel-2)); color:var(--text); }
 .lesson-theater-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
 .lesson-count { font-size:12px; color:var(--muted); font-variant-numeric:tabular-nums; }
 .lesson-chunks { display:flex; flex-wrap:wrap; gap:10px; min-height:84px; align-items:flex-start; }
@@ -158,17 +166,26 @@
 @keyframes lesson-confetti { from { opacity:1; transform:translateY(0) rotate(var(--r)); } to { opacity:0; transform:translateY(420px) rotate(calc(var(--r) + 540deg)); } }
 
 @media (max-width:720px) {
-  .lesson { height:calc(100vh - 120px); }
+  .lesson { height:calc(100vh - 120px); min-height:460px; }
   .lesson-foot { flex-wrap:wrap; }
   .lesson-go { width:100%; }
   .lesson-results { grid-template-columns:repeat(2,1fr); }
   .lesson-match-grid { gap:10px; }
+  .lesson-vocab-labels, .lesson-word-entry { grid-template-columns:30px minmax(0,1fr) 42px; gap:7px 10px; }
+  .lesson-vocab-labels span:nth-child(3) { grid-column:2; grid-row:2; }
+  .lesson-vocab-labels span:last-child { display:none; }
+  .lesson-word-entry { padding:12px 0; }
+  .lesson-word-study { grid-column:2; grid-row:2; }
+  .lesson-word-speak { grid-column:3; grid-row:1; }
+}
+@media (max-width:420px) {
+  .lesson-body { padding-right:14px; padding-left:14px; }
+  .lesson-vocab-sheet { padding-left:10px; }
+  .lesson-vocab-labels, .lesson-word-entry { grid-template-columns:24px minmax(0,1fr) 38px; gap:6px 8px; }
+  .lesson-word-main { font-size:20px; }
+  .lesson-word-study { align-items:flex-start; }
 }
 @media (prefers-reduced-motion: reduce) {
   .lesson *, .lesson *::before { animation:none !important; transition:none !important; }
-  .lesson-card .face { backface-visibility:visible; }
-  .lesson-card .back { display:none; transform:none; }
-  .lesson-card.flipped .back { display:flex; }
-  .lesson-card.flipped .front { display:none; }
   .lesson-en { opacity:1; }
 }
