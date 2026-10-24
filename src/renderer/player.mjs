@@ -21,6 +21,7 @@ import { createPopup } from './popup.mjs';
 import { doodle, withIcon } from './lib/doodleIcons.mjs';
 import { inkHeader, setInkHeader } from './lib/inkHeader.mjs';
 import { currentLineIndex, formatOffset as formatChipOffset } from './lib/subtitleTimeline.mjs';
+import { subtitleAppearance } from './lib/subtitleAppearance.mjs';
 import { mountTimeline } from './player/timeline.mjs';
 
 const api = window.api;
@@ -930,6 +931,9 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
   async function init() {
     settings = await api.settings.get();
     if (!alive) return;
+    const appearance = subtitleAppearance(settings);
+    overlay.classList.add(appearance.themeClass);
+    overlay.classList.toggle('subtitle-no-box', appearance.hideBox);
     syncToggles();
     cover = settings.subtitleCover ?? null;
     key = settings.subtitleKey ?? null;

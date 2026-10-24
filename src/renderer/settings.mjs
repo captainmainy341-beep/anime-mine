@@ -34,6 +34,12 @@ function createInputs(settings) {
     showFurigana: checkbox(settings.showFurigana),
     autoPause: checkbox(settings.autoPause),
     quickMine: checkbox(settings.quickMine),
+    subtitleBox: checkbox(settings.subtitleBox),
+    subtitleTheme: select(['classic', 'compact', 'minimal'], settings.subtitleTheme, {
+      classic: 'Classic (large)',
+      compact: 'Compact',
+      minimal: 'Minimal',
+    }),
     removeBurnedSubs: checkbox(settings.removeBurnedSubs),
     burnedSubsMode: select(['blur', 'ai'], settings.burnedSubsMode === 'ai' ? 'ai' : 'blur', {
       blur: 'Fast blur, about 12 min per episode, no install',
@@ -71,6 +77,8 @@ function readPatch(f) {
     showFurigana: f.showFurigana.checked,
     autoPause: f.autoPause.checked,
     quickMine: f.quickMine.checked,
+    subtitleBox: f.subtitleBox.checked,
+    subtitleTheme: f.subtitleTheme.value,
     removeBurnedSubs: f.removeBurnedSubs.checked,
     burnedSubsMode: f.burnedSubsMode.value,
     knownDeck: f.knownDeck.value.trim(),
@@ -221,6 +229,8 @@ function subtitlesSection(f) {
   return {
     el: fieldset(
       'Subtitles',
+      toggle(f.subtitleBox, 'Show white subtitle box'),
+      field('Subtitle theme', f.subtitleTheme, 'Classic is large; Compact and Minimal use smaller text.'),
       toggle(f.removeBurnedSubs, 'Remove burned-in subtitles (runs in the background)'),
       field('Method', f.burnedSubsMode),
       hint,
