@@ -55,6 +55,59 @@ export function dilateMask(mask, width, height, radius) {
   return out;
 }
 
+// Reconstruct keyed text by blending nearby unmasked pixels from the same frame.
+export function inpaintPixels(rgba, width, height, mask, searchRadius = 24) {
+  const result = new Uint8ClampedArray(rgba);
+  let minX = width;
+  let minY = height;
+  let maxX = -1;
+  let maxY = -1;
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      if (!mask[y * width + x]) continue;
+      minX = Math.min(minX, x);
+      minY = Math.min(minY, y);
+      maxX = Math.max(maxX, x);
+      maxY = Math.max(maxY, y);
+    }
+  }
+  if (maxX < minX) return result;
+
+  const directions = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+  for (let y = minY; y <= maxY; y++) {
+    for (let x = minX; x <= maxX; x++) {
+      const i = y * width + x;
+      if (!mask[i]) continue;
+      let totalWeight = 0;
+      let r = 0;
+      let g = 0;
+      let b = 0;
+      for (const [dx, dy] of directions) {
+        for (let distance = 1; distance <= searchRadius; distance++) {
+          const nx = x + dx * distance;
+          const ny = y + dy * distance;
+          if (nx < 0 || nx >= width || ny < 0 || ny >= height) break;
+          const neighbor = ny * width + nx;
+          if (mask[neighbor]) continue;
+          const weight = 1 / distance;
+          const p = neighbor * 4;
+          totalWeight += weight;
+          r += rgba[p] * weight;
+          g += rgba[p + 1] * weight;
+          b += rgba[p + 2] * weight;
+          break;
+        }
+      }
+      if (totalWeight === 0) continue;
+      const p = i * 4;
+      result[p] = r / totalWeight;
+      result[p + 1] = g / totalWeight;
+      result[p + 2] = b / totalWeight;
+    }
+  }
+  return result;
+}
+
 // Turn a 0/1 mask into RGBA pixels with the given colour where set and fully transparent elsewhere.
 export function maskToRgba(mask, rgb, out) {
   for (let i = 0, p = 0; i < mask.length; i++, p += 4) {
