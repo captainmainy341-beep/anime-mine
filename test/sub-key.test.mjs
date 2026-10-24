@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { addKeyColor, dilateMask, keyMask, maskToRgba, setKeyTolerance } from '../src/renderer/lib/subKey.mjs';
+import { addKeyColor, dilateMask, inpaintPixels, keyMask, maskToRgba, setKeyTolerance } from '../src/renderer/lib/subKey.mjs';
 
 test('addKeyColor appends, ignores repeats, caps at eight and keeps tolerance', () => {
   let key = addKeyColor(null, [1, 2, 3]);
@@ -47,4 +47,39 @@ test('dilateMask grows set pixels by the radius without wrapping across rows', (
 test('maskToRgba paints set pixels opaque and the rest transparent', () => {
   const out = maskToRgba(new Uint8Array([1, 0]), [10, 20, 30], new Uint8ClampedArray(8));
   assert.deepEqual([...out], [10, 20, 30, 255, 10, 20, 30, 0]);
+});
+
+test('inpaintPixels reconstructs subtitle pixels from the surrounding frame', () => {
+  const width = 80;
+  const height = 40;
+  const frame = new Uint8ClampedArray(width * height * 4);
+  const clean = new Uint8ClampedArray(width * height * 4);
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      const p = (y * width + x) * 4;
+      const background = [30 + x * 2, 45 + y * 3, 80 + Math.floor(x / 2) + y, 255];
+      clean.set(background, p);
+      frame.set(background, p);
+      if (x >= 20 && x < 60 && y >= 15 && y < 25) frame.set([255, 20, 20, 255], p);
+    }
+  }
+
+  const selected = dilateMask(keyMask(frame, width, height, { colors: [[255, 20, 20]], tolerance: 10 }), width, height, 2);
+  const result = inpaintPixels(frame, width, height, selected);
+  let error = 0;
+  let count = 0;
+  for (let i = 0; i < selected.length; i++) {
+    if (selected[i]) {
+      const p = i * 4;
+      error += Math.abs(result[p] - clean[p]) + Math.abs(result[p + 1] - clean[p + 1]) + Math.abs(result[p + 2] - clean[p + 2]);
+      count++;
+    } else {
+      const p = i * 4;
+      assert.deepEqual([...result.subarray(p, p + 4)], [...frame.subarray(p, p + 4)], 'unkeyed pixels are unchanged');
+    }
+  }
+  assert.ok(count > 0);
+  const captionPixel = (20 * width + 40) * 4;
+  assert.notDeepEqual([...result.subarray(captionPixel, captionPixel + 4)], [255, 20, 20, 255], 'the keyed subtitle pixel is reconstructed');
+  assert.ok(error / (count * 3) < 3, `mean inpaint error ${error / (count * 3)} should stay below 3 channel values`);
 });

@@ -2,7 +2,7 @@ import { coverToPixels, expandCover, pictureRect, rectFromDrag, sourceBand } fro
 import { findCueIndex, neighborIndex } from './lib/cues.mjs';
 import { furigana } from './lib/furigana.mjs';
 import { tokenizeCached } from './lib/nlp.mjs';
-import { addKeyColor, dilateMask, keyMask, maskToRgba, setKeyTolerance } from './lib/subKey.mjs';
+import { addKeyColor, dilateMask, inpaintPixels, keyMask, setKeyTolerance } from './lib/subKey.mjs';
 import {
   audioLabel,
   createGeneration,
@@ -28,7 +28,6 @@ const api = window.api;
 const SAVE_INTERVAL_MS = 5000;
 const KEY_MAX_WIDTH = 960;
 const KEY_MASK_RADIUS = 2;
-const WAND_PREVIEW = 'rgba(255, 0, 200, 0.75)';
 const HEADER_THROTTLE_MS = 250;
 const STRIP_HINT = 'Click a word to look it up. Space pauses, A and D change line.';
 const KEYS_HELP =
@@ -874,14 +873,13 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
     const height = Math.max(1, Math.round(box.height));
     if (coverCanvas.width !== width) coverCanvas.width = width;
     if (coverCanvas.height !== height) coverCanvas.height = height;
-    const band = sourceBand(area, video.videoWidth, video.videoHeight);
     const ctx = coverCanvas.getContext('2d');
     ctx.clearRect(0, 0, width, height);
     coverCanvas.classList.toggle('keyed', key !== null);
-    if (key && wand) {
-      ctx.fillStyle = WAND_PREVIEW;
-      ctx.fillRect(0, 0, width, height);
+    if (key) {
+      drawInpaintedPixels(ctx, area, width, height);
     } else {
+      const band = sourceBand(area, video.videoWidth, video.videoHeight);
       ctx.save();
       ctx.filter = 'blur(14px)';
       ctx.translate(0, height);
@@ -890,11 +888,10 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
       ctx.drawImage(video, band.sx, band.sy, band.sw, band.sh, -pad, -pad, width + pad * 2, height + pad * 2);
       ctx.restore();
     }
-    if (key) keepKeyedPixels(ctx, area, width, height);
   }
 
-  // Keeps the cover only where the frame matches the wand's key colours, so everything else in the box shows through.
-  function keepKeyedPixels(ctx, area, width, height) {
+  // Reconstruct keyed subtitle pixels from the surrounding video frame, leaving every other pixel transparent.
+  function drawInpaintedPixels(ctx, area, width, height) {
     const sw = area.w * video.videoWidth;
     const sh = area.h * video.videoHeight;
     const scale = Math.min(1, KEY_MAX_WIDTH / sw);
@@ -906,9 +903,10 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
     kctx.drawImage(video, area.x * video.videoWidth, area.y * video.videoHeight, sw, sh, 0, 0, kw, kh);
     const pixels = kctx.getImageData(0, 0, kw, kh);
     const mask = dilateMask(keyMask(pixels.data, kw, kh, key), kw, kh, KEY_MASK_RADIUS);
-    kctx.putImageData(new ImageData(maskToRgba(mask, [0, 0, 0], pixels.data), kw, kh), 0, 0);
+    const reconstructed = inpaintPixels(pixels.data, kw, kh, mask);
+    for (let i = 0; i < mask.length; i++) reconstructed[i * 4 + 3] = mask[i] ? 255 : 0;
+    kctx.putImageData(new ImageData(reconstructed, kw, kh), 0, 0);
     ctx.save();
-    ctx.globalCompositeOperation = 'destination-in';
     ctx.filter = 'blur(1px)';
     ctx.drawImage(keyCanvas, 0, 0, width, height);
     ctx.restore();
