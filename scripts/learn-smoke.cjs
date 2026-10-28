@@ -221,7 +221,7 @@ async function screenshot(name) {
   await tab('Stats');
   await waitFor(() => !!document.querySelector('.learn-stats .learn-big'), 'stats');
   console.log('PASS stats');
-  await tab('Settings');
+  await tab('Study settings');
   await waitFor(() => !!document.querySelector('.learn-settings form'), 'settings');
   await evaluate(() => document.querySelector('.learn-settings form').requestSubmit());
   await waitFor(() => [...document.querySelectorAll('#toasts *')].some(el => el.textContent === 'Learn settings saved'), 'save settings');
