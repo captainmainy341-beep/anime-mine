@@ -155,6 +155,7 @@ function mountWords(panel) {
   async function changeStatus(word, nextStatus) {
     await attempt(async () => {
       const result = await api.known.mark({ word, status: nextStatus });
+      window.dispatchEvent(new CustomEvent('am:known-changed', { detail: { word, status: nextStatus } }));
       if (result?.stats) counts = result.stats;
       await load();
     });
@@ -550,6 +551,7 @@ function mountDifficulty(panel) {
   async function markShown(list, status, work) {
     await attempt(async () => {
       for (const { word } of list) await api.known.mark({ word, status });
+      window.dispatchEvent(new CustomEvent('am:known-changed', { detail: { status } }));
       toast(`Marked ${formatCount(list.length)} as ${STATUS_META[status].label.toLowerCase()}`, 'success');
     });
     if (state.alive) openDetail(work);
@@ -731,6 +733,7 @@ function mountExtract(panel) {
     }
     await attempt(async () => {
       for (const word of words) await api.known.mark({ word, status });
+      window.dispatchEvent(new CustomEvent('am:known-changed', { detail: { status } }));
       toast(`Marked ${formatCount(words.length)} as ${STATUS_META[status].label.toLowerCase()}`, 'success');
     });
     if (state.alive && state.rows.length) await run();

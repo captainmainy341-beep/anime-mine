@@ -448,6 +448,7 @@ export function openReader(container, { series, volume, startPage = 0, onClose }
     const state = panelState;
     try {
       await api.known.mark({ word: state.lookup.dictForm, status });
+      window.dispatchEvent(new CustomEvent('am:known-changed', { detail: { word: state.lookup.dictForm, status } }));
     } catch (err) {
       toast(err.message, 'error');
       return;
