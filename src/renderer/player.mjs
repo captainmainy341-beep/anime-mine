@@ -202,7 +202,7 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
   const header = inkHeader({ title: 'Player', compact: true, label: '', value: 0, max: 0 });
   const video = h('video', { preload: 'metadata', playsinline: true, class: 'player-video' });
   video.controls = false;
-  const overlay = h('div', { class: 'subtitle-overlay' });
+  const overlay = h('div', { class: 'subtitle-overlay', hidden: true });
   const coverCanvas = h('canvas', { class: 'cover-canvas', hidden: true });
   const keyCanvas = document.createElement('canvas');
   const pixelCanvas = document.createElement('canvas');
@@ -1269,6 +1269,7 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
     const seq = ++overlaySeq;
     const index = activeIndex;
     const cue = cues[index];
+    overlay.hidden = !subsOn || !cue;
     stripLine.textContent = lineStripText(cue);
     setLineTokens(index, []);
     if (!cue) {
@@ -1358,7 +1359,7 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
 
   function toggleSubs() {
     subsOn = !subsOn;
-    overlay.hidden = !subsOn;
+    overlay.hidden = !subsOn || !cues[activeIndex];
     subsButton.textContent = subsOn ? 'Subtitles on' : 'Subtitles off';
     subsButton.setAttribute('aria-pressed', String(subsOn));
   }
