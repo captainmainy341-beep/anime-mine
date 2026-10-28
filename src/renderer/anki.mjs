@@ -206,9 +206,9 @@ export function mountAnki(container) {
   function hiddenPanel() {
     return panel(
       'Your Anki decks are hidden',
-      'Nothing is loaded from Anki until you connect. You can preview the section with sample data first.',
-      button('Preview with sample data', () => setMode('sample')),
-      button('Connect my Anki', () => setMode('live'), 'primary'),
+      'Your decks stay private while hidden. Preview with sample data, or open Anki with AnkiConnect to connect your own decks.',
+      button('Preview sample data', () => setMode('sample')),
+      button('Connect to Anki', () => setMode('live'), 'primary'),
     );
   }
 
@@ -309,6 +309,8 @@ export function mountAnki(container) {
           )
         : null,
     );
+    tabStrip.hidden = !section;
+    tabStrip.setAttribute('aria-hidden', String(!section));
     sampleChip.hidden = state.summary !== 'sample';
     chooseDecks.hidden = state.summary !== 'ready';
     modeSwitch.hidden = state.summary === 'loading';
