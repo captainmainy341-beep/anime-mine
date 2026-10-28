@@ -141,40 +141,50 @@ export function mountLesson(host, ctx, { data, tutor = { char: 'hana', color: '#
   }
 
   function showCards(step) {
-    setTutor('idle', 'Tap a card to flip it. The speaker plays the word.');
-    const flipped = new Set();
-    const cards = step.words.map((word, i) => {
-      const card = h('div', { class: 'lesson-card', role: 'button', tabindex: '0', 'aria-pressed': 'false', 'aria-label': `${word.ja}, ${word.reading}: tap to see the meaning`, style: `--i:${i}` },
-        h('div', { class: 'face front' },
-          h('span', { class: 'emoji', 'aria-hidden': 'true' }, doodle('spark')),
-          h('span', { class: 'ja', lang: 'ja' }, word.ja),
-          word.reading !== word.ja ? h('span', { class: 'kana', lang: 'ja' }, word.reading) : null),
-        h('div', { class: 'face back' }, h('span', { class: 'en' }, word.en), h('span', { class: 'ja-small', lang: 'ja' }, word.ja)),
-        h('button', { type: 'button', class: 'lesson-speak', 'aria-label': `Hear ${word.ja}`, onclick: (event) => { event.stopPropagation(); ctx.speak?.(word.reading || word.ja); } }, doodle('sound')));
-      const flip = () => {
-        const on = !card.classList.contains('flipped');
-        card.classList.toggle('flipped', on);
-        card.setAttribute('aria-pressed', String(on));
-        if (on && !flipped.has(i)) {
-          flipped.add(i);
+    setTutor('idle', 'Use the speaker for pronunciation, then check the meaning.');
+    const revealed = new Set();
+    const rows = step.words.map((word, i) => {
+      const answerId = `lesson-word-answer-${lesson.lesson}-${step.round + 1}-${i + 1}`;
+      const answer = h('span', { id: answerId, class: 'lesson-word-meaning', lang: 'en', hidden: true }, word.en);
+      const check = button('Check meaning', toggleMeaning, 'lesson-word-reveal', { 'aria-expanded': 'false', 'aria-controls': answerId });
+      const row = h('li', { class: 'lesson-word-entry' },
+        h('span', { class: 'lesson-word-number', 'aria-hidden': 'true' }, String(i + 1).padStart(2, '0')),
+        h('div', { class: 'lesson-word-copy' },
+          h('span', { class: 'lesson-word-main', lang: 'ja' }, word.ja),
+          word.reading !== word.ja ? h('span', { class: 'lesson-word-reading', lang: 'ja' }, word.reading) : null),
+        h('div', { class: 'lesson-word-study' }, check, answer),
+        button(doodle('sound'), () => ctx.speak?.(word.reading || word.ja), 'lesson-word-speak', { 'aria-label': `Hear ${word.ja}` }));
+
+      function toggleMeaning() {
+        const show = answer.hidden;
+        answer.hidden = !show;
+        check.setAttribute('aria-expanded', String(show));
+        check.textContent = show ? 'Hide answer' : 'Check meaning';
+        if (show && !revealed.has(i)) {
+          revealed.add(i);
           ctx.speak?.(word.reading || word.ja);
-          if (flipped.size === step.words.length) {
-            setTutor('good', 'You flipped them all!');
+          if (revealed.size === step.words.length) {
+            setTutor('good', 'You studied every word!');
             go.classList.add('pulse');
           }
         }
-      };
-      card.addEventListener('click', flip);
-      card.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter' || event.key === ' ') {
-          event.preventDefault();
-          event.stopPropagation();
-          flip();
-        }
-      });
-      return card;
+      }
+
+      return row;
     });
-    swap(h('div', { class: 'lesson-cards-wrap' }, h('h2', {}, `New words ${step.round + 1}`), h('p', { class: 'lesson-sub' }, 'Say each one out loud, then flip to check.'), h('div', { class: 'lesson-cards' }, cards)), 'cards');
+    swap(
+      h('section', { class: 'lesson-vocab-sheet', 'aria-labelledby': 'lesson-vocab-title' },
+        h('header', { class: 'lesson-vocab-head' },
+          h('div', {},
+            h('span', { class: 'story-level' }, `Lesson ${lesson.lesson} · Vocabulary`),
+            h('h2', { id: 'lesson-vocab-title' }, `New words ${step.round + 1}`)),
+          h('span', { class: 'lesson-vocab-page', 'aria-label': `Vocabulary set ${step.round + 1}` }, String(step.round + 1).padStart(2, '0'))),
+        h('p', { class: 'lesson-sub' }, 'Say each word aloud. Try to recall its meaning before checking.'),
+        h('div', { class: 'lesson-vocab-labels', 'aria-hidden': 'true' },
+          h('span', {}, 'No.'), h('span', {}, 'Word'), h('span', {}, 'Meaning'), h('span', {}, 'Listen')),
+        h('ol', { class: 'lesson-word-list' }, rows)),
+      'cards',
+    );
     setAction('Next', () => {
       run.sawWords(step.words.length);
       next();

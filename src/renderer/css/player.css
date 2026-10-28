@@ -221,6 +221,37 @@
 .player .subtitle-overlay .subtitle-line { display: block; }
 .player .subtitle-overlay .subtitle-line + .subtitle-line { margin-top: 0.45em; }
 
+.player .subtitle-overlay.subtitle-theme-compact {
+  min-width: 0;
+  min-height: 0;
+  padding: 8px 20px;
+  border-width: 2px;
+  border-radius: 16px;
+  font-size: 32px;
+  font-weight: 800;
+}
+
+.player .subtitle-overlay.subtitle-theme-minimal {
+  min-width: 0;
+  min-height: 0;
+  padding: 4px 12px;
+  border-width: 1.5px;
+  border-radius: 12px;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.player .subtitle-overlay.subtitle-no-box {
+  min-width: 0;
+  min-height: 0;
+  padding: 0 8px;
+  border-color: transparent;
+  border-radius: 0;
+  background: transparent;
+  color: #fff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.95), 0 0 2px #000;
+}
+
 .player .subtitle-overlay .word {
   padding: 0 1px;
   border-radius: 6px;
@@ -230,6 +261,9 @@
 
 .player .subtitle-overlay .word:hover,
 .player .subtitle-overlay .word:focus-visible { outline: none; background: var(--paper-2); }
+
+.player .subtitle-overlay.subtitle-no-box .word:hover,
+.player .subtitle-overlay.subtitle-no-box .word:focus-visible { background: rgba(0, 0, 0, 0.55); }
 
 .player .subtitle-overlay .word.tok-new {
   text-decoration: underline 5px var(--ink-red);

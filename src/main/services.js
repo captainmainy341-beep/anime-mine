@@ -48,12 +48,31 @@ function defaultSettings() {
     burnedSubsMode: 'blur',
     subtitleCover: null,
     subtitleKey: null,
+    subtitleBox: true,
+    subtitleTheme: 'classic',
     manga: { aiOcr: false },
     jimaku: { enabled: true, apiKey: '' },
   };
 }
 
 const isPlainObject = (value) => value !== null && typeof value === 'object' && !Array.isArray(value);
+const SUBTITLE_THEMES = new Set(['classic', 'compact', 'minimal']);
+
+function normalizeSubtitleBox(value) {
+  return typeof value === 'boolean' ? value : true;
+}
+
+function normalizeSubtitleTheme(value) {
+  return SUBTITLE_THEMES.has(value) ? value : 'classic';
+}
+
+function normalizeSubtitleAppearance(settings) {
+  return {
+    ...settings,
+    subtitleBox: normalizeSubtitleBox(settings.subtitleBox),
+    subtitleTheme: normalizeSubtitleTheme(settings.subtitleTheme),
+  };
+}
 
 function deepMerge(base, patch) {
   const out = { ...base };
@@ -65,7 +84,7 @@ function deepMerge(base, patch) {
 
 async function readSettings(file) {
   try {
-    return deepMerge(defaultSettings(), JSON.parse(await fs.readFile(file, 'utf8')));
+    return normalizeSubtitleAppearance(deepMerge(defaultSettings(), JSON.parse(await fs.readFile(file, 'utf8'))));
   } catch (err) {
     if (err.code === 'ENOENT') return defaultSettings();
     throw err;
@@ -808,6 +827,8 @@ function createServices({ dataDir, dialog, deps = {}, notify = () => {} }) {
     let patch = input;
     if (input && Object.hasOwn(input, 'subtitleCover')) patch = { ...patch, subtitleCover: normalizeCover(input.subtitleCover) };
     if (input && Object.hasOwn(input, 'subtitleKey')) patch = { ...patch, subtitleKey: normalizeKey(input.subtitleKey) };
+    if (input && Object.hasOwn(input, 'subtitleBox')) patch = { ...patch, subtitleBox: normalizeSubtitleBox(input.subtitleBox) };
+    if (input && Object.hasOwn(input, 'subtitleTheme')) patch = { ...patch, subtitleTheme: normalizeSubtitleTheme(input.subtitleTheme) };
     const { next } = await writeSettings(patch, { invalidateScope: true });
     return next;
   }

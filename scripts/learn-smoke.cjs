@@ -103,6 +103,36 @@ async function screenshot(name) {
   assert.equal(await evaluate(() => [...document.querySelectorAll('.home-stage')].every(el => el.getBoundingClientRect().height < 50)), true, 'SRS counts must stay compact');
   console.log('PASS Learn home and real IPC');
   await screenshot('home');
+  await tab('Story');
+  await waitFor(() => !!document.querySelector('.nf-row.genki .nf-tile[data-id="genki-l01"]'), 'Genki story home');
+  await evaluate(() => document.querySelector('.nf-row.genki .nf-tile[data-id="genki-l01"]').click());
+  await waitFor(() => !!document.querySelector('.nf-sheet-actions button'), 'Genki lesson details');
+  await evaluate(() => [...document.querySelectorAll('.nf-sheet-actions button')].find((button) => button.textContent.includes('Learn first')).click());
+  await waitFor(() => !!document.querySelector('.lesson-intro'), 'Genki lesson introduction');
+  await evaluate(() => document.querySelector('.lesson-go').click());
+  await waitFor(() => !!document.querySelector('.lesson-vocab-sheet .lesson-word-entry'), 'Genki workbook vocabulary');
+  const workbook = await evaluate(() => {
+    const sheet = document.querySelector('.lesson-vocab-sheet');
+    const stylesheet = [...document.styleSheets].find((s) => s.href?.endsWith('/css/story-lesson.css'));
+    return {
+      title: document.querySelector('.lesson-vocab-head h2')?.textContent,
+      rows: document.querySelectorAll('.lesson-word-entry').length,
+      revealLabel: document.querySelector('.lesson-word-reveal')?.textContent,
+      meaningHidden: document.querySelector('.lesson-word-meaning')?.hidden,
+      workbookWidth: sheet ? getComputedStyle(sheet).maxWidth : null,
+      stylesheetLoaded: Boolean(stylesheet && stylesheet.cssRules.length),
+    };
+  });
+  assert.equal(workbook.title, 'New words 1');
+  assert.ok(workbook.rows > 0, 'vocabulary list renders in the real Story lesson');
+  assert.equal(workbook.revealLabel, 'Check meaning');
+  assert.equal(workbook.meaningHidden, true, 'meanings stay hidden until checked');
+  assert.equal(workbook.workbookWidth, '760px', 'workbook stylesheet is applied in Electron');
+  assert.equal(workbook.stylesheetLoaded, true, 'story lesson stylesheet is loaded by the app renderer');
+  console.log('PASS Story tab opens the workbook lesson in Electron with its production stylesheet');
+  await screenshot('genki-workbook');
+  await tab('Home');
+  await waitFor(() => !!document.querySelector('.learn-home .learn-actions'), 'Learn home after workbook');
   await tab('Grammar');
   await seeAll();
   await waitFor(() => !!document.querySelector('.learn-g-row'), 'grammar browser');
