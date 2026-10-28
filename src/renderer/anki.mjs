@@ -10,7 +10,7 @@ import { createCardDocumentCache, deckLabel, easeForKey, gradeButtons, plainSent
 import { studyDocument } from './lib/studyPresentation.mjs';
 import { createStudyCardView } from './anki/studyCard.mjs';
 
-const api = window.api;
+const api = globalThis.window?.api;
 
 const MODES = [
   ['hidden', 'Hidden'],
@@ -45,7 +45,7 @@ const countOf = (value) => {
   const n = Number(value);
   return Number.isFinite(n) && n > 0 ? n : 0;
 };
-const deckDue = (deck) => countOf(deck?.new) + countOf(deck?.learn) + countOf(deck?.due);
+export const deckDue = (deck) => countOf(deck?.new) + countOf(deck?.learn) + countOf(deck?.due);
 const deckTotal = (deck) => countOf(deck?.total) || deckDue(deck);
 const cardsLabel = (n) => `${n} ${n === 1 ? 'card' : 'cards'}`;
 const isMissing = (fn) => typeof fn !== 'function';
@@ -99,7 +99,7 @@ export function mountAnki(container) {
   window.addEventListener('resize', closeDeckMenu);
   load();
 
-  return () => {
+  const unmount = () => {
     disposed = true;
     closeDeckMenu();
     disposeTabs();
@@ -111,6 +111,8 @@ export function mountAnki(container) {
     window.removeEventListener('resize', closeDeckMenu);
     observer?.disconnect();
   };
+  unmount.canLeave = leaveAllowed;
+  return unmount;
 
   // Data loading and mode
 
@@ -501,7 +503,7 @@ export function mountAnki(container) {
           h('span', { class: 'ink-deck-head-cell is-deck', role: 'columnheader' }, 'Deck'),
           h('span', { class: 'ink-deck-head-cell', role: 'columnheader' }, 'New'),
           h('span', { class: 'ink-deck-head-cell', role: 'columnheader' }, 'Learn'),
-          h('span', { class: 'ink-deck-head-cell', role: 'columnheader' }, 'Due'),
+          h('span', { class: 'ink-deck-head-cell', role: 'columnheader', title: 'Review cards due' }, 'Review'),
           h('span', { class: 'ink-deck-head-cell', role: 'columnheader' })),
         h('div', { class: 'ink-deck-body', role: 'rowgroup' }, decks.map((deck) => deckRow(deck, deck.name === selected?.name)))),
       state.deckForm ? createDeckForm() : deckActions());

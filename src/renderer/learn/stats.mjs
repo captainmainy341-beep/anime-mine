@@ -9,6 +9,8 @@ const ITEM_KINDS = [
   ['vocab', 'Vocabulary'],
 ];
 
+export const pluralLabel = (singular, count) => `${singular}${count === 1 ? '' : 's'}`;
+
 const stat = (label, value) => h('div', { class: 'learn-stat' }, h('strong', {}, value), h('span', {}, label));
 
 function section(title, ...children) {
@@ -48,8 +50,8 @@ export function mountStats(el, ctx) {
         h(
           'div',
           { class: 'learn-stat-row' },
-          stat('reviews', s.totals.reviews),
-          stat('lessons', s.totals.lessons),
+          stat(pluralLabel('review', s.totals.reviews), s.totals.reviews),
+          stat(pluralLabel('lesson', s.totals.lessons), s.totals.lessons),
           stat('correct', s.totals.correct),
         ),
       ),
@@ -67,6 +69,7 @@ export function mountStats(el, ctx) {
   }
 
   function reviewChart(daily) {
+    if (!daily.some((day) => day.reviews > 0)) return h('p', { class: 'learn-sub' }, 'No reviews in the last 30 days.');
     const bars = forecastBars(
       daily.map((d) => ({ label: d.date, count: d.reviews })),
       100,
@@ -86,6 +89,7 @@ export function mountStats(el, ctx) {
   }
 
   function heatStrip(daily) {
+    if (!daily.some((day) => (day.reviews ?? 0) > 0 || (day.lessons ?? 0) > 0)) return h('p', { class: 'learn-sub' }, 'No activity yet.');
     return h(
       'div',
       { class: 'learn-heat' },
@@ -101,6 +105,7 @@ export function mountStats(el, ctx) {
       'div',
       { class: 'learn-stage-group' },
       h('h3', {}, label),
+      !STAGES.some((stage) => counts[stage] > 0) ? h('p', { class: 'learn-sub' }, 'No items started yet.') : null,
       STAGES.map((stage) => {
         const count = counts[stage] ?? 0;
         return h(

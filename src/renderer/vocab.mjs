@@ -335,7 +335,7 @@ function mountDifficulty(panel) {
   const queued = new Set();
   const subs = [];
   const bodies = Object.fromEntries(KINDS.map((kind) => [kind, h('tbody')]));
-  const sortButtons = new Map(WORK_COLUMNS.map(([key, label]) => [key, h('button', { class: 'ghost vocab-sort', onclick: () => sortBy(key) }, label)]));
+  const sortButtons = Object.fromEntries(KINDS.map((kind) => [kind, new Map(WORK_COLUMNS.map(([key, label]) => [key, h('button', { class: 'ghost vocab-sort', onclick: () => sortBy(key) }, label)]))]));
   const search = h('input', {
     type: 'search',
     class: 'vocab-search',
@@ -381,7 +381,7 @@ function mountDifficulty(panel) {
               h(
                 'table',
                 { class: 'vocab-table' },
-                h('thead', {}, h('tr', {}, WORK_COLUMNS.map(([key]) => h('th', {}, sortButtons.get(key))))),
+                h('thead', {}, h('tr', {}, WORK_COLUMNS.map(([key]) => h('th', {}, sortButtons[kind].get(key))))),
                 bodies[kind],
               ),
             ),
@@ -405,13 +405,13 @@ function mountDifficulty(panel) {
   }
 
   function renderTables() {
-    for (const [key, button] of sortButtons) {
-      const [, label] = WORK_COLUMNS.find(([k]) => k === key);
-      const arrow = state.sort.key === key ? (state.sort.dir === 'asc' ? 'up' : 'down') : '';
-      button.replaceChildren(label, ...(arrow ? [' ', doodle(arrow)] : []));
-    }
     for (const kind of KINDS) {
-      const rows = sortWorks(filterWorks(state.works[kind], query), state.sort.key, state.sort.dir).map(withCoverage);
+      for (const [key, button] of sortButtons[kind]) {
+        const [, label] = WORK_COLUMNS.find(([k]) => k === key);
+        const arrow = state.sort.key === key ? (state.sort.dir === 'asc' ? 'up' : 'down') : '';
+        button.replaceChildren(label, ...(arrow ? [' ', doodle(arrow)] : []));
+      }
+      const rows = sortWorks(filterWorks(state.works[kind], query).map(withCoverage), state.sort.key, state.sort.dir);
       fill(bodies[kind], 
         rows.length
           ? rows.map(workRow)

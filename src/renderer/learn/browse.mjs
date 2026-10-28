@@ -50,6 +50,9 @@ export function exploreProps(model, handlers = {}) {
   };
   // Caught up: leave emptyTitle unset so the view keeps its default heading.
   if (model.emptyTitle) props.emptyTitle = model.emptyTitle;
+  else if (model.type === 'vocab' && !model.lesson && !model.rows?.length && model.progress?.value < model.progress?.max) {
+    props.emptyTitle = 'Words locked behind kanji';
+  }
   return props;
 }
 

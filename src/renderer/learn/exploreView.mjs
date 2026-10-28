@@ -263,7 +263,7 @@ export function mountExplore(el, props = {}) {
       h('span', { class: 'ink-row-glyph' }, String(row?.tile ?? '')),
     ),
     h('span', { class: 'ink-row-body' },
-      h('span', { class: 'ink-row-title' }, String(row?.title ?? '')),
+      h('span', { class: 'ink-row-title', title: String(row?.title ?? '') }, String(row?.title ?? '')),
       h('span', { class: 'ink-row-sub', title: String(row?.sub ?? '') }, String(row?.sub ?? '')),
     ),
     chevron,

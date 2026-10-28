@@ -96,11 +96,13 @@ export function mountLearn(container, { onWatch }) {
   api.learn.status().catch(() => {});
   init();
 
-  return () => {
+  const unmount = () => {
     disposed = true;
     teardownView();
     root.remove();
   };
+  unmount.canLeave = () => unmountView?.canLeave ? unmountView.canLeave() : true;
+  return unmount;
 
   async function init() {
     try {
@@ -166,11 +168,16 @@ export function mountLearn(container, { onWatch }) {
               if (!['ArrowLeft','ArrowRight','Home','End'].includes(event.key)) return;
               event.preventDefault();
               const next = event.key === 'Home' ? 0 : event.key === 'End' ? TABS.length - 1 : (index + (event.key === 'ArrowRight' ? 1 : TABS.length - 1)) % TABS.length;
-              const nextKey = TABS[next][0]; stack.length = 0;
+              const nextKey = TABS[next][0];
+              if (nextKey === active) return;
+              if (!unmount.canLeave()) return;
+              stack.length = 0;
               if (nextKey !== 'home') stack.push({ view:nextKey, tab:nextKey });
               show(); tabs.querySelector('[aria-selected="true"]')?.focus();
             },
             onclick: () => {
+              if (key === active) return;
+              if (!unmount.canLeave()) return;
               stack.length = 0;
               if (key !== 'home') stack.push({ view: key, tab: key });
               show();
