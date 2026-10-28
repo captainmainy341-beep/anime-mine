@@ -506,7 +506,7 @@ test('lesson number tiles are two digits', () => {
 
 test('Learn tabs are Home, Kanji, Vocab, Grammar, Story, Stats, Settings', () => {
   assert.deepEqual(LEARN_TABS.map(([key]) => key), ['home', 'levels', 'vocab', 'grammar', 'story', 'stats', 'settings']);
-  assert.deepEqual(LEARN_TABS.map(([, label]) => label), ['Home', 'Kanji', 'Vocab', 'Grammar', 'Story', 'Stats', 'Settings']);
+  assert.deepEqual(LEARN_TABS.map(([, label]) => label), ['Home', 'Kanji', 'Vocab', 'Grammar', 'Story', 'Stats', 'Study settings']);
 });
 
 test('the Vocab tab mounts the levels browser with type vocab', () => {

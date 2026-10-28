@@ -188,7 +188,7 @@ export function mountExplore(el, props = {}) {
     children.push(h('p', { class: 'ink-lesson-meta' }, String(lesson.meta ?? '')));
     children.push(h('div', { class: previewClass }, ...previews.map((value) => h(
       'span',
-      { class: `ink-preview-tile ${isKanji ? 'is-kanji' : 'is-text'}` },
+      { class: `ink-preview-tile ${isKanji ? 'is-kanji' : 'is-text'}`, title: value },
       h('span', { class: 'ink-preview-glyph' }, value),
     ))));
     children.push(progressEl());
@@ -264,7 +264,7 @@ export function mountExplore(el, props = {}) {
     ),
     h('span', { class: 'ink-row-body' },
       h('span', { class: 'ink-row-title' }, String(row?.title ?? '')),
-      h('span', { class: 'ink-row-sub' }, String(row?.sub ?? '')),
+      h('span', { class: 'ink-row-sub', title: String(row?.sub ?? '') }, String(row?.sub ?? '')),
     ),
     chevron,
     );
