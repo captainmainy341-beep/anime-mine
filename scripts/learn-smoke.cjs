@@ -1,4 +1,12 @@
-// Run: node_modules/.bin/electron scripts/learn-smoke.cjs
+// Run: node scripts/learn-smoke.cjs (or node_modules/.bin/electron scripts/learn-smoke.cjs)
+if (!process.versions.electron) {
+  const { spawnSync } = require('node:child_process');
+  const env = { ...process.env };
+  delete env.ELECTRON_RUN_AS_NODE;
+  const child = spawnSync(require('electron'), [__filename, ...process.argv.slice(2)], { stdio: 'inherit', env });
+  if (child.error) console.error(child.error);
+  process.exit(child.status ?? 1);
+}
 // Boots the real main/preload/renderer with isolated data. Never reads personal decks.
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
