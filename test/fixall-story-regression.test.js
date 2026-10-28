@@ -30,6 +30,53 @@ test('introduced items survive a save and restart and are not submitted as revie
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });
 
+test('loading an older snapshot keeps unreported introductions without resurrecting reported ones', async () => {
+  const { mergeIntroductions, snapshotWithIntroductions } = await import('../src/renderer/learn/story.mjs');
+  const current = new Set(['g:n5-ka']);
+  const reported = new Set();
+  const old = {};
+  const afterIntro = snapshotWithIntroductions({}, current);
+  mergeIntroductions(current, old, ['g:n5-ka'], reported);
+  assert.equal(current.has('g:n5-ka'), true);
+  current.delete('g:n5-ka');
+  reported.add('g:n5-ka');
+  mergeIntroductions(current, afterIntro, ['g:n5-ka'], reported);
+  assert.equal(current.size, 0);
+});
+
+test('unmount during save loading never mounts a player or document listener', async () => {
+  const { mountStory } = await import('../src/renderer/learn/story.mjs');
+  const previous = global.document;
+  let listeners = 0;
+  class Element {
+    append() {}
+    replaceChildren() {}
+    setAttribute() {}
+    remove() {}
+    addEventListener() {}
+  }
+  global.document = { createElement: () => new Element(), addEventListener: () => { listeners++; } };
+  let resolveLoad;
+  let startedLoad;
+  const loading = new Promise((resolve) => { startedLoad = resolve; });
+  try {
+    const unmount = mountStory(new Element(), {
+      api: { story: {
+        list: () => new Promise(() => {}),
+        open: async () => ({ save: true }),
+        skins: async () => [],
+        load: () => { startedLoad(); return new Promise((resolve) => { resolveLoad = resolve; }); },
+      } },
+      prefs: { get: () => null },
+    }, { play: 'scene' });
+    await loading;
+    unmount();
+    resolveLoad(null);
+    await new Promise((resolve) => setImmediate(resolve));
+    assert.equal(listeners, 0);
+  } finally { global.document = previous; }
+});
+
 test('generic folder names infer a shared series title across platforms', () => {
   const volumes = [{ title: 'Dorohedoro Vol. 1.cbz', kind: 'cbz' }, { title: 'Dorohedoro Vol. 2.pdf', kind: 'pdf' }];
   assert.equal(seriesTitle('/books/Untitled Folder', volumes), 'Dorohedoro');

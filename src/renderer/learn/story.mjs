@@ -20,6 +20,13 @@ export function restoredIntroductions(snapshot, items) {
   return new Set(Array.isArray(snapshot?.introducedNow) ? snapshot.introducedNow.filter((id) => items.includes(id)) : []);
 }
 
+export function mergeIntroductions(current, snapshot, items, reported) {
+  for (const id of restoredIntroductions(snapshot, items)) {
+    if (!reported.has(id)) current.add(id);
+  }
+  return current;
+}
+
 export function snapshotWithIntroductions(snapshot, introducedNow) {
   return { ...snapshot, introducedNow: [...introducedNow] };
 }
@@ -142,16 +149,22 @@ export function mountStory(el, ctx, arg = {}) {
 
   async function play(id, { fresh = false } = {}) {
     leaveScreens();
+    const seq = screenSeq;
+    const stale = () => disposed || seq !== screenSeq;
     fill(root, h('p', { class: 'learn-sub' }, 'Loading…'));
     try {
       const data = await api.open(id);
-      const pack = pickSkin(await api.skins(), ctx.prefs.get('storySkin', null));
+      if (stale()) return;
+      const skins = await api.skins();
+      if (stale()) return;
+      const pack = pickSkin(skins, ctx.prefs.get('storySkin', null));
       const manifest = pack ? await api.skinManifest(pack) : null;
-      if (disposed) return;
+      if (stale()) return;
       const restore = !fresh && data.save ? await api.load(id) : null;
+      if (stale()) return;
       teardownPlay = mountPlayer(root, ctx, { data, manifest, restore, exit: showMenu });
     } catch (err) {
-      if (!disposed) fill(root, h('div', { class: 'learn-card learn-error', role: 'alert' }, h('h2', {}, 'Could not open this scene'), h('p', {}, err.message), button('Back', showMenu)));
+      if (!stale()) fill(root, h('div', { class: 'learn-card learn-error', role: 'alert' }, h('h2', {}, 'Could not open this scene'), h('p', {}, err.message), button('Back', showMenu)));
     }
   }
 }
@@ -160,6 +173,7 @@ function mountPlayer(host, ctx, { data, manifest, restore, exit }) {
   const api = ctx.api.story;
   const scene = data.scene;
   const introducedNow = restoredIntroductions(restore, scene.items);
+  const reportedIntroductions = new Set();
   const pending = new Set();
   const assets = new Map();
   const furigana = ctx.settings?.showFurigana !== false;
@@ -434,7 +448,7 @@ function mountPlayer(host, ctx, { data, manifest, restore, exit }) {
         })
         .catch((err) => toast(err.message, 'error'))
         .finally(() => pending.delete(task));
-      introducedNow.delete(report.item);
+      if (introducedNow.delete(report.item)) reportedIntroductions.add(report.item);
       pending.add(task);
     }
   }
@@ -482,7 +496,7 @@ function mountPlayer(host, ctx, { data, manifest, restore, exit }) {
   }
 
   function onKey(event) {
-    if (disposed) return;
+    if (disposed || event.isComposing || event.keyCode === 229) return;
     if (event.key === 'Escape') {
       if (overlay) closeOverlay();
       else leave();
@@ -613,8 +627,7 @@ function mountPlayer(host, ctx, { data, manifest, restore, exit }) {
     const snapshot = await api.load(scene.id);
     if (!snapshot) return toast('No save for this scene yet');
     engine = newEngine(snapshot);
-    introducedNow.clear();
-    for (const id of restoredIntroductions(snapshot, scene.items)) introducedNow.add(id);
+    mergeIntroductions(introducedNow, snapshot, scene.items, reportedIntroductions);
     completed = false;
     render();
   }

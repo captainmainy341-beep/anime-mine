@@ -457,7 +457,7 @@ export function mountLesson(host, ctx, { data, tutor = { char: 'hana', color: '#
   }
 
   function onKey(event) {
-    if (disposed) return;
+    if (disposed || event.isComposing || event.keyCode === 229) return;
     if (event.key === 'Escape') {
       event.preventDefault();
       leave();
