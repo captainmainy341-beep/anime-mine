@@ -6,7 +6,8 @@
   "scripts": {
     "start": "electron .",
     "test": "node --test \"test/**/*.test.js\" \"test/**/*.test.mjs\"",
-    "test:learn": "electron scripts/learn-smoke.cjs"
+    "test:learn": "electron scripts/learn-smoke.cjs",
+    "package:mac": "bash scripts/package-mac.sh"
   },
   "license": "MIT",
   "dependencies": {
@@ -15,6 +16,11 @@
     "kuromoji": "^0.1.2"
   },
   "devDependencies": {
-    "electron": "^44.7.0"
+    "electron": "^44.10.0"
+  },
+  "overrides": {
+    "@electron/get": {
+      "undici": "7.30.1"
+    }
   }
 }

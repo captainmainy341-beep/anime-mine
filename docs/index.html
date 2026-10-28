@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Anime Mine</title>
+  <meta name="description" content="Anime Mine is a macOS beta for learning Japanese from anime you already own: look words up, then mine them to Anki.">
+  <meta name="theme-color" content="#F5F2EA">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="site.css">
+</head>
+<body>
+  <header class="top">
+    <a class="mark" href="#top">
+      <span class="mark-ja">アニメ</span>
+      <span class="mark-mine">マイン</span>
+    </a>
+    <nav>
+      <a href="#what">What it is</a>
+      <a href="#start">First run</a>
+      <a href="#build">Build</a>
+      <a href="https://github.com/captainmainy341-beep/anime-mine">GitHub</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <p class="eyebrow">macOS beta · MIT</p>
+    <h1>Japanese, from anime you already own.</h1>
+    <p class="lede">Anime Mine plays video files on your Mac, lets you look up Japanese in the subtitles, and sends the words you want to keep into Anki.</p>
+    <p class="status">Beta you build from source. A packaged app is ad-hoc signed. It is not notarized, and it is not an App Store build.</p>
+
+    <section id="what">
+      <h2>What it is</h2>
+      <ol class="steps">
+        <li>
+          <span class="num">1</span>
+          <div>
+            <h3>Watch</h3>
+            <p>Point the library at a folder of video you already have. Subtitle files next to those videos are linked for you.</p>
+          </div>
+        </li>
+        <li>
+          <span class="num">2</span>
+          <div>
+            <h3>Look up</h3>
+            <p>Click a word in the subtitles for the dictionary entry, furigana, and the sentence it came from.</p>
+          </div>
+        </li>
+        <li>
+          <span class="num">3</span>
+          <div>
+            <h3>Mine</h3>
+            <p>Send the word, sentence, screenshot, and an audio clip to Anki through AnkiConnect.</p>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <section id="start">
+      <h2>First run</h2>
+      <ol class="run">
+        <li><strong>Add a folder.</strong> Library, Add folder. Use files you own. Anime Mine does not download shows.</li>
+        <li><strong>Optional: Jimaku.</strong> Settings, Library. A free key from your jimaku.cc account fills in missing subtitles. Skip it when the files already have them.</li>
+        <li><strong>AnkiConnect.</strong> Install Anki and the AnkiConnect add-on (code 2055492159), then leave Anki open. The default address is http://127.0.0.1:8765.</li>
+        <li><strong>Optional: browser extension.</strong> Load the extension unpacked. In the app, Settings, Browser extension, copy the port and token. <a href="https://github.com/captainmainy341-beep/anime-mine/blob/manga-ink-redesign/extension/README.md">Extension README</a>.</li>
+      </ol>
+    </section>
+
+    <section id="build">
+      <h2>Build from source</h2>
+      <p>Node.js 22.12 or newer, on macOS. Audio capture and the app bundle are Mac-only.</p>
+      <pre><code>npm install
+npm start
+bash scripts/package-mac.sh</code></pre>
+      <p><code>npm start</code> runs the app in place. <code>scripts/package-mac.sh</code> writes <code>~/Applications/Anime Mine.app</code>, sets the bundle version from <code>package.json</code> (0.1.0), keeps the id <code>ai.animemine.app</code>, and ad-hoc signs the bundle so the seal verifies. Gatekeeper still treats that build as unidentified. Developer ID signing and notarization are documented for when you have your own Apple certificate. They are not done for you, and there is no notarized binary on this site.</p>
+      <p><a href="https://github.com/captainmainy341-beep/anime-mine/blob/manga-ink-redesign/docs/mac-packaging.md">Packaging and signing notes</a></p>
+    </section>
+  </main>
+
+  <footer>
+    <p>MIT license. Source on <a href="https://github.com/captainmainy341-beep/anime-mine">GitHub</a>. Browser extension notes in the <a href="https://github.com/captainmainy341-beep/anime-mine/blob/manga-ink-redesign/extension/README.md">extension folder README</a>.</p>
+  </footer>
+</body>
+</html>
