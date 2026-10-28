@@ -500,9 +500,12 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
   attempt(init);
   refreshAnki();
   loadEpisodeInfo();
+  const onKnownBroadcast = () => handleKnownChanged();
+  window.addEventListener('am:known-changed', onKnownBroadcast);
 
   return () => {
     alive = false;
+    window.removeEventListener('am:known-changed', onKnownBroadcast);
     knownCache.clear();
     listeners.abort();
     coverObserver.disconnect();

@@ -155,6 +155,7 @@ function mountWords(panel) {
   async function changeStatus(word, nextStatus) {
     await attempt(async () => {
       const result = await api.known.mark({ word, status: nextStatus });
+      window.dispatchEvent(new CustomEvent('am:known-changed', { detail: { word, status: nextStatus } }));
       if (result?.stats) counts = result.stats;
       await load();
     });
@@ -330,12 +331,12 @@ const statRow = (label, value) => [h('dt', {}, label), h('dd', {}, value)];
 
 function mountDifficulty(panel) {
   const api = window.api;
-  const state = { alive: true, works: { anime: [], manga: [] }, sort: { key: 'difficulty', dir: 'desc' }, selected: null, card: null };
+  const state = { alive: true, works: { anime: [], manga: [] }, sort: { anime: { key: 'difficulty', dir: 'desc' }, manga: { key: 'difficulty', dir: 'desc' } }, selected: null, card: null };
   const coverages = new Map();
   const queued = new Set();
   const subs = [];
   const bodies = Object.fromEntries(KINDS.map((kind) => [kind, h('tbody')]));
-  const sortButtons = Object.fromEntries(KINDS.map((kind) => [kind, new Map(WORK_COLUMNS.map(([key, label]) => [key, h('button', { class: 'ghost vocab-sort', onclick: () => sortBy(key) }, label)]))]));
+  const sortButtons = Object.fromEntries(KINDS.map((kind) => [kind, new Map(WORK_COLUMNS.map(([key, label]) => [key, h('button', { class: 'ghost vocab-sort', onclick: () => sortBy(kind, key) }, label)]))]));
   const search = h('input', {
     type: 'search',
     class: 'vocab-search',
@@ -393,10 +394,11 @@ function mountDifficulty(panel) {
     ),
   );
 
-  function sortBy(key) {
+  function sortBy(kind, key) {
+    const cur = state.sort[kind];
     const dir =
-      state.sort.key === key ? (state.sort.dir === 'desc' ? 'asc' : 'desc') : key === 'title' ? 'asc' : 'desc';
-    state.sort = { key, dir };
+      cur.key === key ? (cur.dir === 'desc' ? 'asc' : 'desc') : key === 'title' ? 'asc' : 'desc';
+    state.sort[kind] = { key, dir };
     renderTables();
   }
 
@@ -406,12 +408,13 @@ function mountDifficulty(panel) {
 
   function renderTables() {
     for (const kind of KINDS) {
+      const sort = state.sort[kind];
       for (const [key, button] of sortButtons[kind]) {
         const [, label] = WORK_COLUMNS.find(([k]) => k === key);
-        const arrow = state.sort.key === key ? (state.sort.dir === 'asc' ? 'up' : 'down') : '';
+        const arrow = sort.key === key ? (sort.dir === 'asc' ? 'up' : 'down') : '';
         button.replaceChildren(label, ...(arrow ? [' ', doodle(arrow)] : []));
       }
-      const rows = sortWorks(filterWorks(state.works[kind], query).map(withCoverage), state.sort.key, state.sort.dir);
+      const rows = sortWorks(filterWorks(state.works[kind], query).map(withCoverage), sort.key, sort.dir);
       fill(bodies[kind], 
         rows.length
           ? rows.map(workRow)
@@ -550,6 +553,7 @@ function mountDifficulty(panel) {
   async function markShown(list, status, work) {
     await attempt(async () => {
       for (const { word } of list) await api.known.mark({ word, status });
+      window.dispatchEvent(new CustomEvent('am:known-changed', { detail: { status } }));
       toast(`Marked ${formatCount(list.length)} as ${STATUS_META[status].label.toLowerCase()}`, 'success');
     });
     if (state.alive) openDetail(work);
@@ -731,6 +735,7 @@ function mountExtract(panel) {
     }
     await attempt(async () => {
       for (const word of words) await api.known.mark({ word, status });
+      window.dispatchEvent(new CustomEvent('am:known-changed', { detail: { status } }));
       toast(`Marked ${formatCount(words.length)} as ${STATUS_META[status].label.toLowerCase()}`, 'success');
     });
     if (state.alive && state.rows.length) await run();

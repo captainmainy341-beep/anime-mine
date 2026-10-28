@@ -465,6 +465,7 @@ export function createPopup(slot, { videoPath, getAudioStreamIndex, onOpenSettin
     }
     knownStatus = status;
     onKnownChanged?.();
+    window.dispatchEvent(new CustomEvent('am:known-changed'));
     render();
   }
 

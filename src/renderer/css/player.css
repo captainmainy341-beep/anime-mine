@@ -198,7 +198,7 @@
   max-height: calc(100% - 150px);
   min-height: 0;
   box-sizing: border-box;
-  padding: 28px 34px 18px;
+  padding: 0.7em 34px 18px;
   overflow: auto;
   transform: translateX(-50%);
   border: 3px solid var(--ink);
