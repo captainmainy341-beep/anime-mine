@@ -5,7 +5,7 @@ const fs = require('node:fs/promises');
 const os = require('node:os');
 const path = require('node:path');
 let win;
-const run = fn => win.webContents.executeJavaScript(`(${fn.toString()})()`);
+const run = async fn => { try { return await win.webContents.executeJavaScript(`(${fn.toString()})()`); } catch (error) { console.error('Renderer action failed:', fn.toString()); throw error; } };
 const wait = async fn => { for(let i=0;i<100;i++){if(await run(fn)) return;await new Promise(r=>setTimeout(r,30));}throw Error('Renderer timeout'); };
 (async()=>{
  const dir=await fs.mkdtemp(path.join(os.tmpdir(),'anki-controls-electron-'));
@@ -15,7 +15,7 @@ const wait = async fn => { for(let i=0;i<100;i++){if(await run(fn)) return;await
  win.webContents.session.webRequest.onBeforeRequest({urls:['http://*/*','https://*/*']},(_details,callback)=>callback({cancel:true}));
  await win.loadFile(path.join(__dirname,'../test/fixtures/anki-controls.html'));
  await wait(()=>!!document.querySelector('.deck-option-field input'));
- assert.equal(await run(()=>document.querySelector('.deck-count-source').textContent),'Anki remaining');
+ assert.equal(await run(()=>document.querySelector('.deck-option-progress-line').textContent),'Today in Anki: 8 new introduced, 36 review answers · 12 new, 64 reviews, 3 learning remaining');
  await run(()=>{[...document.querySelectorAll('button')].find(b=>b.textContent==='Today only').click();const inputs=[...document.querySelectorAll('.deck-option-field input')];inputs[0].value='35';inputs[0].dispatchEvent(new Event('input'));inputs[1].value='250';inputs[1].dispatchEvent(new Event('input'));[...document.querySelectorAll('button')].find(b=>b.textContent==='Save to Anki').click();});
  await wait(()=>document.querySelector('.deck-option-status')?.textContent==='Saved to Anki.');
  assert.deepEqual(await run(()=>fixture.writes[0].patch),{scope:'today',newPerDay:35,reviewsPerDay:250});
@@ -24,11 +24,12 @@ const wait = async fn => { for(let i=0;i<100;i++){if(await run(fn)) return;await
  await run(()=>{[...document.querySelectorAll('[role=tab]')].find(b=>b.textContent==='Study').click();[...document.querySelectorAll('button')].find(b=>b.textContent==='Start').click();});
  for(let i=0;i<3;i++){
    await wait(()=>[...document.querySelectorAll('button')].some(b=>b.textContent==='Show answer'));
-   await run(()=>{[...document.querySelectorAll('button')].find(b=>b.textContent==='Show answer').click();document.querySelector('.grade-easy').click();});
+   await run(()=>{[...document.querySelectorAll('button')].find(b=>b.textContent==='Show answer').click();document.querySelector('.ink-rate-easy[data-ease="4"]').click();});
  }
  await wait(()=>document.querySelector('#view').textContent.includes('No cards ready now'));
  assert.equal(await run(()=>fixture.answers.length),3);
  assert.deepEqual(await run(()=>fixture.answers.map(a=>a.token)),['t0','t1','t2']);
+ assert.deepEqual(await run(()=>fixture.answers.map(a=>a.ease)),[4,4,4]);
  await run(()=>{fixture.index=0;[...document.querySelectorAll('button')].find(b=>b.textContent==='Study again').click();});
  await wait(()=>[...document.querySelectorAll('button')].some(b=>b.textContent==='Show answer'));
  await run(()=>{document.dispatchEvent(new KeyboardEvent('keydown',{key:' '}));});
@@ -55,8 +56,9 @@ const wait = async fn => { for(let i=0;i<100;i++){if(await run(fn)) return;await
  assert.deepEqual(await run(()=>fixture.analyzed.slice(-1)),['絶対に約束を破らない。']);
  await run(()=>{[...document.querySelectorAll('[role=tab]')].find(b=>b.textContent==='Deck options').click();});
  await wait(()=>!!document.querySelector('[aria-label="New cards / day"]'));
+ assert.equal(await run(()=>document.querySelector('.anki-options-deck-source').textContent),'Anki remaining');
  win.setSize(1440,900);await run(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
- const split=await run(()=>{const tabs=document.querySelector('.anki-tabs').getBoundingClientRect();const ed=document.querySelector('.anki-options-editor').getBoundingClientRect();const footer=document.querySelector('.deck-option-footer').getBoundingClientRect();return {split:!!document.querySelector('.anki-options-split'),list:!!document.querySelector('.anki-options-deck-list'),editorTop:ed.top-tabs.bottom,footerBottom:footer.bottom,vh:innerHeight};});
+ const split=await run(()=>{const tabs=document.querySelector('.ink-anki-tabs').getBoundingClientRect();const ed=document.querySelector('.anki-options-editor').getBoundingClientRect();const footer=document.querySelector('.deck-option-footer').getBoundingClientRect();return {split:!!document.querySelector('.anki-options-split'),list:!!document.querySelector('.anki-options-deck-list'),editorTop:ed.top-tabs.bottom,footerBottom:footer.bottom,vh:innerHeight};});
  assert.equal(split.split,true);
  assert.equal(split.list,true);
  assert.ok(split.editorTop<=420,`editor top ${split.editorTop}px below tab bar`);
@@ -65,8 +67,13 @@ const wait = async fn => { for(let i=0;i<100;i++){if(await run(fn)) return;await
  win.setSize(760,900);await run(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
  assert.equal(await run(()=>document.documentElement.scrollWidth<=innerWidth),true);
  await fs.writeFile(path.join(require('node:path').join(process.env.TMPDIR||os.tmpdir(),'shots'),'d2-options-760x900.png'),(await win.webContents.capturePage()).toPNG());
- await run(()=>{fixture.slow=true;[...document.querySelectorAll('button')].find(b=>b.textContent==='↻ Read Anki').click();[...document.querySelectorAll('button')].find(b=>b.textContent==='Hidden').click();});
- await new Promise(r=>setTimeout(r,600));
+ const previousLoads=await run(()=>fixture.loads);
+ await run(()=>{fixture.slow=true;document.querySelectorAll('.anki-options-deck')[1].click();});
+ assert.equal(await run(()=>fixture.loads),previousLoads+1);
+ assert.equal(await run(()=>!!fixture.slowCompleted),false);
+ await run(()=>{[...document.querySelectorAll('button')].find(b=>b.textContent==='Hidden').click();});
+ await wait(()=>fixture.slowCompleted);
+ await new Promise(r=>setTimeout(r,50));
  assert.equal(await run(()=>document.querySelector('#view').textContent.includes('Anime Mining')),false);
  assert.deepEqual(errors,[]);
  console.log('PASS: Electron native deck controls, today-only writes, permanent isolation, three-card native queue loop, token forwarding, narrow layout and stale-response privacy.');

@@ -20,6 +20,7 @@ export function mountManga(container) {
   const continueRow = h('section', { class: 'manga-continue', hidden: true });
   const body = h('div', { class: 'manga-body' });
   const folderList = h('ul', { class: 'manga-folder-list' });
+  const foldersBox = h('details', { class: 'folders-box manga-folders', hidden: true }, h('summary', {}, 'Folders'), folderList);
   const aiBox = h('input', { type: 'checkbox', onchange: saveAi });
   const options = h(
     'div',
@@ -44,7 +45,7 @@ export function mountManga(container) {
     options,
     continueRow,
     body,
-    h('details', { class: 'folders-box manga-folders' }, h('summary', {}, 'Folders'), folderList),
+    foldersBox,
   );
   container.append(root);
 
@@ -94,6 +95,7 @@ export function mountManga(container) {
   }
 
   function renderFolders(folders) {
+    foldersBox.hidden = folders.length === 0;
     if (!folders.length) return fill(folderList, h('li', { class: 'muted' }, 'No folders yet.'));
     fill(
       folderList,
@@ -286,7 +288,6 @@ export function mountManga(container) {
         h('li', {}, '.cbz, .zip or .pdf volumes containing page images.'),
         h('li', {}, 'Optional mokuro sidecar files next to a volume, for Japanese text blocks.'),
       ),
-      h('button', { class: 'primary', onclick: addFolder }, 'Add folder'),
     );
   }
 

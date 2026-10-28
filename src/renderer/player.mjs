@@ -1,6 +1,6 @@
 import { coverToPixels, expandCover, pictureRect, rectFromDrag, sourceBand } from './lib/coverRect.mjs';
 import { findCueIndex, neighborIndex } from './lib/cues.mjs';
-import { furigana } from './lib/furigana.mjs';
+import { furiganaSegments } from './lib/furigana.mjs';
 import { tokenizeCached } from './lib/nlp.mjs';
 import { addKeyColor, dilateMask, inpaintPixels, keyMask, setKeyTolerance } from './lib/subKey.mjs';
 import {
@@ -37,6 +37,14 @@ const PUNCTUATION_ONLY = /^[\p{P}\p{S}\s]+$/u;
 
 const pad = (n) => String(n).padStart(2, '0');
 const basename = (path) => path.split(/[\\/]/).pop();
+
+export function cleanPlayerTitle(value) {
+  return basename(String(value ?? ''))
+    .replace(/\.(?:mkv|mp4|avi|mov|webm)$/i, '')
+    .replace(/\[[^\]]*\]/g, ' ')
+    .replace(/[._]+/g, ' ')
+    .replace(/\s+/g, ' ').trim();
+}
 
 export function formatTime(seconds) {
   const value = Number(seconds);
@@ -136,23 +144,26 @@ function fileUrl(path) {
   return `file://${encodeURI(path).replace(/[?#]/g, encodeURIComponent)}`;
 }
 
-const knownCache = new Map();
-
-function classifyCached(text, tokens) {
-  if (!knownCache.has(text)) {
-    knownCache.set(
-      text,
-      api.known.classify(tokens).catch((err) => {
-        console.error(err);
-        knownCache.delete(text);
-        return null;
-      }),
-    );
-  }
-  return knownCache.get(text);
+export function createPlayerKnownCache(classify) {
+  const cache = new Map();
+  return {
+    clear: () => cache.clear(),
+    classify(text, tokens) {
+      if (!cache.has(text)) {
+        const pending = classify(tokens).catch((err) => {
+          console.error(err);
+          if (cache.get(text) === pending) cache.delete(text);
+          return null;
+        });
+        cache.set(text, pending);
+      }
+      return cache.get(text);
+    },
+  };
 }
 
 export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlayEpisode }) {
+  const knownCache = createPlayerKnownCache((tokens) => api.known.classify(tokens));
   let cues = [];
   let streams = [];
   let linkedPath = episode.subtitlePath ?? null;
@@ -202,7 +213,7 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
   const header = inkHeader({ title: 'Player', compact: true, label: '', value: 0, max: 0 });
   const video = h('video', { preload: 'metadata', playsinline: true, class: 'player-video' });
   video.controls = false;
-  const overlay = h('div', { class: 'subtitle-overlay' });
+  const overlay = h('div', { class: 'subtitle-overlay', hidden: true });
   const coverCanvas = h('canvas', { class: 'cover-canvas', hidden: true });
   const keyCanvas = document.createElement('canvas');
   const pixelCanvas = document.createElement('canvas');
@@ -492,6 +503,7 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
 
   return () => {
     alive = false;
+    knownCache.clear();
     listeners.abort();
     coverObserver.disconnect();
     popupObserver.disconnect();
@@ -557,9 +569,9 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
   }
 
   function syncTitlePlate() {
-    const label = episodePlateLabel({ show: showTitle, episode: episodeNumber });
-    titlePlate.textContent = label || episode.name;
-    titlePlate.title = showTitle || episode.name;
+    const label = episodePlateLabel({ show: cleanPlayerTitle(showTitle || episode.name || episode.path), episode: episodeNumber });
+    titlePlate.textContent = label;
+    titlePlate.title = label;
   }
 
   function setPlayIcon() {
@@ -1245,32 +1257,34 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
   }
 
   function renderSegments(text, tokens, statuses, index) {
-    return toSegments(text, tokens).map((seg) => {
-      if (!seg.token) return seg.text;
-      const tokenIndex = tokens.indexOf(seg.token);
-      const status = statuses?.[tokenIndex];
-      const classes = ['word'];
-      if (settings.highlightUnknown && status && status !== 'skip') classes.push(`tok-${status}`);
-      const ruby = settings.showFurigana ? furigana({ surface: seg.text, reading: seg.token.reading }) : null;
-      return h(
-        'span',
-        {
-          class: classes.join(' '),
-          tabindex: 0,
+    const lines = [[]];
+    for (const seg of toSegments(text, tokens)) {
+      const pieces = seg.text.split('\n');
+      pieces.forEach((piece, pieceIndex) => {
+        if (pieceIndex) lines.push([]);
+        if (!piece) return;
+        if (!seg.token) { lines.at(-1).push(piece); return; }
+        const tokenIndex = tokens.indexOf(seg.token);
+        const status = statuses?.[tokenIndex];
+        const classes = ['word'];
+        if (settings.highlightUnknown && status && status !== 'skip') classes.push(`tok-${status}`);
+        const parts = settings.showFurigana && pieces.length === 1
+          ? furiganaSegments({ surface: piece, reading: seg.token.reading }) : [{ text: piece }];
+        lines.at(-1).push(h('span', {
+          class: classes.join(' '), tabindex: 0,
           onclick: () => openWord(index, tokens, tokenIndex),
-          onmouseenter: () => {
-            lastWord = { index, tokens, tokenIndex };
-          },
-        },
-        ruby?.rt ? h('ruby', {}, ruby.surface, h('rt', {}, ruby.rt)) : seg.text,
-      );
-    });
+          onmouseenter: () => { lastWord = { index, tokens, tokenIndex }; },
+        }, parts.map((part) => part.ruby ? h('ruby', {}, part.text, h('rt', {}, part.ruby)) : part.text)));
+      });
+    }
+    return lines.map((line) => h('div', { class: 'subtitle-line' }, line));
   }
 
   function renderOverlay() {
     const seq = ++overlaySeq;
     const index = activeIndex;
     const cue = cues[index];
+    overlay.hidden = !subsOn || !cue;
     stripLine.textContent = lineStripText(cue);
     setLineTokens(index, []);
     if (!cue) {
@@ -1279,7 +1293,7 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
     }
     fill(overlay, renderSegments(cue.text, [], null, index));
     tokenizeCached(cue.text)
-      .then(async (tokens) => ({ tokens, result: await classifyCached(cue.text, tokens) }))
+      .then(async (tokens) => ({ tokens, result: alive && seq === overlaySeq ? await knownCache.classify(cue.text, tokens) : null }))
       .then(({ tokens, result }) => {
         if (!alive || seq !== overlaySeq) return;
         fill(overlay, renderSegments(cue.text, tokens, result?.statuses ?? null, index));
@@ -1360,7 +1374,7 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
 
   function toggleSubs() {
     subsOn = !subsOn;
-    overlay.hidden = !subsOn;
+    overlay.hidden = !subsOn || !cues[activeIndex];
     subsButton.textContent = subsOn ? 'Subtitles on' : 'Subtitles off';
     subsButton.setAttribute('aria-pressed', String(subsOn));
   }

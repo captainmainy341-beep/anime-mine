@@ -80,7 +80,11 @@
 .ink-lesson-preview.is-text .ink-preview-glyph {
   font-family: var(--font); font-weight: 700; font-size: 28px; line-height: 41px; letter-spacing: 0;
 }
-.ink-lesson-preview.is-text.is-long .ink-preview-glyph { font-size: 22px; line-height: 32px; }
+.ink-lesson-preview.is-text .ink-preview-glyph {
+  white-space: normal; overflow-wrap: anywhere; text-align: center; padding: 0 5px;
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3;
+}
+.ink-lesson-preview.is-text.is-long .ink-preview-glyph { font-size: 20px; line-height: 25px; }
 
 /* Progress label + count + track (track 548x10, red fill handled by ink-kit). */
 .ink-lesson-progress { margin-top: max(9px, calc(68px - var(--ink-explore-squeeze) * 0.31)); }
@@ -166,11 +170,13 @@
 .ink-row-body { flex: 1 1 auto; min-width: 0; }
 .ink-explore .ink-row-title {
   display: block; font-size: 22px; font-weight: 700; line-height: 32px; letter-spacing: 0;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  white-space: normal; overflow-wrap: anywhere; display: -webkit-box;
+  -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden;
 }
 .ink-explore .ink-row-sub {
   display: block; margin-top: 10px; font-size: 15px; font-weight: 500; line-height: 22px; letter-spacing: 0;
-  color: var(--ink-mute); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  color: var(--ink-mute); white-space: normal; overflow-wrap: anywhere;
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden;
 }
 .ink-explore .ink-row .ink-row-chevron {
   flex: none; width: 52px; height: 52px; --doodle-stroke: 1.85; margin: 0 -18px 0 auto;

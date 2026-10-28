@@ -258,6 +258,7 @@ class LearnStore {
     const started = Object.entries(this.state.items);
     const lessonsKanji = this.availableKanjiSide().length;
     const lessonsGrammar = this.availableGrammar().length;
+    const remaining = this.remainingToday();
     const vacation = this.state.settings.vacationSince !== null;
     const dueOf = (pred) => started.filter(([id, s]) => pred(id) && s.nextReview !== null && s.nextReview <= now).length;
     const isGrammar = (id) => srs.kindOf(id) === 'grammar';
@@ -289,7 +290,7 @@ class LearnStore {
       lessons: {
         kanji: lessonsKanji,
         grammar: lessonsGrammar,
-        remainingToday: Math.max(0, this.state.settings.dailyLessonLimit - this.dailyCount()),
+        remainingToday: remaining === Infinity ? null : remaining,
       },
       reviews: { due, dueKanji, dueGrammar, nextAt },
       groups,
@@ -316,7 +317,9 @@ class LearnStore {
   }
 
   remainingToday() {
-    return Math.max(0, this.state.settings.dailyLessonLimit - this.dailyCount());
+    const count = this.dailyCount();
+    const limit = this.state.settings.dailyLessonLimit;
+    return limit === 0 ? Infinity : Math.max(0, limit - count);
   }
 
   availableKanjiSide() {
@@ -344,7 +347,7 @@ class LearnStore {
 
   lessonQueue({ scope = 'all', jlpt, ids, limit } = {}) {
     if (ids) {
-      return ids.filter((id) => this.isAvailable(id)).map((id) => this.card(id));
+      return ids.filter((id) => this.isAvailable(id)).slice(0, this.remainingToday()).map((id) => this.card(id));
     }
     let list = [];
     if (scope === 'kanji' || scope === 'all') list = list.concat(this.availableKanjiSide());

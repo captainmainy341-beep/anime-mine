@@ -175,13 +175,13 @@ function mountCourse(el, ctx, arg = {}) {
     fill(trail, rows.map(row => button([
       h('span', { class:'course-stop-circle' }, row.stage > 0 ? icon('check') : row.selected ? icon('spark') : String(row.ordinal)),
       h('strong', { lang:'ja' }, row.label),
-      h('small', {}, row.selected ? 'Explore this pattern' : row.sub),
+      h('small', {}, row.selected ? 'Selected pattern' : row.sub),
     ], () => select(row.id), `learn-g-row course-stop${row.selected ? ' selected' : ''}`, { 'aria-current':row.selected ? 'step' : null, title:`${row.label}: ${row.sub}` })));
   }
   function renderCatalogue() {
     const wasOpen = catalogue.open;
     fill(catalogue, h('summary', {}, icon('book'), `${state.jlpt} collection · ${state.rows.length} patterns`, h('span', {}, 'Browse all')),
-      state.rows.length ? h('div', { class:'course-catalog-grid' }, state.rows.map(row => button([h('strong', { lang:'ja' }, row.label), h('small', {}, row.sub), chip(row.groupKey ? `Stage ${row.stage}` : 'New')], () => { select(row.id); catalogue.open = false; detail.scrollIntoView({ block:'nearest', behavior:'instant' }); }, 'course-catalog-item'))) : h('p', { class:'learn-sub' }, 'No matches. Try a different word or clear the search.'));
+      state.rows.length ? h('div', { class:'course-catalog-grid' }, state.rows.map(row => button([h('strong', { lang:'ja' }, row.label), h('small', {}, row.sub), chip(row.groupKey ? `Stage ${row.stage}` : 'New')], () => { select(row.id); catalogue.open = false; detail.scrollIntoView({ block:'nearest', behavior:'instant' }); }, 'course-catalog-item', { title:`${row.label}: ${row.sub}` }))) : h('p', { class:'learn-sub' }, 'No matches. Try a different word or clear the search.'));
     catalogue.open = wasOpen;
   }
   function select(id) {

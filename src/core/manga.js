@@ -22,6 +22,21 @@ const MAX_PAGE_BYTES = 64 * 1024 ** 2;
 
 const collator = new Intl.Collator('en', { numeric: true, sensitivity: 'base' });
 const naturalCompare = (a, b) => collator.compare(a, b);
+const portableBasename = value => value.replace(/\\/g, '/').replace(/\/+$/, '').split('/').pop();
+
+function seriesTitle(dir, volumes) {
+  const folderTitle = portableBasename(dir);
+  const generic = /^(?:untitled folder|new folder)(?:\s*(?:\(\d+\)|\d+))?$/i;
+  if (!generic.test(folderTitle)) return folderTitle;
+  const candidates = volumes.map(volume => {
+    const name = portableBasename(volume.title);
+    return (volume.kind === 'dir' ? name : name.replace(/\.(?:cbz|zip|pdf)$/i, ''))
+      .replace(/\s*[-–_:]?\s*(?:vol(?:ume)?[.\s_-]*\d+|第\d+巻)\s*$/i, '').trim();
+  });
+  const inferred = candidates[0];
+  return inferred && !generic.test(inferred) && !/^(?:vol(?:ume)?[.\s_-]*\d+|\d+)$/i.test(inferred) &&
+    candidates.every(name => name.toLocaleLowerCase() === inferred.toLocaleLowerCase()) ? inferred : folderTitle;
+}
 
 const shortHash = text => crypto.createHash('sha1').update(text).digest('hex').slice(0, 12);
 
@@ -173,11 +188,9 @@ class MangaLibrary {
 
   series(root, dir) {
     this.#stamp(dir);
-    return {
-      id: idOf(root, dir),
-      title: path.basename(dir),
-      volumes: this.volumes(root, dir),
-    };
+    const volumes = this.volumes(root, dir);
+    const title = seriesTitle(dir, volumes);
+    return { id: idOf(root, dir), title, volumes };
   }
 
   volumes(root, dir) {
@@ -322,4 +335,4 @@ class MangaLibrary {
   }
 }
 
-module.exports = { MangaLibrary, naturalCompare };
+module.exports = { MangaLibrary, naturalCompare, seriesTitle };

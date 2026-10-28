@@ -210,6 +210,9 @@
   color: var(--muted);
 }
 
+/* Stage labels need enough room for their full text, including at narrow widths. */
+.learn-stats .learn-stage-row { grid-template-columns: minmax(max-content, 90px) minmax(0, 1fr) 48px; }
+
 .learn-item-locked {
   color: var(--warn);
   margin: 0;

@@ -34,6 +34,7 @@ async function watchScene({ videoPath, start }) {
 }
 
 function go(name, arg) {
+  if (unmountView?.canLeave && !unmountView.canLeave()) return;
   unmountView?.();
   view.replaceChildren();
   unmountView = routes[name](view, arg);

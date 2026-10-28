@@ -1,4 +1,12 @@
-// Run: node_modules/.bin/electron scripts/learn-smoke.cjs
+// Run: node scripts/learn-smoke.cjs (or node_modules/.bin/electron scripts/learn-smoke.cjs)
+if (!process.versions.electron) {
+  const { spawnSync } = require('node:child_process');
+  const env = { ...process.env };
+  delete env.ELECTRON_RUN_AS_NODE;
+  const child = spawnSync(require('electron'), [__filename, ...process.argv.slice(2)], { stdio: 'inherit', env });
+  if (child.error) console.error(child.error);
+  process.exit(child.status ?? 1);
+}
 // Boots the real main/preload/renderer with isolated data. Never reads personal decks.
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
@@ -251,7 +259,7 @@ async function screenshot(name) {
   await tab('Stats');
   await waitFor(() => !!document.querySelector('.learn-stats .learn-big'), 'stats');
   console.log('PASS stats');
-  await tab('Settings');
+  await tab('Study settings');
   await waitFor(() => !!document.querySelector('.learn-settings form'), 'settings');
   await evaluate(() => document.querySelector('.learn-settings form').requestSubmit());
   await waitFor(() => [...document.querySelectorAll('#toasts *')].some(el => el.textContent === 'Learn settings saved'), 'save settings');

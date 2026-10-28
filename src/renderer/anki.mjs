@@ -1,6 +1,6 @@
 import { attempt, fill, h, toast } from './lib/ui.mjs';
 import { doodle, withIcon } from './lib/doodleIcons.mjs';
-import { inkHeader, inkPercent, setInkHeader } from './lib/inkHeader.mjs';
+import { inkHeader, setInkHeader } from './lib/inkHeader.mjs';
 import { mountDeckOptions } from './lib/ankiDeckOptions.mjs';
 import { currentPreset } from './lib/ankiOptionsModel.mjs';
 import { grammarPanel } from './lib/grammarPanel.mjs';
@@ -10,7 +10,7 @@ import { createCardDocumentCache, deckLabel, easeForKey, gradeButtons, plainSent
 import { studyDocument } from './lib/studyPresentation.mjs';
 import { createStudyCardView } from './anki/studyCard.mjs';
 
-const api = window.api;
+const api = globalThis.window?.api;
 
 const MODES = [
   ['hidden', 'Hidden'],
@@ -45,7 +45,7 @@ const countOf = (value) => {
   const n = Number(value);
   return Number.isFinite(n) && n > 0 ? n : 0;
 };
-const deckDue = (deck) => countOf(deck?.new) + countOf(deck?.learn) + countOf(deck?.due);
+export const deckDue = (deck) => countOf(deck?.new) + countOf(deck?.learn) + countOf(deck?.due);
 const deckTotal = (deck) => countOf(deck?.total) || deckDue(deck);
 const cardsLabel = (n) => `${n} ${n === 1 ? 'card' : 'cards'}`;
 const isMissing = (fn) => typeof fn !== 'function';
@@ -99,7 +99,7 @@ export function mountAnki(container) {
   window.addEventListener('resize', closeDeckMenu);
   load();
 
-  return () => {
+  const unmount = () => {
     disposed = true;
     closeDeckMenu();
     disposeTabs();
@@ -111,6 +111,8 @@ export function mountAnki(container) {
     window.removeEventListener('resize', closeDeckMenu);
     observer?.disconnect();
   };
+  unmount.canLeave = leaveAllowed;
+  return unmount;
 
   // Data loading and mode
 
@@ -204,9 +206,9 @@ export function mountAnki(container) {
   function hiddenPanel() {
     return panel(
       'Your Anki decks are hidden',
-      'Nothing is loaded from Anki until you connect. You can preview the section with sample data first.',
-      button('Preview with sample data', () => setMode('sample')),
-      button('Connect my Anki', () => setMode('live'), 'primary'),
+      'Your decks stay private while hidden. Preview with sample data, or open Anki with AnkiConnect to connect your own decks.',
+      button('Preview sample data', () => setMode('sample')),
+      button('Connect to Anki', () => setMode('live'), 'primary'),
     );
   }
 
@@ -307,6 +309,8 @@ export function mountAnki(container) {
           )
         : null,
     );
+    tabStrip.hidden = !section;
+    tabStrip.setAttribute('aria-hidden', String(!section));
     sampleChip.hidden = state.summary !== 'sample';
     chooseDecks.hidden = state.summary !== 'ready';
     modeSwitch.hidden = state.summary === 'loading';
@@ -501,7 +505,7 @@ export function mountAnki(container) {
           h('span', { class: 'ink-deck-head-cell is-deck', role: 'columnheader' }, 'Deck'),
           h('span', { class: 'ink-deck-head-cell', role: 'columnheader' }, 'New'),
           h('span', { class: 'ink-deck-head-cell', role: 'columnheader' }, 'Learn'),
-          h('span', { class: 'ink-deck-head-cell', role: 'columnheader' }, 'Due'),
+          h('span', { class: 'ink-deck-head-cell', role: 'columnheader', title: 'Review cards due' }, 'Review'),
           h('span', { class: 'ink-deck-head-cell', role: 'columnheader' })),
         h('div', { class: 'ink-deck-body', role: 'rowgroup' }, decks.map((deck) => deckRow(deck, deck.name === selected?.name)))),
       state.deckForm ? createDeckForm() : deckActions());
@@ -642,16 +646,14 @@ export function mountAnki(container) {
     const due = deckDue(deck);
     const studied = countOf(o.today?.studied);
     return h('section', { class: 'ink-panel ink-anki-glance' },
-      h('h2', { class: 'ink-anki-glance-title' }, name),
+      h('h2', { class: 'ink-anki-glance-title', title: deck.name }, name),
       h('span', { class: 'ink-underline ink-anki-glance-underline', 'aria-hidden': 'true' }),
       h('p', { class: 'ink-anki-glance-sub' }, `${cardsLabel(deckTotal(deck))} · ${due} due today`),
       h('div', { class: 'ink-anki-stats' },
         statBox('New', deck.new), statBox('Learning', deck.learn), statBox('To review', deck.due)),
       h('div', { class: 'ink-anki-done' },
-        h('span', { class: 'ink-anki-done-label' }, 'Done today'),
-        h('span', { class: 'ink-anki-done-value' }, `${studied} / ${due}`)),
-      h('span', { class: 'ink-track ink-anki-done-track' },
-        h('i', { class: 'ink-track-fill', style: `width:${inkPercent(studied, due)}%` })),
+        h('span', { class: 'ink-anki-done-label' }, 'Studied today · all selected decks'),
+        h('span', { class: 'ink-anki-done-value' }, String(studied))),
       h('button', { type: 'button', class: 'ink-bigbtn ink-anki-studynow', onclick: () => studyDeck(deck.name) },
         h('span', {}, 'Study now'), doodle('arrow')));
   }

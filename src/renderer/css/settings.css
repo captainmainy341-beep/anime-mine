@@ -1,5 +1,11 @@
 /* settings styles */
 
+.settings-form legend {
+  padding: 4px 10px;
+  background: var(--paper);
+  color: var(--ink);
+}
+
 .settings-form .full {
   grid-column: 1 / -1;
 }

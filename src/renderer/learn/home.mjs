@@ -73,7 +73,7 @@ export function mountHome(el, ctx) {
   function render(d) {
     fill(body,
       h('header', { class:'course-heading' }, h('div', {}, h('h1', {}, 'A little Japanese, every day.'), h('p', { class:'learn-sub' }, 'Your next session is ready when you are.')),
-        h('span', { class:'course-chip mint' }, ctx.settings.dailyLessonLimit === 0 ? 'No daily lesson limit' : `${d.lessons.remainingToday} lessons left today`)),
+        h('span', { class:'course-chip mint' }, d.lessons.remainingToday === null ? 'No daily lesson limit' : `Daily allowance: ${d.lessons.remainingToday} remaining`)),
       d.packReady ? null : dataGate(),
       d.vacation ? h('div', { class:'learn-banner warn', role:'status' }, vacationBanner(true)) : null,
       levelCard(d.level),

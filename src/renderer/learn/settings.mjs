@@ -27,7 +27,15 @@ export function mountLearnSettings(el, ctx) {
   el.append(body);
   let disposed = false;
 
-  render();
+  attempt(async () => {
+    const appSettings = await api.settings.get();
+    if (disposed) return;
+    if (ctx.settings.showFurigana !== appSettings.showFurigana) {
+      await api.learn.settingsSet({ showFurigana: appSettings.showFurigana });
+      await ctx.reloadSettings();
+    }
+    if (!disposed) render();
+  });
 
   return () => {
     disposed = true;
@@ -71,6 +79,7 @@ export function mountLearnSettings(el, ctx) {
               if (!Number.isInteger(dailyLessonLimit) || dailyLessonLimit < 0 || dailyLessonLimit > 200) {
                 throw new Error('Daily lesson limit must be a whole number from 0 to 200.');
               }
+              await api.settings.set({ showFurigana: furigana.checked });
               await api.learn.settingsSet({
                 lessonBatch,
                 dailyLessonLimit,
@@ -97,7 +106,7 @@ export function mountLearnSettings(el, ctx) {
       h('h2', {}, 'Mining & anime'),
       toggle(autoAdd, 'Add mined words to Learn automatically'),
       toggle(anime, 'Prefer sentences from anime when available'),
-      toggle(furigana, 'Show furigana'),
+      toggle(furigana, 'Show furigana (also applies to Watching)'),
       toggle(english, 'Show English translations'),
       h('h2', {}, 'This device'),
       toggle(lightning, 'Lightning mode: advance automatically after a correct answer'),

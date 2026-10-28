@@ -31,7 +31,7 @@ export const LEARN_TABS = [
   ['grammar', 'Grammar'],
   ['story', 'Story'],
   ['stats', 'Stats'],
-  ['settings', 'Settings'],
+  ['settings', 'Study settings'],
 ];
 
 const TABS = LEARN_TABS;
@@ -48,6 +48,24 @@ export function tabArgs(tab, arg) {
   if (tab === 'vocab') return { ...(arg ?? {}), type: 'vocab' };
   if (tab === 'levels') return { ...(arg ?? {}), type: arg?.type ?? 'kanji' };
   return arg;
+}
+
+// App settings own the shared furigana preference; retain the Learn value if unavailable.
+export async function loadLearnSettings(api) {
+  const settings = await api.learn.settingsGet();
+  try {
+    const appSettings = await api.settings.get();
+    if (typeof appSettings?.showFurigana === 'boolean') {
+      return { ...settings, showFurigana: appSettings.showFurigana };
+    }
+  } catch {
+    // Learn remains usable when app settings cannot be read.
+  }
+  return settings;
+}
+
+export function isTabRoot(stack, tab) {
+  return stack.length <= 1 && (stack.at(-1)?.view ?? 'home') === tab;
 }
 
 function readPref(key, fallback) {
@@ -96,15 +114,17 @@ export function mountLearn(container, { onWatch }) {
   api.learn.status().catch(() => {});
   init();
 
-  return () => {
+  const unmount = () => {
     disposed = true;
     teardownView();
     root.remove();
   };
+  unmount.canLeave = () => unmountView?.canLeave ? unmountView.canLeave() : true;
+  return unmount;
 
   async function init() {
     try {
-      ctx.settings = await api.learn.settingsGet();
+      await reloadSettings();
     } catch (err) {
       if (disposed) return;
       fill(body, errorPanel(err, init));
@@ -114,7 +134,7 @@ export function mountLearn(container, { onWatch }) {
   }
 
   async function reloadSettings() {
-    ctx.settings = await api.learn.settingsGet();
+    ctx.settings = await loadLearnSettings(api);
     return ctx.settings;
   }
 
@@ -166,11 +186,16 @@ export function mountLearn(container, { onWatch }) {
               if (!['ArrowLeft','ArrowRight','Home','End'].includes(event.key)) return;
               event.preventDefault();
               const next = event.key === 'Home' ? 0 : event.key === 'End' ? TABS.length - 1 : (index + (event.key === 'ArrowRight' ? 1 : TABS.length - 1)) % TABS.length;
-              const nextKey = TABS[next][0]; stack.length = 0;
+              const nextKey = TABS[next][0];
+              if (nextKey === active && isTabRoot(stack, nextKey)) return;
+              if (!unmount.canLeave()) return;
+              stack.length = 0;
               if (nextKey !== 'home') stack.push({ view:nextKey, tab:nextKey });
               show(); tabs.querySelector('[aria-selected="true"]')?.focus();
             },
             onclick: () => {
+              if (key === active && isTabRoot(stack, key)) return;
+              if (!unmount.canLeave()) return;
               stack.length = 0;
               if (key !== 'home') stack.push({ view: key, tab: key });
               show();

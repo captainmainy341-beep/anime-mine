@@ -1,0 +1,47 @@
+// Isolated renderer with real sample overview and mock IPC; no AnkiConnect access.
+const { app, BrowserWindow } = require('electron');
+const assert = require('node:assert/strict');
+const fs = require('node:fs/promises');
+const os = require('node:os');
+const path = require('node:path');
+const { SampleBrowser } = require('../src/core/ankiSample.js');
+let win;
+const run = fn => win.webContents.executeJavaScript(`(${fn.toString()})()`);
+const wait = async fn => { for (let i=0;i<100;i++) { if (await run(fn)) return; await new Promise(r=>setTimeout(r,30)); } throw Error('Renderer timeout'); };
+(async()=>{
+ const dir='/tmp/am-qa/anki-handcheck'; await fs.mkdir(dir,{recursive:true});
+ app.setPath('userData',await fs.mkdtemp(path.join(os.tmpdir(),'anki-sample-'))); await app.whenReady();
+ win=new BrowserWindow({show:false,width:1440,height:900,webPreferences:{sandbox:true,contextIsolation:true}});
+ const errors=[]; win.webContents.on('console-message',e=>{if(e.message.includes('Uncaught'))errors.push(e.message);});
+ win.webContents.session.webRequest.onBeforeRequest({urls:['http://*/*','https://*/*']},(_d,cb)=>cb({cancel:true}));
+ await win.loadFile(path.join(__dirname,'../test/fixtures/anki-controls.html'),{query:{hidden:'1'}});
+ await wait(()=>document.querySelector('.anki-panel h2')?.textContent==='Your Anki decks are hidden');
+ assert.equal(await run(()=>document.querySelector('.ink-anki-tabs').hidden),true);
+ assert.equal(await run(()=>!![...document.querySelectorAll('button')].find(b=>b.textContent==='Connect to Anki')),true);
+ await fs.writeFile(path.join(dir,'hidden.png'),(await win.webContents.capturePage()).toPNG());
+ const overview=await new SampleBrowser().overview();
+ await win.webContents.executeJavaScript(`fixture.sampleOverview=${JSON.stringify(overview)}`);
+ await run(()=>[...document.querySelectorAll('button')].find(b=>b.textContent==='Preview sample data').click());
+ await wait(()=>!!document.querySelector('.ink-anki-done-value'));
+ const data=await run(()=>({label:document.querySelector('.ink-anki-done-label').textContent,value:document.querySelector('.ink-anki-done-value').textContent,glance:document.querySelector('.ink-anki-glance-sub').textContent,header:document.querySelector('.ink-hero-label').textContent,counts:[...document.querySelectorAll('.ink-anki-stat b')].map(e=>Number(e.textContent)),title:document.querySelector('.ink-anki-glance-title').title}));
+ assert.equal(data.label,'Studied today · all selected decks'); assert.equal(data.value,'37');
+ assert.match(data.value,/^\d+$/); assert.equal(Number(data.value),overview.today.studied);
+ const due=data.counts.reduce((a,b)=>a+b,0); assert.match(data.glance,new RegExp(`\\b${due} due today$`)); assert.match(data.header,new RegExp(`^${due} due today\\b`));
+ assert.equal(data.title,overview.decks[0].name);
+ await fs.writeFile(path.join(dir,'sample.png'),(await win.webContents.capturePage()).toPNG());
+ // Exercise overflow with a deliberately long name, including the selected glance title.
+ const long='A very long uninterrupted deck name supercalifragilisticexpialidocious for tooltip checking';
+ await run(()=>[...document.querySelectorAll('button')].find(b=>b.textContent==='Hidden').click());
+ await wait(()=>document.querySelector('.anki-panel h2')?.textContent==='Your Anki decks are hidden');
+ overview.decks[0].name=long;
+ await win.webContents.executeJavaScript(`fixture.sampleOverview=${JSON.stringify(overview)}`);
+ await run(()=>[...document.querySelectorAll('button')].find(b=>b.textContent==='Preview sample data').click());
+ await wait(()=>document.querySelector('.ink-anki-glance-title')?.title?.includes('supercalifragilistic'));
+ assert.equal(await run(()=>document.querySelector('.ink-deck-pick').title),long);
+ assert.equal(await run(()=>document.querySelector('.ink-anki-glance-title').title),long);
+ await fs.writeFile(path.join(dir,'long-deck.png'),(await win.webContents.capturePage()).toPNG());
+ assert.deepEqual(errors,[]);
+ const report={studiedTodayLabel:data.label,studiedTodayValue:data.value,glance:data.glance,header:data.header,counts:data.counts,longDeckTooltip:long,consoleErrors:errors};
+ await fs.writeFile(path.join(dir,'report.json'),JSON.stringify(report,null,2)+'\n');
+ console.log('PASS',JSON.stringify(report)); win.close(); app.quit();
+})().catch(err=>{console.error(err);app.exit(1);});

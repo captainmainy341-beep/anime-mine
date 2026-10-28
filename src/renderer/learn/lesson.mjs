@@ -46,13 +46,15 @@ export function mountLesson(host, ctx, { data, tutor = { char: 'hana', color: '#
   setTutor('idle');
   render();
 
-  return () => {
+  const unmount = () => {
     disposed = true;
     cleanup?.();
     document.removeEventListener('keydown', onKey);
     window.speechSynthesis?.cancel?.();
     root.remove();
   };
+  unmount.canLeave = canLeave;
+  return unmount;
 
   // ---- chrome ----
 
@@ -385,7 +387,7 @@ export function mountLesson(host, ctx, { data, tutor = { char: 'hana', color: '#
       const input = h('input', { class: 'story-input lesson-input', type: 'text', lang: 'ja', autocomplete: 'off', autocapitalize: 'off', spellcheck: 'false', placeholder: 'Type in kana (romaji works too)', 'aria-label': 'Answer in kana',
         oninput: (event) => { event.target.value = typedKana(event.target.value); if (!locked) setAction('Check', submit, { disabled: input.value.trim() === '' }); },
         onkeydown: (event) => {
-          if (event.key !== 'Enter') return;
+          if (event.key !== 'Enter' || event.isComposing || event.keyCode === 229) return;
           event.preventDefault();
           event.stopPropagation();
           if (locked) next();
@@ -456,12 +458,16 @@ export function mountLesson(host, ctx, { data, tutor = { char: 'hana', color: '#
     go.classList.add('pulse');
   }
 
+  function canLeave() {
+    return run.finished || run.index === 0 || window.confirm('Leave this lesson? Your progress in it will be lost.');
+  }
+
   function leave() {
-    if (run.finished || run.index === 0 || window.confirm('Leave this lesson? Your progress in it will be lost.')) onExit();
+    if (canLeave()) onExit();
   }
 
   function onKey(event) {
-    if (disposed) return;
+    if (disposed || event.isComposing || event.keyCode === 229) return;
     if (event.key === 'Escape') {
       event.preventDefault();
       leave();
