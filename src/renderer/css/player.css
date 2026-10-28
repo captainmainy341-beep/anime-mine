@@ -188,15 +188,18 @@
 
 .player .subtitle-overlay {
   position: absolute;
-  bottom: 41px;
+  bottom: 72px;
   left: 50%;
   z-index: 3;
   display: block;
   width: max-content;
   min-width: min(500px, 82%);
   max-width: 82%;
-  min-height: 84px;
+  max-height: calc(100% - 150px);
+  min-height: 0;
+  box-sizing: border-box;
   padding: 15px 34px;
+  overflow: auto;
   transform: translateX(-50%);
   border: 3px solid var(--ink);
   border-radius: 26px;
@@ -205,13 +208,16 @@
   font-family: var(--font);
   font-size: 44px;
   font-weight: 900;
-  line-height: 1.1;
+  line-height: 1.5;
   letter-spacing: 0;
   text-align: center;
   text-shadow: none;
   white-space: pre-line;
-  pointer-events: none;
+  overflow-wrap: anywhere;
+  pointer-events: auto;
 }
+
+.player .subtitle-overlay[hidden] { display: none; }
 
 .player .subtitle-overlay .word {
   padding: 0 1px;
@@ -233,7 +239,8 @@
   text-underline-offset: 6px;
 }
 
-.player .subtitle-overlay ruby rt { font-size: 0.45em; color: var(--ink-mute); }
+.player .subtitle-overlay ruby { ruby-position: over; }
+.player .subtitle-overlay ruby rt { font-size: 0.45em; line-height: 1; color: var(--ink-mute); }
 
 /* ---------- Popup: the shared word popup floats over the stage ---------- */
 
@@ -344,6 +351,7 @@
   font-weight: 700;
 }
 
+.player .next-episode[hidden] { display: none; }
 .player .next-episode .doodle { width: 16px; height: 16px; margin: 0; --doodle-stroke: 2.4; }
 
 /* ---------- Control bar ---------- */

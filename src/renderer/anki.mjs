@@ -1,6 +1,6 @@
 import { attempt, fill, h, toast } from './lib/ui.mjs';
 import { doodle, withIcon } from './lib/doodleIcons.mjs';
-import { inkHeader, inkPercent, setInkHeader } from './lib/inkHeader.mjs';
+import { inkHeader, setInkHeader } from './lib/inkHeader.mjs';
 import { mountDeckOptions } from './lib/ankiDeckOptions.mjs';
 import { currentPreset } from './lib/ankiOptionsModel.mjs';
 import { grammarPanel } from './lib/grammarPanel.mjs';
@@ -642,16 +642,14 @@ export function mountAnki(container) {
     const due = deckDue(deck);
     const studied = countOf(o.today?.studied);
     return h('section', { class: 'ink-panel ink-anki-glance' },
-      h('h2', { class: 'ink-anki-glance-title' }, name),
+      h('h2', { class: 'ink-anki-glance-title', title: deck.name }, name),
       h('span', { class: 'ink-underline ink-anki-glance-underline', 'aria-hidden': 'true' }),
       h('p', { class: 'ink-anki-glance-sub' }, `${cardsLabel(deckTotal(deck))} · ${due} due today`),
       h('div', { class: 'ink-anki-stats' },
         statBox('New', deck.new), statBox('Learning', deck.learn), statBox('To review', deck.due)),
       h('div', { class: 'ink-anki-done' },
-        h('span', { class: 'ink-anki-done-label' }, 'Done today'),
-        h('span', { class: 'ink-anki-done-value' }, `${studied} / ${due}`)),
-      h('span', { class: 'ink-track ink-anki-done-track' },
-        h('i', { class: 'ink-track-fill', style: `width:${inkPercent(studied, due)}%` })),
+        h('span', { class: 'ink-anki-done-label' }, 'Studied today · all selected decks'),
+        h('span', { class: 'ink-anki-done-value' }, String(studied))),
       h('button', { type: 'button', class: 'ink-bigbtn ink-anki-studynow', onclick: () => studyDeck(deck.name) },
         h('span', {}, 'Study now'), doodle('arrow')));
   }

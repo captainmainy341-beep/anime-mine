@@ -31,7 +31,7 @@ export const LEARN_TABS = [
   ['grammar', 'Grammar'],
   ['story', 'Story'],
   ['stats', 'Stats'],
-  ['settings', 'Settings'],
+  ['settings', 'Study settings'],
 ];
 
 const TABS = LEARN_TABS;

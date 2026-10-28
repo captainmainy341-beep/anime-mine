@@ -177,3 +177,24 @@ test('setProgress rejects an unknown direction', async t => {
   const library = new MangaLibrary(path.join(root, 'data'));
   assert.throws(() => library.setProgress('abc', { page: 0, direction: 'up', spread: false }), /direction/);
 });
+
+test('placeholder series folder uses a meaningful volume title without changing ids', async t => {
+  const root = await setup(t);
+  const folder = path.join(root, 'untitled folder');
+  makeCbz(path.join(folder, 'Yotsuba Vol 01.cbz'), { '01.jpg': 'image' });
+  makeCbz(path.join(folder, 'Yotsuba Vol 02.cbz'), { '01.jpg': 'image' });
+  const library = new MangaLibrary(path.join(root, 'data'));
+  library.addFolder(root);
+  const [series] = library.scan();
+  assert.equal(series.title, 'Yotsuba');
+  assert.equal(series.id, library.scan()[0].id);
+});
+
+test('placeholder folder remains unchanged when volume names do not agree', async t => {
+  const root = await setup(t);
+  makeCbz(path.join(root, 'untitled folder', 'Yotsuba Vol 01.cbz'), { '01.jpg': 'image' });
+  makeCbz(path.join(root, 'untitled folder', 'Other Vol 01.cbz'), { '01.jpg': 'image' });
+  const library = new MangaLibrary(path.join(root, 'data'));
+  library.addFolder(root);
+  assert.equal(library.scan()[0].title, 'untitled folder');
+});
