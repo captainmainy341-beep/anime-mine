@@ -144,22 +144,26 @@ function fileUrl(path) {
   return `file://${encodeURI(path).replace(/[?#]/g, encodeURIComponent)}`;
 }
 
-const knownCache = new Map();
-
-function classifyCached(text, tokens) {
-  if (!knownCache.has(text)) {
-    const pending = api.known.classify(tokens).catch((err) => {
-      console.error(err);
-      if (knownCache.get(text) === pending) knownCache.delete(text);
-      return null;
-    });
-    knownCache.set(text, pending);
-  }
-  return knownCache.get(text);
+export function createPlayerKnownCache(classify) {
+  const cache = new Map();
+  return {
+    clear: () => cache.clear(),
+    classify(text, tokens) {
+      if (!cache.has(text)) {
+        const pending = classify(tokens).catch((err) => {
+          console.error(err);
+          if (cache.get(text) === pending) cache.delete(text);
+          return null;
+        });
+        cache.set(text, pending);
+      }
+      return cache.get(text);
+    },
+  };
 }
 
 export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlayEpisode }) {
-  knownCache.clear();
+  const knownCache = createPlayerKnownCache((tokens) => api.known.classify(tokens));
   let cues = [];
   let streams = [];
   let linkedPath = episode.subtitlePath ?? null;
@@ -1287,7 +1291,7 @@ export function mountPlayer(container, episode, { onBack, onOpenSettings, onPlay
     }
     fill(overlay, renderSegments(cue.text, [], null, index));
     tokenizeCached(cue.text)
-      .then(async (tokens) => ({ tokens, result: await classifyCached(cue.text, tokens) }))
+      .then(async (tokens) => ({ tokens, result: alive && seq === overlaySeq ? await knownCache.classify(cue.text, tokens) : null }))
       .then(({ tokens, result }) => {
         if (!alive || seq !== overlaySeq) return;
         fill(overlay, renderSegments(cue.text, tokens, result?.statuses ?? null, index));
