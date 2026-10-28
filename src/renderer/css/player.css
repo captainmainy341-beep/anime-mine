@@ -103,12 +103,14 @@
 .player .stage-subs:focus-visible { outline-color: var(--paper); }
 
 .player .stage-plate {
-  display: inline-flex;
-  flex: none;
-  align-items: center;
+  display: block;
+  flex: 0 1 320px;
+  min-width: 0;
   width: 320px;
   max-width: 48%;
   height: 40px;
+  box-sizing: border-box;
+  line-height: 34px;
   padding: 0 16px;
   overflow: hidden;
   border: 3px solid var(--ink);
@@ -198,7 +200,7 @@
   max-height: calc(100% - 150px);
   min-height: 0;
   box-sizing: border-box;
-  padding: 15px 34px;
+  padding: 28px 34px 18px;
   overflow: auto;
   transform: translateX(-50%);
   border: 3px solid var(--ink);
@@ -218,6 +220,8 @@
 }
 
 .player .subtitle-overlay[hidden] { display: none; }
+.player .subtitle-overlay .subtitle-line { display: block; }
+.player .subtitle-overlay .subtitle-line + .subtitle-line { margin-top: 0.45em; }
 
 .player .subtitle-overlay .word {
   padding: 0 1px;

@@ -326,7 +326,7 @@ function webSection() {
 
 export function mountSettings(container) {
   const form = h('form', { class: 'settings-form', onsubmit: save });
-  container.append(h('section', { class: 'page' }, h('h1', {}, 'Settings'), form));
+  container.append(h('section', { class: 'page' }, h('h1', {}, 'App settings'), form));
   let inputs = null;
   let disposed = false;
   let stopPitch = null;
