@@ -173,11 +173,17 @@ class MangaLibrary {
 
   series(root, dir) {
     this.#stamp(dir);
-    return {
-      id: idOf(root, dir),
-      title: path.basename(dir),
-      volumes: this.volumes(root, dir),
-    };
+    const volumes = this.volumes(root, dir);
+    const folderTitle = path.basename(dir);
+    // Only replace a generic folder name when every volume identifies the same series.
+    const candidates = volumes.map(volume => path.parse(volume.title).name
+      .replace(/\s*[-–_:]?\s*(?:vol(?:ume)?[.\s_-]*\d+|第\d+巻)\s*$/i, '').trim());
+    const inferred = candidates[0];
+    const title = /^untitled folder(?:\s+\d+)?$/i.test(folderTitle) && inferred &&
+      !/^(?:vol(?:ume)?[.\s_-]*\d+|\d+|untitled folder)$/i.test(inferred) &&
+      candidates.every(name => name.toLocaleLowerCase() === inferred.toLocaleLowerCase())
+      ? inferred : folderTitle;
+    return { id: idOf(root, dir), title, volumes };
   }
 
   volumes(root, dir) {

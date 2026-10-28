@@ -228,6 +228,9 @@ test('text previews are three text tiles and long grammar patterns get the small
     },
   })).root;
   assert.ok(one(grammar, 'ink-lesson-preview').classList.contains('is-long'));
+  assert.deepEqual(byClass(grammar, 'ink-preview-tile').map(tile => tile.getAttribute('title')),
+    ['AはBです', 'Aが ある', 'Aを 食べる']);
+  for (const sub of byClass(grammar, 'ink-row-sub')) assert.equal(sub.getAttribute('title'), sub.textContent);
 });
 
 test('exactly one Start button starts the lesson', () => {
