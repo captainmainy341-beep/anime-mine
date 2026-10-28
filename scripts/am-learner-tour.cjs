@@ -1,4 +1,13 @@
 // Deeper learner tour — explores features and reports bugs to /tmp/am-qa/
+// Allow running the tour with Node while keeping Electron responsible for its lifecycle.
+if (!process.versions.electron) {
+  const { spawnSync } = require('node:child_process');
+  const env = { ...process.env };
+  delete env.ELECTRON_RUN_AS_NODE;
+  const child = spawnSync(require('electron'), [__filename, ...process.argv.slice(2)], { stdio: 'inherit', env });
+  if (child.error) console.error(child.error);
+  process.exit(child.status ?? 1);
+}
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
@@ -65,7 +74,7 @@ async function probe(label) {
   })()`);
   fs.writeFileSync(path.join(outDir, `${label}.json`), JSON.stringify(info, null, 2));
   if (/untitled folder/i.test(info.text)) bugs.push({ type: 'content', where: label, msg: 'Shows "untitled folder"' });
-  if (/\b37\s*\/\s*2\b/.test(info.text)) bugs.push({ type: 'content', where: label, msg: 'Anki shows 37/2' });
+  if (new RegExp('\\b37\\s*[/]\\s*2\\b').test(info.text)) bugs.push({ type: 'content', where: label, msg: 'Anki shows 37/2' });
   if (/undefined|\[object Object\]|\bNaN\b/.test(info.text)) bugs.push({ type: 'content', where: label, msg: 'Leaked undefined/[object Object]/NaN', sample: info.text.match(/undefined|\[object Object\]|\bNaN\b/)?.[0] });
   const badOverflow = (info.overflow || []).filter((o) => o.sw > o.cw + 40 || o.sh > o.ch + 80);
   if (badOverflow.length) bugs.push({ type: 'layout', where: label, msg: 'Significant overflow', samples: badOverflow.slice(0, 5) });
