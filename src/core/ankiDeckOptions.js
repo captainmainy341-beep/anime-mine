@@ -71,7 +71,7 @@ class AnkiDeckOptions {
     await authorize?.();
     return this.invoke('animeMineSetDeckOptions', { deck, patch: changes, expectedRevision: revision, visibleDecks });
   }
-  queue(deck) { return this.invoke('animeMineStudyQueue', { deck }); }
+  queue(deck, visibleDecks) { return this.invoke('animeMineStudyQueue', { deck, visibleDecks }); }
   open(deck) { return this.invoke('animeMineOpenDeckOptions', { deck }); }
 }
 

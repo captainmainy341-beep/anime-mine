@@ -839,7 +839,7 @@ test('live study queue rejects hidden decks and serves visible ones with inlined
   assert.equal(await call('anki:media', 'x.mp3'), 'data:audio/mpeg;base64,eHl6');
 
   assert.deepEqual((await call('anki:studyQueue', { deck: 'Visible Deck', newLimit: -3 })).cards.map(c => c.id), [11]);
-  assert.deepEqual(invokes(calls).filter(c => c.action === 'animeMineStudyQueue').map(c => c.params), [{deck:'Visible Deck'}, {deck:'Visible Deck'}]);
+  assert.deepEqual(invokes(calls).filter(c => c.action === 'animeMineStudyQueue').map(c => c.params), [{deck:'Visible Deck',visibleDecks:['Visible Deck']}, {deck:'Visible Deck',visibleDecks:['Visible Deck']}]);
 });
 
 test('live study answer rejects hidden decks and posts token-authorized answers to the native scheduler', async () => {

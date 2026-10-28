@@ -31,8 +31,8 @@ def animeMineSetDeckOptions(self, deck, patch, expectedRevision, visibleDecks):
     return result
 
 
-def animeMineStudyQueue(self, deck):
-    return bridge().queue(deck)
+def animeMineStudyQueue(self, deck, visibleDecks):
+    return bridge().queue(deck, visibleDecks)
 
 
 def animeMineStudyAnswer(self, deck, cardId, ease, token, visibleDecks):

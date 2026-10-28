@@ -47,3 +47,10 @@ test('get and save forward the visible decks so the add-on can refuse hidden sub
     {action: 'animeMineSetDeckOptions', params: {deck: 'Anime', patch: {scope: 'permanent', applyToChildren: true}, expectedRevision: 'r', visibleDecks: ['Anime']}},
   ]);
 });
+
+test('study queue forwards the explicit visible-deck scope', async () => {
+  const calls = [];
+  const options = new AnkiDeckOptions({invoke: async (action, params) => { calls.push({action, params}); return {cardIds: []}; }});
+  await options.queue('Anime', ['Anime']);
+  assert.deepEqual(calls, [{action: 'animeMineStudyQueue', params: {deck: 'Anime', visibleDecks: ['Anime']}}]);
+});

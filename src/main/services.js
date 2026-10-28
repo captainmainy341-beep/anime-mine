@@ -575,7 +575,7 @@ function createServices({ dataDir, dialog, deps = {}, notify = () => {} }) {
     if (!visibleDecks.includes(deck)) throw new Error('Deck is hidden');
     const generation = settingsGeneration;
     const client = new AnkiClient(ankiUrl);
-    const native = await new AnkiDeckOptions(client).queue(deck);
+    const native = await new AnkiDeckOptions(client).queue(deck, visibleDecks);
     if (generation !== settingsGeneration) return { cards: [] };
     const { cards } = await new AnkiStudy(client).queue({ deck, allowedDecks: visibleDecks, native });
     if (generation !== settingsGeneration) return { cards: [] };
