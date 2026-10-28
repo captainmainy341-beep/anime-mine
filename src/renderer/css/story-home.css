@@ -114,10 +114,12 @@
 .nf-tile-info p { margin:2px 0 0; font-size:11.5px; color:#c9cfdd; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .nf-bar { position:absolute; left:0; right:0; bottom:0; height:4px; background:rgba(255,255,255,.14); }
 .nf-bar i { display:block; height:100%; width:0; background:var(--accent-season); border-radius:0 3px 3px 0; transition:width 900ms cubic-bezier(.2,.8,.2,1) 200ms; }
-.nf-tile-hover { position:absolute; inset:auto 0 0 0; padding:10px 12px 12px; background:linear-gradient(0deg,rgba(8,9,12,.98),rgba(8,9,12,.86)); transform:translateY(100%); transition:transform 240ms cubic-bezier(.2,.8,.2,1); display:flex; flex-direction:column; gap:8px; }
+.nf-tile-hover { position:absolute; inset:0; justify-content:flex-end; padding:10px 12px 12px; background:linear-gradient(0deg,rgba(8,9,12,.98),rgba(8,9,12,.86)); transform:translateY(100%); transition:transform 240ms cubic-bezier(.2,.8,.2,1); display:flex; flex-direction:column; gap:8px; }
 .nf-tile-hover p { margin:0; font-size:11.5px; line-height:1.45; color:#d5dae6; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
 .nf-tile:hover .nf-tile-hover,.nf-tile:focus-visible .nf-tile-hover { transform:none; }
 .nf-tile:hover .nf-tile-info,.nf-tile:focus-visible .nf-tile-info { opacity:0; transform:translateY(8px); }
+.nf-tile:hover :is(.nf-badge,.nf-up,.nf-check,.nf-steps),.nf-tile:focus-within :is(.nf-badge,.nf-up,.nf-check,.nf-steps) { opacity:0; }
+.nf-tile:focus-within .nf-tile-hover { transform:none; }
 .nf-tile-actions { display:flex; gap:8px; }
 .nf-round { width:30px; height:30px; padding:0; border-radius:50%; font-size:13px; background:#fff; color:#14101a; border:0; }
 .nf-round + .nf-round { background:rgba(255,255,255,.14); color:#fff; border:1px solid rgba(255,255,255,.4); }

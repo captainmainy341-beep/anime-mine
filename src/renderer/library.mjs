@@ -24,6 +24,7 @@ function episodeLabel({ season, episode }) {
 export function mountLibrary(container, { onPlay }) {
   const continueRow = h('section', { class: 'continue', hidden: true });
   const folderList = h('ul', { class: 'folders' });
+  const foldersBox = h('details', { class: 'folders-box', open: true, hidden: true }, h('summary', {}, 'Folders'), folderList);
   const showList = h('div', { class: 'shows' }, h('p', { class: 'muted' }, 'Scanning…'));
   let loadSeq = 0;
   let continueSeq = 0;
@@ -47,7 +48,7 @@ export function mountLibrary(container, { onPlay }) {
         h('button', { class: 'primary', onclick: () => changeFolders(() => api.library.addFolder()) }, 'Add folder'),
       ),
       continueRow,
-      h('details', { class: 'folders-box', open: true }, h('summary', {}, 'Folders'), folderList),
+      foldersBox,
       showList,
     ),
   );
@@ -114,6 +115,7 @@ export function mountLibrary(container, { onPlay }) {
   }
 
   function renderFolders(folders) {
+    foldersBox.hidden = folders.length === 0;
     if (!folders.length) {
       fill(folderList, h('li', { class: 'muted' }, 'No folders yet.'));
       return;

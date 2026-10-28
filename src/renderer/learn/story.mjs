@@ -16,26 +16,38 @@ const PEEKED_NOTE = 'You looked this kanji up: answer now, and it will come back
 
 const button = (label, onclick, className = 'story-btn', props = {}) => h('button', { type: 'button', class: className, onclick, ...props }, label);
 
+export function restoredIntroductions(snapshot, items) {
+  return new Set(Array.isArray(snapshot?.introducedNow) ? snapshot.introducedNow.filter((id) => items.includes(id)) : []);
+}
+
+export function snapshotWithIntroductions(snapshot, introducedNow) {
+  return { ...snapshot, introducedNow: [...introducedNow] };
+}
+
 export function mountStory(el, ctx, arg = {}) {
   const api = ctx.api.story;
   let disposed = false;
   let teardownPlay = null;
   let teardownMenu = null;
   let lastList = null;
+  let screenSeq = 0;
   const root = h('section', { class: 'story' });
   el.append(root);
   showMenu();
   if (arg.play) play(arg.play);
   else if (arg.lesson) openLesson(arg.lesson);
 
-  return () => {
+  const unmount = () => {
     disposed = true;
     teardownPlay?.();
     teardownMenu?.();
     root.remove();
   };
+  unmount.canLeave = () => teardownPlay?.canLeave ? teardownPlay.canLeave() : true;
+  return unmount;
 
   function leaveScreens() {
+    screenSeq++;
     teardownPlay?.();
     teardownPlay = null;
     teardownMenu?.();
@@ -44,15 +56,16 @@ export function mountStory(el, ctx, arg = {}) {
 
   async function showMenu() {
     leaveScreens();
+    const seq = screenSeq;
     fill(root, h('p', { class: 'learn-sub' }, 'Loading…'));
     let list;
     try {
       list = await api.list();
     } catch (err) {
-      if (!disposed) fill(root, h('div', { class: 'learn-card learn-error', role: 'alert' }, h('h2', {}, 'Could not load Story'), h('p', {}, err.message), button('Try again', showMenu)));
+      if (!disposed && seq === screenSeq) fill(root, h('div', { class: 'learn-card learn-error', role: 'alert' }, h('h2', {}, 'Could not load Story'), h('p', {}, err.message), button('Try again', showMenu)));
       return;
     }
-    if (disposed) return;
+    if (disposed || seq !== screenSeq) return;
     renderMenu(list);
   }
 
@@ -146,7 +159,7 @@ export function mountStory(el, ctx, arg = {}) {
 function mountPlayer(host, ctx, { data, manifest, restore, exit }) {
   const api = ctx.api.story;
   const scene = data.scene;
-  const introducedNow = new Set();
+  const introducedNow = restoredIntroductions(restore, scene.items);
   const pending = new Set();
   const assets = new Map();
   const furigana = ctx.settings?.showFurigana !== false;
@@ -177,13 +190,15 @@ function mountPlayer(host, ctx, { data, manifest, restore, exit }) {
   stage.addEventListener('click', onKanjiClick, true);
   render();
 
-  return () => {
+  const unmount = () => {
     disposed = true;
     stopTyping();
     clearTimeout(autoTimer);
     document.removeEventListener('keydown', onKey);
     view.remove();
   };
+  unmount.canLeave = canLeave;
+  return unmount;
 
   function newEngine(snapshot) {
     const skipIntro = Object.entries(data.items).filter(([, s]) => s.state === 'started').map(([id]) => id);
@@ -360,7 +375,7 @@ function mountPlayer(host, ctx, { data, manifest, restore, exit }) {
       const input = h('input', { class: 'story-input', type: 'text', lang: 'ja', autocomplete: 'off', autocapitalize: 'off', spellcheck: 'false', placeholder: 'Type the reading', 'aria-label': 'Reading in kana',
         oninput: (event) => { event.target.value = typedKana(event.target.value); },
         onkeydown: (event) => {
-          if (event.key !== 'Enter') return;
+          if (event.key !== 'Enter' || event.isComposing || event.keyCode === 229) return;
           event.preventDefault();
           event.stopPropagation();
           submit(typedKana(input.value, { final: true }), feedback);
@@ -590,7 +605,7 @@ function mountPlayer(host, ctx, { data, manifest, restore, exit }) {
   }
 
   async function save() {
-    await api.save({ id: scene.id, snapshot: engine.snapshot() });
+    await api.save({ id: scene.id, snapshot: snapshotWithIntroductions(engine.snapshot(), introducedNow) });
     toast('Saved');
   }
 
@@ -598,11 +613,17 @@ function mountPlayer(host, ctx, { data, manifest, restore, exit }) {
     const snapshot = await api.load(scene.id);
     if (!snapshot) return toast('No save for this scene yet');
     engine = newEngine(snapshot);
+    introducedNow.clear();
+    for (const id of restoredIntroductions(snapshot, scene.items)) introducedNow.add(id);
     completed = false;
     render();
   }
 
+  function canLeave() {
+    return engine.isFinished() || window.confirm('Leave this scene? Unsaved progress is lost. Answers already reported to your reviews are kept.');
+  }
+
   function leave() {
-    if (engine.isFinished() || window.confirm('Leave this scene? Unsaved progress is lost. Answers already reported to your reviews are kept.')) exit();
+    if (canLeave()) exit();
   }
 }
